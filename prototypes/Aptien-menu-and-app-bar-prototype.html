@@ -1605,7 +1605,6 @@ function(a,b,c){if(!Vd(b))throw Error(m(200));return Wd(null,a,b,!1,c)};Q.unmoun
         const t = e.data.theme;
         if (t === "light" || t === "dark") {
           appTheme = t;
-          doc.documentElement.dataset.theme = t;
           applyCanvasBg();
         }
         return;
@@ -3730,11 +3729,14 @@ Object.assign(window, {
   </div>
 
   <!-- ═══ TAB STRIP ═══ -->
-  <div class="tab-strip" style="flex-shrink:0;background:#6200EA;border-bottom:2px solid #6200EA;display:flex;align-items:flex-end;gap:2px;padding:6px 0 0 12px;overflow-x:auto;z-index:30">
+  <div class="tab-strip" style="flex-shrink:0;background:#6200EA;display:flex;align-items:flex-end;gap:2px;padding:6px 0 0 12px;overflow-x:auto;z-index:30">
     <sc-for list="{{ tabItems }}" as="tab" hint-placeholder-count="15">
       <div onclick="{{ tab.onClick }}" style="flex-shrink:0;cursor:pointer;padding:7px 15px;border-radius:6px 6px 0 0;font-size:12px;font-weight:{{ tab.fontWeight }};color:{{ tab.textColor }};white-space:nowrap;background:{{ tab.bgColor }};transition:color .15s,background .15s;user-select:none">{{ tab.label }}</div>
     </sc-for>
   </div>
+
+  <!-- COLOR SEPARATOR -->
+  <div style="flex-shrink:0;height:3px;background:{{ activeTabColor }};width:100%;z-index:29"></div>
 
   <!-- ═══ BODY ═══ -->
   <div style="flex:1;display:flex;min-height:0;overflow:hidden">
@@ -3917,7 +3919,7 @@ class Component extends DCLogic {
   }
 
   TABS = [
-    { label: 'Zaměstnanci',          c800: '#E65100', c50: '#FFF3E0', icon: 'users',          barColor: '#A5D6A7' },
+    { label: 'Zaměstnanci',          c800: '#f1c40f', c50: '#FFF3E0', icon: 'users',          barColor: '#A5D6A7' },
     { label: 'Hotely',               c800: '#37474F', c50: '#ECEFF1', icon: 'hotel',           barColor: 'rgba(255,255,255,.78)' },
     { label: 'Ochranné pomůcky',     c800: '#D84315', c50: '#FBE9E7', icon: 'helmet-safety',   barColor: '#FFAB91' },
     { label: 'Smlouvy',              c800: '#37474F', c50: '#ECEFF1', icon: 'file-signature',  barColor: 'rgba(255,255,255,.78)' },
@@ -4111,6 +4113,7 @@ class Component extends DCLogic {
       toggleSidebar: () => this.toggleSidebar(),
       // tabs
       tabItems,
+      activeTabColor: activeTabData.c800,
       activeLabel: activeTabData.label,
       activeTabIcon: activeTabData.icon,
       // nav
