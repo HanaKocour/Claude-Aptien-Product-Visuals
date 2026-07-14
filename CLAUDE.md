@@ -26,18 +26,64 @@ foundation.
 
 ---
 
+## ⛔ Nejdůležitější pravidlo: prototyp je PŘEDLOHA, ne inspirace
+
+**Když pro zadanou obrazovku existuje odpovídající prototyp v `prototypes/`,
+NIKDY nestav nový screen od nuly.** Prototyp je závazný zdroj pravdy pro
+strukturu, layout a komponenty. Postupuj takto:
+
+1. **Zkopíruj prototyp 1:1** – převezmi jeho přesnou strukturu (DOM/vrstvy),
+   rozměry, komponenty a rozvržení.
+2. **Změň jen to, co je v zadání** – texty, data, konkrétní obsah. Nic
+   jiného nepředělávej.
+3. **Nedomýšlej ani nevylepšuj layout.** Když prototyp něco neřeší, drž se
+   pravidel v `prototypes/Aptien-pravidla-pouziti-UI.md`, ne vlastního
+   návrhu.
+
+Formulace zadání typu „navrhni obrazovku pro X" NEZNAMENÁ „vymysli novou" –
+znamená „vezmi odpovídající prototyp a naplň ho obsahem X". Když si nejsi
+jistý, který prototyp použít, zeptej se; nikdy netvoř nový naslepo.
+
+> **`.md` popis je jen doplněk, ne zadání.** `Aptien-pravidla-pouziti-UI.md`
+> popisuje pravidla a chování. Zdrojem struktury je vždy konkrétní **HTML
+> prototyp**, ne prozaický popis. Nikdy nestav screen jen podle `.md`.
+
+> **Pozor na formát prototypů (bundled HTML).** Prototypy v `prototypes/`
+> jsou „bundled" stránky – reálná struktura je zabalená uvnitř
+> `<script type="__bundler/template">` a rozbaluje ji až JS v prohlížeči.
+> Když soubor čteš jen jako HTML, uvidíš loader a SVG náhled, ne skutečný
+> DOM. Pro převzetí struktury vyextrahuj obsah z `__bundler/template`
+> (nebo použij čistou `*.clean.html` verzi, pokud existuje) – nespoléhej na
+> to, co je vidět v hlavičce souboru.
+
+### Mapa: obrazovka → prototyp
+
+| Zadaná obrazovka / modul | Použij prototyp |
+|---|---|
+| Menu, top bar, app bar, shell aplikace | `prototypes/Aptien-menu-and-app-bar-prototype.html` |
+| Menu + app bar se směrnicemi (policies) | `prototypes/Aptien-menu-and-app-bar-prototype-with-policies.html` |
+| Obecná evidence (list / detail) | `prototypes/Aptien-evidence-prototyp-obecny.html` |
+| Evidence – pohled kanban / tabulka | `prototypes/Aptien-evidence-prototyp-obecny-kanban-tabulka.html` |
+| Evidence rizik (riziková matice, přehled) | `prototypes/Aptien-evidence-prototy-rizika.html` |
+| Pravidla a chování UI (referenční spec) | `prototypes/Aptien-pravidla-pouziti-UI.md` |
+
+---
+
 ## Postup při generování vizuálu
 
-1. Načti brandová pravidla z foundation (`Claude-Aptien-Brand-Manual`).
-2. Načti UI aplikace z foundation (`Claude-HK-Aptien-App`) – komponenty,
+1. **Najdi odpovídající prototyp** v mapě výše. Pokud existuje → řiď se
+   pravidlem „prototyp je předloha" (kopíruj 1:1, měň jen obsah). Pokud
+   žádný neodpovídá → zeptej se, nebo teprve pak stav nový podle pravidel.
+2. Načti brandová pravidla z foundation (`Claude-Aptien-Brand-Manual`).
+3. Načti UI aplikace z foundation (`Claude-HK-Aptien-App`) – komponenty,
    patterny a vzhled obrazovek, které se ve vizuálu objeví.
-3. Vyber typ výstupu a podle něj zdroj v tomto kitu:
+4. Vyber typ výstupu a podle něj zdroj v tomto kitu:
    - `screenshots/` – syrové záběry aplikace
    - `mockups/` – desktop / mobil rámečky s UI
-   - `prototypes/` – ukázky částí UI pro konzistenci
-4. Drž jednotný styl podle existujících ukázek a podkladů ve `files/`.
-5. Vygeneruj vizuál, který je on-brand, odpovídá reálnému UI aplikace
-   a je konzistentní se zbytkem knihovny.
+   - `prototypes/` – **předlohy** částí UI (kopíruj, needituj naslepo)
+5. Drž jednotný styl podle existujících ukázek a podkladů ve `files/`.
+6. Vygeneruj vizuál, který vychází z prototypu (když existuje), je on-brand,
+   odpovídá reálnému UI aplikace a je konzistentní se zbytkem knihovny.
 
 > **Prototypy = primárně brandkit aplikace.** Při tvorbě prototypů ber
 > barvy, tokeny, fonty a další stylové hodnoty **primárně z UI kitu aplikace
@@ -56,5 +102,5 @@ foundation.
 
 - `screenshots/` – syrové záběry aplikace
 - `mockups/` – desktop / mobil rámečky s vloženým UI
-- `prototypes/` – živé ukázky částí UI (konzistence)
+- `prototypes/` – **závazné předlohy** částí UI (kopíruj 1:1, viz pravidlo výše)
 - `files/` – zdrojové podklady, šablony rámečků
