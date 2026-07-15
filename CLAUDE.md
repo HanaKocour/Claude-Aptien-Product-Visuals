@@ -48,24 +48,50 @@ jistý, který prototyp použít, zeptej se; nikdy netvoř nový naslepo.
 > popisuje pravidla a chování. Zdrojem struktury je vždy konkrétní **HTML
 > prototyp**, ne prozaický popis. Nikdy nestav screen jen podle `.md`.
 
-> **Pozor na formát prototypů (bundled HTML).** Prototypy v `prototypes/`
-> jsou „bundled" stránky – reálná struktura je zabalená uvnitř
-> `<script type="__bundler/template">` a rozbaluje ji až JS v prohlížeči.
-> Když soubor čteš jen jako HTML, uvidíš loader a SVG náhled, ne skutečný
-> DOM. Pro převzetí struktury vyextrahuj obsah z `__bundler/template`
-> (nebo použij čistou `*.clean.html` verzi, pokud existuje) – nespoléhej na
-> to, co je vidět v hlavičce souboru.
+> **Formát master prototypu (čitelné HTML + assets).** Hlavní prototyp
+> `prototypes/Aptien-aplikace-offline.html` je zeštíhlené, čitelné HTML:
+> fonty, ikony a JS jsou vytažené do `prototypes/assets/` a HTML na ně
+> odkazuje relativně. Reálná struktura je přímo v DOM – dá se číst i
+> kopírovat bez rozbalování. Pro plné vykreslení otevírej přes lokální
+> server / v design nástroji (kvůli relativním `fetch`), ne dvojklikem
+> z disku.
+
+> **Staré bundled prototypy jsou v `prototypes/_archive/`.** Jsou to původní
+> „bundled" stránky (struktura zabalená v `<script type="__bundler/template">`,
+> rozbaluje ji až JS). Neber je jako předlohu – slouží jen jako historická
+> reference. Závaznou předlohou je vždy master prototyp výše.
 
 ### Mapa: obrazovka → prototyp
 
-| Zadaná obrazovka / modul | Použij prototyp |
+Existují **dva master prototypy** – desktop a mobil/intranet. Podle zadání
+vyber správný, najdi v něm odpovídající obrazovku a tu kopíruj –
+nezakládej nový soubor.
+
+**Desktop** – `prototypes/Aptien-aplikace-offline.html` (plná evidence,
+tab strip + sidebar):
+
+| Zadaná obrazovka / modul | Kde v master prototypu |
 |---|---|
-| Menu, top bar, app bar, shell aplikace | `prototypes/Aptien-menu-and-app-bar-prototype.html` |
-| Menu + app bar se směrnicemi (policies) | `prototypes/Aptien-menu-and-app-bar-prototype-with-policies.html` |
-| Obecná evidence (list / detail) | `prototypes/Aptien-evidence-prototyp-obecny.html` |
-| Evidence – pohled kanban / tabulka | `prototypes/Aptien-evidence-prototyp-obecny-kanban-tabulka.html` |
-| Evidence rizik (riziková matice, přehled) | `prototypes/Aptien-evidence-prototy-rizika.html` |
+| Menu, top bar, app bar, shell aplikace | společný rámec `Aptien-aplikace-offline.html` |
+| Evidence rizik (riziková matice, přehled) | modul *Rizika* |
+| Zakázky | modul *Zakázky* |
+| Ochranné pomůcky | modul *Ochranné pomůcky* |
+| Směrnice (policies) | modul *Směrnice* |
+| Obecná evidence + pohledy (dashboard / list / tabulka / drawer) | přepínač pohledů v evidenci |
 | Pravidla a chování UI (referenční spec) | `prototypes/Aptien-pravidla-pouziti-UI.md` |
+
+**Mobil / intranet** – `prototypes/Aptien-mobil-intranet.html`
+(zaměstnanecké zobrazení na telefonu, rám 390 × 844):
+
+| Zadaná obrazovka / modul | Kde v master prototypu |
+|---|---|
+| Mobilní intranet – rozcestník zaměstnance | obrazovka *home* v `Aptien-mobil-intranet.html` |
+| Přihlášení (Facebook / Google) | login v `Aptien-mobil-intranet.html` |
+| Konverzace / chat + AI souhrn | obrazovky *conversations* / *chat* |
+| Co je viditelné pro zaměstnance (podmínky) | `prototypes/Aptien-mobil-intranet-pravidla.md` |
+
+> Mobil sdílí assety, tokeny, fonty a ikony s desktopem – je to jiný
+> layout téhož produktu, ne jiná značka.
 
 ---
 
@@ -80,7 +106,8 @@ jistý, který prototyp použít, zeptej se; nikdy netvoř nový naslepo.
 4. Vyber typ výstupu a podle něj zdroj v tomto kitu:
    - `screenshots/` – syrové záběry aplikace
    - `mockups/` – desktop / mobil rámečky s UI
-   - `prototypes/` – **předlohy** částí UI (kopíruj, needituj naslepo)
+   - `prototypes/` – **předlohy** UI (master prototyp; kopíruj, needituj naslepo)
+   - `profile-images/` – profilovky person do avatarů (viz `profile-images/README.md`)
 5. Drž jednotný styl podle existujících ukázek a podkladů ve `files/`.
 6. Vygeneruj vizuál, který vychází z prototypu (když existuje), je on-brand,
    odpovídá reálnému UI aplikace a je konzistentní se zbytkem knihovny.
@@ -102,5 +129,12 @@ jistý, který prototyp použít, zeptej se; nikdy netvoř nový naslepo.
 
 - `screenshots/` – syrové záběry aplikace
 - `mockups/` – desktop / mobil rámečky s vloženým UI
-- `prototypes/` – **závazné předlohy** částí UI (kopíruj 1:1, viz pravidlo výše)
+- `prototypes/` – **závazné předlohy** UI (kopíruj 1:1, viz pravidlo výše)
+  - `Aptien-aplikace-offline.html` – **master prototyp: desktop** (celá aplikace, čitelné HTML)
+  - `Aptien-mobil-intranet.html` – **master prototyp: mobil / intranet** (zaměstnanecké zobrazení)
+  - `assets/` – fonty, ikony, JS a obrázky (sdílené oběma prototypy, odkazované relativně)
+  - `Aptien-pravidla-pouziti-UI.md` – referenční spec chování UI (desktop)
+  - `Aptien-mobil-intranet-pravidla.md` – spec + podmínky viditelnosti pro zaměstnance (mobil)
+  - `_archive/` – původní bundled prototypy (jen historická reference)
+- `profile-images/` – profilové obrázky person do avatarů (viz README uvnitř)
 - `files/` – zdrojové podklady, šablony rámečků

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+body { display: flex; flex-direction: column; }
+
+.aptien-conv,
+.aptien-conv *,
+.aptien-conv *::before,
+.aptien-conv *::after { box-sizing: border-box; }
+
+.aptien-conv {
+  --acc:        #1572e8;
+  --acc-wash:   #eef4fe;
+  --acc-shadow: rgba(21,114,232,.33);
+  --incoming:   #9ba5ac;
+  --line:       #eef0f3;
+  --ink:        #2b2540;
+  --muted:      #9a95ad;
+  position: relative; display: flex; flex-direction: column;
+  height: 100%; width: 100%; min-height: 0;
+  background: #fff; color: #262338;
+  font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+  overflow: hidden;
+  container-type: inline-size; container-name: aptienconv;
+}
+
+.aptien-conv ::-webkit-scrollbar { width: 9px; height: 9px; }
+.aptien-conv ::-webkit-scrollbar-thumb { background: #cfd3da; border-radius: 6px; }
+.aptien-conv ::-webkit-scrollbar-track { background: transparent; }
+
+.acv-header { flex-shrink: 0; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--line); background: #fff; }
+.acv-title { flex: 1; min-width: 0; font-weight: 800; font-size: 14px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.acv-search { flex: 1; min-width: 0; display: none; align-items: center; gap: 9px; background: #f4f4f8; border-radius: 20px; padding: 0 14px; height: 36px; }
+.acv-search input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; font-size: 13.5px; font-family: 'Nunito', sans-serif; color: #444; }
+.acv-search .x { color: #aaa4bf; font-size: 13px; cursor: pointer; }
+.aptien-conv.searching .acv-title { display: none; }
+.aptien-conv.searching .acv-search { display: flex; }
+
+.acv-iconbtn { width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #6a6585; font-size: 14px; transition: background .12s, color .12s; }
+.acv-iconbtn:hover, .acv-iconbtn.is-active { background: var(--acc-wash); color: var(--acc); }
+
+.acv-kebab-wrap { position: relative; flex-shrink: 0; }
+.acv-menu { position: absolute; top: 42px; right: 0; z-index: 6; background: #fff; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.16); padding: 5px; min-width: 200px; }
+.acv-menu-item { display: flex; align-items: center; gap: 11px; padding: 10px 12px; border-radius: 7px; cursor: pointer; font-size: 13px; font-weight: 600; color: #5a5478; }
+.acv-menu-item i { width: 16px; text-align: center; font-size: 14px; }
+.acv-menu-item:hover { color: var(--acc); background: #f4f6fb; }
+.acv-scrim-light { position: fixed; inset: 0; z-index: 5; }
+
+.acv-thread { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 22px; background: #fff; }
+.acv-day { display: flex; justify-content: center; margin-bottom: 20px; }
+.acv-day span { background: #e7eaf0; color: #7d8590; font-size: 11.5px; font-weight: 700; padding: 4px 14px; border-radius: 12px; }
+.acv-noresults { text-align: center; color: #aaa4bf; font-size: 13.5px; font-family: 'Open Sans', sans-serif; padding: 30px 0; }
+
+.acv-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; height: 100%; padding: 36px 24px; }
+.acv-empty-icon { width: 66px; height: 66px; border-radius: 50%; background: var(--acc-wash); color: var(--acc); display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 16px; }
+.acv-empty h4 { margin: 0; font-size: 15px; font-weight: 800; color: #7a7595; }
+.acv-empty p { margin: 7px 0 0; font-size: 13px; line-height: 1.55; font-family: 'Open Sans', sans-serif; color: var(--muted); max-width: 300px; }
+
+.acv-row { display: flex; align-items: flex-end; gap: 16px; margin-bottom: 3px; animation: acv-msgIn .22s ease; }
+.acv-row.is-last { margin-bottom: 16px; }
+.acv-row.is-mine { flex-direction: row-reverse; }
+
+.acv-avatar { position: relative; z-index: 2; overflow: hidden; width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; background: #e2e4e6; color: #5f6b76; font-weight: 700; font-size: 11px; display: flex; align-items: center; justify-content: center; }
+.acv-row.is-mine .acv-avatar { background: var(--acc); color: #fff; }
+.acv-row:not(.is-last) .acv-avatar { visibility: hidden; }
+
+.acv-col { display: flex; flex-direction: column; max-width: 72%; align-items: flex-start; }
+.acv-row.is-mine .acv-col { align-items: flex-end; }
+
+.acv-bubble { position: relative; border-radius: 15px; padding: 9px 14px 7px; background: var(--incoming); color: #fff; word-break: break-word; font-family: 'Open Sans', sans-serif; box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+.acv-row.is-mine .acv-bubble { background: var(--acc); }
+.acv-row.is-system .acv-bubble { background: #ECEFF1; color: #607d8b; box-shadow: none; }
+.acv-row:not(.is-first):not(.is-mine) .acv-bubble { border-top-left-radius: 6px; }
+.acv-row:not(.is-last):not(.is-mine) .acv-bubble { border-bottom-left-radius: 6px; }
+.acv-row.is-mine:not(.is-first) .acv-bubble { border-top-right-radius: 6px; }
+.acv-row.is-mine:not(.is-last) .acv-bubble { border-bottom-right-radius: 6px; }
+
+.acv-text { display: block; font-size: 12px; font-weight: 400; line-height: 1.45; color: #fff; }
+.acv-row.is-system .acv-text { color: #607d8b; }
+
+.acv-bubble-meta { font-size: 10px; margin-top: 4px; font-family: 'Nunito', sans-serif; text-align: left; color: rgba(255,255,255,.92); }
+.acv-row.is-mine .acv-bubble-meta { text-align: right; }
+.acv-row.is-system .acv-bubble-meta { color: #607d8b; }
+.acv-row:not(.is-last) .acv-bubble-meta { display: none; }
+.acv-bubble-meta b { font-weight: 700; margin-left: 5px; }
+
+.acv-tail { position: absolute; bottom: 13px; width: 30px; height: 20px; border-radius: 14px; background: var(--incoming); }
+.acv-row.is-mine .acv-tail { background: var(--acc); right: -13px; }
+.acv-row:not(.is-mine) .acv-tail { left: -13px; }
+.acv-row.is-system .acv-tail { background: #ECEFF1; }
+.acv-row:not(.is-last) .acv-tail { display: none; }
+.acv-tail-notch { position: absolute; bottom: -7px; width: 18px; height: 24px; background: #fff; }
+.acv-row.is-mine .acv-tail-notch { right: -3px; border-radius: 15px 9px; }
+.acv-row:not(.is-mine) .acv-tail-notch { left: -3px; border-radius: 9px 15px; }
+
+.acv-attach { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; cursor: pointer; background: rgba(255,255,255,.18); }
+.acv-attach.has-text { margin-bottom: 8px; }
+.acv-attach-icon { width: 34px; height: 34px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 15px; background: rgba(255,255,255,.25); color: #fff; }
+.acv-attach-txt { min-width: 0; }
+.acv-attach-name { font-weight: 700; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.acv-attach-meta { font-size: 11px; opacity: .72; }
+.acv-attach .dl { margin-left: 8px; font-size: 12px; opacity: .7; }
+
+.acv-composer { flex-shrink: 0; background: #fff; border-top: 1px solid var(--line); }
+.acv-pending { display: none; align-items: center; gap: 9px; background: #eef4ff; color: var(--acc); border-radius: 10px; padding: 7px 12px; font-size: 12.5px; font-weight: 700; margin: 12px 16px 0; width: fit-content; max-width: calc(100% - 32px); }
+.acv-pending.show { display: flex; }
+.acv-pending span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.acv-pending .x { cursor: pointer; opacity: .6; flex-shrink: 0; }
+.acv-composer-row { display: flex; align-items: center; gap: 11px; padding: 13px 16px; }
+.acv-attach-btn { width: 42px; height: 42px; border-radius: 50%; background: #f2f3f7; color: #6b7280; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; font-size: 15px; transition: background .12s, color .12s; }
+.acv-attach-btn:hover { background: #e6eefb; color: var(--acc); }
+.acv-input { flex: 1; min-width: 0; border: none; outline: none; background: #f2f3f7; border-radius: 22px; padding: 12px 18px; font-size: 14.5px; font-family: 'Open Sans', sans-serif; color: #2b2d31; }
+.acv-send { width: 44px; height: 44px; border-radius: 50%; background: var(--acc); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; font-size: 15px; box-shadow: 0 3px 8px var(--acc-shadow); }
+
+.acv-modal-scrim { position: fixed; inset: 0; background: rgba(40,33,72,.42); z-index: 60; display: none; align-items: center; justify-content: center; padding: 20px; animation: acv-fadeIn .18s ease; }
+.acv-modal-scrim.show { display: flex; }
+.acv-modal { width: 620px; max-width: 100%; max-height: 88vh; background: #fff; border-radius: 16px; box-shadow: 0 18px 50px rgba(0,0,0,.28); display: flex; flex-direction: column; overflow: hidden; animation: acv-modalIn .22s ease; }
+.acv-modal-head { display: flex; align-items: center; gap: 13px; padding: 22px 26px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
+.acv-modal-head .ico { width: 40px; height: 40px; border-radius: 10px; background: var(--acc-wash); color: var(--acc); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 17px; }
+.acv-modal-head .tt { flex: 1; min-width: 0; }
+.acv-modal-head .tt .t { font-size: 19px; font-weight: 800; color: var(--ink); }
+.acv-modal-head .tt .s { font-size: 12.5px; color: var(--muted); font-weight: 600; }
+.acv-modal-head .close { color: #9a93b5; font-size: 22px; cursor: pointer; padding: 4px; }
+.acv-modal-body { flex: 1; overflow-y: auto; padding: 24px 26px; }
+.acv-modal-foot { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 18px 26px; border-top: 1px solid var(--line); flex-shrink: 0; }
+
+.acv-sec-label { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #a8a3ba; margin-bottom: 14px; }
+.acv-field-label { font-size: 12.5px; font-weight: 700; color: #7a7595; margin-bottom: 7px; }
+.acv-groupname { display: flex; align-items: center; gap: 10px; width: 100%; border: 1px solid #ececf1; background: #f6f6f9; border-radius: 10px; padding: 12px 15px; margin-bottom: 18px; }
+.acv-groupname i { color: #b6b1c9; font-size: 12px; }
+.acv-groupname .nm { flex: 1; min-width: 0; font-size: 14.5px; font-weight: 700; color: var(--ink); font-family: 'Open Sans', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.acv-groupname .hint { font-size: 11.5px; color: #aaa4bf; font-weight: 600; flex-shrink: 0; }
+
+.acv-add-wrap { position: relative; margin-bottom: 14px; }
+.acv-add-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--acc-wash); color: var(--acc); font-weight: 800; font-size: 13px; padding: 9px 16px; border-radius: 20px; cursor: pointer; transition: background .12s, color .12s; }
+.acv-add-btn:hover { background: var(--acc); color: #fff; }
+.acv-add-search { display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid var(--acc); border-radius: 10px; padding: 10px 14px; box-shadow: 0 0 0 3px rgba(21,114,232,.15); }
+.acv-add-search i { color: #aaa4bf; font-size: 13px; }
+.acv-add-search input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; font-size: 14px; font-family: 'Open Sans', sans-serif; color: var(--ink); }
+.acv-add-search .x { color: #9aa1ab; font-size: 14px; cursor: pointer; padding: 2px; }
+.acv-suggest { margin-top: 8px; border: 1px solid var(--line); border-radius: 11px; overflow: hidden; max-height: 230px; overflow-y: auto; box-shadow: 0 8px 24px rgba(0,0,0,.10); }
+.acv-suggest-item { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-bottom: 1px solid #f3f2f7; cursor: pointer; }
+.acv-suggest-item:last-child { border-bottom: none; }
+.acv-suggest-item:hover { background: #f6f9ff; }
+.acv-suggest-item .av { position: relative; flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%; background: #e2e4e6; color: #5f6b76; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+.acv-suggest-item .meta { flex: 1; min-width: 0; }
+.acv-suggest-item .meta .n { font-weight: 700; font-size: 14px; color: var(--ink); }
+.acv-suggest-item .meta .r { font-size: 12px; color: var(--muted); font-family: 'Open Sans', sans-serif; }
+.acv-suggest-item .add { color: var(--acc); font-size: 14px; flex-shrink: 0; }
+.acv-suggest-empty { text-align: center; color: #aaa4bf; font-size: 13px; font-family: 'Open Sans', sans-serif; padding: 18px; }
+.acv-dot { position: absolute; bottom: 0; right: 0; width: 11px; height: 11px; border-radius: 50%; border: 2px solid #fff; }
+
+.acv-chips { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 26px; }
+.acv-chip { display: flex; align-items: center; gap: 8px; background: var(--acc-wash); border: 1px solid #d4e4fb; border-radius: 22px; padding: 5px 8px 5px 5px; }
+.acv-chip .av { width: 28px; height: 28px; border-radius: 50%; background: #e2e4e6; color: #5f6b76; font-weight: 700; font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.acv-chip .nm { font-size: 13px; font-weight: 700; color: var(--ink); }
+.acv-chip .x { color: #9aa1ab; font-size: 13px; cursor: pointer; padding: 2px; }
+.acv-chips-empty { font-size: 13px; color: #aaa4bf; font-family: 'Open Sans', sans-serif; padding: 6px 2px; }
+
+.acv-toggle-row { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 11px; margin-bottom: 10px; }
+.acv-toggle-row .lbl { flex: 1; min-width: 0; }
+.acv-toggle-row .lbl .t { font-weight: 700; font-size: 14.5px; color: var(--ink); }
+.acv-toggle-row .lbl .d { font-size: 12.5px; color: var(--muted); font-family: 'Open Sans', sans-serif; margin-top: 2px; }
+.acv-toggle-row.dim { opacity: .45; pointer-events: none; }
+.acv-dest { position: relative; display: flex; align-items: center; gap: 9px; background: #f4f4f8; border-radius: 9px; padding: 10px 14px; font-size: 13.5px; font-weight: 700; color: #5a5478; cursor: pointer; flex-shrink: 0; }
+.acv-dest i.fld { color: var(--acc); }
+.acv-dest i.chev { font-size: 11px; color: #aaa4bf; }
+.acv-toggle { width: 46px; height: 26px; border-radius: 14px; flex-shrink: 0; cursor: pointer; position: relative; transition: background .15s; background: #d4d0e0; }
+.acv-toggle.on { background: #6bbe7a; }
+.acv-toggle .knob { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: left .15s; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+.acv-toggle.on .knob { left: 23px; }
+
+.acv-btn-ghost { padding: 11px 24px; border-radius: 22px; font-weight: 800; font-size: 13px; letter-spacing: .03em; color: #7a7595; cursor: pointer; background: none; border: none; font-family: inherit; }
+.acv-btn-primary { padding: 11px 28px; border-radius: 22px; font-weight: 800; font-size: 13px; letter-spacing: .03em; background: var(--acc); color: #fff; cursor: pointer; box-shadow: 0 3px 9px rgba(21,114,232,.3); border: none; font-family: inherit; }
+
+.acv-toast { position: fixed; left: 50%; bottom: 30px; transform: translateX(-50%); background: #2f3033; color: #fff; padding: 13px 22px; border-radius: 12px; font-size: 14px; font-weight: 600; box-shadow: 0 8px 28px rgba(0,0,0,.25); z-index: 80; display: none; align-items: center; gap: 10px; animation: acv-toastIn .25s ease; }
+.acv-toast.show { display: flex; }
+.acv-toast .ok { color: #41d68a; }
+
+@keyframes acv-msgIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes acv-toastIn { from { opacity: 0; transform: translate(-50%, 12px); } to { opacity: 1; transform: translate(-50%, 0); } }
+@keyframes acv-modalIn { from { transform: scale(.96) translateY(8px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+@keyframes acv-fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+@container aptienconv (max-width: 520px) {
+  .acv-thread { padding: 14px; }
+  .acv-row { gap: 10px; }
+  .acv-col { max-width: 84%; }
+  .acv-title { font-size: 13px; }
+  .acv-composer-row { padding: 10px 12px; gap: 8px; }
+  .acv-attach-btn { width: 40px; height: 40px; font-size: 14px; }
+  .acv-send { width: 40px; height: 40px; }
+  .acv-input { padding: 11px 16px; font-size: 14px; }
+}
+@container aptienconv (max-width: 380px) {
+  .acv-row { gap: 8px; }
+  .acv-col { max-width: 90%; }
+  .acv-avatar { width: 24px; height: 24px; font-size: 10px; }
+  .acv-header { padding: 8px 10px; gap: 6px; }
+  .acv-input { font-size: 13.5px; }
+}
+@media (max-width: 560px) {
+  .acv-modal-scrim { padding: 0; align-items: flex-end; }
+  .acv-modal { max-height: 92vh; border-radius: 16px 16px 0 0; }
+  .acv-modal-head { padding: 18px 18px; }
+  .acv-modal-body { padding: 20px 18px; }
+  .acv-modal-foot { padding: 14px 18px; }
+  .acv-modal-head .tt .t { font-size: 17px; }
+}
+</style>
+</head>
+<body>
+
+<div class="aptien-conv" data-item-name="Jan Novák">
+
+  <div class="acv-header">
+    <span class="acv-title">Konverzace k položce</span>
+    <div class="acv-search">
+      <i class="fa-solid fa-magnifying-glass" style="color:#aaa4bf;font-size:12px"></i>
+      <input type="text" placeholder="Hledat v konverzaci" data-role="search-input">
+      <i class="fa-solid fa-xmark x" data-action="search-clear"></i>
+    </div>
+    <div class="acv-iconbtn" data-action="search-toggle" title="Hledat"><i class="fa-solid fa-magnifying-glass"></i></div>
+    <div class="acv-kebab-wrap">
+      <div class="acv-iconbtn" data-action="kebab" title="Více"><i class="fa-solid fa-ellipsis-vertical" style="font-size:15px"></i></div>
+      <div class="acv-scrim-light" data-action="kebab-close" hidden></div>
+      <div class="acv-menu" data-role="menu" hidden>
+        <div class="acv-menu-item" data-action="open-settings"><i class="fa-solid fa-gear"></i>Nastavení konverzace</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="acv-thread" data-role="thread"></div>
+
+  <div class="acv-composer">
+    <div class="acv-pending" data-role="pending">
+      <i class="fa-solid fa-paperclip"></i><span data-role="pending-name"></span>
+      <i class="fa-solid fa-xmark x" data-action="attach-clear"></i>
+    </div>
+    <div class="acv-composer-row">
+      <div class="acv-attach-btn" data-action="attach" title="Přiložit soubor"><i class="fa-solid fa-paperclip"></i></div>
+      <input class="acv-input" type="text" placeholder="Napište zprávu…" data-role="draft">
+      <div class="acv-send" data-action="send" title="Odeslat"><i class="fa-solid fa-paper-plane"></i></div>
+    </div>
+  </div>
+
+  <div class="acv-modal-scrim" data-role="settings">
+    <div class="acv-modal" data-stop>
+      <div class="acv-modal-head">
+        <div class="ico"><i class="fa-solid fa-gear"></i></div>
+        <div class="tt"><div class="t">Nastavení konverzace</div><div class="s">Ukládání příloh a skupina účastníků</div></div>
+        <i class="fa-solid fa-xmark close" data-action="settings-close"></i>
+      </div>
+      <div class="acv-modal-body">
+        <div class="acv-sec-label">Skupina účastníků</div>
+        <div class="acv-field-label">Název skupiny</div>
+        <div class="acv-groupname">
+          <i class="fa-solid fa-lock"></i>
+          <span class="nm" data-role="group-name">Jan Novák</span>
+          <span class="hint">přebírá název položky</span>
+        </div>
+        <div class="acv-field-label">Účastníci skupiny (<span data-role="member-count">3</span>)</div>
+        <div class="acv-add-wrap">
+          <div class="acv-add-btn" data-action="add-open" data-role="add-btn"><i class="fa-solid fa-plus"></i>Přidat členy</div>
+          <div data-role="add-search" hidden>
+            <div class="acv-add-search">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" placeholder="Začněte psát jméno uživatele…" data-role="member-query">
+              <i class="fa-solid fa-xmark x" data-action="add-close"></i>
+            </div>
+            <div class="acv-suggest" data-role="suggest"></div>
+          </div>
+        </div>
+        <div class="acv-chips" data-role="chips"></div>
+        <div class="acv-sec-label">Ukládání příloh</div>
+        <div class="acv-toggle-row">
+          <div class="lbl"><div class="t">Ukládat přílohy do Příloh položky</div><div class="d">Soubory sdílené v konverzaci se automaticky uloží k položce.</div></div>
+          <div class="acv-toggle on" data-action="toggle-save" data-role="toggle-save"><div class="knob"></div></div>
+        </div>
+        <div class="acv-toggle-row" data-role="dest-row">
+          <div class="lbl"><div class="t">Cílové umístění</div><div class="d">Kam se přílohy uloží.</div></div>
+          <div class="acv-dest" data-action="dest"><i class="fa-solid fa-folder fld"></i><span data-role="dest-label">Přílohy položky</span><i class="fa-solid fa-chevron-down chev"></i></div>
+        </div>
+        <div class="acv-toggle-row">
+          <div class="lbl"><div class="t">Upozornit při uložení přílohy</div><div class="d">Účastníci dostanou oznámení.</div></div>
+          <div class="acv-toggle on" data-action="toggle-notify" data-role="toggle-notify"><div class="knob"></div></div>
+        </div>
+      </div>
+      <div class="acv-modal-foot">
+        <button class="acv-btn-ghost" data-action="settings-close">ZRUŠIT</button>
+        <button class="acv-btn-primary" data-action="settings-save">ULOŽIT</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="acv-toast" data-role="toast"><i class="fa-solid fa-circle-check ok"></i><span data-role="toast-text"></span></div>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var PEOPLE = {
+    HK: { name: 'Hana Kocourková', initials: 'HK', role: 'Administrátor', online: true },
+    PN: { name: 'Petr Novák',      initials: 'PN', role: 'Nákup',         online: true },
+    JD: { name: 'Jana Dvořáková',  initials: 'JD', role: 'Prodej',        online: false },
+    TM: { name: 'Tomáš Marek',     initials: 'TM', role: 'Sklad',         online: true },
+    LV: { name: 'Lucie Veselá',    initials: 'LV', role: 'Marketing',     online: true },
+    MS: { name: 'Martin Svoboda',  initials: 'MS', role: 'Účetnictví',    online: false }
+  };
+  var ME = 'HK';
+  var DEST = ['prilohy', 'dok', 'slozka'];
+  var DEST_LABELS = { prilohy: 'Přílohy položky', dok: 'Dokumenty', slozka: 'Sdílená složka' };
+  var SAMPLE_FILES = [
+    { name: 'Foto_produktu.jpg', meta: 'Obrázek · 1,4 MB' },
+    { name: 'Cenik_2026.xlsx',   meta: 'Tabulka · 58 kB' },
+    { name: 'Dodaci_list.pdf',   meta: 'PDF · 130 kB' }
+  ];
+
+  function initialThread(name) {
+    return [
+      { author: 'HK', type: 'system', text: 'Skupina vytvořena k položce ' + name + '.', time: '8:58' },
+      { author: 'TM', text: 'Doplnil jsem PLU kód a cenu položky.', time: '9:02' },
+      { author: 'TM', text: 'Ještě jsem upravil měrnou jednotku a stav skladu.', time: '9:03' },
+      { author: 'HK', text: 'Díky. Přikládám aktuální fotku.', time: '9:10', attach: { name: 'Jan_Novak_foto.jpg', meta: 'Obrázek · 1,8 MB' } },
+      { author: 'JD', text: 'Platí nástupní datum 15. 3. 2020?', time: '9:18' },
+      { author: 'HK', text: 'Ano, HPP od 15. 3. 2020. Přikládám smlouvu.', time: '9:30', attach: { name: 'Smlouva_Novak_2020.pdf', meta: 'PDF · 210 kB' } }
+    ];
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function AptienConversation(root) {
+    var name = root.getAttribute('data-item-name') || 'Položka';
+    var st = {
+      name: name, searchOpen: false, search: '',
+      kebabOpen: false, settingsOpen: false,
+      draft: '', pendingAttach: null, fileIdx: 0,
+      saveToAttachments: true, notifyOnSave: true, destIdx: 0,
+      addMemberOpen: false, memberQuery: '',
+      members: ['HK', 'PN', 'JD'],
+      messages: initialThread(name)
+    };
+    this.st = st; this.root = root;
+    var $ = function (sel) { return root.querySelector(sel); };
+    var $r = function (role) { return root.querySelector('[data-role="' + role + '"]'); };
+    this.$ = $; this.$r = $r;
+    $r('group-name').textContent = name;
+    this.bind(); this.renderThread(); this.renderModal();
+    this._toastTimer = null;
+  }
+
+  AptienConversation.prototype.bind = function () {
+    var self = this, root = this.root;
+    root.addEventListener('click', function (e) {
+      var actEl = e.target.closest('[data-action]');
+      if (!actEl || !root.contains(actEl)) return;
+      var a = actEl.getAttribute('data-action');
+      switch (a) {
+        case 'search-toggle': self.toggleSearch(); break;
+        case 'search-clear':  self.clearSearch(); break;
+        case 'kebab':         self.toggleKebab(); break;
+        case 'kebab-close':   self.closeKebab(); break;
+        case 'open-settings': self.openSettings(); break;
+        case 'settings-close': self.closeSettings(); break;
+        case 'settings-save': self.saveSettings(); break;
+        case 'attach':        self.attach(); break;
+        case 'attach-clear':  self.clearAttach(); break;
+        case 'send':          self.send(); break;
+        case 'toggle-save':   self.toggleSave(); break;
+        case 'toggle-notify': self.toggleNotify(); break;
+        case 'dest':          self.cycleDest(); break;
+        case 'add-open':      self.openAddMember(); break;
+        case 'add-close':     self.closeAddMember(); break;
+        case 'attach-msg':    self.openMsgAttach(); break;
+      }
+    });
+    this.$r('settings').addEventListener('click', function (e) { if (e.target === this) self.closeSettings(); });
+    this.$r('chips').addEventListener('click', function (e) { var rm = e.target.closest('[data-remove]'); if (rm) self.removeMember(rm.getAttribute('data-remove')); });
+    this.$r('suggest').addEventListener('click', function (e) { var ad = e.target.closest('[data-add]'); if (ad) self.addMember(ad.getAttribute('data-add')); });
+    this.$r('search-input').addEventListener('input', function (e) { self.st.search = e.target.value; self.renderThread(); });
+    this.$r('draft').addEventListener('input', function (e) { self.st.draft = e.target.value; });
+    this.$r('draft').addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); self.send(); } });
+    this.$r('member-query').addEventListener('input', function (e) { self.st.memberQuery = e.target.value; self.renderSuggest(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      if (self.st.settingsOpen) self.closeSettings();
+      else if (self.st.kebabOpen) self.closeKebab();
+      else if (self.st.searchOpen) self.toggleSearch();
+    });
+  };
+
+  AptienConversation.prototype.toggleSearch = function () {
+    var st = this.st; st.searchOpen = !st.searchOpen;
+    if (!st.searchOpen) { st.search = ''; this.$r('search-input').value = ''; }
+    this.root.classList.toggle('searching', st.searchOpen);
+    this.$('[data-action="search-toggle"]').classList.toggle('is-active', st.searchOpen);
+    if (st.searchOpen) { var i = this.$r('search-input'); setTimeout(function () { i.focus(); }, 30); }
+    this.renderThread();
+  };
+  AptienConversation.prototype.clearSearch = function () {
+    this.st.search = ''; this.$r('search-input').value = ''; this.$r('search-input').focus(); this.renderThread();
+  };
+  AptienConversation.prototype.toggleKebab = function () { this.st.kebabOpen = !this.st.kebabOpen; this.syncKebab(); };
+  AptienConversation.prototype.closeKebab = function () { this.st.kebabOpen = false; this.syncKebab(); };
+  AptienConversation.prototype.syncKebab = function () {
+    var on = this.st.kebabOpen;
+    this.$r('menu').hidden = !on;
+    this.$('[data-action="kebab-close"]').hidden = !on;
+    this.$('[data-action="kebab"]').classList.toggle('is-active', on);
+  };
+
+  AptienConversation.prototype.renderThread = function () {
+    var st = this.st, thread = this.$r('thread');
+    var q = (st.search || '').trim().toLowerCase();
+    if (st.messages.length === 0 && !q) {
+      thread.innerHTML = '<div class="acv-empty"><div class="acv-empty-icon"><i class="fa-solid fa-comments"></i></div><h4>Zatím žádné zprávy</h4><p>Napište první zprávu k této položce.</p></div>';
+      return;
+    }
+    var msgs = st.messages.map(function (m, i, arr) {
+      var system = m.type === 'system';
+      var prev = arr[i - 1], next = arr[i + 1];
+      var sameRun = function (a, b) { return a && b && a.author === b.author && (!!a.type === !!b.type); };
+      return { m: m, system: system, mine: !system && m.author === ME, first: !sameRun(prev, m), last: !sameRun(next, m) };
+    });
+    if (q) msgs = msgs.filter(function (x) { var m = x.m, p = PEOPLE[m.author] || {}; return (m.text || '').toLowerCase().indexOf(q) > -1 || (p.name || '').toLowerCase().indexOf(q) > -1 || (m.attach && m.attach.name || '').toLowerCase().indexOf(q) > -1; });
+    var html = '';
+    if (!q) html += '<div class="acv-day"><span>Dnes</span></div>';
+    if (q && msgs.length === 0) html += '<div class="acv-noresults">Žádná zpráva neodpovídá hledání.</div>';
+    msgs.forEach(function (x) {
+      var m = x.m, p = PEOPLE[m.author] || { initials: '??', name: 'Neznámý' };
+      var cls = 'acv-row' + (x.mine ? ' is-mine' : '') + (x.system ? ' is-system' : '') + (x.first ? ' is-first' : '') + (x.last ? ' is-last' : '');
+      var metaName = x.system ? '' : p.name;
+      var metaHtml = esc(m.time) + (metaName ? ' <b>' + esc(metaName) + '</b>' : '');
+      var inner = '<div class="acv-tail"><div class="acv-tail-notch"></div></div>';
+      if (m.attach) inner += '<div class="acv-attach' + (m.text ? ' has-text' : '') + '" data-action="attach-msg"><div class="acv-attach-icon"><i class="fa-solid fa-file-lines"></i></div><div class="acv-attach-txt"><div class="acv-attach-name">' + esc(m.attach.name) + '</div><div class="acv-attach-meta">' + esc(m.attach.meta) + '</div></div><i class="fa-solid fa-download dl"></i></div>';
+      if (m.text) inner += '<span class="acv-text">' + esc(m.text) + '</span>';
+      inner += '<div class="acv-bubble-meta">' + metaHtml + '</div>';
+      html += '<div class="' + cls + '"><div class="acv-avatar">' + esc(p.initials) + '</div><div class="acv-col"><div class="acv-bubble">' + inner + '</div></div></div>';
+    });
+    thread.innerHTML = html;
+    thread.scrollTop = thread.scrollHeight;
+  };
+
+  AptienConversation.prototype.renderPending = function () {
+    var p = this.st.pendingAttach, el = this.$r('pending');
+    if (p) { this.$r('pending-name').textContent = p.name; el.classList.add('show'); }
+    else el.classList.remove('show');
+  };
+  AptienConversation.prototype.attach = function () {
+    var f = SAMPLE_FILES[this.st.fileIdx % SAMPLE_FILES.length]; this.st.fileIdx++;
+    this.st.pendingAttach = { name: f.name, meta: f.meta }; this.renderPending();
+  };
+  AptienConversation.prototype.clearAttach = function () { this.st.pendingAttach = null; this.renderPending(); };
+  AptienConversation.prototype.send = function () {
+    var st = this.st, d = (st.draft || '').trim(), pa = st.pendingAttach;
+    if (!d && !pa) return;
+    var msg = { author: ME, text: d, time: 'teď' }; if (pa) msg.attach = pa;
+    st.messages.push(msg); st.draft = ''; st.pendingAttach = null;
+    this.$r('draft').value = ''; this.renderPending(); this.renderThread();
+    if (pa && st.saveToAttachments) this.toast('Příloha uložena do: ' + DEST_LABELS[DEST[st.destIdx]]);
+  };
+  AptienConversation.prototype.openMsgAttach = function () {
+    var st = this.st;
+    this.toast(st.saveToAttachments ? ('Příloha je uložena v: ' + DEST_LABELS[DEST[st.destIdx]]) : 'Ukládání příloh je vypnuté.');
+  };
+
+  AptienConversation.prototype.openSettings = function () { this.st.settingsOpen = true; this.st.kebabOpen = false; this.syncKebab(); this.$r('settings').classList.add('show'); this.renderModal(); };
+  AptienConversation.prototype.closeSettings = function () { this.st.settingsOpen = false; this.closeAddMember(); this.$r('settings').classList.remove('show'); };
+  AptienConversation.prototype.saveSettings = function () { this.closeSettings(); this.toast('Nastavení konverzace bylo uloženo.'); };
+  AptienConversation.prototype.toggleSave = function () { this.st.saveToAttachments = !this.st.saveToAttachments; this.syncToggles(); };
+  AptienConversation.prototype.toggleNotify = function () { this.st.notifyOnSave = !this.st.notifyOnSave; this.syncToggles(); };
+  AptienConversation.prototype.cycleDest = function () { this.st.destIdx = (this.st.destIdx + 1) % DEST.length; this.$r('dest-label').textContent = DEST_LABELS[DEST[this.st.destIdx]]; };
+  AptienConversation.prototype.syncToggles = function () {
+    this.$r('toggle-save').classList.toggle('on', this.st.saveToAttachments);
+    this.$r('toggle-notify').classList.toggle('on', this.st.notifyOnSave);
+    this.$r('dest-row').classList.toggle('dim', !this.st.saveToAttachments);
+  };
+  AptienConversation.prototype.openAddMember = function () {
+    this.st.addMemberOpen = true; this.st.memberQuery = ''; this.$r('member-query').value = '';
+    this.syncAddArea(); this.renderSuggest();
+    var i = this.$r('member-query'); setTimeout(function () { i.focus(); }, 30);
+  };
+  AptienConversation.prototype.closeAddMember = function () { this.st.addMemberOpen = false; this.st.memberQuery = ''; this.syncAddArea(); };
+  AptienConversation.prototype.syncAddArea = function () { this.$r('add-btn').hidden = this.st.addMemberOpen; this.$r('add-search').hidden = !this.st.addMemberOpen; };
+  AptienConversation.prototype.addMember = function (id) {
+    if (this.st.members.indexOf(id) === -1) this.st.members.push(id);
+    this.st.memberQuery = ''; this.$r('member-query').value = '';
+    this.renderChips(); this.renderSuggest();
+  };
+  AptienConversation.prototype.removeMember = function (id) {
+    this.st.members = this.st.members.filter(function (m) { return m !== id; });
+    this.renderChips(); this.renderSuggest();
+  };
+  AptienConversation.prototype.renderModal = function () { this.syncToggles(); this.syncAddArea(); this.renderChips(); this.renderSuggest(); this.$r('dest-label').textContent = DEST_LABELS[DEST[this.st.destIdx]]; };
+  AptienConversation.prototype.renderChips = function () {
+    var st = this.st, el = this.$r('chips');
+    this.$r('member-count').textContent = st.members.length;
+    if (st.members.length === 0) { el.innerHTML = '<div class="acv-chips-empty">Zatím nikdo.</div>'; return; }
+    el.innerHTML = st.members.map(function (id) { var p = PEOPLE[id]; if (!p) return ''; return '<div class="acv-chip"><div class="av">' + esc(p.initials) + '</div><span class="nm">' + esc(p.name) + '</span><i class="fa-solid fa-xmark x" data-remove="' + id + '"></i></div>'; }).join('');
+  };
+  AptienConversation.prototype.renderSuggest = function () {
+    var st = this.st, el = this.$r('suggest');
+    var q = (st.memberQuery || '').trim().toLowerCase();
+    var avail = Object.keys(PEOPLE).filter(function (id) { return st.members.indexOf(id) === -1; });
+    var list = avail.filter(function (id) { var p = PEOPLE[id]; return !q || p.name.toLowerCase().indexOf(q) > -1 || (p.role || '').toLowerCase().indexOf(q) > -1; });
+    if (list.length === 0) { el.innerHTML = '<div class="acv-suggest-empty">Žádný odpovídající uživatel.</div>'; return; }
+    el.innerHTML = list.map(function (id) {
+      var p = PEOPLE[id], dot = p.online ? '#00C853' : '#c2bdd6';
+      return '<div class="acv-suggest-item" data-add="' + id + '"><div class="av">' + esc(p.initials) + '<span class="acv-dot" style="background:' + dot + '"></span></div><div class="meta"><div class="n">' + esc(p.name) + '</div><div class="r">' + esc(p.role) + ' · ' + (p.online ? 'Aktivní' : 'Offline') + '</div></div><i class="fa-solid fa-plus add"></i></div>';
+    }).join('');
+  };
+  AptienConversation.prototype.toast = function (msg) {
+    var el = this.$r('toast'); this.$r('toast-text').textContent = msg; el.classList.add('show');
+    clearTimeout(this._toastTimer); var self = this;
+    this._toastTimer = setTimeout(function () { el.classList.remove('show'); }, 2800);
+  };
+
+  function initAll() {
+    document.querySelectorAll('.aptien-conv').forEach(function (el) {
+      if (!el.__aptienConv) el.__aptienConv = new AptienConversation(el);
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initAll);
+  else initAll();
+
+  window.AptienConversation = AptienConversation;
+})();
+</script>
+</body>
+</html>

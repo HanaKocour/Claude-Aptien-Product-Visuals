@@ -22,7 +22,12 @@ Claude-Aptien-Product-Visuals/
 ├── CLAUDE.md           # pravidla pro Claude Design
 ├── screenshots/        # syrové záběry aplikace
 ├── mockups/            # desktop / mobil rámečky s UI
-├── prototypes/         # živé ukázky částí UI (konzistence)
+├── prototypes/         # závazné předlohy UI
+│   ├── Aptien-aplikace-offline.html   # master prototyp (celá appka, čitelné HTML)
+│   ├── assets/                        # fonty, ikony, JS, obrázky (relativní odkazy)
+│   ├── Aptien-pravidla-pouziti-UI.md  # referenční spec chování UI
+│   └── _archive/                      # původní bundled prototypy (reference)
+├── profile-images/     # profilové obrázky person do avatarů
 └── files/              # zdrojové podklady, šablony rámečků
 ```
 
