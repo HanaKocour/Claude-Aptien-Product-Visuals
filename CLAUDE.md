@@ -86,7 +86,7 @@ tab strip + sidebar):
 | Zadaná obrazovka / modul | Kde v master prototypu |
 |---|---|
 | Mobilní intranet – rozcestník zaměstnance | obrazovka *home* v `Aptien-mobil-intranet.html` |
-| Přihlášení (Facebook / Google) | login v `Aptien-mobil-intranet.html` |
+| Odkazy na externí stránky / aplikace | dlaždice na obrazovce *home* (ne přihlášení) |
 | Konverzace / chat + AI souhrn | obrazovky *conversations* / *chat* |
 | Co je viditelné pro zaměstnance (podmínky) | `prototypes/Aptien-mobil-intranet-pravidla.md` |
 

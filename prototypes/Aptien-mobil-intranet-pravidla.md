@@ -29,15 +29,16 @@ Mobilní intranet má tři hlavní obrazovky (`state.screen`):
 
 | Obrazovka | Obsah |
 |---|---|
-| `home` | Přihlášení + rozcestník dlaždic zaměstnance (viz níže). |
+| `home` | Rozcestník dlaždic zaměstnance + odkazy na externí stránky/aplikace (viz níže). |
 | `conversations` | Seznam konverzací (náhledy, poslední zpráva, avatar). |
 | `chat` | Detail konverzace – zprávy, avatary (KH / HK / AS), **AI souhrn**. |
 
-### 2.1 Přihlášení
+### 2.1 Odkazy na externí stránky a aplikace
 
-Vstup do intranetu přes **sociální přihlášení** – *Facebook*, *Google*
-(žádné ruční zadávání hesla v prototypu). V patě identifikace prostoru
-(např. *„© 2022 Elizabeth Bathory s.r.o."*).
+Součástí rozcestníku jsou i **dlaždice s odkazy ven** – na externí
+stránky nebo aplikace (např. *Facebook*). **Nejde o přihlašování ani
+propojení účtů**, jen o rychlé prokliky mimo intranet. V patě je
+identifikace prostoru (např. *„© 2022 Elizabeth Bathory s.r.o."*).
 
 ### 2.2 Home – rozcestník zaměstnance
 
@@ -50,6 +51,10 @@ O mě · Moje směrnice.
 
 **Firemní (publikované):**
 Nástěnka · Směrnice a dokumenty · Kolegové · Katalog školení.
+
+**Externí odkazy:**
+odkazy na externí stránky / aplikace (např. *Facebook*) – jen prokliky
+ven, ne přihlášení.
 
 ### 2.3 Konverzace a chat
 
@@ -108,7 +113,7 @@ a co ne. Intranet je publikační a samoobslužná vrstva, ne administrace.
 | Uživatel | správce evidence / power user | běžný zaměstnanec |
 | Navigace | tab strip + sidebar (moduly) | obrazovky home / konverzace / chat |
 | Rozsah | plná evidence + administrace | self-service + publikovaný obsah |
-| Přihlášení | pracovní prostor | sociální (Facebook / Google) |
+| Externí odkazy | – | dlaždice na externí stránky / aplikace |
 | Design | sdílené tokeny, fonty, ikony | **stejné** (jen jiný layout) |
 
 ---
