@@ -262,6 +262,12 @@ natvrdo zapsané hodnoty.**
 
 ### 9.1 Barvy
 
+> **Role barev jsou pevné a nemění se podle modulu.** Top bar = fialová
+> `#6200EA`; akce / tlačítka / aktivní prvky = modrá `#1572e8`; aktivní
+> záložka = oranžová `#E65100`; barva modulu (`c800`) jen pro chip
+> záložky. Nezaváděj „tématickou" barvu modulu na banner, tlačítka ani
+> pohledy (žádný teal banner apod.).
+
 **Interaktivní akcent (primární):**
 
 - `--primary #1572e8`, `--primary-light #5b9cef`, `--primary-dark #0f50a2`,
