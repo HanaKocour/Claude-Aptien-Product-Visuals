@@ -374,7 +374,7 @@
 <div style="display:flex;flex-direction:column;height:100vh;font-family:'Nunito',sans-serif;overflow:hidden">
 
   <!-- TOP BAR -->
-  <div style="flex-shrink:0;height:56px;background:#6200EA;display:flex;align-items:center;padding:0 18px;gap:14px;z-index:40">
+  <div style="flex-shrink:0;height:56px;background:#6200EA;display:flex;align-items:center;padding:0 32px;gap:14px;z-index:40">
     <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-right:4px">
       <img src="assets/img/681a831d.svg" style="height:28px;width:auto;filter:brightness(0) invert(1);flex-shrink:0">
       <span style="font-weight:800;font-size:19px;color:#fff;letter-spacing:-.01em">aptien</span>
@@ -429,7 +429,7 @@
         </div>
       </sc-if>
       <sc-if value="{{ showSidebarFull }}" hint-placeholder-val="{{ true }}">
-        <div style="padding:0 18px 8px;font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#b0aac8">Můj pracovní prostor</div>
+        <div style="padding:0 18px 8px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#878787">Můj pracovní prostor</div>
       </sc-if>
       <sc-for list="{{ navWork }}" as="item" hint-placeholder-count="15">
         <div sc-camel-on-click="{{ item.onClick }}" style="{{ item.style }}">
@@ -443,7 +443,7 @@
         </div>
       </sc-for>
       <sc-if value="{{ showSidebarFull }}" hint-placeholder-val="{{ true }}">
-        <div style="padding:18px 18px 8px;font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#b0aac8">Naše firma</div>
+        <div style="padding:18px 18px 8px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#878787">Naše firma</div>
       </sc-if>
       <sc-for list="{{ navCompany }}" as="item" hint-placeholder-count="6">
         <div sc-camel-on-click="{{ item.onClick }}" style="{{ item.style }}">
@@ -464,10 +464,10 @@
           <svg xmlns="http://www.w3.org/2000/svg" sc-camel-view-box="0 0 512 512" style="width:18px;height:18px;flex-shrink:0" fill="#E91E63"><path opacity="0.4" d="M352 79.7c0 4.5 3 8.7 7.2 10.2l45.7 16.8 16.8 45.8c1.5 4.4 5.8 7.5 10.4 7.5s8.9-3.1 10.4-7.5l16.5-45.8 45.7-16.8c4.2-1.5 7.2-5.7 7.2-10.2c0-4.6-3-8.9-7.2-10.4L459.1 52.4 442.6 6.5C440.7 2.6 436.5 0 432.1 0s-8.5 2.6-10.4 6.5L405.2 52.4l-46 16.8c-4.3 1.6-7.3 5.9-7.2 10.4z"></path><path d="M281.4 105.4c12.5-12.5 32.8-12.5 45.3 0l80 80c12.5 12.5 12.5 32.8 0 45.3l-2.9 2.9c7.9 22 12.2 45.7 12.2 70.5c0 114.9-93.1 208-208 208S0 418.9 0 304S93.1 96 208 96c24.7 0 48.5 4.3 70.5 12.3l2.9-2.9z"></path></svg>
           <span style="font-size:16px;font-weight:800;color:#1e1b2e;flex-shrink:0">Rizika</span>
           <i class="fa-solid fa-pen" style="color:#b0aac8;font-size:11px;cursor:pointer;flex-shrink:0"></i>
-          <div style="display:flex;align-items:center;gap:7px;background:#E91E63;color:#fff;font-size:11px;font-weight:800;padding:6px 14px;border-radius:999px;cursor:pointer;letter-spacing:.04em;white-space:nowrap;box-shadow:0 2px 6px rgba(233,30,99,.28);flex-shrink:0">
+          <div style="display:flex;align-items:center;gap:7px;background:#1572e8;color:#fff;font-size:11px;font-weight:800;padding:6px 14px;border-radius:999px;cursor:pointer;letter-spacing:.04em;white-space:nowrap;box-shadow:0 2px 6px rgba(21,114,232,.28);flex-shrink:0">
             <i class="fa-solid fa-plus" style="font-size:10px"></i>PŘIDAT RIZIKO
           </div>
-          <div style="display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #e0dded;border-radius:999px;padding:5px 12px;flex-shrink:0;width:100px">
+          <div style="display:flex;align-items:center;gap:7px;background:#f2f5f7;border:1px solid transparent;border-radius:999px;padding:5px 12px;flex-shrink:0;width:100px">
             <i class="fa-solid fa-magnifying-glass" style="color:#b0aac8;font-size:12px"></i>
           </div>
           <i class="fa-regular fa-star" style="color:#c5c0d8;font-size:15px;cursor:pointer;flex-shrink:0"></i>
@@ -487,10 +487,10 @@
           <i class="fa-solid fa-helmet-safety" style="font-size:18px;color:#D84315;flex-shrink:0"></i>
           <span style="font-size:16px;font-weight:800;color:#1e1b2e;flex-shrink:0">Ochranné pomůcky</span>
           <i class="fa-solid fa-pen" style="color:#b0aac8;font-size:11px;cursor:pointer;flex-shrink:0"></i>
-          <div style="display:flex;align-items:center;gap:7px;background:#D84315;color:#fff;font-size:11px;font-weight:800;padding:6px 14px;border-radius:999px;cursor:pointer;letter-spacing:.04em;white-space:nowrap;box-shadow:0 2px 6px rgba(216,67,21,.28);flex-shrink:0">
+          <div style="display:flex;align-items:center;gap:7px;background:#1572e8;color:#fff;font-size:11px;font-weight:800;padding:6px 14px;border-radius:999px;cursor:pointer;letter-spacing:.04em;white-space:nowrap;box-shadow:0 2px 6px rgba(21,114,232,.28);flex-shrink:0">
             <i class="fa-solid fa-plus" style="font-size:10px"></i>PŘIDAT POMŮCKU
           </div>
-          <div style="display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #e0dded;border-radius:999px;padding:5px 12px;flex-shrink:0;width:100px">
+          <div style="display:flex;align-items:center;gap:7px;background:#f2f5f7;border:1px solid transparent;border-radius:999px;padding:5px 12px;flex-shrink:0;width:100px">
             <i class="fa-solid fa-magnifying-glass" style="color:#b0aac8;font-size:12px"></i>
           </div>
           <i class="fa-regular fa-star" style="color:#c5c0d8;font-size:15px;cursor:pointer;flex-shrink:0"></i>
@@ -510,10 +510,10 @@
           <i class="fa-solid fa-briefcase" style="font-size:18px;color:#1565C0;flex-shrink:0"></i>
           <span style="font-size:16px;font-weight:800;color:#1e1b2e;flex-shrink:0">Zakázky</span>
           <i class="fa-solid fa-circle-info" style="color:#b0aac8;font-size:13px;cursor:pointer;flex-shrink:0"></i>
-          <div style="display:flex;align-items:center;gap:7px;background:#1565C0;color:#fff;font-size:11px;font-weight:800;padding:6px 14px;border-radius:999px;cursor:pointer;letter-spacing:.04em;white-space:nowrap;box-shadow:0 2px 6px rgba(21,101,192,.30);flex-shrink:0">
+          <div style="display:flex;align-items:center;gap:7px;background:#1572e8;color:#fff;font-size:11px;font-weight:800;padding:6px 14px;border-radius:999px;cursor:pointer;letter-spacing:.04em;white-space:nowrap;box-shadow:0 2px 6px rgba(21,114,232,.30);flex-shrink:0">
             <i class="fa-solid fa-plus" style="font-size:10px"></i>PŘIDAT ZAKÁZKU
           </div>
-          <div style="display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #e0dded;border-radius:999px;padding:5px 14px;flex-shrink:0;width:190px">
+          <div style="display:flex;align-items:center;gap:7px;background:#f2f5f7;border:1px solid transparent;border-radius:999px;padding:5px 14px;flex-shrink:0;width:190px">
             <i class="fa-solid fa-magnifying-glass" style="color:#b0aac8;font-size:12px"></i>
             <span style="font-size:12px;color:#c0bdd0">Hledej...</span>
           </div>
@@ -531,7 +531,7 @@
       ══════════════════════════════════════ -->
       <sc-if value="{{ showRizikaDashboard }}" hint-placeholder-val="{{ false }}">
         <div style="flex:1;overflow-y:auto;padding:16px 20px 20px">
-          <div style="background:linear-gradient(135deg,#ad1457 0%,#e91e63 60%,#f06292 100%);border-radius:10px;padding:28px 32px;margin-bottom:16px;color:#fff">
+          <div style="background:linear-gradient(135deg,#E91E63 0%,#F06292 100%);border-radius:10px;padding:28px 32px;margin-bottom:16px;color:#fff">
             <div style="font-size:26px;font-weight:800;margin-bottom:10px">Rizika</div>
             <div style="font-size:13px;opacity:.88;max-width:700px;line-height:1.5">Evidence kybernetických rizik nám umožňuje zavést kompletní systém řízení rizik kybernetické bezpečnosti v naší firmě.</div>
           </div>
@@ -651,7 +651,7 @@
       ══════════════════════════════════════ -->
       <sc-if value="{{ showOPDashboard }}" hint-placeholder-val="{{ false }}">
         <div style="flex:1;overflow-y:auto;padding:16px 20px 20px">
-          <div style="background:linear-gradient(135deg,#bf360c 0%,#d84315 60%,#ff7043 100%);border-radius:10px;padding:28px 32px;margin-bottom:16px;color:#fff">
+          <div style="background:linear-gradient(135deg,#D84315 0%,#E47B5B 100%);border-radius:10px;padding:28px 32px;margin-bottom:16px;color:#fff">
             <div style="font-size:26px;font-weight:800;margin-bottom:10px">Ochranné pomůcky</div>
             <div style="font-size:13px;opacity:.88;max-width:700px;line-height:1.5">Evidence ochranných pracovních pomůcek umožňuje přehledně sledovat dostupnost, přidělení a platnost veškerého ochranného vybavení zaměstnanců.</div>
           </div>
@@ -751,7 +751,7 @@
       ══════════════════════════════════════ -->
       <sc-if value="{{ showZakDashboard }}" hint-placeholder-val="{{ false }}">
         <div style="flex:1;overflow-y:auto;padding:0 20px 20px">
-          <div style="background:linear-gradient(135deg,#0D47A1 0%,#1565C0 55%,#42A5F5 100%);border-radius:10px;padding:28px 32px;margin-bottom:16px;color:#fff">
+          <div style="background:linear-gradient(135deg,#1565C0 0%,#5B93D3 100%);border-radius:10px;padding:28px 32px;margin-bottom:16px;color:#fff">
             <div style="font-size:26px;font-weight:800;margin-bottom:8px">Zakázky</div>
             <div style="font-size:13px;opacity:.88;max-width:680px;line-height:1.55">Přehled obchodních zakázek. Sledujte stav, hodnotu a zodpovědné osoby napříč celým obchodním cyklem.</div>
             <div style="display:flex;gap:40px;margin-top:20px">
@@ -2113,7 +2113,7 @@ class Component extends DCLogic {
     const activeTabLabel = activeTabData ? activeTabData.label : '';
 
     // ── Sidebar ──
-    const sidebarStyle = 'width:' + (collapsed ? '56px' : '236px') + ';flex-shrink:0;background:#fff;border-right:1px solid #ededf2;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;padding-bottom:20px;transition:width .22s ease';
+    const sidebarStyle = 'width:' + (collapsed ? '56px' : '220px') + ';flex-shrink:0;background:#fff;border-right:1px solid #ececec;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;padding-bottom:20px;transition:width .22s ease';
     const showSidebarFull = !collapsed;
     const showSidebarCollapsed = collapsed;
     const collapseIconCls = collapsed ? 'fa-solid fa-angles-right' : 'fa-solid fa-angles-left';
@@ -2122,8 +2122,8 @@ class Component extends DCLogic {
     const BADGE_BASE = 'border-radius:999px;min-width:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;padding:3px 7px';
     const badgeStyle = (kind) => kind === 'alert' ? 'background:#FF3D00;color:#fff;' + BADGE_BASE : 'background:#e6e3ef;color:#8a84a0;' + BADGE_BASE;
     const navItemStyle = (on) => {
-      if (collapsed) return 'display:flex;align-items:center;justify-content:center;width:100%;padding:10px 0;margin:0 0 1px;cursor:pointer;transition:background .12s;background:' + (on ? '#eef4fe' : 'transparent');
-      return 'display:flex;align-items:center;gap:13px;padding:10px 18px;margin:0 8px 1px;border-radius:9px;cursor:pointer;font-size:12px;font-weight:' + (on ? '700' : '600') + ';background:' + (on ? '#eef4fe' : 'transparent') + ';color:' + (on ? ACC : '#4a4660') + ';transition:background .12s';
+      if (collapsed) return 'display:flex;align-items:center;justify-content:center;width:100%;padding:10px 0;margin:0 0 1px;cursor:pointer;transition:background .12s;background:' + (on ? 'rgba(21,114,232,.10)' : 'transparent');
+      return 'display:flex;align-items:center;gap:8px;padding:7px 12px;margin:0 8px 1px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:' + (on ? '700' : '600') + ';background:' + (on ? 'rgba(21,114,232,.10)' : 'transparent') + ';color:' + (on ? ACC : '#555') + ';transition:background .12s';
     };
     const navWork = this.NAV_WORK.map(m => {
       const on = activeNav === m.id;

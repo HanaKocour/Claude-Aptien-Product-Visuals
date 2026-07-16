@@ -112,16 +112,35 @@ obrazovky.
 | Prvek | Barva | Pravidlo |
 |---|---|---|
 | Top bar | fialová `#6200EA` | vždy, na všech obrazovkách |
+| Pruh se záložkami (tab strip) | fialová `#6200EA` | pozadí pruhu za taby – stejná fialová jako top bar, splývá do jednoho fialového pásu |
 | Tlačítka / akce / odkazy / aktivní prvky | modrá `#1572e8` | primární akce („Přidat…"), aktivní pohled ve view switcheru |
-| **Aktivní záložka (tab)** | **oranžová `#E65100`** | vždy oranžová, NIKDY barva modulu |
-| Barva modulu (`c800`) | dle tabulky záložek | **jen** barevný proužek/chip dané záložky – nic víc |
+| **Aktivní záložka (tab)** | **barva modulu `c800`** | přebírá barvu, kterou má text/ikona té záložky, když je neaktivní – pozadí aktivní záložky = její `c800`, text bílý |
+| Sidebar | bílý `#fff` | světlý panel, pravý okraj `1px solid var(--gray-10)`; aktivní položka = tint `rgba(21,114,232,.10)` + text `#1572e8` |
+| Barva modulu (`c800`) | dle tabulky záložek | text/ikona neaktivní záložky, **pozadí aktivní záložky** a chip dané záložky – nic víc |
 | Sémantické (zelená/červená/oranžová/modrá) | dle stavu | jen stavy, ne dekorace |
 
-> **Konkrétní chyba, které se vyvaruj:** neobarvuj banner, tlačítka,
-> aktivní záložku ani view switcher „tématickou" barvou modulu (např.
-> teal `#00BFA5`). Tlačítko „Přidat" je **modré**, aktivní záložka
-> **oranžová** – bez ohledu na to, o jaký modul jde. Banner drží skladbu
-> a barevnost jako v prototypu, ne libovolný gradient.
+> **Konkrétní chyba, které se vyvaruj:** neobarvuj tlačítka ani
+> view switcher „tématickou" barvou modulu (např. teal `#00BFA5`).
+> Tlačítko „Přidat" je **modré** bez ohledu na modul. **Aktivní záložka
+> ale přebírá barvu svého modulu (`c800`)** – tj. tu, kterou má její text,
+> když je neaktivní. Banner drží skladbu a barevnost jako v prototypu,
+> ne libovolný gradient.
+
+> **Gradient hero banneru na dashboardu evidence = přesně 2 stupně.**
+> 1. barva (`0%`) = **základní barva modulu (`c800`)** tak, jak je
+> popsaná v tabulce záložek; 2. barva (`100%`) = **stejná barva
+> zesvětlená smícháním s 30 % bílé** (poměr `70 % base + 30 % #fff`,
+> shodný s odvozením `--primary #1572e8` → `--primary-light #5b9cef`).
+> Úhel `135deg`. Žádný tmavší úvodní stupeň, žádné tři a víc stupňů.
+>
+> | Modul | 1. barva (`c800`) | 2. barva (+30 % bílá) |
+> |---|---|---|
+> | Rizika | `#E91E63` | `#F06292` |
+> | Ochranné pomůcky | `#D84315` | `#E47B5B` |
+> | Zakázky | `#1565C0` | `#5B93D3` |
+>
+> Pro jiný modul spočti 2. barvu stejným poměrem:
+> `round(kanál × 0,7 + 76,5)` pro R, G i B.
 
 > **Termínové barvy u „Moje směrnice":** tlačítko „POTVRDIT" i štítek se
 > barví podle termínu – **červená jen dnes a v minulosti** („X dní po

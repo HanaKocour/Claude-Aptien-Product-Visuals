@@ -31,7 +31,7 @@ záznamu) z pravé strany.
 ┌─────────────────────────────────────────────┐
 │  TOP BAR (#6200EA, výška 56px)                │
 ├─────────────────────────────────────────────┤
-│  TAB STRIP (barevné záložky)                  │
+│  TAB STRIP (#6200EA, aktivní tab = barva c800)│
 ├─────────────────────────────────────────────┤ ← color separator
 │ SIDEBAR │  CONTENT AREA        │ ITEM DETAIL  │
 │ (menu)  │ (dashboard/kanban/   │ DRAWER →     │
@@ -100,9 +100,12 @@ pozornost; `grey` = neutrální počítadlo.
 
 ## 4. Tab strip (otevřené moduly)
 
-Otevřené záznamy/moduly jsou **barevné záložky** pod app barem, každá se
-svou ikonou a barvou (`c800`). Aktivní záložka je zvýrazněná (oranžová),
-neaktivní tlumené. Záložky mají zaoblené horní rohy a napojují se na obsah.
+Otevřené záznamy/moduly jsou **záložky** pod app barem na fialovém pruhu
+(`#6200EA`). **Aktivní záložka přebírá barvu svého modulu (`c800`)** – tj.
+tu, kterou má její text/ikona, když je neaktivní: pozadí aktivní záložky =
+její `c800`, text bílý. Neaktivní jsou bílé s textem/ikonou v barvě modulu.
+Barevný separátor pod pruhem je u aktivní záložky rovněž v barvě `c800`.
+Záložky mají zaoblené horní rohy a napojují se na obsah.
 
 | Záložka | Barva `c800` | Ikona |
 |---|---|---|
@@ -270,11 +273,11 @@ Historie změn, Uložit změny.
 | Komponenta | Popis a pravidla |
 |---|---|
 | **Top bar** | Fialový pruh (`#6200EA`, výška 56 px), vlevo bílé logo + název prostoru, vpravo akční ikony. |
-| **Tab strip** | Barevné záložky otevřených záznamů; aktivní oranžová, zaoblené horní rohy, barva dle `c800`. |
-| **Sidebar menu** | Dvě skupiny (osobní / „Naše firma"), ikona+text, badge, sbalitelné, rolovatelné, profil dole. |
+| **Tab strip** | Fialový pruh (`#6200EA`) se záložkami otevřených záznamů; **aktivní záložka = barva modulu `c800`** (bílý text), neaktivní bílé s textem dle `c800`, zaoblené horní rohy. |
+| **Sidebar menu** | **Bílý panel** (`#fff`, šířka 220 px, pravý okraj `1px solid var(--gray-10)`), dvě skupiny (osobní / „Naše firma"), ikona+text, badge, sbalitelné, rolovatelné, profil dole; aktivní položka = tint `rgba(21,114,232,.10)` + text `#1572e8`. |
 | **Content area** | Hlavní plocha; hostí dashboard / seznam / kanban / tabulku. Světlé pozadí (`--canvas #f9f9fb`). |
 | **View switcher** | Výsuvný „pill" přepínač pohledů (Dashboard / Seznam / Kanban / Tabulka / Kalendář). |
-| **Hero banner** | Úvodní blok dashboardu s názvem oblasti a popisem. |
+| **Hero banner** | Úvodní blok dashboardu s názvem oblasti a popisem. Pozadí = **2-stupňový gradient** (`135deg`): 1. barva = základní barva modulu (`c800`), 2. barva = tatáž barva +30 % bílé. Viz 9.1. |
 | **Metrické karty** | Číselné přehledy (např. *Celkem zakázek*, *Hodnota portfolia*). |
 | **Karty (cards)** | Bílé pozadí, jemný okraj, zaoblení (`--radius-md 10px`), lehký stín (`--shadow`). |
 | **Riziková matice** | Mřížka závažnosti NÍZKÉ / MÍRNÉ / VYSOKÉ / KRITICKÉ. |
@@ -294,11 +297,12 @@ natvrdo zapsané hodnoty.**
 
 ### 9.1 Barvy
 
-> **Role barev jsou pevné a nemění se podle modulu.** Top bar = fialová
-> `#6200EA`; akce / tlačítka / aktivní prvky = modrá `#1572e8`; aktivní
-> záložka = oranžová `#E65100`; barva modulu (`c800`) jen pro chip
-> záložky. Nezaváděj „tématickou" barvu modulu na banner, tlačítka ani
-> pohledy (žádný teal banner apod.).
+> **Role barev jsou pevné a nemění se podle modulu.** Top bar i pruh se
+> záložkami (tab strip) = fialová `#6200EA`; akce / tlačítka / aktivní
+> prvky = modrá `#1572e8`; **aktivní záložka = barva modulu `c800`**
+> (přebírá barvu neaktivního textu); barva modulu (`c800`) pro text/ikonu
+> neaktivní záložky, pozadí aktivní záložky a chip. Nezaváděj „tématickou"
+> barvu modulu na banner, tlačítka ani pohledy (žádný teal banner apod.).
 
 **Interaktivní akcent (primární):**
 
@@ -307,12 +311,16 @@ natvrdo zapsané hodnoty.**
 
 **Brandová plocha:**
 
-- Top bar `#6200EA` (`--a700-deep-purple`).
+- Top bar `#6200EA` (`--a700-deep-purple`). Pruh se záložkami (tab strip)
+  rovněž `#6200EA` – stejná fialová, splývá s top barem.
 
-**Sidebar (tmavé menu):** tmavě fialová plocha `#1E1B2E`–`#3D3A52`,
-tlumený lila text `#9A95AD` / `#B0AAC8`.
+**Sidebar (světlé menu):** bílá plocha `#fff`, pravý okraj
+`1px solid var(--gray-10)`, šířka 220 px; popisky skupin `10px/700`
+uppercase `var(--gray-60)` LS `.08em`; položky text `#555`, aktivní =
+tint `rgba(21,114,232,.10)` + text `#1572e8`.
 
-**Záložky:** aktivní oranžová (`#D84315` / `#E65100`), neaktivní tlumené.
+**Záložky:** aktivní = barva modulu (`c800`, bílý text), neaktivní bílé
+s textem v barvě modulu (`c800`).
 
 **Sémantické (stavové):**
 
@@ -329,6 +337,21 @@ tlumený lila text `#9A95AD` / `#B0AAC8`.
 **Neutrální (šedé):** `--white #FFFFFF`, `--canvas #f9f9fb`, `--g5 #F6F6F6`,
 `--g10 #ECECEC`, `--g20 #CCCCCC`, `--g40 #B1B2B3`, `--g60 #878787`,
 `--g80 #565656`, `--ink #1a1a1a` (text).
+
+**Gradient hero banneru (dashboard evidence):** vždy **2 stupně**,
+`linear-gradient(135deg, <c800> 0%, <c800 +30 % bílé> 100%)`. 1. barva =
+základní barva modulu tak, jak je popsaná (`c800`); 2. barva = tatáž barva
+zesvětlená smícháním s 30 % bílé – stejný poměr jako `--primary #1572e8`
+→ `--primary-light #5b9cef`. Pro libovolný modul:
+`kanál₂ = round(kanál × 0,7 + 76,5)` pro R, G, B.
+
+| Modul | 1. barva (`c800`) | 2. barva (+30 % bílá) |
+|---|---|---|
+| Rizika | `#E91E63` | `#F06292` |
+| Ochranné pomůcky | `#D84315` | `#E47B5B` |
+| Zakázky | `#1565C0` | `#5B93D3` |
+
+Bez tmavšího úvodního stupně a bez tří a více stupňů.
 
 ### 9.2 Typografie
 
@@ -361,13 +384,15 @@ Font Awesome 6 – rodiny `Font Awesome 6 Free` (`solid`, výchozí),
 
 ## 10. Shrnutí klíčových pravidel
 
-1. Rámec aplikace (top bar `#6200EA` → tab strip → separator → sidebar +
-   content) je **vždy stejný**; drawer se vysouvá zprava.
-2. **Fialová `#6200EA` = brand/top bar, modrá `#1572e8` = akce,
-   sémantické barvy = stavy.** Stylové hodnoty ber z tokenů `:root`.
-3. Menu má dvě skupiny (osobní / „Naše firma"), je sbalitelné a
-   rolovatelné, s badge (`alert` / `grey`) a profilem dole.
-4. Otevřené moduly = barevné záložky (barva dle `c800`, aktivní oranžová).
+1. Rámec aplikace (top bar `#6200EA` → tab strip `#6200EA` → separator →
+   sidebar + content) je **vždy stejný**; drawer se vysouvá zprava.
+2. **Fialová `#6200EA` = top bar i pruh se záložkami, modrá `#1572e8` =
+   akce, aktivní záložka = barva modulu `c800`, sémantické barvy = stavy.**
+   Stylové hodnoty ber z tokenů `:root`.
+3. Menu (bílý sidebar) má dvě skupiny (osobní / „Naše firma"), je sbalitelné
+   a rolovatelné, s badge (`alert` / `grey`) a profilem dole.
+4. Otevřené moduly = záložky (barva dle `c800`; aktivní = pozadí `c800`,
+   neaktivní = bílá s textem `c800`).
 5. Evidence nabízí pohledy Dashboard / Seznam / Kanban / Tabulka /
    Kalendář přes „pill" přepínač; pohled je per záložka.
 6. Detail = drawer zprava s tenkým akcentem, item taby a sdílenými akcemi.
