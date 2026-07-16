@@ -25,7 +25,7 @@ nevynechávej položky menu ani žádnou sekci. Když si nejsi jistý, radši se
 zeptej, než abys cokoli domýšlel.
 
 > **Menu vždy celé a se správným aktivním stavem.** Kompletní levé menu
-> (všech 15 osobních + 6 firemních položek) k doslovnému zkopírování je v
+> (všech 15 osobních + 7 firemních položek) k doslovnému zkopírování je v
 > **`prototypes/Aptien-menu-reference.md`**. Vždy vlož všechny položky,
 > označ jako aktivní **jen jednu** (dle otevřené obrazovky, jinak „Moje
 > domovská stránka") a nezaměňuj badge (počty) za zvýraznění.
@@ -114,6 +114,13 @@ obrazovky.
 > teal `#00BFA5`). Tlačítko „Přidat" je **modré**, aktivní záložka
 > **oranžová** – bez ohledu na to, o jaký modul jde. Banner drží skladbu
 > a barevnost jako v prototypu, ne libovolný gradient.
+
+> **Termínové barvy u „Moje směrnice":** tlačítko „POTVRDIT" i štítek se
+> barví podle termínu – **červená jen dnes a v minulosti** („X dní po
+> termínu"), **oranžová zítra** („za 1 den"), **zelená pozítří a dál**
+> („za X dní") a **bez termínu** zelená („∞ Bez termínu"). Není to vždy
+> červené a zelené má taky štítek! Detail viz
+> `Aptien-pravidla-pouziti-UI.md`, sekce 6.5.1.
 
 > **`.md` popis je jen doplněk, ne zadání.** `Aptien-pravidla-pouziti-UI.md`
 > popisuje pravidla a chování. Zdrojem struktury je vždy konkrétní **HTML

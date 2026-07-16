@@ -205,6 +205,37 @@ Oddělení, Pracovní pozice, Datum nástupu, Typ úvazku, E-mail, Telefon.
 - **Směrnice a dokumenty** (firemní) – *„Všechny oficiální směrnice,
   návody a materiály na jednom místě."*, členění na kategorie.
 
+#### 6.5.1 Barva tlačítka „POTVRDIT" a štítku podle termínu (PEVNÉ pravidlo)
+
+Na stránce **„Moje směrnice"** se barva potvrzovacího tlačítka a štítku
+u každého dokumentu řídí **výhradně termínem potvrzení**. Barva se
+**nedědí** od kategorie ani modulu a **není vždy červená** – to je častá
+chyba při generování.
+
+| Termín dokumentu | Barva | Tlačítko „POTVRDIT" | Štítek (badge) | Text štítku |
+|---|---|---|---|---|
+| **Dnes nebo v minulosti** (po termínu) | 🔴 červená | `#d9463e` | pozadí `#fde8e8`, text `#d9463e` | „X dní po termínu" |
+| **Zítra** | 🟠 oranžová | `#FF6D00` | pozadí `#fff3e0`, text `#FF6D00` | „za 1 den" |
+| **Pozítří a později** | 🟢 zelená | `#00C853` | pozadí `#e8f8ed`, text `#2E7D32` | „za X dní" (kolik zbývá) |
+| **Bez termínu** | 🟢 zelená | `#00C853` | pozadí `#e8f8ed`, text `#2E7D32` | „∞ Bez termínu" (ikona nekonečna) |
+
+Pravidla:
+
+- **Červená = jen dnešek a minulost.** Nikdy neobarvuj červeně dokumenty
+  s termínem v budoucnu – to je nejčastější chyba (vše skončí červené).
+- **Oranžová = pouze zítřek** (přesně jeden den do termínu).
+- **Zelená = vše s termínem pozítří a dál, plus „bez termínu".**
+- **Zelené mají VŽDY štítek:** s termínem ukazuje **„za X dní"** (počet dní
+  do splnění), bez termínu ukazuje **„∞ Bez termínu"** s ikonou nekonečna.
+- Štítek se zobrazuje u **všech** stavů (červená / oranžová / zelená).
+- Odpovídá funkci `getBadgeBtn` v prototypu: `overdue` → červená,
+  `soon` → oranžová, `future` → zelená „za X dní", `noDeadline` → zelená
+  „∞ Bez termínu".
+- **Tvar štítku je hranatý**, ne pill: `border-radius: 3px`, padding
+  `2px 6px`, font `11px/700` – dle třídy `.badge-deadline` v app kitu
+  (`Claude-HK-Aptien-App`). Zaoblený „pill" (`999px`) se pro štítky
+  nepoužívá.
+
 ### 6.6 Konverzace
 
 Panel konverzace s prvkem **AI SOUHRN**.
@@ -308,7 +339,9 @@ tlumený lila text `#9A95AD` / `#B0AAC8`.
 ### 9.3 Tvary, plochy, rozestupy
 
 - **Zaoblení:** `--radius-sm 4px`, `--radius-md 10px`, `--radius-lg 14px`,
-  `--radius-pill 999px` (pill přepínač, badge).
+  `--radius-pill 999px` (jen „pill" přepínač pohledů). **Štítky/badge jsou
+  hranaté** – `--radius-sm` (4px), termínový štítek `.badge-deadline` = 3px
+  dle app kitu; pill se pro štítky nepoužívá.
 - **Stíny:** `--shadow 0 0 10px rgba(0,0,0,.10)`,
   `--shadow-soft 0 0 10px rgba(0,0,0,.06)`,
   `--shadow-pop 0 8px 28px rgba(0,0,0,.16)` (drawer, popovery).
