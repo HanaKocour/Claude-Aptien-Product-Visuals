@@ -88,9 +88,14 @@
   --canvas:#f9f9fb;        /* app background behind cards */
   --white:#FFFFFF;
 
+  /* aliasy pro konzistenci s app kitem (Claude-HK-Aptien-App) */
+  --gray-05: var(--g5); --gray-10: var(--g10); --gray-20: var(--g20);
+  --gray-40: var(--g40); --gray-60: var(--g60); --gray-80: var(--g80);
+  --neutral: #7D90A6;      /* z app kitu — dlaždice / neutrální akcent */
+
   /* ========== TYPE ========== */
   --font-display: 'Nunito', system-ui, sans-serif;    /* headings, labels, UI + body */
-  --font-body:    'Open Sans', system-ui, sans-serif; /* long-form / dense reading */
+  --font-body:    'Nunito', system-ui, sans-serif;   /* sladěno s app kitem — Open Sans zůstává jen uložený v assets */ /* long-form / dense reading */
 
   /* App type scale (in-product sizing) */
   --t-page:   26px;  /* Nunito ExtraBold 800 — page title */
@@ -2406,7 +2411,7 @@ class Component extends DCLogic {
     };
     const smernPendingDocs = pendingDocs.map(d => {
       const bb = getBadgeBtn(d);
-      return { ...d, ...bb, badgeStyle: bb.badgeBg ? 'background:' + bb.badgeBg + ';color:' + bb.badgeColor + ';padding:2px 6px;border-radius:3px;font-size:11px;font-weight:700;white-space:nowrap' : '', btnStyle: 'background:' + bb.btnBg + ';color:#fff;padding:9px 20px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0', btnHoverStyle: 'background:' + bb.btnBg + ';color:#fff;padding:9px 20px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;filter:brightness(.88);white-space:nowrap;flex-shrink:0', onConfirm: () => this.confirmDoc(d.id) };
+      return { ...d, ...bb, badgeStyle: bb.badgeBg ? 'background:' + bb.badgeBg + ';color:' + bb.badgeColor + ';padding:2px 6px;border-radius:3px;font-size:10px;font-weight:700;white-space:nowrap' : '', btnStyle: 'background:' + bb.btnBg + ';color:#fff;padding:9px 20px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0', btnHoverStyle: 'background:' + bb.btnBg + ';color:#fff;padding:9px 20px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;filter:brightness(.88);white-space:nowrap;flex-shrink:0', onConfirm: () => this.confirmDoc(d.id) };
     });
 
     const selectedSmernCatData = selectedSmernCat ? this.SMERNICE_CATEGORIES.find(c => c.title === selectedSmernCat) : null;

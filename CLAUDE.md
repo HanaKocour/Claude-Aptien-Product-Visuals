@@ -61,6 +61,14 @@ pravidel v tomto repu**.
 > rozchází s app kitem nebo brand manuálem, platí to, co je tady. Foundation
 > repa se použijí jen tam, kde tento kit mlčí.
 
+> **Zároveň drž konzistenci s app kitem.** Tenhle repo je zdroj pravdy pro
+> screenshoty a vizuály, ale sdílené hodnoty (barvy, tokeny, radiusy,
+> velikosti štítků apod.) se **nesmí rozcházet** s aplikačním UI kitem
+> (`Claude-HK-Aptien-App`) – aby vizuály ladily s návrhy generovanými do
+> samotné aplikace. Když app kit nějakou hodnotu definuje, převezmi ji sem
+> (stejná hodnota i název); vlastní tokeny přidávej jen tam, kde app kit
+> mlčí.
+
 ---
 
 ## ⛔ Nejdůležitější pravidlo: prototyp je PŘEDLOHA, ne inspirace

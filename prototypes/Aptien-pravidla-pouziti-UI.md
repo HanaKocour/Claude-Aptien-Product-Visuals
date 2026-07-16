@@ -232,9 +232,10 @@ Pravidla:
   `soon` → oranžová, `future` → zelená „za X dní", `noDeadline` → zelená
   „∞ Bez termínu".
 - **Tvar štítku je hranatý**, ne pill: `border-radius: 3px`, padding
-  `2px 6px`, font `11px/700` – dle třídy `.badge-deadline` v app kitu
-  (`Claude-HK-Aptien-App`). Zaoblený „pill" (`999px`) se pro štítky
-  nepoužívá.
+  `2px 6px`, **font-size `10px`** (Nunito) – hranatost dle třídy
+  `.badge-deadline` a velikost dle typografie systémových štítků v app
+  kitu (`Claude-HK-Aptien-App`: „systémové štítky / badge / micro labely
+  = Nunito · 10px"). Zaoblený „pill" (`999px`) se pro štítky nepoužívá.
 
 ### 6.6 Konverzace
 
@@ -332,7 +333,9 @@ tlumený lila text `#9A95AD` / `#B0AAC8`.
 ### 9.2 Typografie
 
 - **Displej / nadpisy:** `--font-display: 'Nunito', system-ui, sans-serif`.
-- **Text / body:** `--font-body: 'Open Sans', system-ui, sans-serif`.
+- **Text / body:** `--font-body: 'Nunito', system-ui, sans-serif`
+  (sladěno s app kitem – celá aplikace jede na Nunito; Open Sans zůstává
+  jen uložený v `assets/fonts`, nepoužívá se).
 - **Škála:** `--t-page 26px`, `--t-h2 20px`, `--t-h3 16px`,
   `--t-body 14px`, `--t-small 12px`, `--t-label 11px`.
 
@@ -368,7 +371,7 @@ Font Awesome 6 – rodiny `Font Awesome 6 Free` (`solid`, výchozí),
 5. Evidence nabízí pohledy Dashboard / Seznam / Kanban / Tabulka /
    Kalendář přes „pill" přepínač; pohled je per záložka.
 6. Detail = drawer zprava s tenkým akcentem, item taby a sdílenými akcemi.
-7. Typografie: Nunito (nadpisy) + Open Sans (text); ikony Font Awesome 6
+7. Typografie: **Nunito** (nadpisy i text, dle app kitu); ikony Font Awesome 6
    `solid` + `fw`.
 8. Komponenty (drawer, karty, view switcher, badge, tlačítka) jsou sdílené
    a chovají se napříč moduly konzistentně.
