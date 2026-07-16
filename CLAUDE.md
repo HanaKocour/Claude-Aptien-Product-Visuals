@@ -24,6 +24,12 @@ nejbližší existující prototyp, zkopíruj ho 1:1 a jen vyměň data. Nikdy
 nevynechávej položky menu ani žádnou sekci. Když si nejsi jistý, radši se
 zeptej, než abys cokoli domýšlel.
 
+> **Menu vždy celé a se správným aktivním stavem.** Kompletní levé menu
+> (všech 15 osobních + 6 firemních položek) k doslovnému zkopírování je v
+> **`prototypes/Aptien-menu-reference.md`**. Vždy vlož všechny položky,
+> označ jako aktivní **jen jednu** (dle otevřené obrazovky, jinak „Moje
+> domovská stránka") a nezaměňuj badge (počty) za zvýraznění.
+
 > Tohle je nejčastější chyba: generátor začne vynechávat položky menu,
 > měnit barvy podle „tématu" modulu nebo předělávat layout. **Nedělej to.**
 > Prototyp je předloha, ne inspirace.
@@ -198,6 +204,7 @@ tab strip + sidebar):
   - `Aptien-mobil-intranet.html` – **master prototyp: mobil / intranet** (zaměstnanecké zobrazení)
   - `assets/` – fonty, ikony, JS a obrázky (sdílené oběma prototypy, odkazované relativně)
   - `Aptien-pravidla-pouziti-UI.md` – referenční spec chování UI (desktop)
+  - `Aptien-menu-reference.md` – kompletní levé menu k doslovnému zkopírování + pravidla aktivního stavu
   - `Aptien-mobil-intranet-pravidla.md` – spec + podmínky viditelnosti pro zaměstnance (mobil)
   - `_archive/` – původní bundled prototypy (jen historická reference)
 - `profile-images/` – profilové obrázky person do avatarů (viz README uvnitř)
