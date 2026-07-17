@@ -388,6 +388,7 @@
       <i class="fa-solid fa-magnifying-glass" style="font-size:17px;cursor:pointer;color:#fff"></i>
       <div style="position:relative;cursor:pointer">
         <i class="fa-solid fa-bell" style="font-size:17px;color:#fff"></i>
+        <!-- Notifikační bublina zvonečku: VŽDY červená #FF3D00 (počítadlo/alert), lem v barvě top baru. Nikdy modrá. -->
         <span style="position:absolute;top:-7px;right:-9px;background:#FF3D00;color:#fff;font-size:9.5px;font-weight:800;border-radius:10px;min-width:17px;height:17px;display:flex;align-items:center;justify-content:center;padding:0 3px;border:1.5px solid #6200EA">60</span>
       </div>
       <i class="fa-solid fa-comment-dots" style="font-size:17px;cursor:pointer;color:#fff"></i>
@@ -2165,6 +2166,8 @@ class Component extends DCLogic {
     // ── View buttons (shared) ──
     const viewButtons = this.VIEWS.map(v => {
       const on = v.key === activeView;
+      // View switcher evidence: AKTIVNÍ pohled je VŽDY modrý (#1572e8, tint #e8f0fd), neaktivní bílý s šedým lemem.
+      // Nikdy nepřebírá barvu modulu – přepínání pohledů je vždy modré (viz Aptien-pravidla-pouziti-UI.md §5).
       const base = 'display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s,border-color .15s;border:1.5px solid ';
       return { label: v.label, icon: v.icon, onClick: () => this.setActiveView(v.key), style: base + (on ? '#1572e8;background:#e8f0fd;color:#1572e8' : '#c8c4d8;background:#fff;color:#3d3a52'), hover: base + '#1572e8;background:#e8f0fd;color:#1572e8' };
     });

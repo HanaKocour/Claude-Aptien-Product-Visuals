@@ -126,6 +126,19 @@ obrazovky.
 > když je neaktivní. Banner drží skladbu a barevnost jako v prototypu,
 > ne libovolný gradient.
 
+> **Notifikační bublina u zvonečku v top baru = VŽDY červená `#FF3D00`.**
+> Je to počítadlo/alert, nikdy ne modrá. Lem bubliny drží barvu top baru.
+> Platí i pro počítadla „alert" v levém menu.
+
+> **Toolbar evidence se chová VŽDY jako v prototypu (`Aptien-aplikace-offline.html`).**
+> Skladba: ikona + název modulu (`16px/800`, `#1e1b2e`; ikona v barvě
+> modulu `c800`) → modré tlačítko „PŘIDAT …" (`#1572e8`) → hledání (pilulka
+> `#f2f5f7`) → view switcher vpravo. **Přepínání pohledů je VŽDY modré**:
+> aktivní pohled = lem/text `#1572e8` + tint `#e8f0fd`, neaktivní = bílé,
+> šedý lem `#c8c4d8`, text `#3d3a52`. View switcher, tlačítko ani hledání
+> nikdy nepřebírají barvu modulu. (Design system to dělal špatně – závazný
+> je prototyp.)
+
 > **Gradient hero banneru na dashboardu evidence = přesně 2 stupně.**
 > 1. barva (`0%`) = **základní barva modulu (`c800`)** tak, jak je
 > popsaná v tabulce záložek; 2. barva (`100%`) = **stejná barva

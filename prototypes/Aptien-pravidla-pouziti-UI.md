@@ -144,6 +144,27 @@ přepínaných výsuvným „pill" přepínačem. Každá záložka si drží sv
 
 Přepnutí pohledu nemění data, jen jejich prezentaci.
 
+> **Přepínání pohledů je VŽDY modré (`#1572e8`), nezávisle na modulu.**
+> Aktivní pohled = lem a text `#1572e8` + tint pozadí `#e8f0fd`; neaktivní =
+> bílé pozadí, šedý lem `#c8c4d8`, text `#3d3a52`. Nikdy nepřebírá barvu
+> modulu ani barvu aktivní záložky. (Design system to renderoval špatně –
+> závazné je chování v prototypu `Aptien-aplikace-offline.html`.)
+
+### 5.1 Toolbar evidence (název, akce, hledání, přepínač)
+
+Horní lišta evidenčního modulu má **vždy** stejnou skladbu a barevnost jako
+v prototypu:
+
+- **Ikona + název modulu** vlevo (název `16px/800`, tmavý `#1e1b2e`;
+  ikona v barvě modulu `c800`), následovaný info/edit ikonou.
+- **Primární akce „PŘIDAT …"** = **modré** tlačítko `#1572e8` (pilulka),
+  bílý text – bez ohledu na modul.
+- **Hledání** = pilulka `#f2f5f7` s lupou.
+- **View switcher** vpravo, aktivní pohled **modrý** (viz výše).
+
+Nic z toho nepřebírá „tématickou" barvu modulu – barva modulu (`c800`) je
+jen na ikoně názvu a na záložce.
+
 ---
 
 ## 6. Moduly evidence
@@ -272,7 +293,7 @@ Historie změn, Uložit změny.
 
 | Komponenta | Popis a pravidla |
 |---|---|
-| **Top bar** | Fialový pruh (`#6200EA`, výška 56 px), vlevo bílé logo + název prostoru, vpravo akční ikony. |
+| **Top bar** | Fialový pruh (`#6200EA`, výška 56 px), vlevo bílé logo + název prostoru, vpravo akční ikony. Notifikační bublina u zvonečku je **vždy červená `#FF3D00`** (počítadlo/alert), nikdy modrá; lem v barvě top baru. |
 | **Tab strip** | Fialový pruh (`#6200EA`) se záložkami otevřených záznamů; **aktivní záložka = barva modulu `c800`** (bílý text), neaktivní bílé s textem dle `c800`, zaoblené horní rohy. |
 | **Sidebar menu** | **Bílý panel** (`#fff`, šířka 220 px, pravý okraj `1px solid var(--gray-10)`), dvě skupiny (osobní / „Naše firma"), ikona+text, badge, sbalitelné, rolovatelné, profil dole; aktivní položka = tint `rgba(21,114,232,.10)` + text `#1572e8`. |
 | **Content area** | Hlavní plocha; hostí dashboard / seznam / kanban / tabulku. Světlé pozadí (`--canvas #f9f9fb`). |
