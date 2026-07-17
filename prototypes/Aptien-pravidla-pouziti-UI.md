@@ -165,6 +165,46 @@ v prototypu:
 Nic z toho nepřebírá „tématickou" barvu modulu – barva modulu (`c800`) je
 jen na ikoně názvu a na záložce.
 
+### 5.2 Načítání layoutu pohledu (routing pro generování)
+
+> **Každý pohled = vlastní blok `<sc-if value="{{ showX }}">` v master
+> prototypu, řízený stavem.** Generátor musí layout pohledu **vzít
+> z prototypu**, ne skládat vlastní – design system layouty pohledů nezná.
+
+**Stav, který o pohledu rozhoduje:**
+
+- `views` – mapa `{ indexZáložky: 'klíčPohledu' }`; **každá záložka si drží
+  svůj pohled** (jedna může být v `dashboard`, jiná v `kanban`). Default
+  `{ 2:'dashboard', 8:'dashboard', 12:'kanban' }`.
+- `activeView = views[activeTab] || 'dashboard'`.
+- `setActiveView(key)` nastaví `views[activeTab] = key` (přepínač pohledů).
+
+**Mapa pohled → flag → data. Referenční modul je *Zakázky* (tab 12) – má
+všechny pohledy zvlášť:**
+
+| Pohled | Flag (Zakázky) | Datový zdroj |
+|---|---|---|
+| Dashboard | `showZakDashboard` | `zak_statusRows`, `zak_valueRows`, `zak_respRows`, `zak_recentItems` |
+| Seznam | `showZakList` | `zak_listRows` |
+| Kanban | `showZakKanban` | `zak_kanbanCols` |
+| Tabulka | `showZakTable` | `zak_tableRows` (stránkování `tablePageSize`) |
+| Kalendář | `showZakCalPlaceholder` | placeholder („Vyžaduje připojení…") |
+
+> **Rizika (tab 8) a Ochranné pomůcky (tab 2) mají zatím jen dva layouty:**
+> `dashboard` a generický **seznam** (`showRizikaList` / `showOPList` =
+> `activeView !== 'dashboard'`, tj. Seznam/Kanban/Tabulka spadnou do
+> stejného seznamu). Když nějaký modul potřebuje vlastní Kanban/Tabulku,
+> **zkopíruj příslušný blok ze Zakázek** a vyměň data.
+
+**Postup, jak vygenerovat konkrétní pohled:**
+
+1. Nastav `views[<indexZáložky>] = '<klíč>'` (`dashboard` / `seznam` /
+   `kanban` / `tabulka` / `kalendar`).
+2. Vyrenderuj odpovídající blok `<sc-if value="{{ show… }}">` – zkopíruj
+   ho z prototypu (referenční Zakázky), naplň jen data.
+3. View switcher se řídí `activeView` a aktivní pohled je **vždy modrý**
+   (viz §5).
+
 ---
 
 ## 6. Moduly evidence

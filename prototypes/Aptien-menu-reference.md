@@ -8,6 +8,31 @@ Nic nevynechávej, nepřidávej ani nepřejmenovávej.*
 > **`Awesome-font-icons/`** (Font Awesome, styl `solid` + `fw`).
 > Použij právě tyto soubory.
 
+> ⛔ **Ikony menu ber jako INLINE SVG z prototypu, NE jako Font Awesome
+> třídy z Free CDN.** V master prototypu je renderuje funkce `mkNavIcon`
+> z vložené mapy **`SVG_ICONS`** (klíč = pole `svg` dané položky). Proto
+> jsou v prototypu vždy správně.
+>
+> **Proč to generátor kazí:** design system používá `<i class="fa-solid
+> fa-…">` z **Free** CDN (`font-awesome/6.5.0`). Jenže část ikon menu jsou
+> **Font Awesome Pro** a ve Free CDN NEEXISTUJÍ → vykreslí se jako prázdný
+> čtvereček / špatný glyf. Konkrétně:
+>
+> | Položka | `svg` klíč | Pozn. |
+> |---|---|---|
+> | Moje směrnice, Nastavení směrnic | `books` | Pro (Free má jen `book`) |
+> | Co jsem dělal | `chart-network` | Pro |
+> | Nástěnka | `grid-horizontal` | Pro |
+> | Reporty | `file-chart-column` | Pro |
+>
+> Design system „vypadá OK", protože jeho *vlastní* menu používá jinou,
+> Free sadu (palette, font, keyboard…) – to není menu aplikace.
+>
+> **Správně:** ikony menu vždy z prototypu (`SVG_ICONS` / soubory v
+> `Awesome-font-icons/`). Pokud přesto musíš použít FA třídy, buď načti
+> **FA Pro**, nebo Pro ikony nahraď Free ekvivalentem (`books`→`book`,
+> `grid-horizontal`→`table-cells` apod.) – ale první volba je prototyp.
+
 > **Nejčastější chyby, kterých se vyvaruj:**
 > 1. Vynechání položek (menu musí mít **všech 15 + 7** položek).
 > 2. Označení špatné nebo více položek jako aktivní.
@@ -80,6 +105,54 @@ Nic nevynechávej, nepřidávej ani nepřejmenovávej.*
 
 ## Horní záložky (tab strip) – pro úplnost
 
-Aktivní **záložka** (nahoře) je **oranžová `#E65100`**, ne barva modulu.
-Barvy a ikony jednotlivých záložek viz `Aptien-pravidla-pouziti-UI.md`,
-sekce *Tab strip*.
+Aktivní **záložka** (nahoře) **přebírá barvu svého modulu (`c800`)** – tj.
+tu, kterou má text/ikona záložky, když je neaktivní (pozadí aktivní záložky
+= její `c800`, text bílý). Pruh za taby je fialový `#6200EA`. Barvy a ikony
+jednotlivých záložek viz `Aptien-pravidla-pouziti-UI.md`, sekce *Tab strip*.
+
+---
+
+## Menu → obsah (routing) — kam „sáhnout" při generování
+
+> **Klíčové:** položky menu nejsou samostatné komponenty. Obsah obrazovky
+> žije v **master prototypu `Aptien-aplikace-offline.html`** jako blok
+> `<sc-if value="{{ showX }}">…</sc-if>` v content area, řízený stavem.
+> Design system tohle routování nezná – **závazný je prototyp.**
+
+**Stav, který o obrazovce rozhoduje:**
+
+- `activeNav` – `id` aktivní položky menu (viz `id` v `NAV_WORK` / `NAV_COMPANY`).
+- `activeTab` – index otevřené horní záložky (`TABS`), nebo `null`.
+- `navOwnsContent` – když `activeNav` je `smern` nebo `dok`, položka menu
+  „vlastní" celou content area (překryje modul).
+
+**Které obrazovky jsou v prototypu HOTOVÉ (a jejich flag → blok):**
+
+| Položka menu (`id`) | Flag | Datový zdroj |
+|---|---|---|
+| Moje směrnice (`smern`) | `showSmernMain` / `showSmernDetail` | `DOCS`, `CONFIRMED_DOCS_LIST`, `SMERNICE_CATEGORIES`, `SMERNICE_CAT_DOCS` |
+| Směrnice a dokumenty (`dok`) | `showDokTilesView` / `showDokDetailView` | `DOK_CATEGORIES` |
+| Moje konverzace (`konv`) | `isKonv` (`konvShowList`/`konvShowDetail`) | `KONV_LIST`, `KONV_THREADS` |
+| Rizika / Ochranné pomůcky / Zakázky / Zaměstnanec | přes `activeTab` (8 / 2 / 12 / 0) | modulová data |
+
+Ostatní položky menu **zatím vlastní obrazovku nemají** → padají na
+`showPlaceholder` / `showEmpty`. „Moje domovská stránka" = výchozí prázdný
+stav.
+
+**Jak vygenerovat obrazovku pro položku menu (obecný postup):**
+
+1. Položka už je v `NAV_WORK` / `NAV_COMPANY` (má `id`). Nepřidávej duplicitně.
+2. Přidej routing flag: `const showX = activeNav === '<id>' && …;`.
+3. Pokud má překrýt modulovou plochu, přidej `id` do `navOwnsContent`.
+4. V `navWork` / `navCompany` mapě přidej `id` do `clearTab`, ať otevření
+   položky vynuluje `activeTab`.
+5. Přidej blok `<sc-if value="{{ showX }}">…</sc-if>` do content area –
+   **zkopíruj nejbližší existující obrazovku** (např. `showSmernMain`) a
+   vyměň jen data.
+6. Vystav `showX` (a případné render-vals) v `return {…}` objektu `renderVals`.
+
+> **Kam sahá „Moje směrnice":** flag `showSmernMain`
+> (`activeTab === 4 || activeNav === 'smern'`), blok v content area,
+> data z `CONFIRMED_DOCS_LIST` / `DOCS` / `SMERNICE_CATEGORIES`. Když se
+> nezobrazuje, není nastavené `activeNav = 'smern'` (nebo se generuje jen
+> z design systému, který blok neobsahuje).

@@ -34,6 +34,14 @@ zeptej, než abys cokoli domýšlel.
 > měnit barvy podle „tématu" modulu nebo předělávat layout. **Nedělej to.**
 > Prototyp je předloha, ne inspirace.
 
+> **Ikony menu = inline SVG z prototypu (`SVG_ICONS` / `mkNavIcon`), NE
+> Font Awesome třídy z Free CDN.** Část ikon menu jsou FA **Pro** (`books`,
+> `chart-network`, `grid-horizontal`, `file-chart-column`), které ve Free
+> CDN neexistují a vykreslí se jako prázdný čtvereček – to je nejčastější
+> příčina „rozbitých ikon". Design system používá FA Free třídy, proto to
+> kazí; **ber ikony z prototypu.** Detail v `Aptien-menu-reference.md`,
+> sekce *Ikony*.
+
 ---
 
 ## ⭐ Zdroj pravdy: hlavní je TENTO repozitář
@@ -196,7 +204,19 @@ tab strip + sidebar):
 | Ochranné pomůcky | modul *Ochranné pomůcky* |
 | Směrnice (policies) | modul *Směrnice* |
 | Obecná evidence + pohledy (dashboard / list / tabulka / drawer) | přepínač pohledů v evidenci |
+| Pohledy evidence (Dashboard / Seznam / Kanban / Tabulka / Kalendář) | referenční modul **Zakázky** (má všechny pohledy zvlášť); řízeno `views[tab]` / `activeView` – viz `Aptien-pravidla-pouziti-UI.md` §5.2 |
+| Moje směrnice | blok `showSmernMain` (menu `smern` / tab 4) – viz routing níže |
+| Směrnice a dokumenty | blok `showDokTilesView` (menu `dok`) – viz routing níže |
+| Moje konverzace | blok `isKonv` (menu `konv`) |
 | Pravidla a chování UI (referenční spec) | `prototypes/Aptien-pravidla-pouziti-UI.md` |
+
+> **Obrazovky z menu nejsou komponenty – jsou to bloky `<sc-if>` v master
+> prototypu, řízené stavem `activeNav` / `activeTab`.** Kompletní mapa
+> „položka menu → flag → blok → data" a postup, jak vygenerovat obrazovku
+> pro položku menu (Moje směrnice, Směrnice a dokumenty i ostatní), je v
+> **`prototypes/Aptien-menu-reference.md`**, sekce *„Menu → obsah (routing)"*.
+> Design system tohle routování nezná – když tvrdí, že obrazovku „udělal",
+> ale nenapojí se, **platí prototyp**: sáhni pro flag a blok tam.
 
 **Mobil / intranet** – `prototypes/Aptien-mobil-intranet.html`
 (zaměstnanecké zobrazení na telefonu, rám 390 × 844):
