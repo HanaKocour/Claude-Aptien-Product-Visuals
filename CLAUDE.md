@@ -147,6 +147,24 @@ obrazovky.
 > nikdy nepřebírají barvu modulu. (Design system to dělal špatně – závazný
 > je prototyp.)
 
+> **View switcher = VŽDY viditelný a VŽDY všech 5 pohledů** (Dashboard ·
+> Seznam · Kanban · Tabulka · Kalendář) na každé obrazovce evidence. Žádný
+> pohled nevynechávej, i když modul nemá vlastní layout.
+
+> **Dashboard evidence má POVINNOU skladbu: toolbar → hero banner
+> (gradientový „pruh") → mřížka bílých karet.** Nejčastější chyba
+> generátoru je vynechání hero banneru a start rovnou kartami – **to není
+> dashboard.** Hero banner je 1. prvek obsahu (2-stupňový gradient `c800`
+> → +30 % bílé, název `26px/800` + popis). Zkopíruj celý blok
+> `show…Dashboard` z prototypu (Rizika/Zakázky). Detail:
+> `Aptien-pravidla-pouziti-UI.md` §5.3.
+
+> **Skelet ostatních pohledů i drawer je taky pevný a bere se z prototypu
+> (referenční modul Zakázky):** Seznam / Kanban / Tabulka / Kalendář viz
+> `Aptien-pravidla-pouziti-UI.md` §5.4; item detail drawer (backdrop →
+> panel `80%`/`min 920px` → spine → hlavička → item tabs → tělo + pravý
+> sloupec akcí) viz §7.1. Nezačínej žádný pohled od nuly – kopíruj blok.
+
 > **Gradient hero banneru na dashboardu evidence = přesně 2 stupně.**
 > 1. barva (`0%`) = **základní barva modulu (`c800`)** tak, jak je
 > popsaná v tabulce záložek; 2. barva (`100%`) = **stejná barva

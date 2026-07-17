@@ -160,10 +160,17 @@ v prototypu:
 - **Primární akce „PŘIDAT …"** = **modré** tlačítko `#1572e8` (pilulka),
   bílý text – bez ohledu na modul.
 - **Hledání** = pilulka `#f2f5f7` s lupou.
-- **View switcher** vpravo, aktivní pohled **modrý** (viz výše).
+- **View switcher** vpravo – **VŽDY viditelný a VŽDY všech 5 pohledů**
+  (Dashboard · Seznam · Kanban · Tabulka · Kalendář), aktivní pohled
+  **modrý** (viz výše). Žádný pohled nevynechávej, i když modul zatím
+  nemá jeho vlastní layout (spadne do generického seznamu, ale tlačítko
+  tam být musí).
 
 Nic z toho nepřebírá „tématickou" barvu modulu – barva modulu (`c800`) je
 jen na ikoně názvu a na záložce.
+
+Toolbar (a v něm view switcher) je viditelný na **všech** pohledech
+evidence – nezmizí při přepnutí z dashboardu na seznam/kanban/tabulku.
 
 ### 5.2 Načítání layoutu pohledu (routing pro generování)
 
@@ -204,6 +211,62 @@ všechny pohledy zvlášť:**
    ho z prototypu (referenční Zakázky), naplň jen data.
 3. View switcher se řídí `activeView` a aktivní pohled je **vždy modrý**
    (viz §5).
+
+### 5.3 Dashboard evidence — POVINNÁ skladba
+
+> Dashboard (výchozí pohled evidence) má **vždy** tuto skladbu shora dolů.
+> Generátor nesmí žádnou vrstvu vynechat – nejčastější chyba je vynechání
+> hero banneru („toho pruhu") a start rovnou kartami. **To není dashboard.**
+
+1. **Toolbar** (viz §5.1) – ikona + název modulu, modré „PŘIDAT …",
+   hledání, **view switcher (všech 5 pohledů)**. Je nad obsahem, mimo blok
+   dashboardu, a drží se na všech pohledech.
+2. **Hero banner (gradientový pruh)** – **PRVNÍ prvek obsahu dashboardu**.
+   2-stupňový gradient `135deg` (base `c800` → +30 % bílé, viz §9.1),
+   radius `10px`, padding `28px 32px`, bílý text: **název modulu**
+   (`26px/800`) + krátký **popis** (`13px`, `opacity .88`). Bez tohoto
+   pruhu to není dashboard.
+3. **Mřížka přehledových karet** – `grid-template-columns:1fr 1fr; gap:16px`,
+   `align-items:start`. Karty: bílé pozadí, radius `10px`,
+   `1px solid #eeedf4`, padding `20px`, hlavička (název `14px/700`
+   `#1e1b2e` + ikona „rozbalit"). Obsah karet dle modulu (metriky, matice
+   rizik, přehled stavů, poslední vytvořené…), ale **skelet je vždy stejný:
+   hero banner → grid bílých karet**.
+
+Referenční dashboard = modul **Rizika** / **Zakázky** v prototypu. Zkopíruj
+celý blok `show…Dashboard` (obal `flex:1;overflow-y:auto;padding:16px 20px 20px`
+→ hero banner → grid karet) a vyměň jen data. Nikdy nezačínej dashboard
+rovnou kartami bez hero banneru.
+
+### 5.4 Ostatní pohledy — POVINNÁ skladba (Seznam / Kanban / Tabulka / Kalendář)
+
+> Stejně jako dashboard mají i ostatní pohledy pevný skelet. Referenční je
+> modul **Zakázky** – zkopíruj příslušný blok a vyměň jen data. Toolbar
+> (§5.1) je nad všemi pohledy; view switcher zůstává (všech 5).
+
+**Seznam** (`showZakList` → `zak_listRows`): jedna bílá karta (radius `10px`,
+`1px solid #e4e2ed`, jemný stín) se třemi vrstvami:
+1. horní lišta s řazením („dle abecedy ↑", zarovnaná vpravo),
+2. rolovatelný seznam řádků (ikona + název, hover),
+3. spodní akční lišta (`#ebebef`, ikony: „…", složka | nahrát, stáhnout).
+
+**Kanban** (`showZakKanban` → `zak_kanbanCols`): vodorovný scroll sloupců
+(`min-width:210px; max-width:340px`). Sloupec = barevná hlavička
+(`headerBg` + tečka `dot` + název + počet) → karty `.k-card`
+(název + ikona, „⋮", datum) → řádek „+ Přidat". Barvy sloupců drží data.
+
+**Tabulka** (`showZakTable` → `zak_tableRows`, `tablePageSize`): horní lišta
+(počet položek, oko, výběr počtu `10 / 50 / 100`, „⋮") → scroll kontejner
+s tabulkou: **sticky první sloupec** (akce oko + tužka), hlavička se
+seřaditelnými sloupci + **řádek filtrů** (inputy/selecty), tělo řádků
+(kategorie = chip, stav = pilulka, název = modrý odkaz).
+
+**Kalendář** (`showZakCalPlaceholder`): placeholder na střed (ikona +
+„Kalendář" + „Tento pohled bude dostupný v dalším kroku").
+
+> Rizika a Ochranné pomůcky zatím vlastní Seznam/Kanban/Tabulku nemají –
+> spadnou do generického seznamu. Když je potřeba plný pohled, **zkopíruj
+> blok ze Zakázek** a vyměň data.
 
 ---
 
@@ -326,6 +389,28 @@ Panel překrývá obsah; zavírá se zpět.
 **Akce v detailu** (sdílené, dle modulu): Oblíbená, Nový report, Moje
 reporty, Online formuláře, Výsledky formulářů, Sdílet, Náhled, Oprávnění,
 Historie změn, Uložit změny.
+
+### 7.1 Skelet panelu (POVINNÁ skladba)
+
+> Referenční je drawer modulu **Zakázky** (`drawerZakOpen`). Zkopíruj celou
+> strukturu a vyměň jen data – neskládej vlastní layout.
+
+- **Podklad (backdrop):** `position:fixed;inset:0;background:rgba(0,0,0,.15)`,
+  klik zavírá panel.
+- **Panel:** `position:fixed;top:0;right:0;bottom:0;`, **šířka `80%`
+  (`min-width:920px`)**, bílé pozadí, stín `-8px 0 32px rgba(0,0,0,.18)`,
+  animace `drawerIn`, dvousloupcový (`flex-direction:row`). (Prototyp má
+  záměrně široký dvousloupcový drawer – ne 65 %.)
+- **Svislý pruh (spine)** `38px` vlevo: ikona modulu + svislý název záznamu.
+- **Hlavní část:**
+  1. **Hlavička** – název záznamu (`26px`, tenký řez `300`), kategorie jako
+     chip (`#eceff1` / `#59676d`), placeholder obrázku (`110px`, přerušovaný
+     okraj) a křížek „zavřít".
+  2. **Item tabs** (viz tabulka výše) – volitelný počet = **modrý** badge
+     `#1572e8`.
+  3. **Tělo** – **levý sloupec**: pole záznamu (řádky `min-height:52px`,
+     oddělovač `#f0eef8`); **pravý sloupec akcí** (`210px`, `border-left`):
+     seznam akcí + blok *ID / Vytvořeno / Vytvořil / Poslední úprava*.
 
 ---
 
