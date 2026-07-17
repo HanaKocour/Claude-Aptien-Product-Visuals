@@ -51,6 +51,9 @@ zeptej, než abys cokoli domýšlel.
 > - `evidence-list.html` – pohled **Seznam** (karta: řazení → řádky → spodní lišta)
 > - `evidence-kanban.html` – pohled **Kanban** (5 sloupců s pevnými barvami, karty, +Přidat)
 > - `evidence-drawer.html` – **item detail drawer** (backdrop → panel 80%/920 → spine → hlavička → item tabs → pole + pravý sloupec akcí + primární tlačítko „Uložit změny")
+> - `konverzace-list.html` – **Moje konverzace / seznam** (hledání + „+", karty konverzací)
+> - `konverzace-chat.html` – **Moje konverzace / otevřený chat** (title bar, AI SOUHRN, bubliny, composer)
+> - `drawer-konverzace.html` – obsah **tabu Konverzace v draweru** (bubliny + composer)
 >
 > Celá obrazovka evidence = `evidence-toolbar` + jeden z pohledů
 > (`dashboard`/`table`/`list`/`kanban`) + volitelně `evidence-drawer`.
@@ -311,7 +314,10 @@ tab strip + sidebar):
     `sidebar-menu.html` (levé menu s inline SVG ikonami),
     `evidence-toolbar.html` (toolbar), `evidence-dashboard.html` (Dashboard),
     `evidence-table.html` (Tabulka), `evidence-list.html` (Seznam),
-    `evidence-kanban.html` (Kanban), `evidence-drawer.html` (item detail drawer)
+    `evidence-kanban.html` (Kanban), `evidence-drawer.html` (item detail drawer),
+    `konverzace-list.html` (Moje konverzace – seznam),
+    `konverzace-chat.html` (Moje konverzace – otevřený chat),
+    `drawer-konverzace.html` (tab Konverzace v draweru)
   - `_archive/` – původní bundled prototypy (jen historická reference)
 - `profile-images/` – profilové obrázky person do avatarů (viz README uvnitř)
 - `files/` – zdrojové podklady, šablony rámečků

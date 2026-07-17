@@ -364,9 +364,39 @@ Pravidla:
   kitu (`Claude-HK-Aptien-App`: „systémové štítky / badge / micro labely
   = Nunito · 10px"). Zaoblený „pill" (`999px`) se pro štítky nepoužívá.
 
-### 6.6 Konverzace
+### 6.6 Moje konverzace (menu `konv`)
 
-Panel konverzace s prvkem **AI SOUHRN**.
+Obrazovka „Moje konverzace" (položka menu `konv`, `activeNav = 'konv'`) má
+**dva stavy** řízené `openKonvId`:
+
+- **Seznam** (`konvShowList`, když `openKonvId` je prázdné) – hotový blok
+  `partials/konverzace-list.html`. Skladba: horní lišta (`#f3f3f7`) s
+  hledáním (pilulka) a **modrým kruhovým „+"**, pod ní sloupec karet
+  konverzací. Karta = ikona dle typu + název + čas, poslední zpráva,
+  kategorie (uppercase), volitelně **zvoneček „ztlumeno"** (`bell-slash`)
+  a šipka. **Ikona podle typu:** `doc` (šedý box, `file-lines`), `warn`
+  (šedý kruh, `circle-exclamation`), `sheet` (zelený box, `table`), `pdf`
+  (červený box, `file-pdf`), `img` (barevný box, `image`). Smazaná zpráva =
+  kurzíva; „Zatím žádné zprávy" = tlumená.
+- **Otevřený chat** (`konvShowDetail`, po kliknutí na kartu) – hotový blok
+  `partials/konverzace-chat.html`. Skladba: title bar (**← zpět** vrací na
+  seznam + název), sub-header (*Konverzace* · hledání · **AI SOUHRN** ·
+  ⋮), bubliny zpráv, composer (spona + input + modré odeslání).
+
+**Pravidla bublin (chat):** cizí zprávy jsou **vlevo, šedá bublina**
+(`#9ba5ac`); **vlastní („Vy") vpravo, MODRÁ bublina** (`#2962FF`) přes
+třídu `.toRight`. Avatar = kruh s iniciálami v barvě osoby. Datumové
+oddělovače jsou šedé pilulky.
+
+> **„AI SOUHRN" je fialové tlačítko `#6200EA`** (aptien fialová, ne modré,
+> ne barva modulu) – jediná výjimka, drží se prototypu. Ikona
+> `wand-magic-sparkles`.
+
+**Konverzace v draweru:** stejné bubliny + composer jsou i jako **item tab
+„Konverzace" v detailu záznamu** – hotový blok `partials/drawer-konverzace.html`
+(vkládá se do levého těla draweru, pravý sloupec akcí zůstává). **Nahoře má
+sub-header lištu „Konverzace" + hledání + AI SOUHRN + ⋮** (stejnou jako
+otevřený chat; AI SOUHRN = fialové `#6200EA`). Viz §7.1.
 
 ---
 

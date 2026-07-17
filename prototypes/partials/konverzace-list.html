@@ -1,0 +1,121 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free). Řádek níže načte FA, aby se
+     vykreslily i při samostatném otevření souboru. V master prototypu se FA
+     načítá z jeho assetů, takže tam je tento <link> nadbytečný (neškodí). -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!--
+  APTIEN — MOJE KONVERZACE / SEZNAM · STATICKÝ BLOK K DOSLOVNÉMU VLOŽENÍ
+  ======================================================================
+  Obrazovka „Moje konverzace" (menu `konv`) má DVA stavy: SEZNAM (tento
+  soubor) a OTEVŘENÝ CHAT (konverzace-chat.html). Přepíná se přes `openKonvId`
+  (klik na kartu → chat; „zpět" → seznam). Viz Aptien-pravidla-pouziti-UI.md §6.6.
+  Skladba seznamu: horní lišta (hledání + modré „+") → sloupec karet.
+  Ikona karty dle typu: doc/warn/sheet/pdf/img (viz jednotlivé karty).
+  Měň jen data. NEMĚŇ: modré „+", strukturu karty.
+-->
+<div style="flex:1;display:flex;flex-direction:column;min-height:0;background:#fff;font-family:'Nunito',sans-serif">
+
+  <!-- Horní lišta: hledání + přidat -->
+  <div style="flex-shrink:0;padding:12px 14px;display:flex;align-items:center;gap:12px;background:#f3f3f7">
+    <div style="flex:1;display:flex;align-items:center;gap:9px;background:#fff;border:1px solid #e2dff0;border-radius:999px;padding:9px 16px;box-shadow:0 1px 3px rgba(0,0,0,.06)">
+      <i class="fa-solid fa-magnifying-glass" style="color:#b0aac8;font-size:13px;flex-shrink:0"></i>
+      <input placeholder="Hledat konverzaci" style="flex:1;border:none;outline:none;font-size:13px;font-family:'Nunito',sans-serif;color:#2b2540;background:transparent">
+    </div>
+    <div style="width:44px;height:44px;border-radius:50%;background:#1572e8;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;box-shadow:0 3px 9px rgba(21,114,232,.28)">
+      <i class="fa-solid fa-plus" style="font-size:17px"></i>
+    </div>
+  </div>
+
+  <!-- Seznam konverzací -->
+  <div style="flex:1;overflow-y:auto;background:#f3f3f7;padding:10px 14px;display:flex;flex-direction:column;gap:6px">
+
+    <!-- doc -->
+    <div style="display:flex;align-items:center;gap:13px;padding:12px 14px;background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer">
+      <div style="width:44px;height:44px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#f0eff5"><i class="fa-solid fa-file-lines" style="font-size:15px;color:#7a7595"></i></div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:14px;font-weight:700;color:#1e1b2e;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">2022 Elizabeth Bathory s Divokou krví</span><span style="font-size:11.5px;color:#9a93b5;flex-shrink:0;white-space:nowrap">po</span></div>
+        <div style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;color:#7a7595">Adéla Sládková: posílám zprávu do testu kvůli notifikaci a otevření z emailu</div>
+        <div style="font-size:10px;color:#b0aac8;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:2px">KRYCÍ LISTY</div>
+      </div>
+      <i class="fa-solid fa-chevron-right" style="color:#ccc8d8;font-size:11px;flex-shrink:0"></i>
+    </div>
+
+    <!-- doc / muted / bez zpráv -->
+    <div style="display:flex;align-items:center;gap:13px;padding:12px 14px;background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer">
+      <div style="width:44px;height:44px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#f0eff5"><i class="fa-solid fa-file-lines" style="font-size:15px;color:#7a7595"></i></div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:14px;font-weight:700;color:#1e1b2e;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">test</span><span style="font-size:11.5px;color:#9a93b5;flex-shrink:0;white-space:nowrap"></span></div>
+        <div style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;color:#b0aac8">Zatím žádné zprávy</div>
+        <div style="font-size:10px;color:#b0aac8;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:2px">FORMULÁŘE PFD</div>
+      </div>
+      <i class="fa-solid fa-bell-slash" style="color:#c5c0d5;font-size:13px;flex-shrink:0"></i>
+      <i class="fa-solid fa-chevron-right" style="color:#ccc8d8;font-size:11px;flex-shrink:0"></i>
+    </div>
+
+    <!-- warn -->
+    <div style="display:flex;align-items:center;gap:13px;padding:12px 14px;background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer">
+      <div style="width:44px;height:44px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#f0eff5"><i class="fa-solid fa-circle-exclamation" style="font-size:15px;color:#5a5478"></i></div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:14px;font-weight:700;color:#1e1b2e;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Překlápěč vozíků L25L, Koppens</span><span style="font-size:11.5px;color:#9a93b5;flex-shrink:0;white-space:nowrap"></span></div>
+        <div style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;color:#b0aac8">Zatím žádné zprávy</div>
+        <div style="font-size:10px;color:#b0aac8;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:2px">OBALOVACÍ LINKA 1</div>
+      </div>
+      <i class="fa-solid fa-chevron-right" style="color:#ccc8d8;font-size:11px;flex-shrink:0"></i>
+    </div>
+
+    <!-- warn -->
+    <div style="display:flex;align-items:center;gap:13px;padding:12px 14px;background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer">
+      <div style="width:44px;height:44px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#f0eff5"><i class="fa-solid fa-circle-exclamation" style="font-size:15px;color:#5a5478"></i></div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:14px;font-weight:700;color:#1e1b2e;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">obalová linka</span><span style="font-size:11.5px;color:#9a93b5;flex-shrink:0;white-space:nowrap">07.07.2026</span></div>
+        <div style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;color:#7a7595">Vy: test změny textu a už je upraveno</div>
+        <div style="font-size:10px;color:#b0aac8;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:2px">OBALOVACÍ LINKA 1</div>
+      </div>
+      <i class="fa-solid fa-chevron-right" style="color:#ccc8d8;font-size:11px;flex-shrink:0"></i>
+    </div>
+
+    <!-- sheet -->
+    <div style="display:flex;align-items:center;gap:13px;padding:12px 14px;background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer">
+      <div style="width:44px;height:44px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#e8f5e9"><i class="fa-solid fa-table" style="font-size:15px;color:#2e7d32"></i></div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:14px;font-weight:700;color:#1e1b2e;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Ukázkový zákazník</span><span style="font-size:11.5px;color:#9a93b5;flex-shrink:0;white-space:nowrap">07.07.2026</span></div>
+        <div style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;color:#7a7595">Vy: a tady je obrázek jen s názvem bez pomlček a mezer a dlouhým textem pojdme se...</div>
+        <div style="font-size:10px;color:#b0aac8;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:2px">ZÁKAZNÍCI</div>
+      </div>
+      <i class="fa-solid fa-chevron-right" style="color:#ccc8d8;font-size:11px;flex-shrink:0"></i>
+    </div>
+
+    <!-- pdf -->
+    <div style="display:flex;align-items:center;gap:13px;padding:12px 14px;background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer">
+      <div style="width:44px;height:44px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#ffebee"><i class="fa-solid fa-file-pdf" style="font-size:15px;color:#c62828"></i></div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:14px;font-weight:700;color:#1e1b2e;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Test2</span><span style="font-size:11.5px;color:#9a93b5;flex-shrink:0;white-space:nowrap">02.07.2026</span></div>
+        <div style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;color:#7a7595">Vy: Test psaní zpráv</div>
+        <div style="font-size:10px;color:#b0aac8;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:2px">OCHRANNÉ POMŮCKY</div>
+      </div>
+      <i class="fa-solid fa-chevron-right" style="color:#ccc8d8;font-size:11px;flex-shrink:0"></i>
+    </div>
+
+    <!-- img / smazaná zpráva -->
+    <div style="display:flex;align-items:center;gap:13px;padding:12px 14px;background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer">
+      <div style="width:44px;height:44px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#5d7e9a"><i class="fa-solid fa-image" style="font-size:15px;color:rgba(255,255,255,.55)"></i></div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:14px;font-weight:700;color:#1e1b2e;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Detektor kovů BOEKELS č. 3</span><span style="font-size:11.5px;color:#9a93b5;flex-shrink:0;white-space:nowrap">30.06.2026</span></div>
+        <div style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;color:#b0aac8;font-style:italic">Zpráva byla smazána</div>
+        <div style="font-size:10px;color:#b0aac8;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:2px">OBALOVACÍ LINKA 1</div>
+      </div>
+      <i class="fa-solid fa-chevron-right" style="color:#ccc8d8;font-size:11px;flex-shrink:0"></i>
+    </div>
+
+    <!-- img -->
+    <div style="display:flex;align-items:center;gap:13px;padding:12px 14px;background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer">
+      <div style="width:44px;height:44px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#8a7050"><i class="fa-solid fa-image" style="font-size:15px;color:rgba(255,255,255,.55)"></i></div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:14px;font-weight:700;color:#1e1b2e;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">FRIGOSCANDIA Classic 400 č.1</span><span style="font-size:11.5px;color:#9a93b5;flex-shrink:0;white-space:nowrap">30.06.2026</span></div>
+        <div style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;color:#7a7595">Vy: dasdf</div>
+        <div style="font-size:10px;color:#b0aac8;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:2px">OBALOVACÍ LINKA 1</div>
+      </div>
+      <i class="fa-solid fa-chevron-right" style="color:#ccc8d8;font-size:11px;flex-shrink:0"></i>
+    </div>
+
+  </div>
+</div>
