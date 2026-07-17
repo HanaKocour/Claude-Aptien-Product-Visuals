@@ -1,0 +1,85 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free). Řádek níže načte FA, aby se
+     vykreslily i při samostatném otevření souboru. V master prototypu se FA
+     načítá z jeho assetů, takže tam je tento <link> nadbytečný (neškodí). -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!--
+  APTIEN — EVIDENCE / POHLED „DASHBOARD" · STATICKÝ BLOK K DOSLOVNÉMU VLOŽENÍ
+  ===========================================================================
+  POVINNÁ skladba (viz Aptien-pravidla-pouziti-UI.md §5.3):
+    1) HERO BANNER = gradientový pruh (PRVNÍ prvek!), 2-stupňový gradient
+       135deg: base c800 modulu → tatáž barva +30 % bílé; název 26/800 + popis.
+    2) MŘÍŽKA bílých karet (1fr 1fr, gap 16).
+  NIKDY nezačínej dashboard rovnou kartami bez hero banneru!
+  Toolbar (partial evidence-toolbar.html) patří NAD tento blok.
+  Zde referenční modul Zakázky (c800 #1565C0 → +30 % bílé #5B93D3).
+  Gradient jiného modulu: 2. barva = round(kanál*0,7 + 76,5) pro R,G,B.
+-->
+<div style="flex:1;overflow-y:auto;padding:16px 20px 20px;font-family:'Nunito',sans-serif">
+
+  <!-- 1) HERO BANNER (gradientový pruh) -->
+  <div style="background:linear-gradient(135deg,#1565C0 0%,#5B93D3 100%);border-radius:10px;padding:28px 32px;margin-bottom:16px;color:#fff">
+    <div style="font-size:26px;font-weight:800;margin-bottom:10px">Zakázky</div>
+    <div style="font-size:13px;opacity:.88;max-width:700px;line-height:1.5">Evidence zakázek nám dává přehled o poptávkách, realizaci i dokončených projektech na jednom místě.</div>
+  </div>
+
+  <!-- 2) MŘÍŽKA KARET -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start">
+
+    <!-- Levý sloupec -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+
+      <!-- Přehled stavů -->
+      <div style="background:#fff;border-radius:10px;border:1px solid #eeedf4;padding:20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:8px"><i class="fa-solid fa-bars-progress" style="font-size:13px;color:#1565C0"></i><span style="font-size:14px;font-weight:700;color:#1e1b2e">Přehled stavů</span></div>
+          <i class="fa-solid fa-up-right-and-down-left-from-center" style="font-size:12px;color:#b0aac8;cursor:pointer"></i>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f5f4fa"><div style="width:10px;height:10px;border-radius:50%;background:#DD2C00;flex-shrink:0"></div><span style="font-size:12px;color:#3d3a52;flex:1">Poptávka</span><span style="font-size:12px;font-weight:700;color:#1e1b2e;width:24px;text-align:right;flex-shrink:0">4</span><div style="width:160px;height:10px;background:#f0eff5;border-radius:4px;flex-shrink:0;overflow:hidden"><div style="height:100%;background:#DD2C00;border-radius:4px;width:40%"></div></div><span style="font-size:12px;color:#9a95ad;width:52px;text-align:right;flex-shrink:0">40 %</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f5f4fa"><div style="width:10px;height:10px;border-radius:50%;background:#FF8F00;flex-shrink:0"></div><span style="font-size:12px;color:#3d3a52;flex:1">Nabídka poslána</span><span style="font-size:12px;font-weight:700;color:#1e1b2e;width:24px;text-align:right;flex-shrink:0">2</span><div style="width:160px;height:10px;background:#f0eff5;border-radius:4px;flex-shrink:0;overflow:hidden"><div style="height:100%;background:#FF8F00;border-radius:4px;width:20%"></div></div><span style="font-size:12px;color:#9a95ad;width:52px;text-align:right;flex-shrink:0">20 %</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f5f4fa"><div style="width:10px;height:10px;border-radius:50%;background:#558B2F;flex-shrink:0"></div><span style="font-size:12px;color:#3d3a52;flex:1">Realizace</span><span style="font-size:12px;font-weight:700;color:#1e1b2e;width:24px;text-align:right;flex-shrink:0">3</span><div style="width:160px;height:10px;background:#f0eff5;border-radius:4px;flex-shrink:0;overflow:hidden"><div style="height:100%;background:#558B2F;border-radius:4px;width:30%"></div></div><span style="font-size:12px;color:#9a95ad;width:52px;text-align:right;flex-shrink:0">30 %</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f5f4fa"><div style="width:10px;height:10px;border-radius:50%;background:#00897B;flex-shrink:0"></div><span style="font-size:12px;color:#3d3a52;flex:1">Hotovo</span><span style="font-size:12px;font-weight:700;color:#1e1b2e;width:24px;text-align:right;flex-shrink:0">1</span><div style="width:160px;height:10px;background:#f0eff5;border-radius:4px;flex-shrink:0;overflow:hidden"><div style="height:100%;background:#00897B;border-radius:4px;width:10%"></div></div><span style="font-size:12px;color:#9a95ad;width:52px;text-align:right;flex-shrink:0">10 %</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 0"><div style="width:10px;height:10px;border-radius:50%;background:#9E9E9E;flex-shrink:0"></div><span style="font-size:12px;color:#3d3a52;flex:1">Zrušeno</span><span style="font-size:12px;font-weight:700;color:#1e1b2e;width:24px;text-align:right;flex-shrink:0">0</span><div style="width:160px;height:10px;background:#f0eff5;border-radius:4px;flex-shrink:0;overflow:hidden"><div style="height:100%;background:#9E9E9E;border-radius:4px;width:0%"></div></div><span style="font-size:12px;color:#9a95ad;width:52px;text-align:right;flex-shrink:0">0 %</span></div>
+      </div>
+
+      <!-- Hodnota podle kategorie -->
+      <div style="background:#fff;border-radius:10px;border:1px solid #eeedf4;padding:20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:8px"><i class="fa-solid fa-layer-group" style="font-size:13px;color:#1565C0"></i><span style="font-size:14px;font-weight:700;color:#1e1b2e">Podle kategorie</span></div>
+          <i class="fa-solid fa-up-right-and-down-left-from-center" style="font-size:12px;color:#b0aac8;cursor:pointer"></i>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #f5f4fa"><i class="fa-solid fa-gear" style="font-size:12px;color:#1565C0;width:16px;text-align:center;flex-shrink:0"></i><span style="font-size:12px;color:#3d3a52;flex:1">Výroba na zakázku</span><span style="font-size:12px;font-weight:700;color:#1e1b2e;width:24px;text-align:right;flex-shrink:0">6</span><div style="width:120px;height:8px;background:#f0eff5;border-radius:4px;flex-shrink:0;overflow:hidden"><div style="height:100%;background:#1565C0;border-radius:4px;width:60%"></div></div></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #f5f4fa"><i class="fa-solid fa-chart-simple" style="font-size:12px;color:#7B1FA2;width:16px;text-align:center;flex-shrink:0"></i><span style="font-size:12px;color:#3d3a52;flex:1">Sériová výroba</span><span style="font-size:12px;font-weight:700;color:#1e1b2e;width:24px;text-align:right;flex-shrink:0">2</span><div style="width:120px;height:8px;background:#f0eff5;border-radius:4px;flex-shrink:0;overflow:hidden"><div style="height:100%;background:#7B1FA2;border-radius:4px;width:20%"></div></div></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:6px 0"><i class="fa-solid fa-truck" style="font-size:12px;color:#E65100;width:16px;text-align:center;flex-shrink:0"></i><span style="font-size:12px;color:#3d3a52;flex:1">Dodávka</span><span style="font-size:12px;font-weight:700;color:#1e1b2e;width:24px;text-align:right;flex-shrink:0">2</span><div style="width:120px;height:8px;background:#f0eff5;border-radius:4px;flex-shrink:0;overflow:hidden"><div style="height:100%;background:#E65100;border-radius:4px;width:20%"></div></div></div>
+      </div>
+
+    </div>
+
+    <!-- Pravý sloupec -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+
+      <!-- Poslední vytvořené -->
+      <div style="background:#fff;border-radius:10px;border:1px solid #eeedf4;padding:20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:8px"><i class="fa-solid fa-clock-rotate-left" style="font-size:13px;color:#1565C0"></i><span style="font-size:14px;font-weight:700;color:#1e1b2e">Poslední vytvořené</span></div>
+          <i class="fa-solid fa-up-right-and-down-left-from-center" style="font-size:12px;color:#b0aac8;cursor:pointer"></i>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #f5f4fa"><span style="font-size:12px;color:#1572e8;flex:1;cursor:pointer;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Balicí linka Alfa</span><div style="display:flex;align-items:center;gap:6px;flex-shrink:0"><div style="width:26px;height:26px;border-radius:50%;background:#1565C0;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">TN</div><div><div style="font-size:11px;font-weight:600;color:#3d3a52;white-space:nowrap">Tomáš Novák</div><div style="font-size:10px;color:#9a95ad">12. 7. 2026</div></div></div></div>
+        <div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #f5f4fa"><span style="font-size:12px;color:#1572e8;flex:1;cursor:pointer;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Dopravník L25</span><div style="display:flex;align-items:center;gap:6px;flex-shrink:0"><div style="width:26px;height:26px;border-radius:50%;background:#00695C;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">PM</div><div><div style="font-size:11px;font-weight:600;color:#3d3a52;white-space:nowrap">Petra Malá</div><div style="font-size:10px;color:#9a95ad">8. 7. 2026</div></div></div></div>
+        <div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #f5f4fa"><span style="font-size:12px;color:#1572e8;flex:1;cursor:pointer;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Kryty 400 ks</span><div style="display:flex;align-items:center;gap:6px;flex-shrink:0"><div style="width:26px;height:26px;border-radius:50%;background:#E65100;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">JK</div><div><div style="font-size:11px;font-weight:600;color:#3d3a52;white-space:nowrap">Jan Kovář</div><div style="font-size:10px;color:#9a95ad">3. 7. 2026</div></div></div></div>
+        <div style="display:flex;align-items:center;gap:12px;padding:8px 0"><span style="font-size:12px;color:#1572e8;flex:1;cursor:pointer;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Detektor kovů BOEKELS</span><div style="display:flex;align-items:center;gap:6px;flex-shrink:0"><div style="width:26px;height:26px;border-radius:50%;background:#1565C0;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">TN</div><div><div style="font-size:11px;font-weight:600;color:#3d3a52;white-space:nowrap">Tomáš Novák</div><div style="font-size:10px;color:#9a95ad">28. 6. 2026</div></div></div></div>
+      </div>
+
+      <!-- Dle zodpovědné osoby -->
+      <div style="background:#fff;border-radius:10px;border:1px solid #eeedf4;padding:20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:8px"><i class="fa-solid fa-user-group" style="font-size:13px;color:#1565C0"></i><span style="font-size:14px;font-weight:700;color:#1e1b2e">Dle zodpovědné osoby</span></div>
+          <i class="fa-solid fa-up-right-and-down-left-from-center" style="font-size:12px;color:#b0aac8;cursor:pointer"></i>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f5f4fa"><div style="width:26px;height:26px;border-radius:50%;background:#1565C0;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">TN</div><span style="font-size:12px;color:#3d3a52;flex:1">Tomáš Novák</span><span style="font-size:12px;font-weight:700;color:#1e1b2e">5</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f5f4fa"><div style="width:26px;height:26px;border-radius:50%;background:#00695C;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">PM</div><span style="font-size:12px;color:#3d3a52;flex:1">Petra Malá</span><span style="font-size:12px;font-weight:700;color:#1e1b2e">3</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 0"><div style="width:26px;height:26px;border-radius:50%;background:#E65100;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">JK</div><span style="font-size:12px;color:#3d3a52;flex:1">Jan Kovář</span><span style="font-size:12px;font-weight:700;color:#1e1b2e">2</span></div>
+      </div>
+
+    </div>
+  </div>
+</div>

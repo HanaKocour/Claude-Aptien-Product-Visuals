@@ -1,0 +1,154 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free). Řádek níže načte FA, aby se
+     vykreslily i při samostatném otevření souboru. V master prototypu se FA
+     načítá z jeho assetů, takže tam je tento <link> nadbytečný (neškodí). -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!--
+  APTIEN — EVIDENCE / POHLED „TABULKA" · STATICKÝ BLOK K DOSLOVNÉMU VLOŽENÍ
+  =========================================================================
+  Při generování pohledu Tabulka VLOŽ TENTO BLOK CELÝ. NEREKONSTRUUJ tabulku
+  z hlavy — jinak vypadnou sloupce, sticky sloupec nebo řádek filtrů.
+
+  Skladba (viz Aptien-pravidla-pouziti-UI.md §5.4):
+    horní lišta (počet + výběr 10/50/100) → scroll kontejner → tabulka:
+      • STICKY první sloupec s akcemi (oko + tužka),
+      • hlavička se seřaditelnými sloupci,
+      • ŘÁDEK FILTRŮ (inputy/selecty),
+      • datové řádky: kategorie = chip, stav = pilulka, název = modrý odkaz.
+
+  Co smíš měnit: data v řádcích (a názvy sloupců dle modulu).
+  Co NEMĚŇ: strukturu, sticky sloupec, řádek filtrů, barvy chipů/pilulek.
+  Referenční modul = Zakázky. Toolbar (název + PŘIDAT + hledání + view
+  switcher) patří NAD tento blok (viz partial toolbaru / prototyp).
+-->
+<div style="flex-shrink:0;display:flex;align-items:center;padding:3px 20px;gap:8px;min-height:32px;font-family:'Nunito',sans-serif">
+  <span style="font-size:11px;color:#7a7595">( Položky: 1 - 5 z 5 )</span>
+  <div style="flex:1"></div>
+  <i class="fa-solid fa-eye" style="font-size:14px;color:#9a95ad;cursor:pointer"></i>
+  <select style="border:1px solid #d0cce0;border-radius:6px;padding:4px 8px;font-size:11px;font-weight:600;font-family:'Nunito',sans-serif;outline:none;background:#fff;color:#3d3a52;cursor:pointer">
+    <option value="10">10</option><option value="50">50</option><option value="100">100</option>
+  </select>
+  <i class="fa-solid fa-ellipsis-vertical" style="font-size:14px;color:#9a95ad;cursor:pointer"></i>
+</div>
+
+<div style="flex:1;min-height:0;overflow:auto;margin:0 12px 12px;border-radius:10px;border:1px solid #e4e2ed;background:#fff">
+  <table style="border-collapse:collapse;min-width:1420px;width:100%;font-family:'Nunito',sans-serif">
+    <thead>
+      <tr style="background:#f5f4fa">
+        <th style="width:68px;padding:10px 12px;text-align:left;font-size:10px;font-weight:700;color:#1a1a1a;letter-spacing:.05em;border-bottom:1px solid #e4e2ed;position:sticky;left:0;background:#f5f4fa;z-index:2"></th>
+        <th style="min-width:80px;padding:10px 12px;text-align:left;font-size:10px;font-weight:700;color:#1a1a1a;letter-spacing:.05em;border-bottom:1px solid #e4e2ed;white-space:nowrap">Prefix <i class="fa-solid fa-sort" style="font-size:9px;opacity:.5"></i></th>
+        <th style="min-width:220px;padding:10px 12px;text-align:left;font-size:10px;font-weight:700;color:#1a1a1a;letter-spacing:.05em;border-bottom:1px solid #e4e2ed;white-space:nowrap">Název položky <i class="fa-solid fa-sort" style="font-size:9px;opacity:.5"></i></th>
+        <th style="min-width:185px;padding:10px 12px;text-align:left;font-size:10px;font-weight:700;color:#1a1a1a;letter-spacing:.05em;border-bottom:1px solid #e4e2ed;white-space:nowrap">Kategorie</th>
+        <th style="min-width:165px;padding:10px 12px;text-align:left;font-size:10px;font-weight:700;color:#1a1a1a;letter-spacing:.05em;border-bottom:1px solid #e4e2ed;white-space:nowrap">Stav</th>
+        <th style="min-width:200px;padding:10px 12px;text-align:left;font-size:10px;font-weight:700;color:#1a1a1a;letter-spacing:.05em;border-bottom:1px solid #e4e2ed;white-space:nowrap">Název zakázky <i class="fa-solid fa-sort" style="font-size:9px;opacity:.5"></i></th>
+        <th style="min-width:120px;padding:10px 12px;text-align:left;font-size:10px;font-weight:700;color:#1a1a1a;letter-spacing:.05em;border-bottom:1px solid #e4e2ed;white-space:nowrap">Číslo zakázky <i class="fa-solid fa-sort" style="font-size:9px;opacity:.5"></i></th>
+        <th style="min-width:200px;padding:10px 12px;text-align:left;font-size:10px;font-weight:700;color:#1a1a1a;letter-spacing:.05em;border-bottom:1px solid #e4e2ed;white-space:nowrap">Popis zakázky <i class="fa-solid fa-sort" style="font-size:9px;opacity:.5"></i></th>
+        <th style="min-width:150px;padding:10px 12px;text-align:left;font-size:10px;font-weight:700;color:#1a1a1a;letter-spacing:.05em;border-bottom:1px solid #e4e2ed;white-space:nowrap">Termín dokončení <i class="fa-solid fa-sort" style="font-size:9px;opacity:.5"></i></th>
+        <th style="min-width:130px;padding:10px 12px;text-align:left;font-size:10px;font-weight:700;color:#1a1a1a;letter-spacing:.05em;border-bottom:1px solid #e4e2ed;white-space:nowrap">Přijaté faktury</th>
+      </tr>
+      <tr style="background:#fff;border-bottom:2px solid #e4e2ed">
+        <td style="padding:5px 12px;position:sticky;left:0;background:#fff;z-index:2"></td>
+        <td style="padding:5px 8px"><input type="text" style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:4px 6px;font-size:11px;font-family:'Nunito',sans-serif;outline:none;color:#3d3a52" placeholder=""></td>
+        <td style="padding:5px 8px"><input type="text" style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:4px 6px;font-size:11px;font-family:'Nunito',sans-serif;outline:none;color:#3d3a52" placeholder=""></td>
+        <td style="padding:5px 8px"><select style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:4px 6px;font-size:11px;font-family:'Nunito',sans-serif;outline:none;background:#fff;color:#3d3a52"><option>Vše</option><option>Výroba na zakázku</option><option>Sériová výroba</option><option>Dodávka</option></select></td>
+        <td style="padding:5px 8px"><select style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:4px 6px;font-size:11px;font-family:'Nunito',sans-serif;outline:none;background:#fff;color:#3d3a52"><option>Vše</option><option>Poptávka</option><option>Nabídka poslána</option><option>Realizace</option><option>Hotovo</option></select></td>
+        <td style="padding:5px 8px"><input type="text" style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:4px 6px;font-size:11px;font-family:'Nunito',sans-serif;outline:none;color:#3d3a52" placeholder=""></td>
+        <td style="padding:5px 8px"><input type="text" style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:4px 6px;font-size:11px;font-family:'Nunito',sans-serif;outline:none;color:#3d3a52" placeholder=""></td>
+        <td style="padding:5px 8px"><input type="text" style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:4px 6px;font-size:11px;font-family:'Nunito',sans-serif;outline:none;color:#3d3a52" placeholder=""></td>
+        <td style="padding:5px 8px"><div style="display:flex;align-items:center;border:1px solid #e0dded;border-radius:4px;overflow:hidden"><input type="text" placeholder="dd.mm.rrrr" style="flex:1;border:none;padding:4px 6px;font-size:11px;font-family:'Nunito',sans-serif;outline:none;color:#9a95ad;min-width:0"><i class="fa-regular fa-calendar" style="font-size:11px;color:#c0bdd0;padding:0 7px;flex-shrink:0"></i></div></td>
+        <td style="padding:5px 8px"></td>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Řádek 1 -->
+      <tr style="background:#fff">
+        <td style="padding:8px 12px;white-space:nowrap;position:sticky;left:0;background:#fff;z-index:1">
+          <div style="display:flex;align-items:center;gap:5px">
+            <div style="width:26px;height:26px;border-radius:5px;background:#455A64;display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="fa-solid fa-eye" style="font-size:11px;color:#fff"></i></div>
+            <div style="width:26px;height:26px;border-radius:5px;border:1px solid #e0dded;display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="fa-solid fa-pen" style="font-size:10px;color:#9a95ad"></i></div>
+          </div>
+        </td>
+        <td style="padding:8px 12px;font-size:12px;color:#9a95ad">ZAK</td>
+        <td style="padding:8px 12px;font-size:12px;font-weight:600;color:#1572e8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;cursor:pointer;text-decoration:underline;text-underline-offset:2px">Dodávka balicí linky Alfa</td>
+        <td style="padding:8px 12px;white-space:nowrap"><span style="display:inline-flex;align-items:center;gap:5px;background:#E3F2FD;color:#1565C0;font-size:11px;font-weight:600;padding:3px 9px;border-radius:4px;white-space:nowrap"><i class="fa-solid fa-gear" style="font-size:10px"></i>Výroba na zakázku</span></td>
+        <td style="padding:8px 12px;white-space:nowrap"><span style="display:inline-flex;align-items:center;gap:5px;background:#E8F5E9;color:#2E7D32;font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:.02em">Realizace<i class="fa-solid fa-chevron-down" style="font-size:8px;margin-left:2px"></i></span></td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Balicí linka Alfa</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52">2026-0012</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Kompletní dodávka a montáž</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52;white-space:nowrap">30.09.2026</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52;white-space:nowrap">1 250 000 Kč</td>
+      </tr>
+      <!-- Řádek 2 -->
+      <tr style="background:#fff">
+        <td style="padding:8px 12px;white-space:nowrap;position:sticky;left:0;background:#fff;z-index:1">
+          <div style="display:flex;align-items:center;gap:5px">
+            <div style="width:26px;height:26px;border-radius:5px;background:#455A64;display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="fa-solid fa-eye" style="font-size:11px;color:#fff"></i></div>
+            <div style="width:26px;height:26px;border-radius:5px;border:1px solid #e0dded;display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="fa-solid fa-pen" style="font-size:10px;color:#9a95ad"></i></div>
+          </div>
+        </td>
+        <td style="padding:8px 12px;font-size:12px;color:#9a95ad">ZAK</td>
+        <td style="padding:8px 12px;font-size:12px;font-weight:600;color:#1572e8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;cursor:pointer;text-decoration:underline;text-underline-offset:2px">Servis dopravníku L25</td>
+        <td style="padding:8px 12px;white-space:nowrap"><span style="display:inline-flex;align-items:center;gap:5px;background:#FFF3E0;color:#E65100;font-size:11px;font-weight:600;padding:3px 9px;border-radius:4px;white-space:nowrap"><i class="fa-solid fa-truck" style="font-size:10px"></i>Dodávka</span></td>
+        <td style="padding:8px 12px;white-space:nowrap"><span style="display:inline-flex;align-items:center;gap:5px;background:#FFF3E0;color:#E65100;font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:.02em">Nabídka poslána<i class="fa-solid fa-chevron-down" style="font-size:8px;margin-left:2px"></i></span></td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Dopravník L25</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52">2026-0011</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Náhradní díly a servis</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52;white-space:nowrap">12.08.2026</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52;white-space:nowrap">180 000 Kč</td>
+      </tr>
+      <!-- Řádek 3 -->
+      <tr style="background:#fff">
+        <td style="padding:8px 12px;white-space:nowrap;position:sticky;left:0;background:#fff;z-index:1">
+          <div style="display:flex;align-items:center;gap:5px">
+            <div style="width:26px;height:26px;border-radius:5px;background:#455A64;display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="fa-solid fa-eye" style="font-size:11px;color:#fff"></i></div>
+            <div style="width:26px;height:26px;border-radius:5px;border:1px solid #e0dded;display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="fa-solid fa-pen" style="font-size:10px;color:#9a95ad"></i></div>
+          </div>
+        </td>
+        <td style="padding:8px 12px;font-size:12px;color:#9a95ad">ZAK</td>
+        <td style="padding:8px 12px;font-size:12px;font-weight:600;color:#1572e8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;cursor:pointer;text-decoration:underline;text-underline-offset:2px">Série krytů 400 ks</td>
+        <td style="padding:8px 12px;white-space:nowrap"><span style="display:inline-flex;align-items:center;gap:5px;background:#F3E5F5;color:#7B1FA2;font-size:11px;font-weight:600;padding:3px 9px;border-radius:4px;white-space:nowrap"><i class="fa-solid fa-chart-simple" style="font-size:10px"></i>Sériová výroba</span></td>
+        <td style="padding:8px 12px;white-space:nowrap"><span style="display:inline-flex;align-items:center;gap:5px;background:#fde8e8;color:#d9463e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:.02em">Poptávka<i class="fa-solid fa-chevron-down" style="font-size:8px;margin-left:2px"></i></span></td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Kryty 400 ks</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52">2026-0010</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Sériová zakázka</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52;white-space:nowrap">05.11.2026</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52;white-space:nowrap">96 000 Kč</td>
+      </tr>
+      <!-- Řádek 4 -->
+      <tr style="background:#fff">
+        <td style="padding:8px 12px;white-space:nowrap;position:sticky;left:0;background:#fff;z-index:1">
+          <div style="display:flex;align-items:center;gap:5px">
+            <div style="width:26px;height:26px;border-radius:5px;background:#455A64;display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="fa-solid fa-eye" style="font-size:11px;color:#fff"></i></div>
+            <div style="width:26px;height:26px;border-radius:5px;border:1px solid #e0dded;display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="fa-solid fa-pen" style="font-size:10px;color:#9a95ad"></i></div>
+          </div>
+        </td>
+        <td style="padding:8px 12px;font-size:12px;color:#9a95ad">ZAK</td>
+        <td style="padding:8px 12px;font-size:12px;font-weight:600;color:#1572e8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;cursor:pointer;text-decoration:underline;text-underline-offset:2px">Montáž detektoru kovů</td>
+        <td style="padding:8px 12px;white-space:nowrap"><span style="display:inline-flex;align-items:center;gap:5px;background:#E3F2FD;color:#1565C0;font-size:11px;font-weight:600;padding:3px 9px;border-radius:4px;white-space:nowrap"><i class="fa-solid fa-gear" style="font-size:10px"></i>Výroba na zakázku</span></td>
+        <td style="padding:8px 12px;white-space:nowrap"><span style="display:inline-flex;align-items:center;gap:5px;background:#E0F2F1;color:#00695C;font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:.02em">Hotovo<i class="fa-solid fa-chevron-down" style="font-size:8px;margin-left:2px"></i></span></td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Detektor kovů BOEKELS</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52">2026-0007</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Instalace a kalibrace</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52;white-space:nowrap">20.06.2026</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52;white-space:nowrap">340 000 Kč</td>
+      </tr>
+      <!-- Řádek 5 -->
+      <tr style="background:#fff">
+        <td style="padding:8px 12px;white-space:nowrap;position:sticky;left:0;background:#fff;z-index:1">
+          <div style="display:flex;align-items:center;gap:5px">
+            <div style="width:26px;height:26px;border-radius:5px;background:#455A64;display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="fa-solid fa-eye" style="font-size:11px;color:#fff"></i></div>
+            <div style="width:26px;height:26px;border-radius:5px;border:1px solid #e0dded;display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="fa-solid fa-pen" style="font-size:10px;color:#9a95ad"></i></div>
+          </div>
+        </td>
+        <td style="padding:8px 12px;font-size:12px;color:#9a95ad">ZAK</td>
+        <td style="padding:8px 12px;font-size:12px;font-weight:600;color:#1572e8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;cursor:pointer;text-decoration:underline;text-underline-offset:2px">Rekonstrukce obalové linky</td>
+        <td style="padding:8px 12px;white-space:nowrap"><span style="display:inline-flex;align-items:center;gap:5px;background:#FFF3E0;color:#E65100;font-size:11px;font-weight:600;padding:3px 9px;border-radius:4px;white-space:nowrap"><i class="fa-solid fa-truck" style="font-size:10px"></i>Dodávka</span></td>
+        <td style="padding:8px 12px;white-space:nowrap"><span style="display:inline-flex;align-items:center;gap:5px;background:#ECEFF1;color:#607D8B;font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:.02em">Zrušeno<i class="fa-solid fa-chevron-down" style="font-size:8px;margin-left:2px"></i></span></td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Obalová linka 1</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52">2026-0003</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Zrušeno klientem</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52;white-space:nowrap">—</td>
+        <td style="padding:8px 12px;font-size:12px;color:#3d3a52;white-space:nowrap">—</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

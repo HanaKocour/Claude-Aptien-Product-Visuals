@@ -1,0 +1,136 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free). Řádek níže načte FA, aby se
+     vykreslily i při samostatném otevření souboru. V master prototypu se FA
+     načítá z jeho assetů, takže tam je tento <link> nadbytečný (neškodí). -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!--
+  APTIEN — ITEM DETAIL DRAWER · STATICKÝ BLOK K DOSLOVNÉMU VLOŽENÍ
+  ================================================================
+  Při generování detailu záznamu VLOŽ TENTO BLOK CELÝ. NEREKONSTRUUJ ho.
+  Skladba (viz Aptien-pravidla-pouziti-UI.md §7.1):
+    backdrop → panel 80% (min 920px) → svislý spine → hlavní část:
+      hlavička (název 26/300 + kategorie chip + placeholder obrázku + ×)
+      → item tabs (aktivní modrá) → tělo: pole (levý sloupec) + pravý
+      sloupec akcí (210px) + blok ID/Vytvořeno/Vytvořil/Poslední úprava.
+  Měň jen data (název, kategorie, pole, akce dle modulu — viz §7 item tabs).
+  Referenční modul = Zakázky.
+-->
+<div style="position:fixed;inset:0;background:rgba(0,0,0,.15);z-index:50"></div>
+<div style="position:fixed;top:0;right:0;bottom:0;width:80%;min-width:920px;background:#fff;z-index:51;display:flex;flex-direction:row;box-shadow:-8px 0 32px rgba(0,0,0,.18);font-family:'Nunito',sans-serif">
+
+  <!-- Svislý pruh (spine) -->
+  <div style="width:38px;flex-shrink:0;background:#fff;border-right:1px solid #e8e6f0;display:flex;flex-direction:column;align-items:center;padding-top:14px;gap:14px;overflow:hidden">
+    <i class="fa-solid fa-briefcase" style="color:#1572e8;font-size:15px"></i>
+    <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-weight:700;font-size:12px;color:#5a5478;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-height:260px">Balicí linka Alfa</div>
+  </div>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden">
+
+    <!-- Hlavička -->
+    <div style="flex-shrink:0;padding:24px 32px 0;display:flex;align-items:flex-start;gap:16px">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:26px;font-weight:300;color:#1e1b2e;line-height:1.2;margin-bottom:10px">Balicí linka Alfa</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="display:inline-flex;align-items:center;background:#eceff1;color:#59676d;padding:4px 12px;border-radius:4px;font-size:10px;font-weight:600">Výroba na zakázku</span>
+        </div>
+      </div>
+      <div style="width:110px;height:110px;border:2px dashed #d8d6e2;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <i class="fa-regular fa-image" style="font-size:28px;color:#cdd0d8"></i>
+      </div>
+      <i class="fa-solid fa-xmark" style="color:#9a93b5;font-size:22px;cursor:pointer;flex-shrink:0;margin-top:4px"></i>
+    </div>
+
+    <!-- Item tabs (aktivní = Detaily, modrá) -->
+    <div style="flex-shrink:0;display:flex;align-items:flex-end;padding:16px 32px 0;background:#fff;border-bottom:1px solid #eeecf5;gap:2px">
+      <div style="padding:0 14px 12px;font-size:13px;font-weight:700;color:#1572e8;border-bottom:2px solid #1572e8;cursor:pointer;white-space:nowrap">Detaily</div>
+      <div style="padding:0 14px 12px;font-size:13px;font-weight:600;color:#7a7595;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap">Přílohy</div>
+      <div style="padding:0 14px 12px;font-size:13px;font-weight:600;color:#7a7595;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap">Souvislosti <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#1572e8;color:#fff;border-radius:50%;font-size:10px;font-weight:700;margin-left:4px">3</span></div>
+      <div style="padding:0 14px 12px;font-size:13px;font-weight:600;color:#7a7595;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap">Kalendář</div>
+      <div style="padding:0 14px 12px;font-size:13px;font-weight:600;color:#7a7595;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap">Zápisy</div>
+      <div style="padding:0 14px 12px;font-size:13px;font-weight:600;color:#7a7595;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap">Úkoly</div>
+      <div style="padding:0 14px 12px;font-size:13px;font-weight:600;color:#7a7595;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap">Poznámky</div>
+      <div style="padding:0 14px 12px;font-size:13px;font-weight:600;color:#7a7595;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap">Konverzace</div>
+    </div>
+
+    <!-- Tělo: pole (vlevo) + akce (vpravo) -->
+    <div style="flex:1;min-height:0;display:flex;overflow:hidden">
+      <div style="flex:1;min-width:0;overflow-y:auto;background:#fff;padding:0 32px">
+
+        <!-- Pole záznamu (Detaily) -->
+        <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+          <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+          <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Název zakázky</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+          <div style="flex:1;min-width:0;padding:0 18px"><input type="text" value="Balicí linka Alfa" style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;outline:none;background:#fff"></div>
+        </div>
+
+        <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+          <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+          <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Zákazník</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+          <div style="flex:1;min-width:0;padding:0 18px;display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;align-items:center;gap:6px"><i class="fa-solid fa-arrow-right" style="font-size:10px;color:#888"></i><a href="#" style="font-size:13px;color:#1a1a2e;font-weight:600;text-decoration:underline;text-underline-offset:3px">Ukázkový zákazník</a></div>
+            <div style="margin-top:2px"><a href="#" style="font-size:12px;color:#1572e8;text-decoration:none;font-weight:600">+ přidat</a></div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+          <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+          <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Zodpovědná osoba</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+          <div style="flex:1;min-width:0;padding:0 18px"><div style="display:flex;align-items:center;gap:6px"><i class="fa-solid fa-arrow-right" style="font-size:10px;color:#888"></i><a href="#" style="font-size:13px;color:#1a1a2e;font-weight:600;text-decoration:underline;text-underline-offset:3px">Tomáš Novák</a></div></div>
+        </div>
+
+        <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+          <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+          <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Splněno</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+          <div style="flex:1;min-width:0;padding:0 18px"><select style="border-radius:4px;border:1px solid #e5e5e5;padding:5px 10px;font-family:'Nunito',sans-serif;font-size:12px;color:#1a1a2e;background:#fff;cursor:pointer;outline:none"><option>0 %</option><option>25 %</option><option>50 %</option><option selected>68 %</option><option>75 %</option><option>100 %</option></select></div>
+        </div>
+
+        <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+          <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+          <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Datum přijetí</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+          <div style="flex:1;min-width:0;padding:0 18px"><div style="display:inline-flex;align-items:center;gap:8px"><input type="text" value="10.03.2026" style="border:1px solid #e5e5e5;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;background:#fff;outline:none;width:120px"><i class="fa-regular fa-calendar-days" style="color:#b0aac5;font-size:15px;cursor:pointer"></i></div></div>
+        </div>
+
+        <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+          <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+          <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Termín dokončení</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+          <div style="flex:1;min-width:0;padding:0 18px"><div style="display:inline-flex;align-items:center;gap:8px"><input type="text" value="30.09.2026" style="border:1px solid #e5e5e5;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;background:#fff;outline:none;width:120px"><i class="fa-regular fa-calendar-days" style="color:#b0aac5;font-size:15px;cursor:pointer"></i></div></div>
+        </div>
+
+        <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+          <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+          <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Hodnota zakázky</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+          <div style="flex:1;min-width:0;padding:0 18px"><input type="text" value="1 250 000 Kč" style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;outline:none;background:#fff"></div>
+        </div>
+
+        <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+          <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+          <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Stručný popis</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+          <div style="flex:1;min-width:0;padding:0 18px"><input type="text" value="Kompletní dodávka a montáž balicí linky." style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;outline:none;background:#fff"></div>
+        </div>
+
+      </div>
+
+      <!-- Pravý sloupec akcí -->
+      <div style="width:210px;flex-shrink:0;border-left:1px solid #eeecf5;padding:12px 0;display:flex;flex-direction:column;overflow-y:auto">
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-regular fa-star" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Oblíbená</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-file-circle-plus" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Nový report</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-folder" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Moje reporty</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-rectangle-list" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Online formuláře</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-square-poll-vertical" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Výsledky formulářů</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-share-nodes" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Sdílet</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-eye" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Náhled</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-lock" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Oprávnění</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-clock-rotate-left" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Historie změn</span></div>
+        <div style="padding:12px 16px 4px">
+          <button style="width:100%;background:#1572e8;color:#fff;border:none;border-radius:999px;padding:10px 20px;font-weight:700;font-size:13px;font-family:'Nunito',sans-serif;letter-spacing:.02em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 2px 6px rgba(21,114,232,.28)"><i class="fa-solid fa-floppy-disk" style="font-size:12px"></i>Uložit změny</button>
+        </div>
+        <div style="margin-top:12px;padding:16px 16px 0;border-top:1px solid #eef0f3">
+          <div style="font-size:11px;color:#9a95ad;margin-bottom:4px">ID: <b style="color:#5a5478">40137</b></div>
+          <div style="font-size:11px;color:#9a95ad;margin-bottom:4px">Vytvořeno: <b style="color:#5a5478">10. 03. 2026</b></div>
+          <div style="font-size:11px;color:#9a95ad;margin-bottom:4px">Vytvořil: <b style="color:#5a5478">Karolína Fišerová</b></div>
+          <div style="font-size:11px;color:#9a95ad">Poslední úprava: <b style="color:#5a5478">14. 07. 2026</b></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

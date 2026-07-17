@@ -42,6 +42,22 @@ zeptej, než abys cokoli domýšlel.
 > kazí; **ber ikony z prototypu.** Detail v `Aptien-menu-reference.md`,
 > sekce *Ikony*.
 
+> ✅ **Hotové bloky k DOSLOVNÉMU vložení (nerekonstruovat!)** v
+> `prototypes/partials/`:
+> - `sidebar-menu.html` – celé levé menu (15 + 7 položek, inline SVG ikony, aktivní stav, badge)
+> - `evidence-toolbar.html` – **toolbar** (ikona+název, modré PŘIDAT, hledání, view switcher – všech 5, aktivní modrá)
+> - `evidence-dashboard.html` – pohled **Dashboard** (hero banner „pruh" + mřížka bílých karet)
+> - `evidence-table.html` – pohled **Tabulka** (horní lišta, sticky sloupec, hlavička + filtry, řádky)
+> - `evidence-list.html` – pohled **Seznam** (karta: řazení → řádky → spodní lišta)
+> - `evidence-kanban.html` – pohled **Kanban** (5 sloupců s pevnými barvami, karty, +Přidat)
+> - `evidence-drawer.html` – **item detail drawer** (backdrop → panel 80%/920 → spine → hlavička → item tabs → pole + pravý sloupec akcí + primární tlačítko „Uložit změny")
+>
+> Celá obrazovka evidence = `evidence-toolbar` + jeden z pohledů
+> (`dashboard`/`table`/`list`/`kanban`) + volitelně `evidence-drawer`.
+> Když generuješ menu nebo evidenci, **vlož odpovídající soubor(y) celé a
+> měň jen data** – neskládej je znovu z hlavy. Tím se odstraní vypadávání
+> položek, ikon, sloupců a rozpadání layoutu.
+
 ---
 
 ## ⭐ Zdroj pravdy: hlavní je TENTO repozitář
@@ -291,6 +307,11 @@ tab strip + sidebar):
   - `Aptien-pravidla-pouziti-UI.md` – referenční spec chování UI (desktop)
   - `Aptien-menu-reference.md` – kompletní levé menu k doslovnému zkopírování + pravidla aktivního stavu
   - `Aptien-mobil-intranet-pravidla.md` – spec + podmínky viditelnosti pro zaměstnance (mobil)
+  - `partials/` – **hotové statické bloky k doslovnému vložení** (nerekonstruovat):
+    `sidebar-menu.html` (levé menu s inline SVG ikonami),
+    `evidence-toolbar.html` (toolbar), `evidence-dashboard.html` (Dashboard),
+    `evidence-table.html` (Tabulka), `evidence-list.html` (Seznam),
+    `evidence-kanban.html` (Kanban), `evidence-drawer.html` (item detail drawer)
   - `_archive/` – původní bundled prototypy (jen historická reference)
 - `profile-images/` – profilové obrázky person do avatarů (viz README uvnitř)
 - `files/` – zdrojové podklady, šablony rámečků

@@ -388,7 +388,9 @@ Panel překrývá obsah; zavírá se zpět.
 
 **Akce v detailu** (sdílené, dle modulu): Oblíbená, Nový report, Moje
 reporty, Online formuláře, Výsledky formulářů, Sdílet, Náhled, Oprávnění,
-Historie změn, Uložit změny.
+Historie změn. **„Uložit změny" je primární tlačítko** (modré `#1572e8`,
+bílý text, pilulka), ne řádek v seznamu akcí – v pravém sloupci akcí je
+vizuálně oddělené jako hlavní akce.
 
 ### 7.1 Skelet panelu (POVINNÁ skladba)
 
@@ -410,7 +412,8 @@ Historie změn, Uložit změny.
      `#1572e8`.
   3. **Tělo** – **levý sloupec**: pole záznamu (řádky `min-height:52px`,
      oddělovač `#f0eef8`); **pravý sloupec akcí** (`210px`, `border-left`):
-     seznam akcí + blok *ID / Vytvořeno / Vytvořil / Poslední úprava*.
+     seznam akcí + **primární tlačítko „Uložit změny"** (modré, pilulka) +
+     blok *ID / Vytvořeno / Vytvořil / Poslední úprava*.
 
 ---
 

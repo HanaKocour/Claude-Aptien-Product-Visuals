@@ -1,0 +1,106 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free). Řádek níže načte FA, aby se
+     vykreslily i při samostatném otevření souboru. V master prototypu se FA
+     načítá z jeho assetů, takže tam je tento <link> nadbytečný (neškodí). -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!--
+  APTIEN — EVIDENCE / POHLED „KANBAN" · STATICKÝ BLOK K DOSLOVNÉMU VLOŽENÍ
+  ========================================================================
+  Při generování pohledu Kanban VLOŽ TENTO BLOK CELÝ. NEREKONSTRUUJ ho.
+  Skladba: vodorovný scroll 5 sloupců (Poptávka/Nabídka poslána/Realizace/
+  Hotovo/Zrušeno), každý = barevná hlavička (tečka + název + počet) →
+  karty (.k-card: název+ikona, ⋮, datum) → řádek „+ Přidat".
+  BARVY SLOUPCŮ jsou pevné (drží stav), neměň je:
+    Poptávka   dot #DD2C00 · header #F8CBBF · pozadí #FEF0EC
+    Nabídka    dot #FF8F00 · header #FFE5A0 · pozadí #FFFBEC
+    Realizace  dot #558B2F · header #C5E1A5 · pozadí #F0F8E8
+    Hotovo     dot #00897B · header #A7DDD8 · pozadí #E0F5F3
+    Zrušeno    dot #9E9E9E · header #E0E0E0 · pozadí #F5F5F5
+  Měň jen karty (data). Toolbar patří NAD tento blok. Referenční = Zakázky.
+-->
+<div style="flex:1;overflow-x:auto;overflow-y:hidden;padding:4px 12px 12px;display:flex;gap:10px;align-items:stretch;font-family:'Nunito',sans-serif">
+
+  <!-- Sloupec: Poptávka -->
+  <div style="flex:1;min-width:210px;max-width:340px;display:flex;flex-direction:column;border-radius:10px;overflow:hidden;background:#FEF0EC">
+    <div style="padding:12px 16px;background:#F8CBBF;display:flex;align-items:center;gap:8px;flex-shrink:0">
+      <div style="width:10px;height:10px;border-radius:50%;background:#DD2C00;flex-shrink:0"></div>
+      <span style="font-size:13px;font-weight:800;color:#1e1b2e;flex:1">Poptávka</span>
+      <span style="font-size:13px;font-weight:600;color:#6c757d">4</span>
+    </div>
+    <div style="flex:1;padding:8px;overflow-y:auto;display:flex;flex-direction:column">
+      <div style="background:#fff;border-radius:8px;padding:12px 13px;box-shadow:0 1px 4px rgba(0,0,0,.08);cursor:pointer;margin-bottom:8px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:7px"><div style="display:flex;align-items:center;gap:7px;flex:1;min-width:0"><i class="fa-solid fa-briefcase" style="font-size:12px;color:#1565C0;flex-shrink:0"></i><span style="font-size:12px;font-weight:600;color:#1e1b2e;line-height:1.35">Kryty 400 ks</span></div><i class="fa-solid fa-ellipsis-vertical" style="font-size:12px;color:#d0cce0;cursor:pointer;flex-shrink:0;padding-left:6px;margin-top:1px"></i></div>
+        <div style="display:flex;align-items:center;gap:5px;color:#9a95ad"><i class="fa-regular fa-clock" style="font-size:10px"></i><span style="font-size:11px">05.11.2026</span></div>
+      </div>
+      <div style="background:#fff;border-radius:8px;padding:12px 13px;box-shadow:0 1px 4px rgba(0,0,0,.08);cursor:pointer;margin-bottom:8px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:7px"><div style="display:flex;align-items:center;gap:7px;flex:1;min-width:0"><i class="fa-solid fa-briefcase" style="font-size:12px;color:#1565C0;flex-shrink:0"></i><span style="font-size:12px;font-weight:600;color:#1e1b2e;line-height:1.35">Zabezpečení haly B</span></div><i class="fa-solid fa-ellipsis-vertical" style="font-size:12px;color:#d0cce0;cursor:pointer;flex-shrink:0;padding-left:6px;margin-top:1px"></i></div>
+        <div style="display:flex;align-items:center;gap:5px;color:#9a95ad"><i class="fa-regular fa-clock" style="font-size:10px"></i><span style="font-size:11px">18.11.2026</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;padding:6px 4px;font-size:12px;color:#a0a0b0;cursor:pointer;margin-top:2px"><i class="fa-solid fa-plus" style="font-size:11px"></i><span>Přidat</span></div>
+    </div>
+  </div>
+
+  <!-- Sloupec: Nabídka poslána -->
+  <div style="flex:1;min-width:210px;max-width:340px;display:flex;flex-direction:column;border-radius:10px;overflow:hidden;background:#FFFBEC">
+    <div style="padding:12px 16px;background:#FFE5A0;display:flex;align-items:center;gap:8px;flex-shrink:0">
+      <div style="width:10px;height:10px;border-radius:50%;background:#FF8F00;flex-shrink:0"></div>
+      <span style="font-size:13px;font-weight:800;color:#1e1b2e;flex:1">Nabídka poslána</span>
+      <span style="font-size:13px;font-weight:600;color:#6c757d">2</span>
+    </div>
+    <div style="flex:1;padding:8px;overflow-y:auto;display:flex;flex-direction:column">
+      <div style="background:#fff;border-radius:8px;padding:12px 13px;box-shadow:0 1px 4px rgba(0,0,0,.08);cursor:pointer;margin-bottom:8px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:7px"><div style="display:flex;align-items:center;gap:7px;flex:1;min-width:0"><i class="fa-solid fa-briefcase" style="font-size:12px;color:#1565C0;flex-shrink:0"></i><span style="font-size:12px;font-weight:600;color:#1e1b2e;line-height:1.35">Dopravník L25</span></div><i class="fa-solid fa-ellipsis-vertical" style="font-size:12px;color:#d0cce0;cursor:pointer;flex-shrink:0;padding-left:6px;margin-top:1px"></i></div>
+        <div style="display:flex;align-items:center;gap:5px;color:#9a95ad"><i class="fa-regular fa-clock" style="font-size:10px"></i><span style="font-size:11px">12.08.2026</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;padding:6px 4px;font-size:12px;color:#a0a0b0;cursor:pointer;margin-top:2px"><i class="fa-solid fa-plus" style="font-size:11px"></i><span>Přidat</span></div>
+    </div>
+  </div>
+
+  <!-- Sloupec: Realizace -->
+  <div style="flex:1;min-width:210px;max-width:340px;display:flex;flex-direction:column;border-radius:10px;overflow:hidden;background:#F0F8E8">
+    <div style="padding:12px 16px;background:#C5E1A5;display:flex;align-items:center;gap:8px;flex-shrink:0">
+      <div style="width:10px;height:10px;border-radius:50%;background:#558B2F;flex-shrink:0"></div>
+      <span style="font-size:13px;font-weight:800;color:#1e1b2e;flex:1">Realizace</span>
+      <span style="font-size:13px;font-weight:600;color:#6c757d">3</span>
+    </div>
+    <div style="flex:1;padding:8px;overflow-y:auto;display:flex;flex-direction:column">
+      <div style="background:#fff;border-radius:8px;padding:12px 13px;box-shadow:0 1px 4px rgba(0,0,0,.08);cursor:pointer;margin-bottom:8px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:7px"><div style="display:flex;align-items:center;gap:7px;flex:1;min-width:0"><i class="fa-solid fa-briefcase" style="font-size:12px;color:#1565C0;flex-shrink:0"></i><span style="font-size:12px;font-weight:600;color:#1e1b2e;line-height:1.35">Balicí linka Alfa</span></div><i class="fa-solid fa-ellipsis-vertical" style="font-size:12px;color:#d0cce0;cursor:pointer;flex-shrink:0;padding-left:6px;margin-top:1px"></i></div>
+        <div style="display:flex;align-items:center;gap:5px;color:#9a95ad"><i class="fa-regular fa-clock" style="font-size:10px"></i><span style="font-size:11px">30.09.2026</span></div>
+      </div>
+      <div style="background:#fff;border-radius:8px;padding:12px 13px;box-shadow:0 1px 4px rgba(0,0,0,.08);cursor:pointer;margin-bottom:8px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:7px"><div style="display:flex;align-items:center;gap:7px;flex:1;min-width:0"><i class="fa-solid fa-briefcase" style="font-size:12px;color:#1565C0;flex-shrink:0"></i><span style="font-size:12px;font-weight:600;color:#1e1b2e;line-height:1.35">Řezací stroj XPR200</span></div><i class="fa-solid fa-ellipsis-vertical" style="font-size:12px;color:#d0cce0;cursor:pointer;flex-shrink:0;padding-left:6px;margin-top:1px"></i></div>
+        <div style="display:flex;align-items:center;gap:5px;color:#9a95ad"><i class="fa-regular fa-clock" style="font-size:10px"></i><span style="font-size:11px">15.09.2026</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;padding:6px 4px;font-size:12px;color:#a0a0b0;cursor:pointer;margin-top:2px"><i class="fa-solid fa-plus" style="font-size:11px"></i><span>Přidat</span></div>
+    </div>
+  </div>
+
+  <!-- Sloupec: Hotovo -->
+  <div style="flex:1;min-width:210px;max-width:340px;display:flex;flex-direction:column;border-radius:10px;overflow:hidden;background:#E0F5F3">
+    <div style="padding:12px 16px;background:#A7DDD8;display:flex;align-items:center;gap:8px;flex-shrink:0">
+      <div style="width:10px;height:10px;border-radius:50%;background:#00897B;flex-shrink:0"></div>
+      <span style="font-size:13px;font-weight:800;color:#1e1b2e;flex:1">Hotovo</span>
+      <span style="font-size:13px;font-weight:600;color:#6c757d">1</span>
+    </div>
+    <div style="flex:1;padding:8px;overflow-y:auto;display:flex;flex-direction:column">
+      <div style="background:#fff;border-radius:8px;padding:12px 13px;box-shadow:0 1px 4px rgba(0,0,0,.08);cursor:pointer;margin-bottom:8px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:7px"><div style="display:flex;align-items:center;gap:7px;flex:1;min-width:0"><i class="fa-solid fa-briefcase" style="font-size:12px;color:#1565C0;flex-shrink:0"></i><span style="font-size:12px;font-weight:600;color:#1e1b2e;line-height:1.35">Detektor kovů BOEKELS</span></div><i class="fa-solid fa-ellipsis-vertical" style="font-size:12px;color:#d0cce0;cursor:pointer;flex-shrink:0;padding-left:6px;margin-top:1px"></i></div>
+        <div style="display:flex;align-items:center;gap:5px;color:#9a95ad"><i class="fa-regular fa-clock" style="font-size:10px"></i><span style="font-size:11px">20.06.2026</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;padding:6px 4px;font-size:12px;color:#a0a0b0;cursor:pointer;margin-top:2px"><i class="fa-solid fa-plus" style="font-size:11px"></i><span>Přidat</span></div>
+    </div>
+  </div>
+
+  <!-- Sloupec: Zrušeno -->
+  <div style="flex:1;min-width:210px;max-width:340px;display:flex;flex-direction:column;border-radius:10px;overflow:hidden;background:#F5F5F5">
+    <div style="padding:12px 16px;background:#E0E0E0;display:flex;align-items:center;gap:8px;flex-shrink:0">
+      <div style="width:10px;height:10px;border-radius:50%;background:#9E9E9E;flex-shrink:0"></div>
+      <span style="font-size:13px;font-weight:800;color:#1e1b2e;flex:1">Zrušeno</span>
+      <span style="font-size:13px;font-weight:600;color:#6c757d">0</span>
+    </div>
+    <div style="flex:1;padding:8px;overflow-y:auto;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:6px;padding:6px 4px;font-size:12px;color:#a0a0b0;cursor:pointer;margin-top:2px"><i class="fa-solid fa-plus" style="font-size:11px"></i><span>Přidat</span></div>
+    </div>
+  </div>
+
+</div>

@@ -4,6 +4,12 @@
 celé menu se všemi položkami**, ve stejném pořadí, se stejnými ikonami.
 Nic nevynechávej, nepřidávej ani nepřejmenovávej.*
 
+> ✅ **Nejjednodušší a nejspolehlivější cesta: vlož hotový statický blok
+> `partials/sidebar-menu.html` CELÝ** (obsahuje všech 15 + 7 položek,
+> inline SVG ikony, správné barvy, aktivní stav i badge). Neskládej menu
+> z hlavy – jen přesuň aktivní stav na položku dle otevřené obrazovky a
+> uprav personu. Tabulka níže je referenční přehled obsahu toho bloku.
+
 > **Ikony:** názvy ve sloupci „Ikona" jsou přesné soubory ze složky
 > **`Awesome-font-icons/`** (Font Awesome, styl `solid` + `fw`).
 > Použij právě tyto soubory.
