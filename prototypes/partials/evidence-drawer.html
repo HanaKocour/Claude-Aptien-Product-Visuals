@@ -39,21 +39,22 @@
       <i class="fa-solid fa-xmark" style="color:#9a93b5;font-size:22px;cursor:pointer;flex-shrink:0;margin-top:4px"></i>
     </div>
 
-    <!-- Item tabs (aktivní = Detaily, modrá) -->
-    <div style="flex-shrink:0;display:flex;align-items:flex-end;padding:16px 32px 0;background:#fff;border-bottom:1px solid #eeecf5;gap:2px">
-      <div style="padding:0 14px 12px;font-size:13px;font-weight:700;color:#1572e8;border-bottom:2px solid #1572e8;cursor:pointer;white-space:nowrap">Detaily</div>
-      <div style="padding:0 14px 12px;font-size:13px;font-weight:600;color:#7a7595;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap">Přílohy</div>
-      <div style="padding:0 14px 12px;font-size:13px;font-weight:600;color:#7a7595;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap">Souvislosti <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#1572e8;color:#fff;border-radius:50%;font-size:10px;font-weight:700;margin-left:4px">3</span></div>
-      <div style="padding:0 14px 12px;font-size:13px;font-weight:600;color:#7a7595;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap">Kalendář</div>
-      <div style="padding:0 14px 12px;font-size:13px;font-weight:600;color:#7a7595;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap">Zápisy</div>
-      <div style="padding:0 14px 12px;font-size:13px;font-weight:600;color:#7a7595;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap">Úkoly</div>
-      <div style="padding:0 14px 12px;font-size:13px;font-weight:600;color:#7a7595;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap">Poznámky</div>
-      <div style="padding:0 14px 12px;font-size:13px;font-weight:600;color:#7a7595;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap">Konverzace</div>
+    <!-- Item tabs = SLOŽKOVÉ taby (bílý vyvýšený tab se stínem, zaoblené horní
+         rohy), přesně dle drawerTabStyle v prototypu. Aktivní = Detaily. -->
+    <div style="flex-shrink:0;display:flex;align-items:flex-end;padding:16px 32px 0;background:#fff">
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:700;color:#1572e8;background:#fff;border-top-left-radius:8px;border-top-right-radius:8px;box-shadow:0 5px 20px rgba(0,0,0,.10);clip-path:inset(-30px -30px 0 -30px);margin-bottom:-1px;position:relative;z-index:2">Detaily</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Přílohy</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Souvislosti<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#1572e8;color:#fff;border-radius:50%;font-size:10px;font-weight:700;margin-left:4px">3</span></div>
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Kalendář</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Zápisy</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Úkoly</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Poznámky</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Konverzace</div>
     </div>
 
     <!-- Tělo: pole (vlevo) + akce (vpravo) -->
     <div style="flex:1;min-height:0;display:flex;overflow:hidden">
-      <div style="flex:1;min-width:0;overflow-y:auto;background:#fff;padding:0 32px">
+      <div style="flex:1;min-width:0;overflow-y:auto;background:#fff">
 
         <!-- Pole záznamu (Detaily) -->
         <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
