@@ -61,6 +61,47 @@ zeptej, než abys cokoli domýšlel.
 > měň jen data** – neskládej je znovu z hlavy. Tím se odstraní vypadávání
 > položek, ikon, sloupců a rozpadání layoutu.
 
+### 🧩 Postup skládání obrazovky z partialů (ZÁVAZNÝ) 
+
+> **Nejčastější chyba generování: partial se NEPŘEČTE.** `CLAUDE.md` je jen
+> instrukce – obsah partialu musíš skutečně **otevřít (Read) a vložit**.
+> Bez přečtení souboru model rekonstruuje z hlavy nebo se chytne app kitu.
+
+Postup pro každou obrazovku:
+
+1. **Urči potřebné partialy** podle mapy níže.
+2. **Fyzicky přečti** ty soubory z `prototypes/partials/` (nástroj Read) –
+   nespoléhej na paměť ani na app kit.
+3. **Vlož je DOSLOVNĚ** do výstupu a měň **jen data** (texty, čísla, jména,
+   stavy, datumy, aktivní stav menu/tabu). Strukturu, komponenty, barvy,
+   ikony a rozměry nech.
+4. **App kit (`Claude-HK-Aptien-App`) pro STRUKTURU ignoruj** – má jen
+   ploché ukázky komponent v jiné skladbě. Zdroj skládání = tyto partialy.
+
+**Mapa „co generuji → které partialy vložit":**
+
+| Obrazovka / požadavek | Partialy (v tomto pořadí) |
+|---|---|
+| Rám aplikace (shell) | top bar + tab strip z `Aptien-aplikace-offline.html` + `sidebar-menu.html` |
+| Evidence – dashboard | `evidence-toolbar.html` + `evidence-dashboard.html` |
+| Evidence – tabulka | `evidence-toolbar.html` + `evidence-table.html` |
+| Evidence – seznam | `evidence-toolbar.html` + `evidence-list.html` |
+| Evidence – kanban | `evidence-toolbar.html` + `evidence-kanban.html` |
+| Detail záznamu (drawer) | výše + `evidence-drawer.html` |
+| Drawer, tab Konverzace | `evidence-drawer.html`, v těle `drawer-konverzace.html` |
+| Moje konverzace – seznam | `konverzace-list.html` |
+| Moje konverzace – chat | `konverzace-chat.html` |
+
+Celá obrazovka evidence = `sidebar-menu` + `evidence-toolbar` + jeden pohled
+(+ volitelně `evidence-drawer`).
+
+**Jak to formulovat v promptu** (aby se partial opravdu přečetl): pojmenuj
+konkrétní soubor(y), použij sloveso **„přečti a vlož doslovně"** a dodej
+**„měň jen data, strukturu ani ikony neměň, app kit pro strukturu ignoruj".**
+Příklad: *„Přečti a vlož doslovně `prototypes/partials/evidence-toolbar.html`
+a `evidence-kanban.html`; toolbar = modul Zakázky (aktivní Kanban), měň jen
+data. Nic nerekonstruuj."*
+
 ---
 
 ## ⭐ Zdroj pravdy: hlavní je TENTO repozitář
