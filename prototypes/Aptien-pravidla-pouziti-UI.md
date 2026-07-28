@@ -159,7 +159,9 @@ v prototypu:
   ikona v barvě modulu `c800`), následovaný info/edit ikonou.
 - **Primární akce „PŘIDAT …"** = **modré** tlačítko `#1572e8` (pilulka),
   bílý text – bez ohledu na modul.
-- **Hledání** = pilulka `#f2f5f7` s lupou.
+- **Hledání** = pilulka s lupou, **bílé pozadí `#fff` + jemný okraj
+  `1px solid #e0dded`** (aby nesplývalo se šedým okolím toolbaru). NE šedá
+  výplň – ta se v toolbaru ztrácí.
 - **View switcher** vpravo – **VŽDY viditelný a VŽDY všech 5 pohledů**
   (Dashboard · Seznam · Kanban · Tabulka · Kalendář), aktivní pohled
   **modrý** (viz výše). Žádný pohled nevynechávej, i když modul zatím

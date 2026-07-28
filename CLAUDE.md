@@ -202,7 +202,8 @@ obrazovky.
 > **Toolbar evidence se chová VŽDY jako v prototypu (`Aptien-aplikace-offline.html`).**
 > Skladba: ikona + název modulu (`16px/800`, `#1e1b2e`; ikona v barvě
 > modulu `c800`) → modré tlačítko „PŘIDAT …" (`#1572e8`) → hledání (pilulka
-> `#f2f5f7`) → view switcher vpravo. **Přepínání pohledů je VŽDY modré**:
+> **bílá `#fff` + jemný okraj `1px solid #e0dded`**, ne šedá výplň – ať
+> nesplývá s okolím) → view switcher vpravo. **Přepínání pohledů je VŽDY modré**:
 > aktivní pohled = lem/text `#1572e8` + tint `#e8f0fd`, neaktivní = bílé,
 > šedý lem `#c8c4d8`, text `#3d3a52`. View switcher, tlačítko ani hledání
 > nikdy nepřebírají barvu modulu. (Design system to dělal špatně – závazný

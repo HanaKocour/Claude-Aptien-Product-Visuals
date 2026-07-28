@@ -26,8 +26,10 @@ Mobilní „AI souhrn" zůstává fialové `#6200EA`.
   - **primární akce (PŘIDAT …)** v toolbarech: barva modulu (E91E63 /
     D84315 / 1565C0) → **`#1572e8`** (dle role „tlačítko = modré"); stín
     sladěn na modrou.
-  - **toolbar hledání**: pozadí `#fff` + okraj `#e0dded` → `#f2f5f7` +
-    `transparent` (app kit search).
+  - **toolbar hledání**: **bílé pozadí `#fff` + jemný okraj `1px solid #e0dded`**
+    (aby nesplývalo se šedým okolím toolbaru). Pozn.: dřív zkoušeno šedé
+    `#f2f5f7` dle app kitu, ale vráceno na bílé s okrajem – závazné je
+    bílé (viz `Aptien-pravidla-pouziti-UI.md` §5.1).
 - Mobil `Aptien-mobil-intranet.html`: tlačítko „AI souhrn" ponecháno
   fialové `#6200EA`. Mobilní home top bar je záměrně tmavý (`#111`,
   zaměstnanecký rozcestník) – ponechán, není to fialový leftover.
