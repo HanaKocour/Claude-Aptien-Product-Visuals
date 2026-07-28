@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aptien – Item drawer (prototyp)</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<!--
+  APTIEN — ITEM DETAIL DRAWER · PROTOTYP dle reálné aplikace
+  ==========================================================
+  Věrná předloha item draweru (modul Osobní automobily / Volkswagen Polo).
+  Klikni na taby „Detaily" / „Souvislosti" pro obě varianty obsahu.
+  Prvky: stohované spine (víc otevřených záznamů) · hlavička s kategorií a
+  akčními tlačítky modulu · složkové taby s přetečením „›" · pravý sloupec
+  akcí (Zabalit … Historie změn) + ID blok. Barvy dle CLAUDE.md.
+-->
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#eceef2;font-family:'Nunito',sans-serif;padding:18px}
+  .kd-wrap{max-width:1420px;margin:0 auto}
+  .kd-caption{font-size:12px;color:#6b6585;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin:0 0 10px 4px}
+  .kd-stage{position:relative;height:860px;border-radius:12px;overflow:hidden;box-shadow:0 14px 50px rgba(0,0,0,.22);display:flex;background:rgba(30,27,46,.28)}
+  .kd-dim{width:64px;flex-shrink:0}
+  /* Spine */
+  .kd-spine{width:56px;flex-shrink:0;background:#fff;border-left:1px solid #e8e6f0;display:flex;flex-direction:column;align-items:center;padding-top:16px;gap:16px;overflow:hidden}
+  .kd-spine .vt{writing-mode:vertical-rl;transform:rotate(180deg);font-weight:700;font-size:12px;color:#5a5478;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-height:520px}
+  /* Panel */
+  .kd-panel{flex:1;min-width:0;background:#fff;display:flex;flex-direction:column;overflow:hidden}
+  .kd-header{flex-shrink:0;display:flex;gap:24px;padding:26px 34px 0}
+  .kd-title{font-size:30px;font-weight:300;color:#1e1b2e;line-height:1.15;margin:0 0 12px}
+  .kd-chip{display:inline-flex;align-items:center;background:#eceff1;color:#59676d;padding:5px 13px;border-radius:5px;font-size:11px;font-weight:600}
+  .kd-primary{display:inline-flex;align-items:center;gap:8px;background:#1572e8;color:#fff;border:none;padding:11px 24px;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 2px 6px rgba(21,114,232,.28)}
+  .kd-primary:hover{background:#1060cc}
+  .kd-headright{display:flex;flex-direction:column;align-items:flex-end;gap:14px;flex-shrink:0}
+  .kd-close{background:none;border:none;color:#9a93b5;font-size:22px;cursor:pointer;line-height:1}
+  .kd-close:hover{color:#333}
+  .kd-imgph{width:112px;height:112px;border:2px dashed #d3d0de;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#cdd0d8;font-size:30px}
+  /* Tabs */
+  .kd-tabs{flex-shrink:0;display:flex;align-items:flex-end;padding:16px 34px 0;background:#fff;border-bottom:1px solid #eeecf5}
+  .kd-tab{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 18px;cursor:pointer;white-space:nowrap;font-size:13px;font-weight:600;color:#263238;background:none;border:none;font-family:'Nunito',sans-serif}
+  .kd-tab.active{font-weight:700;color:#1572e8;background:#fff;border-top-left-radius:8px;border-top-right-radius:8px;box-shadow:0 5px 20px rgba(0,0,0,.10);clip-path:inset(-30px -30px 0 -30px);margin-bottom:-1px;position:relative;z-index:2}
+  .kd-badge{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#1572e8;color:#fff;border-radius:50%;font-size:10px;font-weight:700;margin-left:4px}
+  .kd-taboverflow{margin-left:auto;align-self:center;margin-bottom:6px;width:30px;height:30px;border:1px solid #e0dded;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#9a93b5;cursor:pointer;flex-shrink:0}
+  /* Body */
+  .kd-body{flex:1;min-height:0;display:flex;overflow:hidden}
+  .kd-content{flex:1;min-width:0;overflow-y:auto;background:#fff;padding:22px 34px}
+  /* Actions */
+  .kd-actions{width:238px;flex-shrink:0;border-left:1px solid #eeecf5;padding:14px 0;overflow-y:auto;background:#fff}
+  .kd-act{display:flex;align-items:center;gap:12px;padding:8px 20px;font-size:13px;color:#374151;cursor:pointer}
+  .kd-act:hover{background:rgba(21,114,232,.05);color:#1572e8}
+  .kd-act i{width:18px;text-align:center;font-size:14px;color:#9a95ad;flex-shrink:0}
+  .kd-meta{margin-top:14px;padding:16px 20px 0;border-top:1px solid #eef0f3;font-size:11px;color:#9a95ad;line-height:2}
+  .kd-meta b{color:#5a5478}
+  /* Souvislosti */
+  .kd-relbar{display:flex;align-items:center;margin-bottom:14px}
+  .kd-relicons{display:flex;gap:14px;color:#9aa0ad;font-size:16px;margin-bottom:18px}
+  .kd-treerow{display:flex;align-items:flex-start;gap:10px;padding:6px 2px}
+  .kd-treerow .tri{color:#8a86a0;font-size:11px;margin-top:4px;cursor:pointer}
+  .kd-plus{color:#3aa856;font-size:16px;cursor:pointer;margin-left:auto}
+  /* Detaily fields */
+  .kd-field{display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0}
+  .kd-field .q{width:32px;flex-shrink:0;text-align:center;color:#c9c4d8;font-size:12px}
+  .kd-field .lbl{width:200px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px}
+  .kd-field .lbl span{flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5}
+  .kd-field .lbl i{color:#d5d0e5;font-size:10px;margin-top:3px}
+  .kd-field .val{flex:1;min-width:0;padding:0 18px}
+  .kd-input{width:100%;border:1px solid #e0dded;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;outline:none;background:#fff}
+</style>
+</head>
+<body>
+<div class="kd-wrap">
+  <div class="kd-caption">Item drawer – prototyp · klikni na „Detaily" / „Souvislosti" pro obě varianty</div>
+  <div class="kd-stage">
+    <div class="kd-dim"></div>
+
+    <!-- Stohovaná spine: předchozí otevřený záznam (zaměstnanec) -->
+    <div class="kd-spine">
+      <i class="fa-solid fa-people-group" style="color:#f1c40f;font-size:15px"></i>
+      <div class="vt">Jana Šťastná</div>
+    </div>
+    <!-- Aktivní spine: tento záznam (vozidlo) -->
+    <div class="kd-spine" style="border-left:1px solid #e8e6f0">
+      <i class="fa-solid fa-car" style="color:#1572e8;font-size:15px"></i>
+      <div class="vt">Volkswagen Polo 1A67894</div>
+    </div>
+
+    <!-- Panel -->
+    <div class="kd-panel">
+
+      <!-- Hlavička -->
+      <div class="kd-header">
+        <div style="flex:1;min-width:0">
+          <div class="kd-title">Volkswagen Polo 1A67894</div>
+          <div style="margin-bottom:16px"><span class="kd-chip">Osobní automobily</span></div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <button class="kd-primary"><i class="fa-solid fa-right-from-bracket" style="font-size:12px"></i>Předání zaměstnanci</button>
+            <button class="kd-primary"><i class="fa-solid fa-print" style="font-size:12px"></i>Tisk protokolu</button>
+          </div>
+        </div>
+        <div class="kd-headright">
+          <button class="kd-close"><i class="fa-solid fa-xmark"></i></button>
+          <div class="kd-imgph"><i class="fa-regular fa-image"></i></div>
+        </div>
+      </div>
+
+      <!-- Item tabs (složkové) -->
+      <div class="kd-tabs">
+        <div class="kd-tab" data-tab="detaily" onclick="kdTab('detaily')">Detaily</div>
+        <div class="kd-tab">Náklady a spotřeba</div>
+        <div class="kd-tab">Plány aktivit<span class="kd-badge">3</span></div>
+        <div class="kd-tab">Vydáno</div>
+        <div class="kd-tab">Přílohy</div>
+        <div class="kd-tab active" data-tab="souvislosti" onclick="kdTab('souvislosti')">Souvislosti<span class="kd-badge">1</span></div>
+        <div class="kd-tab">Kalendář</div>
+        <div class="kd-tab">Zápisy</div>
+        <div class="kd-tab">Úkoly</div>
+        <div class="kd-tab">Poznámky</div>
+        <div class="kd-taboverflow"><i class="fa-solid fa-chevron-right" style="font-size:12px"></i></div>
+      </div>
+
+      <!-- Tělo -->
+      <div class="kd-body">
+        <div class="kd-content">
+
+          <!-- VARIANTA: Souvislosti -->
+          <div id="kd-souvislosti">
+            <div class="kd-relbar">
+              <div style="flex:1"></div>
+              <button class="kd-primary"><i class="fa-solid fa-plus" style="font-size:11px"></i>PŘIDEJ DALŠÍ DO</button>
+            </div>
+            <div class="kd-relicons">
+              <i class="fa-regular fa-eye" style="cursor:pointer"></i>
+              <i class="fa-solid fa-diagram-project" style="cursor:pointer"></i>
+            </div>
+            <div class="kd-treerow">
+              <i class="fa-solid fa-caret-right tri"></i>
+              <div>
+                <div style="font-size:14px;font-weight:700;color:#2b2540">Zaměstnanci</div>
+                <div style="font-size:12px;color:#9aa2b0;margin-top:2px">(1)</div>
+              </div>
+              <i class="fa-solid fa-plus kd-plus"></i>
+            </div>
+          </div>
+
+          <!-- VARIANTA: Detaily -->
+          <div id="kd-detaily" style="display:none">
+            <div class="kd-field"><div class="q"><i class="fa-solid fa-circle-question"></i></div><div class="lbl"><span>Značka</span><i class="fa-solid fa-pen"></i></div><div class="val"><input class="kd-input" value="Volkswagen"></div></div>
+            <div class="kd-field"><div class="q"><i class="fa-solid fa-circle-question"></i></div><div class="lbl"><span>Model</span><i class="fa-solid fa-pen"></i></div><div class="val"><input class="kd-input" value="Polo"></div></div>
+            <div class="kd-field"><div class="q"><i class="fa-solid fa-circle-question"></i></div><div class="lbl"><span>SPZ</span><i class="fa-solid fa-pen"></i></div><div class="val"><input class="kd-input" value="1A6 7894"></div></div>
+            <div class="kd-field"><div class="q"><i class="fa-solid fa-circle-question"></i></div><div class="lbl"><span>Kategorie</span><i class="fa-solid fa-pen"></i></div><div class="val"><input class="kd-input" value="Osobní automobily"></div></div>
+            <div class="kd-field"><div class="q"><i class="fa-solid fa-circle-question"></i></div><div class="lbl"><span>VIN</span><i class="fa-solid fa-pen"></i></div><div class="val"><input class="kd-input" value="WVWZZZ6RZ8Y123456"></div></div>
+            <div class="kd-field"><div class="q"><i class="fa-solid fa-circle-question"></i></div><div class="lbl"><span>Rok výroby</span><i class="fa-solid fa-pen"></i></div><div class="val"><input class="kd-input" value="2019"></div></div>
+            <div class="kd-field"><div class="q"><i class="fa-solid fa-circle-question"></i></div><div class="lbl"><span>Stav tachometru</span><i class="fa-solid fa-pen"></i></div><div class="val"><input class="kd-input" value="84 320 km"></div></div>
+            <div class="kd-field"><div class="q"><i class="fa-solid fa-circle-question"></i></div><div class="lbl"><span>Přidělený zaměstnanec</span><i class="fa-solid fa-pen"></i></div><div class="val"><div style="display:flex;align-items:center;gap:6px"><i class="fa-solid fa-arrow-right" style="font-size:10px;color:#888"></i><a href="#" style="font-size:13px;color:#1a1a2e;font-weight:600;text-decoration:underline;text-underline-offset:3px">Jana Šťastná</a></div></div></div>
+          </div>
+
+        </div>
+
+        <!-- Pravý sloupec akcí -->
+        <div class="kd-actions">
+          <div class="kd-act"><i class="fa-solid fa-right-from-bracket"></i><span>Zabalit</span></div>
+          <div class="kd-act"><i class="fa-regular fa-star"></i><span>Oblíbená</span></div>
+          <div class="kd-act"><i class="fa-solid fa-file-circle-plus"></i><span>Nový report</span></div>
+          <div class="kd-act"><i class="fa-solid fa-file-lines"></i><span>Moje reporty</span></div>
+          <div class="kd-act"><i class="fa-solid fa-pen-to-square"></i><span>Online formuláře</span></div>
+          <div class="kd-act"><i class="fa-solid fa-rectangle-list"></i><span>Výsledky formulářů</span></div>
+          <div class="kd-act"><i class="fa-solid fa-share-nodes"></i><span>Sdílet</span></div>
+          <div class="kd-act"><i class="fa-solid fa-eye"></i><span>Náhled</span></div>
+          <div class="kd-act"><i class="fa-solid fa-id-card"></i><span>Oprávnění</span></div>
+          <div class="kd-act"><i class="fa-solid fa-layer-group"></i><span>Protokoly předání</span></div>
+          <div class="kd-act"><i class="fa-solid fa-clock-rotate-left"></i><span>Historie změn</span></div>
+          <div class="kd-meta">
+            <div>ID: <b>4694</b></div>
+            <div>Vytvořeno: <b>16. 08. 2021</b></div>
+            <div>Vytvořil: <b>František Správce</b></div>
+            <div>Poslední změna: <b>24. 08. 2025</b></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  function kdTab(which){
+    document.getElementById('kd-souvislosti').style.display = which==='souvislosti' ? 'block' : 'none';
+    document.getElementById('kd-detaily').style.display = which==='detaily' ? 'block' : 'none';
+    document.querySelectorAll('.kd-tab[data-tab]').forEach(function(t){
+      t.classList.toggle('active', t.getAttribute('data-tab')===which);
+    });
+  }
+</script>
+</body>
+</html>

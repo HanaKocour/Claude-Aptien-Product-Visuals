@@ -87,7 +87,8 @@ Postup pro každou obrazovku:
 | Evidence – tabulka | `evidence-toolbar.html` + `evidence-table.html` |
 | Evidence – seznam | `evidence-toolbar.html` + `evidence-list.html` |
 | Evidence – kanban | `evidence-toolbar.html` + `evidence-kanban.html` |
-| Detail záznamu (drawer) | výše + `evidence-drawer.html` |
+| Detail záznamu (drawer) – **obyčejný, častější** | výše + `evidence-drawer.html` |
+| Detail záznamu – **vrstvený** (stoh spine, víc navázaných záznamů, akční tlačítka v hlavičce) | předloha `item-drawer-prototyp.html` (viz níže) |
 | Drawer, tab Konverzace | `evidence-drawer.html`, v těle `drawer-konverzace.html` |
 | Moje konverzace – seznam | `konverzace-list.html` |
 | Moje konverzace – chat | `konverzace-chat.html` |
@@ -347,6 +348,7 @@ tab strip + sidebar):
 - `prototypes/` – **závazné předlohy** UI (kopíruj 1:1, viz pravidlo výše)
   - `Aptien-aplikace-offline.html` – **master prototyp: desktop** (celá aplikace, čitelné HTML)
   - `Aptien-mobil-intranet.html` – **master prototyp: mobil / intranet** (zaměstnanecké zobrazení)
+  - `item-drawer-prototyp.html` – **předloha vrstveného draweru** (stoh spine, akční tlačítka v hlavičce; jen pro případ vrstvení – jinak `partials/evidence-drawer.html`)
   - `assets/` – fonty, ikony, JS a obrázky (sdílené oběma prototypy, odkazované relativně)
   - `Aptien-pravidla-pouziti-UI.md` – referenční spec chování UI (desktop)
   - `Aptien-menu-reference.md` – kompletní levé menu k doslovnému zkopírování + pravidla aktivního stavu

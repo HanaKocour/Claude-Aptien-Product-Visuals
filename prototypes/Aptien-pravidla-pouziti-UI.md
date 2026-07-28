@@ -407,6 +407,18 @@ má vlevo **tenký barevný akcent** podle typu/stavu, hlavičku se jménem
 záznamu, tělo s poli a **záložky detailu (item tabs)** a **akční tlačítka**.
 Panel překrývá obsah; zavírá se zpět.
 
+> **Dvě varianty draweru — vyber podle zadání:**
+>
+> | Varianta | Kdy použít | Předloha |
+> |---|---|---|
+> | **Obyčejný drawer** (výchozí, ČASTĚJŠÍ) | Detail **jednoho** záznamu otevřený ze seznamu/karty. | partial `partials/evidence-drawer.html` (vlož doslovně) |
+> | **Vrstvený drawer** (stohované spine) | Když je otevřeno **víc navázaných záznamů nad sebou** – uživatel se proklikal z jednoho záznamu do souvisejícího (např. z vozidla na přiděleného zaměstnance). Vlevo je pak **stoh spine** (breadcrumb otevřených záznamů), v hlavičce bývají **akční tlačítka modulu** (např. „Předání zaměstnanci", „Tisk protokolu") a v akcích **„Zabalit"** místo „Uložit změny". | prototyp `item-drawer-prototyp.html` (zkopíruj strukturu) |
+>
+> Pravidlo: **není-li v zadání řeč o vrstvení / prokliknutí do souvisejícího
+> záznamu, použij obyčejný drawer.** Vrstvený drawer jen když zadání
+> explicitně chce víc otevřených záznamů nad sebou (spine stoh) nebo modul
+> s akčními tlačítky v hlavičce.
+
 **Item tabs podle modulu:**
 
 | Modul | Záložky detailu |
