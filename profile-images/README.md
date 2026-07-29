@@ -13,6 +13,7 @@ všemi vizuály a daly se snadno vyměnit.
 | `karolina-fiserova.png` | Karolína Fišerová | Zaměstnanec |
 | `pavel-obezretny.png` | Pavel Obezřetný | Auditor |
 | `ales-stavitel.png` | Aleš Stavitel | Stavební dělník |
+| `jaroslav-dvorak.png` | Jaroslav Dvořák | Stavbyvedoucí |
 
 ## Konvence pojmenování
 

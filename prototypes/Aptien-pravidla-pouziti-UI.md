@@ -409,17 +409,30 @@ má vlevo **tenký barevný akcent** podle typu/stavu, hlavičku se jménem
 záznamu, tělo s poli a **záložky detailu (item tabs)** a **akční tlačítka**.
 Panel překrývá obsah; zavírá se zpět.
 
-> **Dvě varianty draweru — vyber podle zadání:**
+> **Dvě varianty draweru — oba jsou PARTIALY, vkládej doslovně:**
 >
-> | Varianta | Kdy použít | Předloha |
+> | Varianta | Kdy použít | Co vložit |
 > |---|---|---|
-> | **Obyčejný drawer** (výchozí, ČASTĚJŠÍ) | Detail **jednoho** záznamu otevřený ze seznamu/karty. | partial `partials/evidence-drawer.html` (vlož doslovně) |
-> | **Vrstvený drawer** (stohované spine) | Když je otevřeno **víc navázaných záznamů nad sebou** – uživatel se proklikal z jednoho záznamu do souvisejícího (např. z vozidla na přiděleného zaměstnance). Vlevo je pak **stoh spine** (breadcrumb otevřených záznamů), v hlavičce bývají **akční tlačítka modulu** (např. „Předání zaměstnanci", „Tisk protokolu") a v akcích **„Zabalit"** místo „Uložit změny". | prototyp `item-drawer-prototyp.html` (zkopíruj strukturu) |
+> | **Obyčejný drawer** (VÝCHOZÍ, častější) | Detail **jednoho** záznamu otevřený ze seznamu/karty. | `partials/item-drawer-shell.html` + do slotu obsah záložky (pole *Detailů* z `partials/evidence-drawer.html`) |
+> | **Vrstvený drawer** (stoh spine) | Otevřeno je **víc navázaných záznamů nad sebou** – proklik z jednoho záznamu do souvisejícího (např. z vozidla na přiděleného zaměstnance). | `partials/item-drawer-stacked.html` + do slotu obsah záložky |
 >
-> Pravidlo: **není-li v zadání řeč o vrstvení / prokliknutí do souvisejícího
-> záznamu, použij obyčejný drawer.** Vrstvený drawer jen když zadání
-> explicitně chce víc otevřených záznamů nad sebou (spine stoh) nebo modul
-> s akčními tlačítky v hlavičce.
+> #### Rozhodovací pravidlo (dodržet přesně)
+>
+> 1. **Výchozí je vždy obyčejný drawer** (`item-drawer-shell.html`).
+> 2. Vrstvenou variantu (`item-drawer-stacked.html`) použij **jen když je v
+>    zadání spínač**: „proklik do souvisejícího záznamu", „dva/víc otevřených
+>    záznamů", „nad sebou", „stoh", „vrstvení", „breadcrumb otevřených
+>    záznamů", nebo modulová **akční tlačítka v hlavičce** („Předání
+>    zaměstnanci", „Tisk protokolu").
+> 3. **Když to ze zadání není jednoznačné → ZEPTEJ SE.** Nehádej a nekombinuj
+>    obě varianty.
+> 4. Ani v jednom případě nestav drawer z hlavy a **neber strukturu z
+>    `item-drawer-prototyp.html`** – ten je jen klikací ukázka (má vlastní
+>    `.kd-*` CSS, které se do generovaných obrazovek nehodí).
+>
+> Rozdíl variant je **jen** ve třech místech: počet spine, akční tlačítka
+> v hlavičce a přetékací „›" u tabů. Akční sloupec (§7.2), rozměry panelu,
+> hlavička a taby jsou v obou shodné.
 
 **Item tabs podle modulu:**
 
@@ -430,11 +443,10 @@ Panel překrývá obsah; zavírá se zpět.
 | Zakázky | Detaily · Přílohy · Souvislosti (3) · Kalendář · Zápisy · Úkoly · Poznámky · Konverzace |
 | Zaměstnanec | Detaily · Přílohy · Souvislosti · Kalendář · Úkoly · Poznámky · Konverzace |
 
-**Akce v detailu** (sdílené, dle modulu): Oblíbená, Nový report, Moje
-reporty, Online formuláře, Výsledky formulářů, Sdílet, Náhled, Oprávnění,
-Historie změn. **„Uložit změny" je primární tlačítko** (modré `#1572e8`,
-bílý text, pilulka), ne řádek v seznamu akcí – v pravém sloupci akcí je
-vizuálně oddělené jako hlavní akce.
+**Akce v detailu:** závazný výčet, pořadí a styly jsou v **§7.2**. Rám
+draweru (backdrop → panel → spine → hlavička → item tabs → tělo + akční
+sloupec) je hotový v partialu **`partials/item-drawer-shell.html`** –
+vlož ho doslovně a do slotu přidej obsah aktivní záložky.
 
 ### 7.1 Skelet panelu (POVINNÁ skladba)
 
@@ -454,10 +466,77 @@ vizuálně oddělené jako hlavní akce.
      okraj) a křížek „zavřít".
   2. **Item tabs** (viz tabulka výše) – volitelný počet = **modrý** badge
      `#1572e8`.
-  3. **Tělo** – **levý sloupec**: pole záznamu (řádky `min-height:52px`,
-     oddělovač `#f0eef8`); **pravý sloupec akcí** (`210px`, `border-left`):
-     seznam akcí + **primární tlačítko „Uložit změny"** (modré, pilulka) +
-     blok *ID / Vytvořeno / Vytvořil / Poslední úprava*.
+  3. **Tělo** – **levý sloupec**: obsah aktivní záložky (u *Detailů* pole
+     záznamu, řádky `min-height:52px`, oddělovač `#f0eef8`); **pravý
+     sloupec akcí** (`210px`, `border-left`) dle §7.2 + blok
+     *ID / Vytvořeno / Vytvořil / Poslední úprava*.
+
+> **Rám neskládej z hlavy** – vlož doslovně `partials/item-drawer-shell.html`
+> (backdrop, panel, spine, hlavička, item tabs, tělo se slotem, kompletní
+> akční sloupec, blok metadat) a měň jen data. Obsah záložky vkládej do
+> vyznačeného slotu.
+
+### 7.2 Pravý sloupec akcí (KOMPLETNÍ VÝČET, pořadí závazné)
+
+> Zdroj pravdy = master prototyp, blok `drawerZakOpen` / `zak_drawerActions`,
+> otevřený záznam **Sloupek 120**. Nejčastější chyba je **vynechání
+> „Zabalit" a stavové pilulky** – sloupec má **12 položek**, ne 9.
+
+| # | Položka | Ikona (FA Free) | Poznámka |
+|---|---|---|---|
+| 1 | Zabalit | `fa-solid fa-right-from-bracket` | **vždy první, v každém modulu** |
+| 2 | *stav záznamu* | tečka + `fa-solid fa-chevron-down` | pilulka – **jen modul se stavovým workflow**, viz níže |
+| 3 | Oblíbená | `fa-solid fa-star` | |
+| 4 | Nový report | `fa-solid fa-file-circle-plus` | |
+| 5 | Moje reporty | `fa-solid fa-chart-bar` | |
+| 6 | Online formuláře | `fa-solid fa-file-pen` | |
+| 7 | Výsledky formulářů | `fa-solid fa-table-list` | |
+| 8 | Sdílet | `fa-solid fa-share-nodes` | |
+| 9 | Náhled | `fa-solid fa-eye` | |
+| 10 | Oprávnění | `fa-solid fa-id-badge` | |
+| 11 | Historie změn | `fa-solid fa-clock-rotate-left` | |
+| 12 | Uložit změny | `fa-solid fa-floppy-disk` | **vždy vidět**, výchozí stav šedý/neaktivní – viz níže |
+
+**Styl řádku akce:** `display:flex;align-items:center;gap:10px;padding:7px 16px;`
+`font-size:12.5px;color:#374151;cursor:pointer`; ikona
+`width:18px;text-align:center;font-size:13px;color:#9a95ad`.
+**Hover:** text `#1572e8` + podklad `rgba(21,114,232,.05)`.
+Sloupec je jinak **bez barev** – jediný barevný prvek je stavová pilulka.
+
+**Stavová pilulka (položka 2):** podklad `#EEF4FE`, text `#1572e8`
+`12.5px/700`, `padding:6px 12px;margin:4px 8px;border-radius:999px`,
+vlevo tečka `10px` v **barvě stavu**, vpravo `chevron-down` `#1572e8`.
+Barvy tečky pro Zakázky: Poptávka `#DD2C00` · Nabídka poslána `#FF8F00` ·
+Realizace `#00C853` · Hotovo `#00BFA5` · Zrušeno `#9E9E9E`.
+Pilulka **nepřebírá barvu modulu** a u modulu bez stavů se vynechá.
+
+#### „Uložit změny" – PRAVIDLO ZOBRAZENÍ
+
+**Položka je ve sloupci VŽDY – mění jen stav. Zda je aktivní, se určuje
+V ZADÁNÍ (promptu); nikdy si to nedomýšlej.**
+
+| Zadání | Vzhled položky |
+|---|---|
+| **Bez zmínky** (VÝCHOZÍ) | **neaktivní řádek seznamu** – text `#bbb`, ikona diskety `#ccc`, jinak stejné rozměry jako ostatní akce. Je vidět, jen zešedivělá. |
+| Zadání říká, že má být **aktivní** (rozeditovaný záznam, neuložené změny, „uložit změny aktivní") | **modrá primární pilulka** `#1572e8`, bílý text, ikona diskety, `border-radius:999px`, stín `0 2px 6px rgba(21,114,232,.28)`, vlastní blok `padding:12px 16px 4px` nad metadaty |
+
+Položku **nikdy nevynechávej** a nikdy nemíchej oba stavy – v jednom
+screenshotu je buď šedý řádek, nebo modrá pilulka.
+
+> **Jak to napsat do promptu:** *„…detail záznamu, Uložit změny AKTIVNÍ
+> (rozeditovaný záznam)"* → modrá pilulka. Bez této zmínky zůstane šedý
+> neaktivní řádek.
+
+> ✅ Výchozí (šedý) stav odpovídá master prototypu – `Sloupek 120`
+> i Ochranné pomůcky mají `{ label: 'Uložit změny', disabled: true }`.
+>
+> ⚠ **Odchylka master prototypu:** Rizika a Ochranné pomůcky tam nemají
+> „Zabalit" ani stavovou pilulku. To je nedodělek – **závazný je výčet
+> v tabulce výše**, prototyp se srovná při nejbližší úpravě.
+
+**Blok metadat** je vždy poslední: `margin-top:16px`, `border-top:1px solid #eef0f3`,
+řádky `11px` `#9a95ad` s hodnotami `#5a5478` – *ID · Vytvořeno · Vytvořil ·
+Poslední úprava*.
 
 ---
 

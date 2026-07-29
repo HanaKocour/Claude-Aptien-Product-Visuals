@@ -1,0 +1,157 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free). Řádky níže načtou FA a Nunito,
+     aby se blok vykreslil i při samostatném otevření souboru. V master
+     prototypu se obojí načítá z jeho assetů, takže tam jsou nadbytečné. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<!--
+  APTIEN — ITEM DRAWER · SHELL (RÁM + AKČNÍ SLOUPEC)
+  =================================================
+  ZÁKLAD item draweru k DOSLOVNÉMU VLOŽENÍ. NEREKONSTRUUJ ho.
+  Zdroj pravdy = master prototyp `Aptien-aplikace-offline.html`, blok
+  `drawerZakOpen`, otevřený záznam **Sloupek 120** (modul Zakázky).
+
+  Co tento shell obsahuje:
+    backdrop → panel 80 % / min 920 px → spine (38 px) → hlavní část:
+      hlavička → item tabs → tělo = SLOT pro obsah záložky + KOMPLETNÍ
+      pravý sloupec akcí (210 px) + blok ID / Vytvořeno / Vytvořil /
+      Poslední úprava.
+
+  Co NEobsahuje (doplní se zvlášť):
+    • obsah jednotlivých záložek — vkládá se do bloku SLOT OBSAHU ZÁLOŽKY
+      (pro Detaily viz `evidence-drawer.html`, pro Konverzace
+      `drawer-konverzace.html`)
+    • vrstvení (stoh spine) a akční tlačítka modulu v hlavičce — na to je
+      partial `item-drawer-stacked.html` (kdy který → pravidla §7)
+
+  Měň JEN data: název záznamu, kategorii, ikonu modulu ve spine, sadu item
+  tabs dle modulu (tabulka v §7 pravidel), stav v pilulce, ID blok.
+  Strukturu, rozměry, barvy ani ikony akcí neměň.
+-->
+
+<!-- BACKDROP – klik zavírá panel -->
+<div style="position:fixed;inset:0;background:rgba(0,0,0,.15);z-index:50"></div>
+
+<!-- PANEL – 80 % / min 920 px, dvousloupcový (spine + hlavní část) -->
+<div style="position:fixed;top:0;right:0;bottom:0;width:80%;min-width:920px;background:#fff;z-index:51;display:flex;flex-direction:row;box-shadow:-8px 0 32px rgba(0,0,0,.18);font-family:'Nunito',sans-serif">
+
+  <!-- SPINE (38 px) – ikona modulu v barvě akce + svislý název záznamu.
+       Vrstvení (víc spine nad sebou) sem NEPATŘÍ – viz item-drawer-stacked.html -->
+  <div style="width:38px;flex-shrink:0;background:#fff;border-right:1px solid #e8e6f0;display:flex;flex-direction:column;align-items:center;padding-top:14px;gap:14px;overflow:hidden">
+    <i class="fa-solid fa-briefcase" style="color:#1572e8;font-size:15px"></i>
+    <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-weight:700;font-size:12px;color:#5a5478;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-height:260px">Sloupek 120</div>
+  </div>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden">
+
+    <!-- HLAVIČKA – název 26px/300, kategorie chip, placeholder obrázku 110px, × -->
+    <div style="flex-shrink:0;padding:24px 32px 0;display:flex;align-items:flex-start;gap:16px">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:26px;font-weight:300;color:#1e1b2e;line-height:1.2;margin-bottom:10px">Sloupek 120</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="display:inline-flex;align-items:center;background:#eceff1;color:#59676d;padding:4px 12px;border-radius:4px;font-size:10px;font-weight:600">Zakázky</span>
+        </div>
+      </div>
+      <div style="width:110px;height:110px;border:2px dashed #d8d6e2;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <i class="fa-regular fa-image" style="font-size:28px;color:#cdd0d8"></i>
+      </div>
+      <i class="fa-solid fa-xmark" style="color:#9a93b5;font-size:22px;cursor:pointer;flex-shrink:0;margin-top:4px"></i>
+    </div>
+
+    <!-- ITEM TABS = složkové taby (aktivní = bílý vyvýšený se stínem, modrý text).
+         Sada tabů se mění dle modulu (viz §7 pravidel), styl NE.
+         Aktivní je vždy JEDEN tab; volitelný počet = modrý kruhový badge. -->
+    <div style="flex-shrink:0;display:flex;align-items:flex-end;padding:16px 32px 0;background:#fff">
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:700;color:#1572e8;background:#fff;border-top-left-radius:8px;border-top-right-radius:8px;box-shadow:0 5px 20px rgba(0,0,0,.10);clip-path:inset(-30px -30px 0 -30px);margin-bottom:-1px;position:relative;z-index:2">Detaily</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Přílohy</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Souvislosti<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#1572e8;color:#fff;border-radius:50%;font-size:10px;font-weight:700;margin-left:4px">3</span></div>
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Kalendář</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Zápisy</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Úkoly</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Poznámky</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Konverzace</div>
+    </div>
+
+    <!-- TĚLO: obsah záložky (vlevo) + akční sloupec (vpravo) -->
+    <div style="flex:1;min-height:0;display:flex;overflow:hidden">
+      <div style="flex:1;min-width:0;overflow-y:auto;background:#fff">
+
+        <!-- ══════════════════════════════════════════════════════════════
+             SLOT OBSAHU ZÁLOŽKY – SEM vlož obsah aktivní záložky.
+             Nic jiného v tomto shellu neměň.
+               Detaily     → pole z `evidence-drawer.html` (řádky 52px)
+               Konverzace  → `drawer-konverzace.html`
+               ostatní     → prázdný stav níže (ikona modulu + název záložky)
+             ══════════════════════════════════════════════════════════════ -->
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;height:200px;color:#aaa4bf">
+          <i class="fa-solid fa-briefcase" style="font-size:28px;color:#d6d2e2"></i>
+          <div style="font-size:14px;font-weight:700;color:#7a7595">Detaily</div>
+        </div>
+        <!-- ═════════════════════════ KONEC SLOTU ══════════════════════ -->
+
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════
+           PRAVÝ SLOUPEC AKCÍ (210 px) – KOMPLETNÍ, POŘADÍ JE ZÁVAZNÉ.
+           Zabalit → stavová pilulka → Oblíbená → Nový report → Moje reporty
+           → Online formuláře → Výsledky formulářů → Sdílet → Náhled →
+           Oprávnění → Historie změn → (Uložit změny) → blok metadat.
+           Žádnou položku nevynechávej ani nepřehazuj. Výjimky:
+             • stavová pilulka – jen modul se stavovým workflow
+             • Uložit změny – vždy vidět, výchozí stav šedý/neaktivní;
+               modrá pilulka jen když to říká zadání (§7.2)
+           ══════════════════════════════════════════════════════════════ -->
+      <div style="width:210px;flex-shrink:0;border-left:1px solid #eeecf5;padding:12px 0;display:flex;flex-direction:column;overflow-y:auto">
+
+        <!-- 1 · Zabalit -->
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-right-from-bracket" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Zabalit</span></div>
+
+        <!-- 2 · STAVOVÁ PILULKA – jediná barevná položka sloupce.
+             Pozadí #EEF4FE, text #1572e8, tečka = barva stavu, chevron dolů.
+             Barvy tečky (Zakázky): Poptávka #DD2C00 · Nabídka poslána #FF8F00
+             · Realizace #00C853 · Hotovo #00BFA5 · Zrušeno #9E9E9E.
+             U modulu bez stavů se pilulka vynechává. -->
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 12px;margin:4px 8px;border-radius:999px;font-size:12.5px;font-weight:700;color:#1572e8;background:#EEF4FE;cursor:pointer">
+          <span style="width:10px;height:10px;border-radius:50%;background:#FF8F00;flex-shrink:0"></span>
+          <span style="flex:1">Nabídka poslána</span>
+          <i class="fa-solid fa-chevron-down" style="font-size:10px;color:#1572e8;cursor:pointer"></i>
+        </div>
+
+        <!-- 3–11 · běžné akce -->
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-star" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Oblíbená</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-file-circle-plus" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Nový report</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-chart-bar" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Moje reporty</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-file-pen" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Online formuláře</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-table-list" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Výsledky formulářů</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-share-nodes" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Sdílet</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-eye" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Náhled</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-id-badge" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Oprávnění</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-clock-rotate-left" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Historie změn</span></div>
+
+        <!-- 12 · ULOŽIT ZMĚNY – VŽDY VIDITELNÁ, mění jen stav (pravidla §7.2).
+             STAV ŘÍDÍ ZADÁNÍ (prompt), nedomýšlej ho:
+             • zadání o tlačítku MLČÍ → ponech (A) šedou neaktivní (VÝCHOZÍ)
+             • zadání říká „Uložit změny AKTIVNÍ" / rozeditovaný záznam →
+               zakomentuj (A) a odkomentuj (B) modrou pilulku
+             Položku nikdy nevynechávej. -->
+
+        <!-- (A) neaktivní – VÝCHOZÍ -->
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#bbb;cursor:pointer"><i class="fa-solid fa-floppy-disk" style="width:18px;text-align:center;font-size:13px;color:#ccc;flex-shrink:0"></i><span>Uložit změny</span></div>
+
+        <!-- (B) aktivní – jen když to zadání říká
+        <div style="padding:12px 16px 4px">
+          <div style="width:100%;background:#1572e8;color:#fff;border-radius:999px;padding:10px 20px;font-weight:700;font-size:13px;letter-spacing:.02em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 2px 6px rgba(21,114,232,.28)"><i class="fa-solid fa-floppy-disk" style="font-size:12px"></i>Uložit změny</div>
+        </div>
+        -->
+
+        <!-- Blok metadat – vždy poslední, oddělený linkou -->
+        <div style="margin-top:16px;padding:16px 16px 0;border-top:1px solid #eef0f3">
+          <div style="font-size:11px;color:#9a95ad;margin-bottom:4px">ID: <b style="color:#5a5478">40137</b></div>
+          <div style="font-size:11px;color:#9a95ad;margin-bottom:4px">Vytvořeno: <b style="color:#5a5478">19. 6. 2023</b></div>
+          <div style="font-size:11px;color:#9a95ad;margin-bottom:4px">Vytvořil: <b style="color:#5a5478">Karolína Fišerová</b></div>
+          <div style="font-size:11px;color:#9a95ad">Poslední úprava: <b style="color:#5a5478">14. 07. 2026</b></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

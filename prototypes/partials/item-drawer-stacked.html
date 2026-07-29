@@ -1,0 +1,160 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free). Řádky níže načtou FA a Nunito,
+     aby se blok vykreslil i při samostatném otevření souboru. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<!--
+  APTIEN — ITEM DRAWER · VRSTVENÝ (STOH SPINE)
+  ===========================================
+  VARIANTA draweru pro situaci, kdy je nad sebou otevřeno VÍC NAVÁZANÝCH
+  ZÁZNAMŮ (uživatel se proklikal z jednoho záznamu do souvisejícího).
+  Vlož TENTO BLOK CELÝ. NEREKONSTRUUJ ho a nemíchej ho s obyčejným drawerem.
+
+  KDY POUŽÍT (jinak ber `item-drawer-shell.html`):
+    • zadání mluví o prokliku do souvisejícího záznamu, o „dvou otevřených
+      záznamech", „nad sebou", „stohu" / „vrstvení"
+    • obrazovka má modulová akční tlačítka v hlavičce (např. „Předání
+      zaměstnanci", „Tisk protokolu")
+    • když to ze zadání není jednoznačné → ZEPTEJ SE, nehádej
+
+  ROZDÍLY PROTI `item-drawer-shell.html` (jinak je vše shodné):
+    1. VÍC SPINE VEDLE SEBE – nejstarší zabalený záznam vlevo, aktivní
+       vpravo. Každý spine = ikona modulu + svislý název záznamu.
+    2. HLAVIČKA má navíc řádek modulových akčních tlačítek (modrá pilulka
+       `#1572e8`); křížek je nad placeholderem obrázku.
+    3. ITEM TABS mohou přetékat – vpravo pak přetékací tlačítko „›".
+    4. AKČNÍ SLOUPEC je shodný se shellem (12 položek). „Zabalit" tady
+       zabaluje aktivní vrstvu zpět do spine.
+
+  Měň JEN data: názvy záznamů a ikony spine, název/kategorii, texty
+  tlačítek, sadu item tabs, stav v pilulce, ID blok.
+  Obsah aktivní záložky se vkládá do slotu v těle (stejně jako u shellu).
+-->
+
+<!-- BACKDROP -->
+<div style="position:fixed;inset:0;background:rgba(0,0,0,.15);z-index:50"></div>
+
+<!-- PANEL – u vrstvení je širší, aby se vešel stoh spine (šířka 80 % zůstává;
+     stoh ubírá z levé strany hlavní části) -->
+<div style="position:fixed;top:0;right:0;bottom:0;width:80%;min-width:920px;background:#fff;z-index:51;display:flex;flex-direction:row;box-shadow:-8px 0 32px rgba(0,0,0,.18);font-family:'Nunito',sans-serif">
+
+  <!-- ══════════════════════════════════════════════════════════════
+       STOH SPINE – breadcrumb otevřených záznamů, každý 38 px.
+       Řazení: nejstarší (nejdřív otevřený) VLEVO → aktivní VPRAVO.
+       Ikona spine = ikona modulu daného záznamu, ne barva modulu obrazovky.
+       Pro každou další vrstvu přidej jeden blok níže.
+       ══════════════════════════════════════════════════════════════ -->
+
+  <!-- vrstva 1 – zabalený záznam (zdroj prokliku) -->
+  <div style="width:38px;flex-shrink:0;background:#fff;border-right:1px solid #e8e6f0;display:flex;flex-direction:column;align-items:center;padding-top:14px;gap:14px;overflow:hidden;cursor:pointer">
+    <i class="fa-solid fa-car" style="color:#1572e8;font-size:15px"></i>
+    <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-weight:700;font-size:12px;color:#5a5478;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-height:260px">Volkswagen Polo 1A67894</div>
+  </div>
+
+  <!-- vrstva 2 – AKTIVNÍ záznam (poslední otevřený) -->
+  <div style="width:38px;flex-shrink:0;background:#fff;border-right:1px solid #e8e6f0;display:flex;flex-direction:column;align-items:center;padding-top:14px;gap:14px;overflow:hidden">
+    <i class="fa-solid fa-people-group" style="color:#1572e8;font-size:15px"></i>
+    <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-weight:700;font-size:12px;color:#5a5478;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-height:260px">Jana Šťastná</div>
+  </div>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden">
+
+    <!-- HLAVIČKA – navíc řádek modulových akčních tlačítek -->
+    <div style="flex-shrink:0;padding:24px 32px 0;display:flex;align-items:flex-start;gap:16px">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:26px;font-weight:300;color:#1e1b2e;line-height:1.2;margin-bottom:10px">Jana Šťastná</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+          <span style="display:inline-flex;align-items:center;background:#eceff1;color:#59676d;padding:4px 12px;border-radius:4px;font-size:10px;font-weight:600">Zaměstnanci</span>
+        </div>
+        <!-- Modulová akční tlačítka – VŽDY modrá #1572e8, nikdy barva modulu.
+             Texty a ikony se mění dle modulu; když modul akce nemá, celý
+             tento blok vynech. -->
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <div style="display:inline-flex;align-items:center;gap:8px;background:#1572e8;color:#fff;padding:11px 24px;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 2px 6px rgba(21,114,232,.28)"><i class="fa-solid fa-right-from-bracket" style="font-size:12px"></i>Předání zaměstnanci</div>
+          <div style="display:inline-flex;align-items:center;gap:8px;background:#1572e8;color:#fff;padding:11px 24px;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 2px 6px rgba(21,114,232,.28)"><i class="fa-solid fa-print" style="font-size:12px"></i>Tisk protokolu</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:14px;flex-shrink:0">
+        <i class="fa-solid fa-xmark" style="color:#9a93b5;font-size:22px;cursor:pointer"></i>
+        <div style="width:110px;height:110px;border:2px dashed #d8d6e2;border-radius:8px;display:flex;align-items:center;justify-content:center">
+          <i class="fa-regular fa-image" style="font-size:28px;color:#cdd0d8"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- ITEM TABS – styl shodný se shellem; navíc přetékací tlačítko „›"
+         vpravo, když se taby nevejdou. Aktivní je vždy JEDEN. -->
+    <div style="flex-shrink:0;display:flex;align-items:flex-end;padding:16px 32px 0;background:#fff">
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:700;color:#1572e8;background:#fff;border-top-left-radius:8px;border-top-right-radius:8px;box-shadow:0 5px 20px rgba(0,0,0,.10);clip-path:inset(-30px -30px 0 -30px);margin-bottom:-1px;position:relative;z-index:2">Detaily</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Přílohy</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Souvislosti<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#1572e8;color:#fff;border-radius:50%;font-size:10px;font-weight:700;margin-left:4px">1</span></div>
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Kalendář</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Úkoly</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Poznámky</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Konverzace</div>
+      <!-- přetékací tlačítko – vynech, když se taby vejdou -->
+      <div style="margin-left:auto;align-self:center;margin-bottom:6px;width:30px;height:30px;border:1px solid #e0dded;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#9a93b5;cursor:pointer;flex-shrink:0"><i class="fa-solid fa-chevron-right" style="font-size:12px"></i></div>
+    </div>
+
+    <!-- TĚLO: obsah záložky (vlevo) + akční sloupec (vpravo) -->
+    <div style="flex:1;min-height:0;display:flex;overflow:hidden">
+      <div style="flex:1;min-width:0;overflow-y:auto;background:#fff">
+
+        <!-- ══════════════════════════════════════════════════════════════
+             SLOT OBSAHU ZÁLOŽKY – stejný jako u `item-drawer-shell.html`.
+               Detaily     → pole z `evidence-drawer.html`
+               Konverzace  → `drawer-konverzace.html`
+               ostatní     → prázdný stav níže
+             ══════════════════════════════════════════════════════════════ -->
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;height:200px;color:#aaa4bf">
+          <i class="fa-solid fa-people-group" style="font-size:28px;color:#d6d2e2"></i>
+          <div style="font-size:14px;font-weight:700;color:#7a7595">Detaily</div>
+        </div>
+        <!-- ═════════════════════════ KONEC SLOTU ══════════════════════ -->
+
+      </div>
+
+      <!-- PRAVÝ SLOUPEC AKCÍ – shodný s `item-drawer-shell.html`,
+           12 položek, pořadí závazné (pravidla §7.2). „Zabalit" zabaluje
+           aktivní vrstvu zpět do spine. -->
+      <div style="width:210px;flex-shrink:0;border-left:1px solid #eeecf5;padding:12px 0;display:flex;flex-direction:column;overflow-y:auto">
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-right-from-bracket" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Zabalit</span></div>
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 12px;margin:4px 8px;border-radius:999px;font-size:12.5px;font-weight:700;color:#1572e8;background:#EEF4FE;cursor:pointer">
+          <span style="width:10px;height:10px;border-radius:50%;background:#00C853;flex-shrink:0"></span>
+          <span style="flex:1">Aktivní</span>
+          <i class="fa-solid fa-chevron-down" style="font-size:10px;color:#1572e8;cursor:pointer"></i>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-star" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Oblíbená</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-file-circle-plus" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Nový report</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-chart-bar" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Moje reporty</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-file-pen" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Online formuláře</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-table-list" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Výsledky formulářů</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-share-nodes" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Sdílet</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-eye" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Náhled</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-id-badge" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Oprávnění</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#374151;cursor:pointer"><i class="fa-solid fa-clock-rotate-left" style="width:18px;text-align:center;font-size:13px;color:#9a95ad;flex-shrink:0"></i><span>Historie změn</span></div>
+
+        <!-- Uložit změny – VŽDY VIDITELNÁ, mění jen stav (pravidla §7.2).
+             Stav řídí ZADÁNÍ: mlčí-li prompt, zůstává (A) šedá neaktivní;
+             při „Uložit změny AKTIVNÍ" / rozeditovaném záznamu zakomentuj (A)
+             a odkomentuj (B). Položku nikdy nevynechávej. -->
+
+        <!-- (A) neaktivní – VÝCHOZÍ -->
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#bbb;cursor:pointer"><i class="fa-solid fa-floppy-disk" style="width:18px;text-align:center;font-size:13px;color:#ccc;flex-shrink:0"></i><span>Uložit změny</span></div>
+
+        <!-- (B) aktivní – jen když to zadání říká
+        <div style="padding:12px 16px 4px">
+          <div style="width:100%;background:#1572e8;color:#fff;border-radius:999px;padding:10px 20px;font-weight:700;font-size:13px;letter-spacing:.02em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 2px 6px rgba(21,114,232,.28)"><i class="fa-solid fa-floppy-disk" style="font-size:12px"></i>Uložit změny</div>
+        </div>
+        -->
+
+        <div style="margin-top:16px;padding:16px 16px 0;border-top:1px solid #eef0f3">
+          <div style="font-size:11px;color:#9a95ad;margin-bottom:4px">ID: <b style="color:#5a5478">4694</b></div>
+          <div style="font-size:11px;color:#9a95ad;margin-bottom:4px">Vytvořeno: <b style="color:#5a5478">16. 08. 2021</b></div>
+          <div style="font-size:11px;color:#9a95ad;margin-bottom:4px">Vytvořil: <b style="color:#5a5478">František Správce</b></div>
+          <div style="font-size:11px;color:#9a95ad">Poslední úprava: <b style="color:#5a5478">24. 08. 2025</b></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

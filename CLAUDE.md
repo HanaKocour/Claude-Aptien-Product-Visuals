@@ -50,7 +50,9 @@ zeptej, než abys cokoli domýšlel.
 > - `evidence-table.html` – pohled **Tabulka** (horní lišta, sticky sloupec, hlavička + filtry, řádky)
 > - `evidence-list.html` – pohled **Seznam** (karta: řazení → řádky → spodní lišta)
 > - `evidence-kanban.html` – pohled **Kanban** (5 sloupců s pevnými barvami, karty, +Přidat)
-> - `evidence-drawer.html` – **item detail drawer** (backdrop → panel 80%/920 → spine → hlavička → item tabs → pole + pravý sloupec akcí + primární tlačítko „Uložit změny")
+> - `item-drawer-shell.html` – **rám item draweru** (backdrop → panel 80%/920 → spine → hlavička → item tabs → tělo se slotem pro obsah záložky + **kompletní akční sloupec** Zabalit → stavová pilulka → … → Historie změn → Uložit změny *(výchozí šedá/neaktivní, aktivní jen dle zadání)* + blok metadat). Zdroj pravdy pro akce; obsah záložky se vkládá do slotu.
+> - `item-drawer-stacked.html` – **vrstvený drawer** (stoh spine = víc otevřených navázaných záznamů + modulová tlačítka v hlavičce + přetékací „›" u tabů); akční sloupec shodný se shellem
+> - `evidence-drawer.html` – **pole záznamu (záložka Detaily)** do slotu shellu; jeho vlastní akční sloupec je zkrácený – ber ho ze shellu
 > - `konverzace-list.html` – **Moje konverzace / seznam** (hledání + „+", karty konverzací)
 > - `konverzace-chat.html` – **Moje konverzace / otevřený chat** (title bar, AI SOUHRN, bubliny, composer)
 > - `drawer-konverzace.html` – obsah **tabu Konverzace v draweru** (bubliny + composer)
@@ -87,8 +89,9 @@ Postup pro každou obrazovku:
 | Evidence – tabulka | `evidence-toolbar.html` + `evidence-table.html` |
 | Evidence – seznam | `evidence-toolbar.html` + `evidence-list.html` |
 | Evidence – kanban | `evidence-toolbar.html` + `evidence-kanban.html` |
-| Detail záznamu (drawer) – **obyčejný, častější** | výše + `evidence-drawer.html` |
-| Detail záznamu – **vrstvený** (stoh spine, víc navázaných záznamů, akční tlačítka v hlavičce) | předloha `item-drawer-prototyp.html` (viz níže) |
+| Detail záznamu (drawer) – **obyčejný, častější** | výše + `item-drawer-shell.html`, do jeho slotu pole z `evidence-drawer.html` |
+| Akční sloupec draweru (menu akcí) | `item-drawer-shell.html` – celý výčet včetně „Zabalit" a stavové pilulky; „Uložit změny" jen při neuložených změnách (pravidla §7.2) |
+| Detail záznamu – **vrstvený** (stoh spine, víc navázaných záznamů, akční tlačítka v hlavičce) | `item-drawer-stacked.html`, do jeho slotu obsah záložky — **jen při spínači v zadání, jinak se zeptej** (pravidla §7) |
 | Drawer, tab Konverzace | `evidence-drawer.html`, v těle `drawer-konverzace.html` |
 | Moje konverzace – seznam | `konverzace-list.html` |
 | Moje konverzace – chat | `konverzace-chat.html` |
@@ -349,7 +352,7 @@ tab strip + sidebar):
 - `prototypes/` – **závazné předlohy** UI (kopíruj 1:1, viz pravidlo výše)
   - `Aptien-aplikace-offline.html` – **master prototyp: desktop** (celá aplikace, čitelné HTML)
   - `Aptien-mobil-intranet.html` – **master prototyp: mobil / intranet** (zaměstnanecké zobrazení)
-  - `item-drawer-prototyp.html` – **předloha vrstveného draweru** (stoh spine, akční tlačítka v hlavičce; jen pro případ vrstvení – jinak `partials/evidence-drawer.html`)
+  - `item-drawer-prototyp.html` – **klikací ukázka vrstveného draweru** (přepínání Detaily / Souvislosti). ⛔ **NEBER z něj strukturu** – má vlastní `.kd-*` CSS, které se do generovaných obrazovek nehodí. Předlohou k vložení je `partials/item-drawer-stacked.html`.
   - `assets/` – fonty, ikony, JS a obrázky (sdílené oběma prototypy, odkazované relativně)
   - `Aptien-pravidla-pouziti-UI.md` – referenční spec chování UI (desktop)
   - `Aptien-menu-reference.md` – kompletní levé menu k doslovnému zkopírování + pravidla aktivního stavu
@@ -358,7 +361,9 @@ tab strip + sidebar):
     `sidebar-menu.html` (levé menu s inline SVG ikonami),
     `evidence-toolbar.html` (toolbar), `evidence-dashboard.html` (Dashboard),
     `evidence-table.html` (Tabulka), `evidence-list.html` (Seznam),
-    `evidence-kanban.html` (Kanban), `evidence-drawer.html` (item detail drawer),
+    `evidence-kanban.html` (Kanban), `item-drawer-shell.html` (rám draweru + akční sloupec),
+    `item-drawer-stacked.html` (vrstvený drawer se stohem spine),
+    `evidence-drawer.html` (pole záznamu do záložky Detaily),
     `konverzace-list.html` (Moje konverzace – seznam),
     `konverzace-chat.html` (Moje konverzace – otevřený chat),
     `drawer-konverzace.html` (tab Konverzace v draweru)
