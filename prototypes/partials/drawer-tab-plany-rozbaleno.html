@@ -1,0 +1,191 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free) + Nunito. Řádky níže je načtou,
+     aby se blok vykreslil i při samostatném otevření souboru. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<!--
+  APTIEN — DRAWER, „PLÁNY AKTIVIT" · ROZBALENÉ SKUPINY
+  ==================================================
+  ⛔ POUŽIJ JEN NA VÝSLOVNÉ ZADÁNÍ („rozbalená skupina X").
+     VÝCHOZÍ podoba záložky = všechny skupiny sbalené →
+     `drawer-tab-plany.html` (pravidla §7.1.0).
+
+  JAK POUŽÍT: v `drawer-tab-plany.html` nahraď sbalenou hlavičku té skupiny,
+  kterou zadání chce otevřenou, odpovídající variantou odsud. Ostatní
+  skupiny nech sbalené. Chevron rozbalené skupiny je `fa-chevron-down`.
+
+  ⚠ TENTO SOUBOR NENÍ CELÁ ZÁLOŽKA – obsahuje **jen karty skupin**.
+     Tlačítko „PŘIDAT AKTIVITU" (sekundární pilulka) tady schválně NENÍ,
+     protože je v `drawer-tab-plany.html`, které se vkládá vždy jako
+     základ. Nikdy nevkládej tenhle soubor samostatně místo záložky –
+     přišel by o tlačítko i o ostatní (sbalené) skupiny.
+
+  Varianty níže:
+    A · skupina se SPLNĚNÝMI aktivitami (zelené kolečko + časová značka)
+    B · skupina s aktivitami ČEKAJÍCÍMI NA AKCI (chipy termínu + pilulky
+        NAPLÁNOVAT / POTVRDIT)
+    C · skupina s HROMADNÝMI AKCEMI (první řádek „Vybrat vše")
+
+  Barva pilulky akce = barva chipu termínu: bez termínu tmavá `#2b2942`,
+  po termínu `#EF5350`, blíží se `#FFAB00`. Sémantické – nepřebarvuj.
+-->
+<div style="padding:16px 20px;font-family:'Nunito',sans-serif">
+
+  <!-- ═══ A · ROZBALENÁ – splněné aktivity ═══ -->
+  <div style="margin-bottom:14px;border-radius:6px;overflow:hidden;border:1px solid #e9e7f1">
+    <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:#efeef4;cursor:pointer">
+      <i class="fa-solid fa-chevron-down" style="font-size:12px;color:#5a5478;cursor:pointer"></i>
+      <span style="font-weight:800;font-size:14px;color:#2b2942;cursor:pointer">Nástup zaměstnance</span>
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 6px;background:#2b2942;color:#fff;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0">17</span>
+      <span style="background:#00C853;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px;white-space:nowrap;flex-shrink:0">17 V pořádku</span>
+    </div>
+    <div style="background:#fff;padding:6px 16px">
+
+      <div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f2f1f7">
+        <div style="width:26px;height:26px;border-radius:50%;background:#7B1FA2;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;font-weight:700;color:#fff">KF</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:13.5px;color:#1e1b2e;margin-bottom:4px">Odevzdal vstupní lékařskou prohlídku</div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:12px;color:#6c6785">11.07.2022</span>
+            <span style="background:#78788c;color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:4px">Jednorázová</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;flex-shrink:0">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:70px">
+            <i class="fa-solid fa-circle-check" style="font-size:31px;color:#00c853;line-height:1"></i>
+            <div style="font-size:10px;color:#888;text-align:center;line-height:1.3">11.07.2022 13:57</div>
+          </div>
+          <i class="fa-solid fa-ellipsis-vertical" style="color:#c5c0d8;font-size:14px;cursor:pointer"></i>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f2f1f7">
+        <div style="width:26px;height:26px;border-radius:50%;background:#1565C0;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;font-weight:700;color:#fff">TN</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:13.5px;color:#1e1b2e;margin-bottom:4px">Odevzdal zápočtový list</div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:12px;color:#6c6785">11.07.2022</span>
+            <span style="background:#78788c;color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:4px">Jednorázová</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;flex-shrink:0">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:70px">
+            <i class="fa-solid fa-circle-check" style="font-size:31px;color:#00c853;line-height:1"></i>
+            <div style="font-size:10px;color:#888;text-align:center;line-height:1.3">11.07.2022 13:57</div>
+          </div>
+          <i class="fa-solid fa-ellipsis-vertical" style="color:#c5c0d8;font-size:14px;cursor:pointer"></i>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f2f1f7">
+        <div style="width:26px;height:26px;border-radius:50%;background:#00695C;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;font-weight:700;color:#fff">PM</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:13.5px;color:#1e1b2e;margin-bottom:4px">Seznámení s pracovištěm</div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:12px;color:#6c6785">11.07.2022</span>
+            <span style="background:#78788c;color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:4px">Jednorázová</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;flex-shrink:0">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:70px">
+            <i class="fa-solid fa-circle-check" style="font-size:31px;color:#00c853;line-height:1"></i>
+            <div style="font-size:10px;color:#888;text-align:center;line-height:1.3">11.07.2022 13:57</div>
+          </div>
+          <i class="fa-solid fa-ellipsis-vertical" style="color:#c5c0d8;font-size:14px;cursor:pointer"></i>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ B · ROZBALENÁ – aktivity čekající na akci ═══ -->
+  <div style="margin-bottom:14px;border-radius:6px;overflow:hidden;border:1px solid #e9e7f1">
+    <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:#efeef4;cursor:pointer">
+      <i class="fa-solid fa-chevron-down" style="font-size:12px;color:#5a5478;cursor:pointer"></i>
+      <span style="font-weight:800;font-size:14px;color:#2b2942;cursor:pointer">Školení a osobní rozvoj</span>
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 6px;background:#2b2942;color:#fff;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0">5</span>
+      <span style="background:#FFAB00;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px;white-space:nowrap;flex-shrink:0">3 Blížící se</span>
+      <span style="background:#EF5350;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px;white-space:nowrap;flex-shrink:0">1 Urgentní</span>
+      <span style="background:#78788c;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px;white-space:nowrap;flex-shrink:0">1 nenaplánované</span>
+    </div>
+    <div style="background:#fff;padding:6px 16px">
+
+      <div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f2f1f7">
+        <input type="checkbox" style="width:16px;height:16px;flex-shrink:0">
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:13.5px;color:#1e1b2e;margin-bottom:4px">Školení o zdraví a bezpečnosti na pracovišti (BOZP)</div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:12px;color:#1572e8;text-decoration:underline;cursor:pointer">Hlídání ještě není nastavené</span>
+            <span style="background:#78788c;color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:4px">Každé 3 roky</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
+          <span style="background:#2b2942;color:#fff;font-size:11px;font-weight:400;letter-spacing:.02em;padding:8px 14px;border-radius:20px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px">NAPLÁNOVAT<i class="fa-regular fa-calendar-plus" style="font-size:11px"></i></span>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f2f1f7">
+        <div style="width:26px;height:26px;border-radius:50%;background:#E65100;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;font-weight:700;color:#fff">JK</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:13.5px;color:#1e1b2e;margin-bottom:4px">Pravidelné školení BOZP</div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:12px;color:#6c6785">07.08.2025</span>
+            <span style="background:#EF5350;color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:4px">Před 355 dny</span>
+            <span style="background:#78788c;color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:4px">Každé 2 roky</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
+          <span style="background:#EF5350;color:#fff;font-size:11px;font-weight:400;letter-spacing:.02em;padding:8px 14px;border-radius:20px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px">POTVRDIT</span>
+          <span style="font-size:10.5px;color:#a8a3bd"><i class="fa-regular fa-clock"></i> 07.08.2023 10:23</span>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f2f1f7">
+        <div style="width:26px;height:26px;border-radius:50%;background:#C62828;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;font-weight:700;color:#fff">LH</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:13.5px;color:#1e1b2e;margin-bottom:4px">Pohovor se zaměstnancem</div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:12px;color:#6c6785">24.08.2026</span>
+            <span style="background:#FFAB00;color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:4px">Za 27 dní</span>
+            <span style="background:#78788c;color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:4px">Ročně</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
+          <span style="background:#FFAB00;color:#fff;font-size:11px;font-weight:400;letter-spacing:.02em;padding:8px 14px;border-radius:20px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px">POTVRDIT</span>
+          <span style="font-size:10.5px;color:#a8a3bd"><i class="fa-regular fa-clock"></i> 24.08.2025 10:44</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ C · ROZBALENÁ s hromadnými akcemi („Vybrat vše") ═══ -->
+  <div style="margin-bottom:14px;border-radius:6px;overflow:hidden;border:1px solid #e9e7f1">
+    <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:#efeef4;cursor:pointer">
+      <i class="fa-solid fa-chevron-down" style="font-size:12px;color:#5a5478;cursor:pointer"></i>
+      <span style="font-weight:800;font-size:14px;color:#2b2942;cursor:pointer">Ochrana zdraví</span>
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 6px;background:#2b2942;color:#fff;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0">2</span>
+      <span style="background:#78788c;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px;white-space:nowrap;flex-shrink:0">2 nenaplánované</span>
+    </div>
+    <div style="background:#fff;padding:6px 16px">
+      <div style="display:flex;align-items:center;gap:14px;padding:10px 0;border-bottom:1px solid #f2f1f7">
+        <input type="checkbox" style="width:16px;height:16px;flex-shrink:0">
+        <span style="font-size:13px;color:#a8a3bd;flex:1">Vybrat vše</span>
+        <i class="fa-solid fa-ellipsis-vertical" style="color:#c5c0d8;font-size:14px;cursor:pointer"></i>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f2f1f7">
+        <input type="checkbox" style="width:16px;height:16px;flex-shrink:0">
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:13.5px;color:#1e1b2e;margin-bottom:4px">Pravidelná lékařská prohlídka</div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:12px;color:#1572e8;text-decoration:underline;cursor:pointer">Hlídání ještě není nastavené</span>
+            <span style="background:#78788c;color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:4px">Ročně</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
+          <span style="background:#2b2942;color:#fff;font-size:11px;font-weight:400;letter-spacing:.02em;padding:8px 14px;border-radius:20px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px">NAPLÁNOVAT<i class="fa-regular fa-calendar-plus" style="font-size:11px"></i></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -45,7 +45,7 @@ zeptej, než abys cokoli domýšlel.
 > ✅ **Hotové bloky k DOSLOVNÉMU vložení (nerekonstruovat!)** v
 > `prototypes/partials/`:
 > - `sidebar-menu.html` – celé levé menu (15 + 7 položek, inline SVG ikony, aktivní stav, badge)
-> - `evidence-toolbar.html` – **toolbar** (ikona+název, modré PŘIDAT, hledání, view switcher – všech 5, aktivní modrá)
+> - `evidence-toolbar.html` – **toolbar** (ikona+název, PŘIDAT v barvě modulu, hledání, view switcher – všech 5, aktivní modrá)
 > - `evidence-dashboard.html` – pohled **Dashboard** (hero banner „pruh" + mřížka bílých karet)
 > - `evidence-table.html` – pohled **Tabulka** (horní lišta, sticky sloupec, hlavička + filtry, řádky)
 > - `evidence-list.html` – pohled **Seznam** (karta: řazení → řádky → spodní lišta)
@@ -55,6 +55,12 @@ zeptej, než abys cokoli domýšlel.
 > - `evidence-drawer.html` – **pole záznamu (záložka Detaily)** do slotu shellu; jeho vlastní akční sloupec je zkrácený – ber ho ze shellu
 > - `konverzace-list.html` – **Moje konverzace / seznam** (hledání + „+", karty konverzací)
 > - `konverzace-chat.html` – **Moje konverzace / otevřený chat** (title bar, AI SOUHRN, bubliny, composer)
+> - `drawer-tab-detaily.html` – obsah **záložky Detaily** (svislý seznam polí, 7 typů polí)
+> - `drawer-tab-souvislosti.html` – obsah **záložky Souvislosti** (nástroje + skupiny navázaných záznamů, **bez grafu**, vše sbalené)
+> - `drawer-tab-souvislosti-graf.html` – Souvislosti **se zobrazeným grafem** – jen na výslovné zadání
+> - `drawer-tab-zapisy.html` – obsah **záložky Zápisy** (filtry + hlavička sloupců + časová osa)
+> - `drawer-tab-plany.html` – obsah **záložky Plány aktivit** (PŘIDAT AKTIVITU + karty skupin se stavovými chipy, **vše sbalené**)
+> - `drawer-tab-plany-rozbaleno.html` – rozbalené skupiny Plánů aktivit (3 varianty) – jen na výslovné zadání
 > - `drawer-konverzace.html` – obsah **tabu Konverzace v draweru** (bubliny + composer)
 >
 > Celá obrazovka evidence = `evidence-toolbar` + jeden z pohledů
@@ -89,10 +95,14 @@ Postup pro každou obrazovku:
 | Evidence – tabulka | `evidence-toolbar.html` + `evidence-table.html` |
 | Evidence – seznam | `evidence-toolbar.html` + `evidence-list.html` |
 | Evidence – kanban | `evidence-toolbar.html` + `evidence-kanban.html` |
-| Detail záznamu (drawer) – **obyčejný, častější** | výše + `item-drawer-shell.html`, do jeho slotu pole z `evidence-drawer.html` |
+| Detail záznamu (drawer) – **obyčejný, častější** | výše + `item-drawer-shell.html`, do jeho slotu `drawer-tab-detaily.html` |
+| Drawer, záložka **Detaily** | `item-drawer-shell.html`, do slotu `drawer-tab-detaily.html` |
 | Akční sloupec draweru (menu akcí) | `item-drawer-shell.html` – celý výčet včetně „Zabalit" a stavové pilulky; „Uložit změny" jen při neuložených změnách (pravidla §7.2) |
 | Detail záznamu – **vrstvený** (stoh spine, víc navázaných záznamů, akční tlačítka v hlavičce) | `item-drawer-stacked.html`, do jeho slotu obsah záložky — **jen při spínači v zadání, jinak se zeptej** (pravidla §7) |
-| Drawer, tab Konverzace | `evidence-drawer.html`, v těle `drawer-konverzace.html` |
+| Drawer, záložka **Souvislosti** | `item-drawer-shell.html`, do slotu `drawer-tab-souvislosti.html` (se grafem jen na výslovné zadání → `-graf.html`) |
+| Drawer, záložka **Zápisy** | `item-drawer-shell.html`, do slotu `drawer-tab-zapisy.html` |
+| Drawer, záložka **Plány aktivit** | `item-drawer-shell.html`, do slotu `drawer-tab-plany.html` |
+| Drawer, tab Konverzace | `item-drawer-shell.html`, do slotu `drawer-konverzace.html` |
 | Moje konverzace – seznam | `konverzace-list.html` |
 | Moje konverzace – chat | `konverzace-chat.html` |
 
@@ -185,18 +195,32 @@ obrazovky.
 |---|---|---|
 | Top bar | fialová `#6200EA` | vždy, na všech obrazovkách |
 | Pruh se záložkami (tab strip) | fialová `#6200EA` | pozadí pruhu za taby – stejná fialová jako top bar, splývá do jednoho fialového pásu |
-| Tlačítka / akce / odkazy / aktivní prvky | modrá `#1572e8` | primární akce („Přidat…"), aktivní pohled ve view switcheru |
+| Tlačítka / akce / odkazy / aktivní prvky | modrá `#1572e8` | aktivní pohled ve view switcheru, „Uložit změny", odkazy v polích |
+| **Všechna „přidat" v evidenci** | **barva modulu `c800`** | „PŘIDAT …" v toolbaru, „+ Přidat" v kanban sloupcích, inline „+ přidat" v polích draweru — VÝJIMKA z modré |
 | **Aktivní záložka (tab)** | **barva modulu `c800`** | přebírá barvu, kterou má text/ikona té záložky, když je neaktivní – pozadí aktivní záložky = její `c800`, text bílý |
 | Sidebar | bílý `#fff` | světlý panel, pravý okraj `1px solid var(--gray-10)`; aktivní položka = tint `rgba(21,114,232,.10)` + text `#1572e8` |
 | Barva modulu (`c800`) | dle tabulky záložek | text/ikona neaktivní záložky, **pozadí aktivní záložky** a chip dané záložky – nic víc |
 | Sémantické (zelená/červená/oranžová/modrá) | dle stavu | jen stavy, ne dekorace |
 
-> **Konkrétní chyba, které se vyvaruj:** neobarvuj tlačítka ani
-> view switcher „tématickou" barvou modulu (např. teal `#00BFA5`).
-> Tlačítko „Přidat" je **modré** bez ohledu na modul. **Aktivní záložka
-> ale přebírá barvu svého modulu (`c800`)** – tj. tu, kterou má její text,
-> když je neaktivní. Banner drží skladbu a barevnost jako v prototypu,
-> ne libovolný gradient.
+> **Konkrétní chyba, které se vyvaruj:** neobarvuj **view switcher**
+> „tématickou" barvou modulu (např. teal `#00BFA5`) – ten je vždy modrý.
+> **Aktivní záložka přebírá barvu svého modulu (`c800`)** – tj. tu, kterou
+> má její text, když je neaktivní. Banner drží skladbu a barevnost jako
+> v prototypu, ne libovolný gradient.
+
+> ⛔ **„Přidat" = VŽDY barva evidence (modulu `c800`), nikdy modrá.**
+> Platí pro **všechna** přidávací UI v evidenci: velké „PŘIDAT …"
+> v toolbaru (plné pozadí `c800`, bílý text, stín `0 2px 6px rgba(<c800>,.28)`),
+> „+ Přidat" v kanban sloupcích i inline „+ přidat" v polích draweru
+> (text v `c800`, `700`). **Modrá `#1572e8` zůstává** view switcheru,
+> „Uložit změny" a odkazům na hodnoty v polích.
+>
+> | Modul | Barva „přidat" (`c800`) |
+> |---|---|
+> | Rizika | `#E91E63` |
+> | Ochranné pomůcky | `#D84315` |
+> | Zakázky | `#1565C0` |
+> | Zaměstnanci | `#f1c40f` |
 
 > **Notifikační bublina u zvonečku v top baru = VŽDY červená `#FF3D00`.**
 > Je to počítadlo/alert, nikdy ne modrá. Lem bubliny drží barvu top baru.
@@ -204,13 +228,13 @@ obrazovky.
 
 > **Toolbar evidence se chová VŽDY jako v prototypu (`Aptien-aplikace-offline.html`).**
 > Skladba: ikona + název modulu (`16px/800`, `#1e1b2e`; ikona v barvě
-> modulu `c800`) → modré tlačítko „PŘIDAT …" (`#1572e8`) → hledání (pilulka
+> modulu `c800`) → tlačítko „PŘIDAT …" **v barvě modulu `c800`** → hledání (pilulka
 > **bílá `#fff` + jemný okraj `1px solid #e0dded`**, ne šedá výplň – ať
 > nesplývá s okolím) → view switcher vpravo. **Přepínání pohledů je VŽDY modré**:
 > aktivní pohled = lem/text `#1572e8` + tint `#e8f0fd`, neaktivní = bílé,
-> šedý lem `#c8c4d8`, text `#3d3a52`. View switcher, tlačítko ani hledání
-> nikdy nepřebírají barvu modulu. (Design system to dělal špatně – závazný
-> je prototyp.)
+> šedý lem `#c8c4d8`, text `#3d3a52`. **View switcher ani hledání nikdy
+> nepřebírají barvu modulu** – na rozdíl od tlačítka „PŘIDAT …", které ji
+> má vždy. (Design system to dělal špatně – závazný je prototyp.)
 
 > **View switcher = VŽDY viditelný a VŽDY všech 5 pohledů** (Dashboard ·
 > Seznam · Kanban · Tabulka · Kalendář) na každé obrazovce evidence. Žádný

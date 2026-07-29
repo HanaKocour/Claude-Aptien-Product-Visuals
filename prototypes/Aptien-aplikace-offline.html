@@ -465,7 +465,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" sc-camel-view-box="0 0 512 512" style="width:18px;height:18px;flex-shrink:0" fill="#E91E63"><path opacity="0.4" d="M352 79.7c0 4.5 3 8.7 7.2 10.2l45.7 16.8 16.8 45.8c1.5 4.4 5.8 7.5 10.4 7.5s8.9-3.1 10.4-7.5l16.5-45.8 45.7-16.8c4.2-1.5 7.2-5.7 7.2-10.2c0-4.6-3-8.9-7.2-10.4L459.1 52.4 442.6 6.5C440.7 2.6 436.5 0 432.1 0s-8.5 2.6-10.4 6.5L405.2 52.4l-46 16.8c-4.3 1.6-7.3 5.9-7.2 10.4z"></path><path d="M281.4 105.4c12.5-12.5 32.8-12.5 45.3 0l80 80c12.5 12.5 12.5 32.8 0 45.3l-2.9 2.9c7.9 22 12.2 45.7 12.2 70.5c0 114.9-93.1 208-208 208S0 418.9 0 304S93.1 96 208 96c24.7 0 48.5 4.3 70.5 12.3l2.9-2.9z"></path></svg>
           <span style="font-size:16px;font-weight:800;color:#1e1b2e;flex-shrink:0">Rizika</span>
           <i class="fa-solid fa-pen" style="color:#b0aac8;font-size:11px;cursor:pointer;flex-shrink:0"></i>
-          <div style="display:flex;align-items:center;gap:7px;background:#1572e8;color:#fff;font-size:11px;font-weight:800;padding:6px 14px;border-radius:999px;cursor:pointer;letter-spacing:.04em;white-space:nowrap;box-shadow:0 2px 6px rgba(21,114,232,.28);flex-shrink:0">
+          <div style="display:flex;align-items:center;gap:7px;background:#E91E63;color:#fff;font-size:11px;font-weight:800;padding:6px 14px;border-radius:999px;cursor:pointer;letter-spacing:.04em;white-space:nowrap;box-shadow:0 2px 6px rgba(233,30,99,.28);flex-shrink:0">
             <i class="fa-solid fa-plus" style="font-size:10px"></i>PŘIDAT RIZIKO
           </div>
           <div style="display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #e0dded;border-radius:999px;padding:5px 12px;flex-shrink:0;width:100px">
@@ -488,7 +488,7 @@
           <i class="fa-solid fa-helmet-safety" style="font-size:18px;color:#D84315;flex-shrink:0"></i>
           <span style="font-size:16px;font-weight:800;color:#1e1b2e;flex-shrink:0">Ochranné pomůcky</span>
           <i class="fa-solid fa-pen" style="color:#b0aac8;font-size:11px;cursor:pointer;flex-shrink:0"></i>
-          <div style="display:flex;align-items:center;gap:7px;background:#1572e8;color:#fff;font-size:11px;font-weight:800;padding:6px 14px;border-radius:999px;cursor:pointer;letter-spacing:.04em;white-space:nowrap;box-shadow:0 2px 6px rgba(21,114,232,.28);flex-shrink:0">
+          <div style="display:flex;align-items:center;gap:7px;background:#D84315;color:#fff;font-size:11px;font-weight:800;padding:6px 14px;border-radius:999px;cursor:pointer;letter-spacing:.04em;white-space:nowrap;box-shadow:0 2px 6px rgba(216,67,21,.28);flex-shrink:0">
             <i class="fa-solid fa-plus" style="font-size:10px"></i>PŘIDAT POMŮCKU
           </div>
           <div style="display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #e0dded;border-radius:999px;padding:5px 12px;flex-shrink:0;width:100px">
@@ -511,7 +511,7 @@
           <i class="fa-solid fa-briefcase" style="font-size:18px;color:#1565C0;flex-shrink:0"></i>
           <span style="font-size:16px;font-weight:800;color:#1e1b2e;flex-shrink:0">Zakázky</span>
           <i class="fa-solid fa-circle-info" style="color:#b0aac8;font-size:13px;cursor:pointer;flex-shrink:0"></i>
-          <div style="display:flex;align-items:center;gap:7px;background:#1572e8;color:#fff;font-size:11px;font-weight:800;padding:6px 14px;border-radius:999px;cursor:pointer;letter-spacing:.04em;white-space:nowrap;box-shadow:0 2px 6px rgba(21,114,232,.30);flex-shrink:0">
+          <div style="display:flex;align-items:center;gap:7px;background:#1565C0;color:#fff;font-size:11px;font-weight:800;padding:6px 14px;border-radius:999px;cursor:pointer;letter-spacing:.04em;white-space:nowrap;box-shadow:0 2px 6px rgba(21,101,192,.30);flex-shrink:0">
             <i class="fa-solid fa-plus" style="font-size:10px"></i>PŘIDAT ZAKÁZKU
           </div>
           <div style="display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #e0dded;border-radius:999px;padding:5px 14px;flex-shrink:0;width:190px">
@@ -1166,14 +1166,59 @@
       </sc-if>
 
       <!-- ══ ZAMĚSTNANCI ══ -->
-      <sc-if value="{{ showZamestnanec }}" hint-placeholder-val="{{ false }}">
-        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#f5f6f7">
-          <i class="fa-solid fa-users" style="font-size:40px;opacity:.18;color:#2b2d30"></i>
-          <div style="font-size:20px;font-weight:800;color:#3c4150">Zaměstnanci</div>
-          <div style="font-size:13px;color:#9aa2b0;margin-bottom:6px">Zobrazení zaměstnanců bude přidáno v dalším kroku</div>
-          <div sc-camel-on-click="{{ openZamDrawer }}" style="display:flex;align-items:center;gap:9px;background:#1572e8;color:#fff;font-weight:700;font-size:13px;padding:10px 22px;border-radius:22px;cursor:pointer;box-shadow:0 3px 9px rgba(21,114,232,.28)" style-hover="display:flex;align-items:center;gap:9px;background:#1060cc;color:#fff;font-weight:700;font-size:13px;padding:10px 22px;border-radius:22px;cursor:pointer;box-shadow:0 3px 9px rgba(21,114,232,.28)">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i>Ukázat detail zaměstnance
+      <!-- ══ TOOLBAR: ZAMĚSTNANCI ══ -->
+      <sc-if value="{{ showZamToolbar }}" hint-placeholder-val="{{ false }}">
+        <div style="flex-shrink:0;padding:10px 20px;display:flex;align-items:center;gap:10px">
+          <i class="fa-solid fa-users" style="font-size:18px;color:#f1c40f;flex-shrink:0"></i>
+          <span style="font-size:16px;font-weight:800;color:#1e1b2e;flex-shrink:0">Zaměstnanci</span>
+          <i class="fa-solid fa-circle-info" style="color:#b0aac8;font-size:13px;cursor:pointer;flex-shrink:0"></i>
+          <div style="display:flex;align-items:center;gap:7px;background:#f1c40f;color:#fff;font-size:11px;font-weight:800;padding:6px 14px;border-radius:999px;cursor:pointer;letter-spacing:.04em;white-space:nowrap;box-shadow:0 2px 6px rgba(241,196,15,.35);flex-shrink:0">
+            <i class="fa-solid fa-plus" style="font-size:10px"></i>PŘIDAT ZAMĚSTNANCE
           </div>
+          <div style="display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #e0dded;border-radius:999px;padding:5px 14px;flex-shrink:0;width:190px">
+            <i class="fa-solid fa-magnifying-glass" style="color:#b0aac8;font-size:12px"></i>
+            <span style="font-size:12px;color:#c0bdd0">Hledej...</span>
+          </div>
+          <i class="fa-regular fa-star" style="color:#c5c0d8;font-size:15px;cursor:pointer;flex-shrink:0"></i>
+          <i class="fa-solid fa-filter" style="color:#c5c0d8;font-size:13px;cursor:pointer;flex-shrink:0"></i>
+          <div style="flex:1"></div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <sc-for list="{{ viewButtons }}" as="vb" hint-placeholder-count="5">
+              <div sc-camel-on-click="{{ vb.onClick }}" style="{{ vb.style }}"><i class="{{ vb.icon }}" style="font-size:12px"></i>{{ vb.label }}</div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ══ ZAMĚSTNANCI — SEZNAM ══ -->
+      <sc-if value="{{ showZamestnanec }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;min-height:0;margin:0 12px 10px;display:flex;flex-direction:column;border-radius:10px;box-shadow:0 1px 6px rgba(0,0,0,.07);overflow:hidden;border:1px solid #e4e2ed">
+          <div style="flex-shrink:0;display:flex;align-items:center;justify-content:flex-end;padding:5px 16px;background:#fff">
+            <span style="font-size:11px;color:#b0aac8;font-weight:600;display:flex;align-items:center;gap:5px">dle abecedy <i class="fa-solid fa-arrow-up" style="font-size:10px"></i></span>
+          </div>
+          <div style="flex:1;overflow-y:auto;background:#fff;padding:2px 0">
+            <sc-for list="{{ zam_listRows }}" as="row" hint-placeholder-count="10">
+              <div class="zam-row" sc-camel-on-click="{{ row.onClick }}" style="display:flex;align-items:center;gap:8px;padding:3px 16px;cursor:pointer;transition:background .1s">
+                <i class="fa-solid fa-user" style="font-size:11px;color:#f1c40f;flex-shrink:0;width:14px;text-align:center"></i>
+                <span style="font-size:12px;color:#1e1b2e;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.7">{{ row.name }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="flex-shrink:0;height:34px;background:#ebebef;border-top:1px solid #d8d6e0;display:flex;align-items:center;padding:0 12px;gap:10px">
+            <i class="fa-solid fa-ellipsis" style="font-size:14px;color:#8a86a0;cursor:pointer"></i>
+            <i class="fa-solid fa-folder-open" style="font-size:13px;color:#8a86a0;cursor:pointer"></i>
+            <div style="flex:1"></div>
+            <i class="fa-solid fa-upload" style="font-size:13px;color:#8a86a0;cursor:pointer"></i>
+            <i class="fa-solid fa-download" style="font-size:13px;color:#8a86a0;cursor:pointer"></i>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ══ ZAMĚSTNANCI — OSTATNÍ POHLEDY (příprava) ══ -->
+      <sc-if value="{{ showZamPlaceholder }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#f5f6f7">
+          <i class="fa-solid fa-users" style="font-size:36px;opacity:.18;color:#2b2d30"></i>
+          <div style="font-size:15px;font-weight:700;color:#6c7280">Tento pohled bude přidán v dalším kroku</div>
         </div>
       </sc-if>
 
@@ -1307,8 +1352,14 @@
        DRAWER: RIZIKA DETAIL
   ══════════════════════════════════════════════════════ -->
   <sc-if value="{{ drawerRizikaOpen }}" hint-placeholder-val="{{ false }}">
-    <div sc-camel-on-click="{{ closeRizikaDrawer }}" style="position:fixed;inset:0;background:rgba(0,0,0,.15);z-index:50;animation:fadeIn .2s ease forwards"></div>
+    <div sc-camel-on-click="{{ closeAllDrawers }}" style="position:fixed;inset:0;background:rgba(0,0,0,.15);z-index:50;animation:fadeIn .2s ease forwards"></div>
     <div style="position:fixed;top:0;right:0;bottom:0;width:80%;min-width:920px;background:#fff;z-index:51;display:flex;flex-direction:row;box-shadow:-8px 0 32px rgba(0,0,0,.18);animation:drawerIn .26s ease">
+      <sc-for list="{{ stackRailFrames }}" as="sf" hint-placeholder-count="0">
+        <div sc-camel-on-click="{{ sf.onClick }}" style="width:38px;flex-shrink:0;background:#fff;border-right:1px solid #e8e6f0;display:flex;flex-direction:column;align-items:center;padding-top:14px;gap:14px;overflow:hidden;cursor:pointer">
+          <i class="{{ sf.iconClass }}" style="{{ sf.iconStyle }}"></i>
+          <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-weight:700;font-size:12px;color:#5a5478;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-height:260px">{{ sf.label }}</div>
+        </div>
+      </sc-for>
       <div style="width:38px;flex-shrink:0;background:#fff;border-right:1px solid #e8e6f0;display:flex;flex-direction:column;align-items:center;padding-top:14px;gap:14px;overflow:hidden">
         <i class="fa-solid fa-triangle-exclamation" style="color:#E91E63;font-size:15px"></i>
         <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-weight:700;font-size:12px;color:#5a5478;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-height:260px">{{ riz_selectedRisk }}</div>
@@ -1408,8 +1459,14 @@
        DRAWER: OCHRANNÉ POMŮCKY DETAIL
   ══════════════════════════════════════════════════════ -->
   <sc-if value="{{ drawerOPOpen }}" hint-placeholder-val="{{ false }}">
-    <div sc-camel-on-click="{{ closeOPDrawer }}" style="position:fixed;inset:0;background:rgba(0,0,0,.15);z-index:50;animation:fadeIn .2s ease forwards"></div>
+    <div sc-camel-on-click="{{ closeAllDrawers }}" style="position:fixed;inset:0;background:rgba(0,0,0,.15);z-index:50;animation:fadeIn .2s ease forwards"></div>
     <div style="position:fixed;top:0;right:0;bottom:0;width:80%;min-width:920px;background:#fff;z-index:51;display:flex;flex-direction:row;box-shadow:-8px 0 32px rgba(0,0,0,.18);animation:drawerIn .26s ease">
+      <sc-for list="{{ stackRailFrames }}" as="sf" hint-placeholder-count="0">
+        <div sc-camel-on-click="{{ sf.onClick }}" style="width:38px;flex-shrink:0;background:#fff;border-right:1px solid #e8e6f0;display:flex;flex-direction:column;align-items:center;padding-top:14px;gap:14px;overflow:hidden;cursor:pointer">
+          <i class="{{ sf.iconClass }}" style="{{ sf.iconStyle }}"></i>
+          <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-weight:700;font-size:12px;color:#5a5478;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-height:260px">{{ sf.label }}</div>
+        </div>
+      </sc-for>
       <div style="width:38px;flex-shrink:0;background:#fff;border-right:1px solid #e8e6f0;display:flex;flex-direction:column;align-items:center;padding-top:14px;gap:14px;overflow:hidden">
         <i class="fa-solid fa-helmet-safety" style="color:#D84315;font-size:15px"></i>
         <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-weight:700;font-size:12px;color:#5a5478;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-height:260px">{{ op_selectedItem }}</div>
@@ -1529,8 +1586,14 @@
        DRAWER: ZAKÁZKY DETAIL
   ══════════════════════════════════════════════════════ -->
   <sc-if value="{{ drawerZakOpen }}" hint-placeholder-val="{{ false }}">
-    <div sc-camel-on-click="{{ closeZakDrawer }}" style="position:fixed;inset:0;background:rgba(0,0,0,.15);z-index:50;animation:fadeIn .2s ease forwards"></div>
+    <div sc-camel-on-click="{{ closeAllDrawers }}" style="position:fixed;inset:0;background:rgba(0,0,0,.15);z-index:50;animation:fadeIn .2s ease forwards"></div>
     <div style="position:fixed;top:0;right:0;bottom:0;width:80%;min-width:920px;background:#fff;z-index:51;display:flex;flex-direction:row;box-shadow:-8px 0 32px rgba(0,0,0,.18);animation:drawerIn .26s ease">
+      <sc-for list="{{ stackRailFrames }}" as="sf" hint-placeholder-count="0">
+        <div sc-camel-on-click="{{ sf.onClick }}" style="width:38px;flex-shrink:0;background:#fff;border-right:1px solid #e8e6f0;display:flex;flex-direction:column;align-items:center;padding-top:14px;gap:14px;overflow:hidden;cursor:pointer">
+          <i class="{{ sf.iconClass }}" style="{{ sf.iconStyle }}"></i>
+          <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-weight:700;font-size:12px;color:#5a5478;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-height:260px">{{ sf.label }}</div>
+        </div>
+      </sc-for>
       <div style="width:38px;flex-shrink:0;background:#fff;border-right:1px solid #e8e6f0;display:flex;flex-direction:column;align-items:center;padding-top:14px;gap:14px;overflow:hidden">
         <i class="fa-solid fa-briefcase" style="color:#1572e8;font-size:15px"></i>
         <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-weight:700;font-size:12px;color:#5a5478;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-height:260px">{{ zak_selectedItem }}</div>
@@ -1644,6 +1707,94 @@
                 </div>
               </div>
             </sc-if>
+            <sc-if value="{{ zak_showSouvislosti }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:20px">
+                <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
+                  <i class="fa-regular fa-eye" style="font-size:16px;color:#9a95ad;cursor:pointer"></i>
+                  <div sc-camel-on-click="{{ zak_toggleSouvisGraph }}" style="display:inline-flex;cursor:pointer"><i class="fa-solid fa-diagram-project" style="font-size:15px;color:#9a95ad"></i></div>
+                  <div style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;background:#1572e8;color:#fff;font-size:12px;font-weight:800;padding:9px 18px;border-radius:50px;cursor:pointer;letter-spacing:.02em;white-space:nowrap"><i class="fa-solid fa-plus" style="font-size:11px"></i>PŘIDEJ DALŠÍ DO</div>
+                </div>
+                <sc-if value="{{ zak_souvisGraphOn }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:relative;width:100%;max-width:740px;height:480px;margin:0 auto 8px">
+                    <svg sc-camel-view-box="0 0 740 480" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">
+                      <sc-for list="{{ zak_graphCats }}" as="c" hint-placeholder-count="4">
+                        <line x1="{{ c.lineX1 }}" y1="{{ c.lineY1 }}" x2="{{ c.lineX2 }}" y2="{{ c.lineY2 }}" stroke="#c9d6e8" stroke-width="1.5"></line>
+                        <sc-for list="{{ c.leaves }}" as="lf" hint-placeholder-count="2">
+                          <line x1="{{ lf.lineX1 }}" y1="{{ lf.lineY1 }}" x2="{{ lf.lineX2 }}" y2="{{ lf.lineY2 }}" stroke="#c9d6e8" stroke-width="1.5"></line>
+                        </sc-for>
+                      </sc-for>
+                      <circle cx="370" cy="240" r="6" fill="#2b2540"></circle>
+                    </svg>
+                    <sc-for list="{{ zak_graphCats }}" as="c" hint-placeholder-count="4">
+                      <div style="position:absolute;left:{{ c.x }}px;top:{{ c.y }}px;transform:translate(-50%,-50%);font-size:13px;color:#3c3a52;white-space:nowrap;font-weight:600;background:#fff;padding:3px 8px">{{ c.label }} ({{ c.count }}/{{ c.count }})</div>
+                      <sc-for list="{{ c.leaves }}" as="lf" hint-placeholder-count="2">
+                        <div style="position:absolute;left:{{ lf.x }}px;top:{{ lf.y }}px;transform:translate(-50%,-50%);background:#43a047;color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:6px;white-space:nowrap">{{ lf.name }}</div>
+                      </sc-for>
+                    </sc-for>
+                  </div>
+                  <div sc-camel-on-click="{{ zak_toggleSouvisGraph }}" style="display:inline-flex;align-items:center;gap:6px;color:#9a95ad;font-size:12px;cursor:pointer;margin-bottom:14px"><i class="fa-solid fa-diagram-project" style="font-size:12px"></i>Skrýt graf</div>
+                </sc-if>
+                <sc-for list="{{ zak_souvisGroups }}" as="g" hint-placeholder-count="4">
+                  <div style="border-bottom:1px solid #f0eef8">
+                    <div style="display:flex;align-items:center;gap:10px;padding:14px 4px;cursor:pointer" sc-camel-on-click="{{ g.onToggle }}">
+                      <i class="{{ g.chevronClass }}" style="font-size:11px;color:#9a95ad;width:12px"></i>
+                      <span style="font-size:14px;color:#2b2540;flex:1">{{ g.label }} ({{ g.count }})</span>
+                      <i class="fa-solid fa-plus" style="color:#00c853;font-size:15px;cursor:pointer"></i>
+                    </div>
+                    <sc-if value="{{ g.open }}" hint-placeholder-val="{{ false }}">
+                      <div style="padding:2px 4px 18px 26px">
+                        <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="2">
+                          <div style="display:flex;align-items:center;gap:6px;padding:9px 0;border-top:1px solid #f5f4fa">
+                            <span style="font-size:13px;color:#1572e8;text-decoration:underline;width:200px;flex-shrink:0;cursor:pointer">{{ g.label }}<i class="fa-solid fa-arrow-right" style="font-size:10px;margin-left:6px"></i></span>
+                            <span style="font-size:13px;color:#1572e8;text-decoration:underline;cursor:pointer">{{ r.name }}</span>
+                          </div>
+                        </sc-for>
+                        <div style="font-size:11px;color:#b0aac8;text-align:right;margin-top:10px">Zobrazeno 1 - {{ g.count }} z {{ g.count }} záznamů</div>
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ zak_showZapisy }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:16px 20px">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+                  <button style="background:#a4a4a4;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-magnifying-glass" style="font-size:12px"></i>Od</button>
+                  <button style="background:#a4a4a4;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-magnifying-glass" style="font-size:12px"></i>Do</button>
+                  <button style="background:#a4a4a4;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-user" style="font-size:12px"></i>Účastníci<i class="fa-solid fa-chevron-down" style="font-size:9px;margin-left:auto"></i></button>
+                  <button style="background:#a4a4a4;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-user" style="font-size:12px"></i>Vytvořil<i class="fa-solid fa-chevron-down" style="font-size:9px;margin-left:auto"></i></button>
+                </div>
+                <div style="display:flex;align-items:center;gap:16px;padding:8px 0 16px">
+                  <div style="width:36px;height:36px;border-radius:50%;background:#1572e8;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0"><i class="fa-solid fa-plus" style="font-size:14px"></i></div>
+                  <div style="width:54px;flex-shrink:0"></div>
+                  <div style="width:90px;flex-shrink:0;font-size:13px;font-weight:700;color:#5a5478">Typ</div>
+                  <div style="flex:1;min-width:160px;font-size:13px;font-weight:700;color:#5a5478">Předmět</div>
+                  <div style="width:150px;flex-shrink:0;font-size:13px;font-weight:700;color:#5a5478;display:flex;align-items:center;gap:5px">Od<i class="fa-solid fa-caret-down" style="font-size:10px"></i></div>
+                  <div style="width:150px;flex-shrink:0;font-size:13px;font-weight:700;color:#5a5478">Do</div>
+                  <div style="width:190px;flex-shrink:0;font-size:13px;font-weight:700;color:#5a5478">Účastníci</div>
+                  <div style="width:190px;flex-shrink:0;font-size:13px;font-weight:700;color:#5a5478">Vytvořil</div>
+                  <div style="width:44px;flex-shrink:0;display:flex;align-items:center;justify-content:flex-end"><div style="display:inline-flex;align-items:center;gap:5px;background:#1572e8;color:#fff;font-size:11px;font-weight:700;letter-spacing:.03em;height:30px;padding:0 14px;border-radius:50px;cursor:pointer;white-space:nowrap" style-hover="background:#1054c0"><span>EXPORT</span><i class="fa-solid fa-file-export" style="font-size:11px"></i></div></div>
+                </div>
+                <sc-for list="{{ zak_zapisyRows }}" as="r" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:stretch;gap:16px;margin-bottom:16px">
+                    <div style="position:relative;width:70px;flex-shrink:0;display:flex;align-items:center;justify-content:center">
+                      <sc-if value="{{ !r.isFirst }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:-16px;bottom:50%;width:2px;background:#e5e3ee;left:50%;transform:translateX(-50%)"></div></sc-if>
+                      <sc-if value="{{ !r.isLast }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:50%;bottom:-16px;width:2px;background:#e5e3ee;left:50%;transform:translateX(-50%)"></div></sc-if>
+                      <div style="width:40px;height:40px;border-radius:50%;background:{{ r.iconBg }};display:flex;align-items:center;justify-content:center;position:relative;z-index:1;flex-shrink:0"><i class="{{ r.iconClass }}" style="color:#fff;font-size:15px"></i></div>
+                    </div>
+                    <div style="flex:1;min-width:0;background:#fff;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.07);padding:18px 20px;display:flex;align-items:center;gap:16px">
+                      <div style="width:90px;flex-shrink:0;font-size:15px;font-weight:800;color:#1e1b2e">{{ r.typ }}</div>
+                      <div style="flex:1;min-width:160px;font-size:13px;color:#5a5478;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.subject }}</div>
+                      <div style="width:150px;flex-shrink:0;font-size:13px;color:#5a5478">{{ r.od }}</div>
+                      <div style="width:150px;flex-shrink:0;font-size:13px;color:#5a5478">{{ r.do }}</div>
+                      <div style="width:190px;flex-shrink:0;display:flex;align-items:center;gap:8px">{{ r.avatarEl }}<div><div style="font-size:13px;color:#2b2942">{{ r.participant }}</div><div style="font-size:11px;color:#a8a3bd">{{ r.participantTime }}</div></div></div>
+                      <div style="width:190px;flex-shrink:0;display:flex;align-items:center;gap:8px"><div><div style="font-size:13px;color:#2b2942">{{ r.creator }}</div><div style="font-size:11px;color:#a8a3bd">{{ r.creatorTime }}</div></div></div>
+                      <i class="fa-solid fa-trash-can" style="color:#c5c0d8;font-size:14px;cursor:pointer;width:24px;flex-shrink:0"></i>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
             <sc-if value="{{ zak_showStub }}" hint-placeholder-val="{{ false }}">
               <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;height:200px;color:#aaa4bf">
                 <i class="fa-solid fa-briefcase" style="font-size:28px;color:#d6d2e2"></i>
@@ -1680,16 +1831,22 @@
        DRAWER: ZAMĚSTNANEC (Jan Novák)
   ══════════════════════════════════════════════════════ -->
   <sc-if value="{{ drawerZamOpen }}" hint-placeholder-val="{{ false }}">
-    <div sc-camel-on-click="{{ closeZamDrawer }}" style="position:fixed;inset:0;background:rgba(0,0,0,.15);z-index:50;animation:fadeIn .2s ease forwards"></div>
+    <div sc-camel-on-click="{{ closeAllDrawers }}" style="position:fixed;inset:0;background:rgba(0,0,0,.15);z-index:50;animation:fadeIn .2s ease forwards"></div>
     <div style="position:fixed;top:0;right:0;bottom:0;width:80%;min-width:920px;background:#fff;z-index:51;display:flex;flex-direction:row;box-shadow:-8px 0 32px rgba(0,0,0,.18);animation:drawerIn .26s ease">
+      <sc-for list="{{ stackRailFrames }}" as="sf" hint-placeholder-count="0">
+        <div sc-camel-on-click="{{ sf.onClick }}" style="width:38px;flex-shrink:0;background:#fff;border-right:1px solid #e8e6f0;display:flex;flex-direction:column;align-items:center;padding-top:14px;gap:14px;overflow:hidden;cursor:pointer">
+          <i class="{{ sf.iconClass }}" style="{{ sf.iconStyle }}"></i>
+          <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-weight:700;font-size:12px;color:#5a5478;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-height:260px">{{ sf.label }}</div>
+        </div>
+      </sc-for>
       <div style="width:38px;flex-shrink:0;background:#fff;border-right:1px solid #e8e6f0;display:flex;flex-direction:column;align-items:center;padding-top:14px;gap:14px;overflow:hidden">
         <i class="fa-solid fa-user-tie" style="color:#1572e8;font-size:15px"></i>
-        <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-weight:700;font-size:12px;color:#5a5478;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-height:260px">Jan Novák</div>
+        <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-weight:700;font-size:12px;color:#5a5478;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-height:260px">{{ zam_railName }}</div>
       </div>
       <div style="flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden">
         <div style="flex-shrink:0;padding:24px 32px 0;display:flex;align-items:flex-start;gap:16px">
           <div style="flex:1;min-width:0">
-            <div style="font-size:26px;font-weight:300;color:#1e1b2e;line-height:1.2;margin-bottom:10px">Jan Novák</div>
+            <div style="font-size:26px;font-weight:300;color:#1e1b2e;line-height:1.2;margin-bottom:10px">{{ zam_railName }}</div>
             <div style="display:flex;align-items:center;gap:8px">
               <span style="display:inline-flex;align-items:center;gap:6px;background:#eceff1;color:#59676d;padding:4px 12px;border-radius:4px;font-size:10px;font-weight:600"><i class="fa-solid fa-user" style="font-size:9px"></i>Zaměstnanec</span>
               <span style="border-radius:4px;padding:3px 10px;font-weight:800;font-size:11px;background:#00C853;color:#fff">AKTIVNÍ</span>
@@ -1726,6 +1883,9 @@
                         <i class="fa-regular fa-calendar-days" style="color:#b0aac5;font-size:15px;cursor:pointer"></i>
                       </div>
                     </sc-if>
+                    <sc-if value="{{ r.isLink }}" hint-placeholder-val="{{ false }}">
+                      <span sc-camel-on-click="{{ r.onOpen }}" style="font-size:13px;color:#1a1a2e;text-decoration:underline;text-underline-offset:3px;cursor:pointer">{{ r.value }}</span>
+                    </sc-if>
                   </div>
                 </div>
               </sc-for>
@@ -1754,6 +1914,107 @@
                   <input placeholder="Napište zprávu…" style="flex:1;min-width:0;border:none;outline:none;background:#f4f3fa;border-radius:22px;padding:9px 16px;font-size:13px;font-family:'Nunito',sans-serif;color:#2b2d31">
                   <div style="width:38px;height:38px;border-radius:50%;background:#1572e8;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;box-shadow:0 3px 8px rgba(21,114,232,.3)" style-hover="background:#1054c0"><i class="fa-solid fa-paper-plane" style="font-size:13px"></i></div>
                 </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ zam_showZapisy }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:16px 20px">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+                  <button style="background:#a4a4a4;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-magnifying-glass" style="font-size:12px"></i>Od</button>
+                  <button style="background:#a4a4a4;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-magnifying-glass" style="font-size:12px"></i>Do</button>
+                  <button style="background:#a4a4a4;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-user" style="font-size:12px"></i>Účastníci<i class="fa-solid fa-chevron-down" style="font-size:9px;margin-left:auto"></i></button>
+                  <button style="background:#a4a4a4;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-user" style="font-size:12px"></i>Vytvořil<i class="fa-solid fa-chevron-down" style="font-size:9px;margin-left:auto"></i></button>
+                </div>
+                <div style="display:flex;align-items:center;gap:16px;padding:8px 0 16px">
+                  <div style="width:36px;height:36px;border-radius:50%;background:#1572e8;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0"><i class="fa-solid fa-plus" style="font-size:14px"></i></div>
+                  <div style="width:54px;flex-shrink:0"></div>
+                  <div style="width:90px;flex-shrink:0;font-size:13px;font-weight:700;color:#5a5478">Typ</div>
+                  <div style="flex:1;min-width:160px;font-size:13px;font-weight:700;color:#5a5478">Předmět</div>
+                  <div style="width:150px;flex-shrink:0;font-size:13px;font-weight:700;color:#5a5478;display:flex;align-items:center;gap:5px">Od<i class="fa-solid fa-caret-down" style="font-size:10px"></i></div>
+                  <div style="width:150px;flex-shrink:0;font-size:13px;font-weight:700;color:#5a5478">Do</div>
+                  <div style="width:190px;flex-shrink:0;font-size:13px;font-weight:700;color:#5a5478">Účastníci</div>
+                  <div style="width:190px;flex-shrink:0;font-size:13px;font-weight:700;color:#5a5478">Vytvořil</div>
+                  <div style="width:44px;flex-shrink:0;display:flex;align-items:center;justify-content:flex-end"><div style="display:inline-flex;align-items:center;gap:5px;background:#1572e8;color:#fff;font-size:11px;font-weight:700;letter-spacing:.03em;height:30px;padding:0 14px;border-radius:50px;cursor:pointer;white-space:nowrap;flex-shrink:0" style-hover="background:#1054c0"><span>EXPORT</span><i class="fa-solid fa-file-export" style="font-size:11px"></i></div></div>
+                </div>
+                <sc-for list="{{ zam_zapisyRows }}" as="r" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:stretch;gap:16px;margin-bottom:16px">
+                    <div style="position:relative;width:70px;flex-shrink:0;display:flex;align-items:center;justify-content:center">
+                      <sc-if value="{{ !r.isFirst }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:-16px;bottom:50%;width:2px;background:#e5e3ee;left:50%;transform:translateX(-50%)"></div></sc-if>
+                      <sc-if value="{{ !r.isLast }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:50%;bottom:-16px;width:2px;background:#e5e3ee;left:50%;transform:translateX(-50%)"></div></sc-if>
+                      <div style="width:40px;height:40px;border-radius:50%;background:{{ r.iconBg }};display:flex;align-items:center;justify-content:center;position:relative;z-index:1;flex-shrink:0"><i class="{{ r.iconClass }}" style="color:#fff;font-size:15px"></i></div>
+                    </div>
+                    <div style="flex:1;min-width:0;background:#fff;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.07);padding:18px 20px;display:flex;align-items:center;gap:16px">
+                      <div style="width:90px;flex-shrink:0;font-size:15px;font-weight:800;color:#1e1b2e">{{ r.typ }}</div>
+                      <div style="flex:1;min-width:160px;font-size:13px;color:#5a5478;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.subject }}</div>
+                      <div style="width:150px;flex-shrink:0;font-size:13px;color:#5a5478">{{ r.od }}</div>
+                      <div style="width:150px;flex-shrink:0;font-size:13px;color:#5a5478">{{ r.do }}</div>
+                      <div style="width:190px;flex-shrink:0;display:flex;align-items:center;gap:8px">{{ r.avatarEl }}<div><div style="font-size:13px;color:#2b2942">{{ r.participant }}</div><div style="font-size:11px;color:#a8a3bd">{{ r.participantTime }}</div></div></div>
+                      <div style="width:190px;flex-shrink:0;display:flex;align-items:center;gap:8px"><div><div style="font-size:13px;color:#2b2942">{{ r.creator }}</div><div style="font-size:11px;color:#a8a3bd">{{ r.creatorTime }}</div></div></div>
+                      <i class="fa-solid fa-trash-can" style="color:#c5c0d8;font-size:14px;cursor:pointer;width:24px;flex-shrink:0"></i>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ zam_showPlany }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:16px 20px">
+                <div style="display:inline-flex;align-items:center;gap:8px;background:#fff;color:#1572e8;font-weight:800;font-size:12px;letter-spacing:.03em;cursor:pointer;padding:9px 18px;border:1px solid #1572e8;border-radius:999px;margin-bottom:16px">
+                  <i class="fa-solid fa-plus" style="font-size:11px"></i>PŘIDAT AKTIVITU
+                </div>
+                <sc-for list="{{ zam_planyGroups }}" as="g" hint-placeholder-count="3">
+                  <div style="margin-bottom:14px;border-radius:6px;overflow:hidden;border:1px solid #e9e7f1">
+                    <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:#efeef4;cursor:pointer">
+                      <i sc-camel-on-click="{{ g.onToggle }}" class="{{ g.chevronClass }}" style="font-size:12px;color:#5a5478;cursor:pointer"></i>
+                      <span sc-camel-on-click="{{ g.onToggle }}" style="font-weight:800;font-size:14px;color:#2b2942;cursor:pointer">{{ g.displayName }}</span>
+                      <span style="display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 6px;background:#2b2942;color:#fff;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0">{{ g.count }}</span>
+                      <sc-for list="{{ g.chips }}" as="c" hint-placeholder-count="2">
+                        <span style="background:{{ c.bg }};color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px;white-space:nowrap;flex-shrink:0">{{ c.label }}</span>
+                      </sc-for>
+                    </div>
+                    <sc-if value="{{ g.open }}" hint-placeholder-val="{{ false }}">
+                      <div style="background:#fff;padding:6px 16px">
+                        <sc-if value="{{ g.hasSelectAll }}" hint-placeholder-val="{{ false }}">
+                          <div style="display:flex;align-items:center;gap:14px;padding:10px 0;border-bottom:1px solid #f2f1f7">
+                            <input type="checkbox" style="width:16px;height:16px;flex-shrink:0">
+                            <span style="font-size:13px;color:#a8a3bd;flex:1">Vybrat vše</span>
+                            <i class="fa-solid fa-ellipsis-vertical" style="color:#c5c0d8;font-size:14px;cursor:pointer"></i>
+                          </div>
+                        </sc-if>
+                        <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="4">
+                          <div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f2f1f7">
+                            <sc-if value="{{ r.hasCheckbox }}" hint-placeholder-val="{{ false }}">
+                              <input type="checkbox" style="width:16px;height:16px;flex-shrink:0">
+                            </sc-if>
+                            <sc-if value="{{ r.avatar }}" hint-placeholder-val="{{ false }}">{{ r.avatarEl }}</sc-if>
+                            <div style="flex:1;min-width:0">
+                              <div style="font-weight:700;font-size:13.5px;color:#1e1b2e;margin-bottom:4px">{{ r.title }}</div>
+                              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                                <sc-if value="{{ r.date }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;color:#6c6785">{{ r.date }}</span></sc-if>
+                                <sc-if value="{{ r.subLink }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;color:#1572e8;text-decoration:underline;cursor:pointer">{{ r.subLink }}</span></sc-if>
+                                <sc-if value="{{ r.dueChip }}" hint-placeholder-val="{{ false }}"><span style="background:{{ r.dueChip.bg }};color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:4px">{{ r.dueChip.label }}</span></sc-if>
+                                <span style="background:#78788c;color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:4px">{{ r.periodChip }}</span>
+                              </div>
+                            </div>
+                            <sc-if value="{{ r.done }}" hint-placeholder-val="{{ false }}">
+                              <div style="display:flex;align-items:center;gap:16px;flex-shrink:0">
+                                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:70px">
+                                  <i class="fa-solid fa-circle-check" style="font-size:31px;color:#00c853;line-height:1"></i>
+                                  <sc-if value="{{ r.timestamp }}" hint-placeholder-val="{{ false }}"><div style="font-size:10px;color:#888;text-align:center;line-height:1.3">{{ r.timestamp }}</div></sc-if>
+                                </div>
+                                <i class="fa-solid fa-ellipsis-vertical" style="color:#c5c0d8;font-size:14px;cursor:pointer"></i>
+                              </div>
+                            </sc-if>
+                            <sc-if value="{{ r.action }}" hint-placeholder-val="{{ false }}">
+                              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
+                                <span style="background:{{ r.actionBg }};color:#fff;font-size:11px;font-weight:400;letter-spacing:.02em;padding:8px 14px;border-radius:20px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px">{{ r.action }}<sc-if value="{{ r.hasScheduleIcon }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" sc-camel-view-box="0 0 576 512" style="fill:#fff;flex-shrink:0"><path d="M0 112l0 48 448 0 0-48c0-26.5-21.5-48-48-48l-48 0 0-32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 32L160 64l0-32c0-17.7-14.3-32-32-32S96 14.3 96 32l0 32L48 64C21.5 64 0 85.5 0 112zm0 80L0 464c0 26.5 21.5 48 48 48l282.8 0C285.6 480.1 256 427.5 256 368c0-97.2 78.8-176 176-176L0 192zm432 0c5.4 0 10.7 .2 16 .7l0-.7-16 0z" opacity=".55"></path><path d="M432 512a144 144 0 1 0 0-288 144 144 0 1 0 0 288zm16-208l0 48 32 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-48 0c-8.8 0-16-7.2-16-16l0-64c0-8.8 7.2-16 16-16s16 7.2 16 16z"></path></svg></sc-if></span>
+                                <sc-if value="{{ r.timestamp }}" hint-placeholder-val="{{ false }}"><span style="font-size:10.5px;color:#a8a3bd"><i class="fa-regular fa-clock"></i> {{ r.timestamp }}</span></sc-if>
+                              </div>
+                            </sc-if>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-for>
               </div>
             </sc-if>
             <sc-if value="{{ zam_showStub }}" hint-placeholder-val="{{ false }}">
@@ -1785,22 +2046,75 @@
 <script type="text/x-dc" data-dc-script="">
 
 class Component extends DCLogic {
+  frameMeta(module) {
+    return {
+      rizika: { iconClass: 'fa-solid fa-triangle-exclamation', color: '#E91E63' },
+      op: { iconClass: 'fa-solid fa-helmet-safety', color: '#D84315' },
+      zakazky: { iconClass: 'fa-solid fa-briefcase', color: '#1572e8' },
+      zamestnanec: { iconClass: 'fa-solid fa-user-tie', color: '#1572e8' }
+    }[module] || {};
+  }
+  currentFrameLabel(s) {
+    switch (s.drawerModule) {
+      case 'rizika': return (this.RISKS[s.selectedIdx] || {}).name || 'Riziko';
+      case 'op': return (this.OP_ITEMS[s.selectedIdx] || {}).name || 'Pomůcka';
+      case 'zakazky': return (this.ZAK_ITEMS[s.selectedIdx] || {}).name || 'Zakázka';
+      case 'zamestnanec': return (this.ZAM_EMPLOYEES[s.selectedIdx] || {}).name || 'Zaměstnanec';
+      default: return '';
+    }
+  }
+  pushDrawer(module, idx) {
+    this.setState(s => {
+      if (!s.drawerOpen) {
+        return { drawerOpen: true, drawerModule: module, selectedIdx: idx || 0, drawerStack: [], drawerTab: 'detaily', zamItemTab: 'detaily' };
+      }
+      let stack = [...s.drawerStack, { module: s.drawerModule, label: this.currentFrameLabel(s), selectedIdx: s.selectedIdx }];
+      if (stack.length > 4) stack = stack.slice(stack.length - 4);
+      return { drawerOpen: true, drawerModule: module, selectedIdx: idx || 0, drawerStack: stack, drawerTab: 'detaily', zamItemTab: 'detaily' };
+    });
+  }
+  popToFrame(i) {
+    this.setState(s => {
+      const target = s.drawerStack[i];
+      if (!target) return null;
+      return { drawerModule: target.module, selectedIdx: target.selectedIdx, drawerStack: s.drawerStack.slice(0, i), drawerTab: 'detaily', zamItemTab: 'detaily' };
+    });
+  }
+  closeTopDrawer() {
+    this.setState(s => {
+      if (s.drawerStack.length === 0) return { drawerOpen: false };
+      const stack = [...s.drawerStack];
+      const prev = stack.pop();
+      return { drawerModule: prev.module, selectedIdx: prev.selectedIdx, drawerStack: stack };
+    });
+  }
+  closeAllDrawers() {
+    this.setState({ drawerOpen: false, drawerStack: [] });
+  }
+  toggleZamGroup(key) {
+    this.setState(s => ({ zamOpenGroups: { ...s.zamOpenGroups, [key]: !s.zamOpenGroups[key] } }));
+  }
+  ZAM_PLAN_CHIP_BG = { ok: '#00C853', blizici: '#FFAB00', urgentni: '#EF5350' };
   state = {
     activeTab: 12,
     activeNav: 'domu',
     openKonvId: null,
     sidebarCollapsed: false,
-    views: { 2: 'dashboard', 8: 'dashboard', 12: 'kanban' },
+    views: { 0: 'seznam', 2: 'dashboard', 8: 'dashboard', 12: 'kanban' },
     drawerOpen: false,
     drawerModule: null,  // 'rizika' | 'op' | 'zakazky' | 'zamestnanec'
+    drawerStack: [],     // parent frames behind the active drawer (max 4, so 5 stacked total)
     selectedIdx: 0,
     drawerTab: 'detaily',
+    zakSouvisOpen: { faktury: true },
+    zakSouvisGraph: false,
     confirmedDocs: [],
     selectedDokCat: null,
     selectedSmernCat: null,
     smernConfirmedOpen: false,
     tablePageSize: 10,
-    zamItemTab: 'detaily'
+    zamItemTab: 'detaily',
+    zamOpenGroups: { nastup: true, zdravi: true }
   };
 
   // ── SHARED ──────────────────────────────
@@ -2094,6 +2408,17 @@ class Component extends DCLogic {
   // ── HELPERS ──────────────────────────────
   get konverzaceSrc() { return (window.__resources && window.__resources.konverzaceHtml) || 'konverzace-polozka.html'; }
 
+  ZAM_EMPLOYEES = [
+    { name: 'Jan Novák', position: 'Senior vývojář', initials: 'JN', color: '#1572e8', planStatus: 'blizici', planLabel: '3 Blížící se' },
+    { name: 'Karolína Fišerová', position: 'HR ředitelka', initials: 'KF', color: '#7B1FA2', planStatus: 'ok', planLabel: '5 V pořádku' },
+    { name: 'Tomáš Novák', position: 'Facility manager', initials: 'TN', color: '#00838F', planStatus: 'urgentni', planLabel: '1 Urgentní' },
+    { name: 'Petra Malá', position: 'Účetní', initials: 'PM', color: '#AD1457', planStatus: 'ok', planLabel: '4 V pořádku' },
+    { name: 'Martin Dvořák', position: 'Obchodní zástupce', initials: 'MD', color: '#EF6C00', planStatus: 'blizici', planLabel: '2 Blížící se' },
+    { name: 'Lucie Horáková', position: 'Marketing manažerka', initials: 'LH', color: '#2E7D32', planStatus: 'ok', planLabel: '6 V pořádku' },
+    { name: 'Pavel Král', position: 'Skladník', initials: 'PK', color: '#5D4037', planStatus: 'urgentni', planLabel: '1 Urgentní' },
+    { name: 'Eva Sedláková', position: 'Recepční', initials: 'ES', color: '#00695C', planStatus: 'ok', planLabel: '3 V pořádku' }
+  ];
+
   mkAvatar(user, size) {
     size = size || 26;
     if (user.usePhoto) return React.createElement('img', { src: (window.__resources && window.__resources.karAvatar) || 'uploads/karolina-avatar.png', style: { width: size + 'px', height: size + 'px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 } });
@@ -2132,8 +2457,8 @@ class Component extends DCLogic {
 
   // ── RENDER ───────────────────────────────
   renderVals() {
-    const { activeTab, activeNav, sidebarCollapsed, drawerOpen, drawerModule, selectedIdx, drawerTab,
-            confirmedDocs, selectedDokCat, selectedSmernCat, smernConfirmedOpen, tablePageSize, zamItemTab } = this.state;
+    const { activeTab, activeNav, sidebarCollapsed, drawerOpen, drawerModule, drawerStack, selectedIdx, drawerTab,
+            confirmedDocs, selectedDokCat, selectedSmernCat, smernConfirmedOpen, tablePageSize, zamItemTab, zamOpenGroups, zakSouvisOpen, zakSouvisGraph } = this.state;
     const ACC = '#1572e8';
     const collapsed = sidebarCollapsed;
 
@@ -2197,10 +2522,11 @@ class Component extends DCLogic {
     });
 
     // ── Content flags ──
-    const showToolbar = isRizika || isOP || isZakázky;
+    const showToolbar = isRizika || isOP || isZakázky || isZamestnanec;
     const showRizikaToolbar  = isRizika;
     const showOPToolbar      = isOP;
     const showZakToolbar     = isZakázky;
+    const showZamToolbar     = isZamestnanec;
     const showRizikaDashboard = isRizika && activeView === 'dashboard';
     const showRizikaList      = isRizika && activeView !== 'dashboard';
     const showOPDashboard    = isOP && activeView === 'dashboard';
@@ -2214,7 +2540,8 @@ class Component extends DCLogic {
     const showSmernDetail = (activeTab === 4 || activeNav === 'smern') && !!selectedSmernCat;
     const showDokTilesView  = activeNav === 'dok' && !selectedDokCat;
     const showDokDetailView = activeNav === 'dok' && !!selectedDokCat;
-    const showZamestnanec = isZamestnanec;
+    const showZamestnanec = isZamestnanec && activeView === 'seznam';
+    const showZamPlaceholder = isZamestnanec && activeView !== 'seznam';
     const showPlaceholder = activeTab !== null && !hasActiveModule && !navOwnsContent;
     const showEmpty = nothingSelected;
 
@@ -2251,7 +2578,7 @@ class Component extends DCLogic {
     ].map(r => ({ ...r, avatarEl: this.mkAvatar(r.user, 26), authorName: r.user.name }));
 
     const riz_riskRows = this.RISKS.map((r, i) => ({
-      name: r.name, onClick: () => this.setState({ drawerOpen: true, drawerModule: 'rizika', selectedIdx: i, drawerTab: 'detaily' }),
+      name: r.name, onClick: () => this.setState({ drawerOpen: true, drawerModule: 'rizika', selectedIdx: i, drawerStack: [], drawerTab: 'detaily' }),
       iconClass: r.warn ? 'fa-solid fa-triangle-exclamation' : 'fa-solid fa-shield-halved', iconColor: r.warn ? '#FF6D00' : '#E91E63'
     }));
 
@@ -2309,7 +2636,7 @@ class Component extends DCLogic {
     ].map(r => ({ ...r, avatarEl: this.mkAvatar(r.user, 26), authorName: r.user.name }));
     const op_itemRows = this.OP_ITEMS.map((it, i) => {
       const ico = this.OP_ICON_MAP[it.category] || { icon: 'fa-solid fa-box', color: '#D84315' };
-      return { name: it.name, iconClass: it.warn ? 'fa-solid fa-triangle-exclamation' : ico.icon, iconColor: it.warn ? '#FF6D00' : ico.color, onClick: () => this.setState({ drawerOpen: true, drawerModule: 'op', selectedIdx: i, drawerTab: 'detaily' }) };
+      return { name: it.name, iconClass: it.warn ? 'fa-solid fa-triangle-exclamation' : ico.icon, iconColor: it.warn ? '#FF6D00' : ico.color, onClick: () => this.setState({ drawerOpen: true, drawerModule: 'op', selectedIdx: i, drawerStack: [], drawerTab: 'detaily' }) };
     });
 
     // OP drawer
@@ -2321,8 +2648,8 @@ class Component extends DCLogic {
     const op_drawerFields = [
       { label: 'Dodavatel',         type: 'link',  value: 'Bezpečnostní technika s.r.o.', hasHelp: false },
       { label: 'Kategorie',         type: 'link',  value: opSel.category,                 hasHelp: false },
-      { label: 'Přiděleno',         type: 'link',  value: 'Tomáš Novák',                  hasHelp: false },
-      { label: 'Zodpovědná osoba',  type: 'link',  value: 'Karolína Fišerová',            hasHelp: false },
+      { label: 'Přiděleno',         type: 'link',  value: 'Tomáš Novák',                  hasHelp: false, onOpen: () => this.pushDrawer('zamestnanec', 0) },
+      { label: 'Zodpovědná osoba',  type: 'link',  value: 'Karolína Fišerová',            hasHelp: false, onOpen: () => this.pushDrawer('zamestnanec', 0) },
       { label: 'Norma / standard',  type: 'plain', value: 'EN 397:2012',                  hasHelp: false },
       { label: 'Platnost do',       type: 'date',  value: '31. 12. 2025',                 hasHelp: false }
     ].map(f => ({ ...f, isLink: f.type === 'link' && !!f.value, isEmpty: f.type === 'link' && !f.value, isDate: f.type === 'date', isPlain: f.type === 'plain' && !!f.value }));
@@ -2379,7 +2706,7 @@ class Component extends DCLogic {
       ...conf, count: this.ZAK_ITEMS.filter(it => it.status === conf.key).length,
       cards: this.ZAK_ITEMS.filter(it => it.status === conf.key).map(it => {
         const idx = this.ZAK_ITEMS.indexOf(it);
-        return { name: it.name, date: it.date, iconClass: 'fa-solid fa-' + it.icon, iconColor: conf.iconColor, onClick: () => this.setState({ drawerOpen: true, drawerModule: 'zakazky', selectedIdx: idx, drawerTab: 'detaily' }) };
+        return { name: it.name, date: it.date, iconClass: 'fa-solid fa-' + it.icon, iconColor: conf.iconColor, onClick: () => this.setState({ drawerOpen: true, drawerModule: 'zakazky', selectedIdx: idx, drawerStack: [], drawerTab: 'detaily' }) };
       })
     }));
 
@@ -2399,8 +2726,8 @@ class Component extends DCLogic {
         kategLabel: kateg.label, kategBg: kateg.bg, kategColor: kateg.color, kategIcon: kateg.icon,
         statusLabel: this.ZAK_STATUS_LABELS[it.status].toUpperCase(), statusBg: chip.bg, statusColor: chip.color,
         rowBg: i % 2 === 0 ? '#fff' : '#f5f4fb', termin: it.date, hodnota: it.value ? this.fmtKc(it.value) : '',
-        onView: () => this.setState({ drawerOpen: true, drawerModule: 'zakazky', selectedIdx: i, drawerTab: 'detaily' }),
-        onEdit: () => this.setState({ drawerOpen: true, drawerModule: 'zakazky', selectedIdx: i, drawerTab: 'detaily' })
+        onView: () => this.setState({ drawerOpen: true, drawerModule: 'zakazky', selectedIdx: i, drawerStack: [], drawerTab: 'detaily' }),
+        onEdit: () => this.setState({ drawerOpen: true, drawerModule: 'zakazky', selectedIdx: i, drawerStack: [], drawerTab: 'detaily' })
       };
     });
 
@@ -2411,11 +2738,42 @@ class Component extends DCLogic {
       const on = drawerTab === t.key;
       return { ...t, onClick: () => this.setState({ drawerTab: t.key }), showBadge: !!(t.badge), style: this.drawerTabStyle(on) };
     });
+    const ZAK_SOUVIS_GROUPS = [
+      { key: 'firmy',   label: 'Firmy',           count: 2, rows: [{ name: 'Kovárna Kovy a Syn' }, { name: 'Hlavní správce klíčů s.r.o.' }] },
+      { key: 'faktury', label: 'Přijaté faktury', count: 1, rows: [{ name: '240325 Ferrum s.r.o.' }] },
+      { key: 'zamest',  label: 'Zaměstnanci',     count: 1, rows: [{ name: 'Jaroslav Dvořák' }] },
+      { key: 'smlouvy', label: 'Smlouvy',         count: 2, rows: [{ name: 'Rámcová smlouva Stavba 1' }, { name: 'Dodatek 2 Stavba 3' }] }
+    ];
+    const zak_souvisGroups = ZAK_SOUVIS_GROUPS.map(g => {
+      const open = !!(zakSouvisOpen && zakSouvisOpen[g.key]);
+      return { ...g, open, chevronClass: open ? 'fa-solid fa-chevron-down' : 'fa-solid fa-chevron-right', onToggle: () => this.setState(s => ({ zakSouvisOpen: { ...s.zakSouvisOpen, [g.key]: !s.zakSouvisOpen[g.key] } })) };
+    });
+    const zak_zapisyRows = [
+      { typ: 'Schůzka',   subject: 'Kontrola postupu výroby', od: '14.07.2026 09:00', do: '14.07.2026 09:40', participant: 'Karolína Fišerová', participantTime: '09:00 | 14.07.2026', creator: 'Karolína Fišerová', creatorTime: '09:00 | 14.07.2026', iconBg: '#7e57c2', iconClass: 'fa-solid fa-people-group' },
+      { typ: 'Telefonát', subject: 'Domluva termínu dodání',  od: '10.07.2026 14:20', do: '10.07.2026 14:35', participant: 'Petr Novák',       participantTime: '14:20 | 10.07.2026', creator: 'Karolína Fišerová', creatorTime: '14:20 | 10.07.2026', iconBg: '#43a047', iconClass: 'fa-solid fa-phone' },
+      { typ: 'Mail',      subject: 'Odeslána cenová nabídka', od: '02.07.2026 11:05', do: '02.07.2026 11:05', participant: 'Petr Novák',       participantTime: '11:05 | 02.07.2026', creator: 'Karolína Fišerová', creatorTime: '11:05 | 02.07.2026', iconBg: '#1572e8', iconClass: 'fa-solid fa-envelope' }
+    ].map((r, i, arr) => ({ ...r, avatarEl: this.mkAvatar(this.USERS[i % this.USERS.length], 30), isFirst: i === 0, isLast: i === arr.length - 1 }));
+    const ZAK_GRAPH_POS = {
+      smlouvy: { x: 370, y: 120, leaves: [{ x: 480, y: 50 }, { x: 230, y: 65 }] },
+      faktury: { x: 230, y: 240, leaves: [{ x: 100, y: 240 }] },
+      zamest:  { x: 520, y: 240, leaves: [{ x: 620, y: 270 }] },
+      firmy:   { x: 300, y: 350, leaves: [{ x: 160, y: 405 }, { x: 320, y: 430 }] }
+    };
+    const zak_graphCenter = { x: 370, y: 240 };
+    const zak_graphCats = ZAK_SOUVIS_GROUPS.map(g => {
+      const pos = ZAK_GRAPH_POS[g.key];
+      return {
+        key: g.key, label: g.label, count: g.count, x: pos.x, y: pos.y,
+        lineX1: zak_graphCenter.x, lineY1: zak_graphCenter.y, lineX2: pos.x, lineY2: pos.y,
+        leaves: g.rows.map((r, i) => ({ name: r.name, x: pos.leaves[i].x, y: pos.leaves[i].y, lineX2: pos.leaves[i].x, lineY2: pos.leaves[i].y, lineX1: pos.x, lineY1: pos.y }))
+      };
+    });
+    const zak_graphLeaves = zak_graphCats.flatMap(c => c.leaves);
     const zakSelChipStyle = 'display:inline-block;font-size:11.5px;font-weight:700;padding:3px 12px;border-radius:4px;background:' + zakSelChip.bg + ';color:#2e7d32';
     const zak_drawerFields = [
       { label: 'Název zakázky',    type: 'plain',   value: zakSel.name },
-      { label: 'Zákazník',         type: 'persons', persons: [{ name: zakSel.customer }] },
-      { label: 'Zodpovědná osoba', type: 'persons', persons: [{ name: this.USERS[zakSel.resp].name }] },
+      { label: 'Zákazník',         type: 'persons', persons: [{ name: zakSel.customer, onOpen: () => this.pushDrawer('zamestnanec', 0) }] },
+      { label: 'Zodpovědná osoba', type: 'persons', persons: [{ name: this.USERS[zakSel.resp].name, onOpen: () => this.pushDrawer('zamestnanec', 0) }] },
       { label: 'Splněno',          type: 'chip',    value: 'HOTOVO', pct: '68 %', chipStyle: '' },
       { label: 'Datum přijetí',    type: 'date',    value: zakSel.date },
       { label: 'Termín dokončení', type: 'dateEmpty' },
@@ -2478,19 +2836,90 @@ class Component extends DCLogic {
 
     // ══ ZAMĚSTNANEC drawer ══
     const ZAM_ITEM_TABS = [
-      { key: 'detaily', label: 'Detaily' }, { key: 'prilohy', label: 'Přílohy' }, { key: 'souvis', label: 'Souvislosti' },
-      { key: 'kalendar', label: 'Kalendář' }, { key: 'ukoly', label: 'Úkoly' }, { key: 'poznamky', label: 'Poznámky' }, { key: 'konverzace', label: 'Konverzace' }
+      { key: 'detaily', label: 'Detaily' }, { key: 'plany', label: 'Plány aktivit', badge: 32 }, { key: 'prilohy', label: 'Přílohy' }, { key: 'souvis', label: 'Souvislosti' },
+      { key: 'kalendar', label: 'Kalendář' }, { key: 'zapisy', label: 'Zápisy', badge: 4 }, { key: 'ukoly', label: 'Úkoly' }, { key: 'poznamky', label: 'Poznámky' }, { key: 'konverzace', label: 'Konverzace' }
     ];
+    const zam_zapisyRows = [
+      { typ: 'Schůzka',   subject: 'ggggg',          od: '22.01.2026 09:34', do: '22.01.2026 09:49', participant: 'Karolína Fišerová', participantTime: '09:34 | 22.01.2026', creator: 'Karolína Fišerová', creatorTime: '09:34 | 22.01.2026', iconBg: '#7e57c2', iconClass: 'fa-solid fa-people-group' },
+      { typ: 'Telefonát', subject: 'Telefonát',      od: '19.02.2023 22:55', do: '19.02.2023 23:10', participant: 'Karolína Fišerová', participantTime: '22:55 | 19.02.2023', creator: 'Karolína Fišerová', creatorTime: '22:55 | 19.02.2023', iconBg: '#43a047', iconClass: 'fa-solid fa-phone' },
+      { typ: 'Schůzka',   subject: 'Osobní schůzka', od: '19.02.2023 22:54', do: '19.02.2023 23:09', participant: 'Karolína Fišerová', participantTime: '22:55 | 19.02.2023', creator: 'Karolína Fišerová', creatorTime: '22:55 | 19.02.2023', iconBg: '#ffb300', iconClass: 'fa-solid fa-people-group' },
+      { typ: 'Mail',      subject: 'Zaslaný mail',   od: '06.02.2023 22:54', do: '06.02.2023 23:09', participant: 'Karolína Fišerová', participantTime: '22:54 | 19.02.2023', creator: 'Karolína Fišerová', creatorTime: '22:54 | 19.02.2023', iconBg: '#1572e8', iconClass: 'fa-solid fa-envelope' }
+    ].map((r, i, arr) => ({ ...r, avatarEl: this.mkAvatar(this.USERS[0], 30), isFirst: i === 0, isLast: i === arr.length - 1 }));
     const zam_itemTabs = ZAM_ITEM_TABS.map(t => {
       const on = zamItemTab === t.key;
-      return { ...t, onClick: () => this.setState({ zamItemTab: t.key }), style: this.drawerTabStyle(on) };
+      return { ...t, onClick: () => this.setState({ zamItemTab: t.key }), showBadge: !!t.badge, style: this.drawerTabStyle(on) };
     });
+    const ZAM_PLANY_GROUPS = [
+      { key: 'pred', name: 'Před nástupem zaměstnance', count: 10, chips: [{ label: '10 V pořádku', bg: '#00C853' }] },
+      {
+        key: 'nastup', name: 'Nástup zaměstnance', count: 17, chips: [{ label: '17 V pořádku', bg: '#00C853' }],
+        rows: [
+          { title: 'Odevzdal vstupní lékařskou prohlídku', date: '11.07.2022', periodChip: 'Jednorázová', avatar: true, done: true, timestamp: '11.07.2022 13:57' },
+          { title: 'Odevzdal zápočtový list', date: '11.07.2022', periodChip: 'Jednorázová', avatar: true, done: true, timestamp: '11.07.2022 13:57' },
+          { title: 'Odevzdal Osobní dotazník', date: '11.07.2022', periodChip: 'Jednorázová', avatar: true, done: true, timestamp: '11.07.2022 13:57' },
+          { title: 'Odevzdal Doklad o dosaženém vzdělání', date: '11.07.2022', periodChip: 'Jednorázová', avatar: true, done: true, timestamp: '11.07.2022 13:57' },
+          { title: 'Seznámení s pracovištěm', date: '11.07.2022', periodChip: 'Jednorázová', avatar: true, done: true, timestamp: '11.07.2022 13:57' },
+          { title: 'Odevzdal Doklady o dalším vzdělání', date: '08.09.2022', periodChip: 'Jednorázová', avatar: true, done: true, timestamp: '08.09.2022 15:05' },
+          { title: 'Odevzdal Prohlášení poplatníka daně z příjmů', date: '08.09.2022', periodChip: 'Jednorázová', avatar: true, done: true, timestamp: '08.09.2022 15:05' },
+          { title: 'Odevzdal Souhlas se zpracováním osobních údajů', date: '08.09.2022', periodChip: 'Jednorázová', avatar: true, done: true, timestamp: '08.09.2022 15:05' }
+        ]
+      },
+      {
+        key: 'skoleni', name: 'Školení a osobní rozvoj', count: 5,
+        chips: [{ label: '3 Blížící se', bg: '#FFAB00' }, { label: '1 Urgentní', bg: '#EF5350' }, { label: '1 nenaplánované', bg: '#78788c' }],
+        rows: [
+          { title: 'Školení o zdraví a bezpečnosti na pracovišti (BOZP)', hasCheckbox: true, subLink: 'Hlídání ještě není nastavené', periodChip: 'Každé 3 roky', action: 'NAPLÁNOVAT', actionStyle: 'dark', actionIcon: 'calendar-plus' },
+          { title: 'Pravidelné školení BOZP', date: '07.08.2025', dueChip: { label: 'Před 355 dny', bg: '#EF5350' }, periodChip: 'Každé 2 roky', avatar: true, action: 'POTVRDIT', actionStyle: 'red', timestamp: '07.08.2023 10:23' },
+          { title: 'Pohovor se zaměstnancem', date: '24.08.2026', dueChip: { label: 'Za 27 dní', bg: '#FFAB00' }, periodChip: 'Ročně', avatar: true, action: 'POTVRDIT', actionStyle: 'orange', timestamp: '24.08.2025 10:44' },
+          { title: 'Revize mzdy', date: '24.08.2026', dueChip: { label: 'Za 27 dní', bg: '#FFAB00' }, periodChip: 'Ročně', avatar: true, action: 'POTVRDIT', actionStyle: 'orange', timestamp: '24.08.2025 10:44' },
+          { title: 'Školení řidičů', date: '24.08.2026', dueChip: { label: 'Za 27 dní', bg: '#FFAB00' }, periodChip: 'Ročně', avatar: true, action: 'POTVRDIT', actionStyle: 'orange', timestamp: '24.08.2025 10:44' }
+        ]
+      },
+      {
+        key: 'zdravi', name: 'Ochrana zdraví', count: 2, chips: [{ label: '2 nenaplánované', bg: '#78788c' }], hasSelectAll: true,
+        rows: [
+          { title: 'Pravidelná lékařská prohlídka', hasCheckbox: true, subLink: 'Hlídání ještě není nastavené', periodChip: 'Ročně', action: 'NAPLÁNOVAT', actionStyle: 'dark' },
+          { title: 'Oční prohlídka', hasCheckbox: true, subLink: 'Hlídání ještě není nastavené', periodChip: 'Ročně', action: 'NAPLÁNOVAT', actionStyle: 'dark' }
+        ]
+      },
+      {
+        key: 'ukonceni', name: 'Ukončení pracovního poměru', count: 3, chips: [{ label: '3 nenaplánované', bg: '#78788c' }], hasSelectAll: true,
+        rows: [
+          { title: 'Připravit výpověď', hasCheckbox: true, subLink: 'Hlídání ještě není nastavené', periodChip: 'Jednorázová', action: 'NAPLÁNOVAT', actionStyle: 'dark' },
+          { title: 'Předaná nebo převzatá výpověď', hasCheckbox: true, subLink: 'Hlídání ještě není nastavené', periodChip: 'Jednorázová', action: 'NAPLÁNOVAT', actionStyle: 'dark' },
+          { title: 'Připravit zápočtový list', hasCheckbox: true, subLink: 'Hlídání ještě není nastavené', periodChip: 'Jednorázová', action: 'NAPLÁNOVAT', actionStyle: 'dark' }
+        ]
+      }
+    ];
+    const ACT_BTN_BG = { dark: '#6c757D', red: '#EF5350', orange: '#FFAB00' };
+    const zam_planyGroups = ZAM_PLANY_GROUPS.map(g => {
+      const open = !!(zamOpenGroups && zamOpenGroups[g.key]);
+      return {
+        ...g,
+        displayName: g.name || 'Plány aktivit',
+        open,
+        chevronClass: open ? 'fa-solid fa-chevron-down' : 'fa-solid fa-chevron-right',
+        onToggle: () => this.toggleZamGroup(g.key),
+        rows: (g.rows || []).map((r, ri) => ({
+          ...r,
+          actionBg: ACT_BTN_BG[r.actionStyle] || '#5a5478',
+          hasScheduleIcon: r.action === 'NAPLÁNOVAT',
+          avatarEl: r.avatar ? this.mkAvatar(this.USERS[ri % this.USERS.length], 30) : null
+        }))
+      };
+    });
+    const zam_listRows = this.ZAM_EMPLOYEES.map((e, i) => ({
+      name: e.name,
+      onClick: () => this.setState({ drawerOpen: true, drawerModule: 'zamestnanec', selectedIdx: i, drawerStack: [], zamItemTab: 'detaily' })
+    }));
+    const zam_railName = (this.ZAM_EMPLOYEES[selectedIdx] || this.ZAM_EMPLOYEES[0]).name;
     const zam_detailRows = [
       { label: 'Jméno',           type: 'plain', value: 'Jan' }, { label: 'Příjmení', type: 'plain', value: 'Novák' },
       { label: 'Oddělení',        type: 'plain', value: 'IT / Vývoj' }, { label: 'Pracovní pozice', type: 'plain', value: 'Senior vývojář' },
       { label: 'Datum nástupu',   type: 'date',  value: '15. 03. 2020' }, { label: 'Typ úvazku', type: 'plain', value: 'HPP' },
-      { label: 'E-mail',          type: 'plain', value: 'jan.novak@firma.cz' }, { label: 'Telefon', type: 'plain', value: '+420 777 123 456' }
-    ].map(r => ({ ...r, isPlain: r.type === 'plain', isDate: r.type === 'date' }));
+      { label: 'E-mail',          type: 'plain', value: 'jan.novak@firma.cz' }, { label: 'Telefon', type: 'plain', value: '+420 777 123 456' },
+      { label: 'Přiřazená zakázka', type: 'link', value: this.ZAK_ITEMS[0].name, onOpen: () => this.pushDrawer('zakazky', 0) }
+    ].map(r => ({ ...r, isPlain: r.type === 'plain', isDate: r.type === 'date', isLink: r.type === 'link' }));
     const ZAM_ACTIONS = [
       { label: 'Oblíbená', icon: 'star' }, { label: 'Nový report', icon: 'file-circle-plus' },
       { label: 'Online formuláře', icon: 'pen-to-square' }, { label: 'Sdílet', icon: 'share-nodes' },
@@ -2511,12 +2940,12 @@ class Component extends DCLogic {
       toggleSidebar: () => this.toggleSidebar(),
       navWork, navCompany, contentAreaBg, viewButtons,
       // content routing
-      showRizikaToolbar, showOPToolbar, showZakToolbar,
+      showRizikaToolbar, showOPToolbar, showZakToolbar, showZamToolbar,
       showRizikaDashboard, showRizikaList,
       showOPDashboard, showOPList,
       showZakDashboard, showZakList, showZakKanban, showZakTable, showZakCalPlaceholder,
       showSmernMain, showSmernDetail, showDokTilesView, showDokDetailView,
-      showZamestnanec, showKonv: isKonv, showPlaceholder, showEmpty,
+      showZamestnanec, showKonv: isKonv, showPlaceholder, showEmpty, showZamPlaceholder,
       drawerThread: (this.KONV_THREADS['eb'] || []).map(m => {
         if (m.sep) return { isSep: true, isMsg: false, sepDate: m.sep };
         const p = this.KONV_PEOPLE[m.a] || { name: '?', initials: '?', color: '#aaa', isSelf: false };
@@ -2566,7 +2995,7 @@ class Component extends DCLogic {
       // rizika
       riz_basicInfoRows, riz_statusRows, riz_recentRisks, riz_riskRows,
       drawerRizikaOpen: drawerOpen && drawerModule === 'rizika',
-      closeRizikaDrawer: () => this.setState({ drawerOpen: false }),
+      closeRizikaDrawer: () => this.closeTopDrawer(),
       riz_selectedRisk: rizSel.name, riz_selectedSeverityLabel: 'Vysoké',
       riz_selectedSeverityStyle: 'border-radius:4px;padding:4px 10px;font-weight:800;font-size:10px;letter-spacing:.03em;background:#D50000;color:#fff',
       riz_drawerTabs, riz_drawerFields, riz_drawerActions,
@@ -2575,7 +3004,7 @@ class Component extends DCLogic {
       // op
       op_categoryRows, op_validityRows, op_assignmentRows, op_recentItems, op_itemRows,
       drawerOPOpen: drawerOpen && drawerModule === 'op',
-      closeOPDrawer: () => this.setState({ drawerOpen: false }),
+      closeOPDrawer: () => this.closeTopDrawer(),
       op_selectedItem: opSel.name, op_selectedCategory: opSel.category, op_selectedId: String(28000 + selectedIdx * 97),
       op_drawerTabs, op_drawerFields, op_drawerActions,
       op_showDetaily: drawerTab === 'detaily', op_showKonverzace: drawerTab === 'konverzace', op_showStub: drawerTab !== 'detaily' && drawerTab !== 'konverzace',
@@ -2587,13 +3016,17 @@ class Component extends DCLogic {
       zak_tableRows, zak_tableCountStr: '( Položky: 1 - ' + Math.min(tablePageSize, this.ZAK_ITEMS.length) + ' z ' + this.ZAK_ITEMS.length + ' )',
       zak_onPageSizeChange: (e) => this.setState({ tablePageSize: parseInt(e.target.value) }),
       drawerZakOpen: drawerOpen && drawerModule === 'zakazky',
-      closeZakDrawer: () => this.setState({ drawerOpen: false }),
+      closeZakDrawer: () => this.closeTopDrawer(),
       zak_selectedItem: zakSel.name, zak_selectedId: String(40000 + selectedIdx * 137),
       zak_selectedDate: zakSel.date, zak_selectedCreatedBy: this.USERS[zakSel.resp].name,
       zak_selectedCategory: ({'gear':'Výroba na zakázku','chart-simple':'Sériová výroba','truck':'Dodávka'}[zakSel.icon] || 'Zakázka'),
       zak_selectedStatusChip: 'font-size:11px;font-weight:700;padding:4px 10px;border-radius:4px;background:' + zakSelChip.bg + ';color:' + zakSelChip.color,
-      zak_drawerTabs, zak_drawerFields, zak_drawerActions,
-      zak_showDetaily: drawerTab === 'detaily', zak_showKonverzace: drawerTab === 'konverzace', zak_showStub: drawerTab !== 'detaily' && drawerTab !== 'konverzace',
+      zak_drawerTabs, zak_drawerFields, zak_drawerActions, zak_souvisGroups, zak_graphCats, zak_graphLeaves, zak_zapisyRows,
+      zak_souvisGraphOn: !!zakSouvisGraph,
+      zak_toggleSouvisGraph: () => this.setState(s => ({ zakSouvisGraph: !s.zakSouvisGraph })),
+      zak_showDetaily: drawerTab === 'detaily', zak_showKonverzace: drawerTab === 'konverzace', zak_showSouvislosti: drawerTab === 'souvis',
+      zak_showStub: drawerTab !== 'detaily' && drawerTab !== 'konverzace' && drawerTab !== 'souvis' && drawerTab !== 'zapisy',
+      zak_showZapisy: drawerTab === 'zapisy',
       zak_activeDrawerTabLabel: (this.ZAK_DRAWER_TABS.find(t => t.key === drawerTab) || {}).label || '',
       // směrnice
       smernAllDone, smernHasPending,
@@ -2627,11 +3060,15 @@ class Component extends DCLogic {
       selectedDokDocs: selectedDokCatObj ? (selectedDokCatObj.docs || []) : [],
       backToDokTiles: () => this.setState({ selectedDokCat: null }),
       // zaměstnanec
-      openZamDrawer: () => this.setState({ drawerOpen: true, drawerModule: 'zamestnanec', zamItemTab: 'detaily' }),
+      openZamDrawer: () => this.setState({ drawerOpen: true, drawerModule: 'zamestnanec', drawerStack: [], zamItemTab: 'detaily' }),
       drawerZamOpen: drawerOpen && drawerModule === 'zamestnanec',
-      closeZamDrawer: () => this.setState({ drawerOpen: false }),
-      zam_itemTabs, zam_detailRows, zam_itemActions,
-      zam_showDetaily: zamItemTab === 'detaily', zam_showKonverzace: zamItemTab === 'konverzace', zam_showStub: zamItemTab !== 'detaily' && zamItemTab !== 'konverzace',
+      closeZamDrawer: () => this.closeTopDrawer(),
+      closeAllDrawers: () => this.closeAllDrawers(),
+      stackRailFrames: drawerStack.map((f, i) => { const m = this.frameMeta(f.module); return { label: f.label, iconClass: m.iconClass, iconStyle: 'color:' + m.color + ';font-size:15px', onClick: () => this.popToFrame(i) }; }),
+      zam_itemTabs, zam_detailRows, zam_itemActions, zam_planyGroups, zam_listRows, zam_railName,
+      zam_showDetaily: zamItemTab === 'detaily', zam_showKonverzace: zamItemTab === 'konverzace', zam_showPlany: zamItemTab === 'plany',
+      zam_showZapisy: zamItemTab === 'zapisy', zam_zapisyRows,
+      zam_showStub: zamItemTab !== 'detaily' && zamItemTab !== 'konverzace' && zamItemTab !== 'plany' && zamItemTab !== 'zapisy',
       zam_activeItemTabLabel: (ZAM_ITEM_TABS.find(t => t.key === zamItemTab) || {}).label || '',
       konverzaceSrc: this.konverzaceSrc
     };

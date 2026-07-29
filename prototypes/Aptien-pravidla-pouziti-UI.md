@@ -157,8 +157,9 @@ v prototypu:
 
 - **Ikona + název modulu** vlevo (název `16px/800`, tmavý `#1e1b2e`;
   ikona v barvě modulu `c800`), následovaný info/edit ikonou.
-- **Primární akce „PŘIDAT …"** = **modré** tlačítko `#1572e8` (pilulka),
-  bílý text – bez ohledu na modul.
+- **Primární akce „PŘIDAT …"** = pilulka **v barvě evidence (`c800`)**,
+  bílý text, stín `0 2px 6px rgba(<c800 rgb>,.28)`. **Nikdy modrá** –
+  viz §5.1.1.
 - **Hledání** = pilulka s lupou, **bílé pozadí `#fff` + jemný okraj
   `1px solid #e0dded`** (aby nesplývalo se šedým okolím toolbaru). NE šedá
   výplň – ta se v toolbaru ztrácí.
@@ -168,11 +169,34 @@ v prototypu:
   nemá jeho vlastní layout (spadne do generického seznamu, ale tlačítko
   tam být musí).
 
-Nic z toho nepřebírá „tématickou" barvu modulu – barva modulu (`c800`) je
-jen na ikoně názvu a na záložce.
+Hledání ani view switcher barvu modulu **nepřebírají** – ta patří ikoně
+názvu, aktivní záložce a **všem přidávacím akcím** (§5.1.1).
 
 Toolbar (a v něm view switcher) je viditelný na **všech** pohledech
 evidence – nezmizí při přepnutí z dashboardu na seznam/kanban/tabulku.
+
+#### 5.1.1 „Přidat" = barva evidence — ale JEN na úrovni evidence
+
+**Barva modulu (`c800`) patří přidávacím akcím v EVIDENCI. V itemu
+(draweru) se barva modulu NEPOUŽÍVÁ — tam jsou všechna tlačítka
+v defaultní modré `#1572e8`.**
+
+| Prvek | Kde | Vzhled |
+|---|---|---|
+| „PŘIDAT …" v toolbaru | evidence | plná pilulka, `background: c800`, `color:#fff`, `11px/800`, `padding:6px 14px`, `border-radius:999px`, stín `0 2px 6px rgba(<c800 rgb>,.28)` |
+| „+ Přidat" na konci kanban sloupce | evidence | text v `c800`, `12px/700`, ikona `plus` `11px` |
+
+| Modul | `c800` |
+|---|---|
+| Rizika | `#E91E63` |
+| Ochranné pomůcky | `#D84315` |
+| Zakázky | `#1565C0` |
+| Zaměstnanci | `#f1c40f` |
+
+⛔ **Nikdy nepřebarvuj podle modulu:** view switcher, hledání, cokoli
+uvnitř item draweru (včetně „+ přidat" v polích, „PŘIDEJ DALŠÍ DO",
+kruhového „+" v Zápisech a „PŘIDAT AKTIVITU" v Plánech aktivit).
+Vzhled tlačítek v draweru viz **§7.1.4**.
 
 ### 5.2 Načítání layoutu pohledu (routing pro generování)
 
@@ -220,7 +244,7 @@ všechny pohledy zvlášť:**
 > Generátor nesmí žádnou vrstvu vynechat – nejčastější chyba je vynechání
 > hero banneru („toho pruhu") a start rovnou kartami. **To není dashboard.**
 
-1. **Toolbar** (viz §5.1) – ikona + název modulu, modré „PŘIDAT …",
+1. **Toolbar** (viz §5.1) – ikona + název modulu, „PŘIDAT …" v barvě modulu,
    hledání, **view switcher (všech 5 pohledů)**. Je nad obsahem, mimo blok
    dashboardu, a drží se na všech pohledech.
 2. **Hero banner (gradientový pruh)** – **PRVNÍ prvek obsahu dashboardu**.
@@ -476,6 +500,140 @@ vlož ho doslovně a do slotu přidej obsah aktivní záložky.
 > akční sloupec, blok metadat) a měň jen data. Obsah záložky vkládej do
 > vyznačeného slotu.
 
+**Obsah jednotlivých záložek = hotové partialy do slotu:**
+
+| Záložka | Partial | Skladba (zkráceně) |
+|---|---|---|
+| Detaily | `partials/drawer-tab-detaily.html` | svislý seznam polí – řádek `min-height:52px`, ikona nápovědy `32px` + label `210px` vpravo + hodnota; 7 typů polí |
+| Souvislosti | `partials/drawer-tab-souvislosti.html` | řádek nástrojů (oko · graf · „PŘIDEJ DALŠÍ DO") → skupiny navázaných záznamů, **bez grafu** |
+| Souvislosti **s grafem** | `partials/drawer-tab-souvislosti-graf.html` | totéž + graf `740 × 480` a odkaz „Skrýt graf" — **jen na výslovné zadání** |
+| Zápisy | `partials/drawer-tab-zapisy.html` | 4 šedé filtry → hlavička (kruhové „+", sloupce, EXPORT) → časová osa s kolečky dle typu |
+| Plány aktivit | `partials/drawer-tab-plany.html` | „PŘIDAT AKTIVITU" (**sekundární** lemovaná pilulka) → karty skupin (hlavička `#efeef4` + počet + stavové chipy), **všechny sbalené** |
+| Plány aktivit – **rozbalená skupina** | `partials/drawer-tab-plany-rozbaleno.html` | 3 varianty rozbalené skupiny (splněné aktivity / čekající na akci / hromadné akce) — **jen na výslovné zadání** |
+| Konverzace | `partials/drawer-konverzace.html` | bubliny + composer |
+
+Sady záložek podle modulu jsou v tabulce výše; **záložka bez partialu má
+prázdný stav** (ikona modulu + název záložky), ne vymyšlený obsah.
+
+> ⚠ `partials/evidence-drawer.html` je **starší celý drawer** – pro nové
+> vizuály ho nepoužívej. Rám ber ze shellu, pole z `drawer-tab-detaily.html`.
+
+#### 7.1.0 Výchozí stavy v draweru (PEVNÉ pravidlo)
+
+**Co má být rozbalené nebo zobrazené, určuje ZADÁNÍ. Bez zmínky platí
+nejjednodušší stav:**
+
+| Prvek | Výchozí stav (bez zmínky v zadání) |
+|---|---|
+| Skupiny v **Plánech aktivit** | **všechny SBALENÉ** (chevron „›"), žádné řádky aktivit vidět |
+| Skupiny navázaných záznamů v **Souvislostech** | **všechny SBALENÉ** |
+| **Graf souvislostí** | **SKRYTÝ** – použij variantu `drawer-tab-souvislosti.html` |
+| Graf **s daty** (uzly, spojnice) | jen na **výslovné zadání** („se grafem") → `drawer-tab-souvislosti-graf.html` |
+| Item tab | **Detaily** |
+| „Uložit změny" | šedé/neaktivní (§7.2) |
+
+Pravidla:
+
+1. **Nerozbaluj nic „pro ukázku".** Když zadání neřekne, která skupina je
+   otevřená, jsou všechny sbalené.
+2. **Rozbalí se jen to, co zadání jmenuje** – např. *„Plány aktivit,
+   rozbalená skupina Školení a osobní rozvoj"*.
+3. **Graf si nikdy nedomýšlej.** Bez zmínky se nekreslí ani prázdná plocha
+   – v záložce je jen řádek nástrojů a seznam skupin.
+4. Chevron musí odpovídat stavu: sbalené `fa-chevron-right`, rozbalené
+   `fa-chevron-down`. Nikdy nenech `chevron-down` u sbalené skupiny.
+
+> **Jak to napsat do promptu:** *„…záložka Plány aktivit, rozbalená
+> skupina Nástup zaměstnance"* nebo *„…záložka Souvislosti se grafem"*.
+
+#### 7.1.4 Tlačítka v itemu (draweru) — barva a TVAR
+
+**V draweru se barva modulu nepoužívá. Všechna tlačítka mají defaultní
+barvu tlačítka aplikace `#1572e8`** – bez ohledu na to, z jakého modulu
+záznam je. Barva modulu končí na úrovni evidence (§5.1.1).
+
+**Tlačítka mají dvě úrovně – primární a sekundární. Tvar je u obou
+pilulka; liší se výplní:**
+
+| Úroveň | Vzhled |
+|---|---|
+| **Primární** | plné pozadí `#1572e8`, bílý text, stín `0 2px 6px rgba(21,114,232,.28)`, bez lemu |
+| **Sekundární** | **bílé pozadí, lem `1px solid #1572e8`, text `#1572e8`, BEZ stínu** |
+
+Přiřazení k prvkům (nedomýšlej si ho):
+
+| Tlačítko | Úroveň | Tvar a vzhled |
+|---|---|---|
+| „PŘIDEJ DALŠÍ DO" (Souvislosti) | primární | pilulka `50px`, plná `#1572e8`, bílý text, `12px/800`, `padding:9px 18px` |
+| „+" v hlavičce Zápisů | primární | **kruh** `36px`, `border-radius:50%`, plná `#1572e8`, bílá ikona `plus` `14px` |
+| „EXPORT" (Zápisy) | primární | pilulka `50px`, plná `#1572e8`, `11px/700`, výška `30px` |
+| **„PŘIDAT AKTIVITU" (Plány aktivit)** | ⚠ **sekundární** | pilulka `999px`, **lem `1px solid #1572e8`, bílé pozadí, text `#1572e8`**, `12px/800`, `padding:9px 18px`, bez stínu |
+| „Uložit změny" v akčním sloupci | primární | pilulka `999px`, dle §7.2 (šedý řádek / modrá pilulka) |
+| inline „+ přidat" v polích | – | text `#1572e8`, `12px/600`, bez rámu a podtržení |
+
+Výjimka jsou **akce v řádcích Plánů aktivit** (`NAPLÁNOVAT`, `POTVRDIT`) –
+ty mají pilulku `border-radius:20px` a **sémantickou barvu podle termínu**
+(tmavá / červená / oranžová), ne modrou. Viz §7.1.3.
+
+#### 7.1.1 Záložka Souvislosti
+
+- Řádek nástrojů: **oko** (náhled) → **ikona grafu** (přepínač
+  „Zobrazit / Skrýt graf") → vpravo **„PŘIDEJ DALŠÍ DO"** (plná modrá
+  pilulka `#1572e8`).
+- Skupiny: řádek „*Skupina* (*počet*)" + zelené „+" `#00c853`; rozbalená
+  skupina má odsazené řádky se dvěma modrými podtrženými odkazy
+  (skupina → záznam) a vpravo dole „Zobrazeno 1 - N z N záznamů".
+- **Výchozí stav: všechny skupiny sbalené, graf skrytý** (§7.1.0).
+
+**Graf souvislostí** (jen na výslovné zadání, partial
+`drawer-tab-souvislosti-graf.html`):
+
+- Plocha `740 × 480`, vycentrovaná (`margin:0 auto`), pod ní odkaz
+  **„Skrýt graf"** (šedý `#9a95ad`, `12px`, s ikonou `diagram-project`).
+- **Střed** = tento záznam: bod `#2b2540`, `r=6`, na souřadnici `370,240`.
+- **1. úroveň = skupiny**: text `13px/600` `#3c3a52` na bílém podkladu
+  (`padding:3px 8px`), popisek ve formátu „Skupina (n/n)".
+- **2. úroveň = navázané záznamy**: zelené pilulky `#43a047`, bílý text
+  `11px/700`, `border-radius:6px`.
+- **Spojnice**: `<line>` `stroke:#c9d6e8`, `stroke-width:1.5` – střed →
+  skupina a skupina → záznam.
+- Uzly jsou HTML `div`y absolutně pozicované **nad** `<svg>`
+  (`transform:translate(-50%,-50%)`), ne `<text>` v SVG – text je ostrý.
+- Souřadnice uzlů uprav tak, aby se popisky nepřekrývaly; rozměry plochy,
+  barvy a tloušťky linek neměň.
+
+#### 7.1.2 Záložka Zápisy
+
+- Filtry jsou **šedé pilulky `#a4a4a4`** s bílým textem: *Od · Do ·
+  Účastníci · Vytvořil* (poslední dvě s `chevron-down`).
+- Kruhové **„+" v barvě modulu** vlevo v hlavičce, **„EXPORT" modré
+  `#1572e8`** vpravo (není to přidávání).
+- Řádky jsou **časová osa**: svislá spojnice `#e5e3ee` `2px`, kolečko
+  `40px` s ikonou typu, vedle bílá karta `border-radius:10px` se stínem
+  `0 2px 12px rgba(0,0,0,.07)`.
+- **Barva kolečka dle typu zápisu** (sémantická, nepřebarvuj na modul):
+  Schůzka `#7e57c2` · Telefonát `#43a047` · Mail `#1572e8`.
+- První řádek nemá spojnici nahoru, poslední dolů. Šířky sloupců drž
+  shodné v hlavičce i v kartách (90 / flex / 150 / 150 / 190 / 190 / 44).
+
+#### 7.1.3 Záložka Plány aktivit
+
+- Nahoře **„PŘIDAT AKTIVITU"** – **sekundární** tlačítko: pilulka s lemem
+  `1px solid #1572e8`, bílé pozadí, modrý text (§7.1.4). Ne plné.
+- Skupiny jsou **karty** (`border:1px solid #e9e7f1`, `radius:6px`) s
+  hlavičkou `#efeef4`: chevron + název `14/800` + **tmavý počet** `#2b2942`
+  + **stavové chipy**.
+- Stavové chipy (sémantické): *V pořádku* `#00C853` · *Blížící se*
+  `#FFAB00` · *Urgentní* `#EF5350` · *nenaplánované* `#78788c`.
+- Řádek aktivity má dvě podoby:
+  **splněno** → vpravo zelené `fa-circle-check` `#00c853` (`31px`) + časová
+  značka; **čeká na akci** → pilulka akce, jejíž barva **kopíruje chip
+  termínu**: `NAPLÁNOVAT` tmavá `#2b2942` (bez termínu), `POTVRDIT`
+  červená `#EF5350` (po termínu) nebo oranžová `#FFAB00` (blíží se).
+- Skupina s hromadnými akcemi má první řádek **„Vybrat vše"** s checkboxem.
+- **Výchozí stav: všechny skupiny sbalené** – rozbal jen tu, kterou zadání
+  jmenuje (§7.1.0).
+
 ### 7.2 Pravý sloupec akcí (KOMPLETNÍ VÝČET, pořadí závazné)
 
 > Zdroj pravdy = master prototyp, blok `drawerZakOpen` / `zak_drawerActions`,
@@ -571,10 +729,11 @@ natvrdo zapsané hodnoty.**
 
 > **Role barev jsou pevné a nemění se podle modulu.** Top bar i pruh se
 > záložkami (tab strip) = fialová `#6200EA`; akce / tlačítka / aktivní
-> prvky = modrá `#1572e8`; **aktivní záložka = barva modulu `c800`**
+> prvky = modrá `#1572e8`, **kromě všech „přidat" v evidenci, která mají
+> barvu modulu `c800` (§5.1.1)**; **aktivní záložka = barva modulu `c800`**
 > (přebírá barvu neaktivního textu); barva modulu (`c800`) pro text/ikonu
 > neaktivní záložky, pozadí aktivní záložky a chip. Nezaváděj „tématickou"
-> barvu modulu na banner, tlačítka ani pohledy (žádný teal banner apod.).
+> barvu modulu na banner ani na pohledy (žádný teal banner apod.).
 
 **Interaktivní akcent (primární):**
 

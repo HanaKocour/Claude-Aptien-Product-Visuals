@@ -1,0 +1,94 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free) + Nunito. Řádky níže je načtou,
+     aby se blok vykreslil i při samostatném otevření souboru. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<!--
+  APTIEN — DRAWER, ZÁLOŽKA „DETAILY"
+  =================================
+  OBSAH ZÁLOŽKY do slotu `item-drawer-shell.html` (nebo `-stacked.html`).
+  Vlož CELÝ, neskládej z hlavy. Zdroj pravdy: master prototyp,
+  blok `zak_showDetaily` / `zak_drawerFields` (referenční modul Zakázky).
+
+  Záložka = SVISLÝ SEZNAM POLÍ. Každé pole je jeden řádek:
+    [32px ikona nápovědy] [210px label zprava + tužka] [hodnota, padding 0 18px]
+  Řádek: `min-height:52px`, `padding:10px 0`, spodní linka `1px solid #f0eef8`.
+  Label: `12px/600` `#6b6585`, zarovnaný VPRAVO. Tužka `#d5d0e5` `10px`.
+
+  TYPY POLÍ (níže jsou všechny, použij ty, které záznam má):
+    1. text            – `<input>` na plnou šířku, lem `#e0dded`
+    2. odkaz na osobu  – „→" + podtržený odkaz `#1a1a2e`, pod ním „+ přidat"
+    3. jedna osoba     – „→" + podtržený odkaz, bez „+ přidat"
+    4. výběr (select)  – `<select>` lem `#e5e5e5`, `12px`
+    5. datum           – `<input>` šířka `120px` + ikona kalendáře
+    6. datum prázdné   – placeholder `dd.mm.rrrr`, šedý text
+    7. prázdné pole    – jen odkaz „+ přidat"
+
+  ⛔ V ITEMU SE BARVA MODULU NEPOUŽÍVÁ. Odkazy a „+ přidat" jsou vždy
+     v defaultní modré `#1572e8`, bez ohledu na modul.
+  ⛔ Pořadí a počet polí NEVYMÝŠLEJ – ber je ze zadání nebo z prototypu
+     daného modulu. Struktura řádku se nikdy nemění.
+
+  Měň JEN data: názvy polí a jejich hodnoty.
+-->
+<div style="font-family:'Nunito',sans-serif">
+
+  <!-- 1 · TEXT -->
+  <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+    <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+    <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Název zakázky</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+    <div style="flex:1;min-width:0;padding:0 18px"><input type="text" value="Sloupek 120" style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;outline:none;background:#fff"></div>
+  </div>
+
+  <!-- 2 · ODKAZ NA OSOBU / ZÁZNAM + možnost přidat další -->
+  <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+    <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+    <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Zákazník</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+    <div style="flex:1;min-width:0;padding:0 18px;display:flex;flex-direction:column;gap:4px">
+      <div style="display:flex;align-items:center;gap:6px"><i class="fa-solid fa-arrow-right" style="font-size:10px;color:#888"></i><a href="#" style="font-size:13px;color:#1a1a2e;font-weight:600;text-decoration:underline;text-underline-offset:3px">LMN Projekty s.r.o.</a></div>
+      <div style="margin-top:2px"><a href="#" style="font-size:12px;color:#1572e8;text-decoration:none;font-weight:600">+ přidat</a></div>
+    </div>
+  </div>
+
+  <!-- 3 · JEDNA OSOBA (bez „+ přidat") -->
+  <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+    <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+    <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Zodpovědná osoba</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+    <div style="flex:1;min-width:0;padding:0 18px"><div style="display:flex;align-items:center;gap:6px"><i class="fa-solid fa-arrow-right" style="font-size:10px;color:#888"></i><a href="#" style="font-size:13px;color:#1a1a2e;font-weight:600;text-decoration:underline;text-underline-offset:3px">Martin Blažek</a></div></div>
+  </div>
+
+  <!-- 4 · VÝBĚR (select) -->
+  <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+    <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+    <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Splněno</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+    <div style="flex:1;min-width:0;padding:0 18px"><select style="border-radius:4px;border:1px solid #e5e5e5;padding:5px 10px;font-family:'Nunito',sans-serif;font-size:12px;color:#1a1a2e;background:#fff;cursor:pointer;outline:none"><option>0 %</option><option>25 %</option><option>50 %</option><option selected>68 %</option><option>75 %</option><option>100 %</option></select></div>
+  </div>
+
+  <!-- 5 · DATUM (vyplněné) -->
+  <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+    <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+    <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Datum přijetí</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+    <div style="flex:1;min-width:0;padding:0 18px"><div style="display:inline-flex;align-items:center;gap:8px"><input type="text" value="19. 6. 2023" style="border:1px solid #e5e5e5;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;background:#fff;outline:none;width:120px"><i class="fa-regular fa-calendar-days" style="color:#b0aac5;font-size:15px;cursor:pointer"></i></div></div>
+  </div>
+
+  <!-- 6 · DATUM PRÁZDNÉ (placeholder) -->
+  <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+    <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+    <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Termín dokončení</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+    <div style="flex:1;min-width:0;padding:0 18px"><div style="display:inline-flex;align-items:center;gap:8px"><input type="text" placeholder="dd.mm.rrrr" style="border:1px solid #e5e5e5;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#aaa;background:#fff;outline:none;width:120px"><i class="fa-regular fa-calendar-days" style="color:#b0aac5;font-size:15px;cursor:pointer"></i></div></div>
+  </div>
+
+  <!-- 1 · TEXT (další pole) -->
+  <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+    <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+    <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Hodnota zakázky</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+    <div style="flex:1;min-width:0;padding:0 18px"><input type="text" value="120 000 Kč" style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;outline:none;background:#fff"></div>
+  </div>
+
+  <!-- 7 · PRÁZDNÉ POLE (jen „+ přidat") -->
+  <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+    <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+    <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Stručný popis</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+    <div style="flex:1;min-width:0;padding:0 18px"><a href="#" style="font-size:12px;color:#1572e8;text-decoration:none;font-weight:600">+ přidat</a></div>
+  </div>
+
+</div>

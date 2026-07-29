@@ -1,0 +1,123 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free) + Nunito. Řádky níže je načtou,
+     aby se blok vykreslil i při samostatném otevření souboru. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<!--
+  APTIEN — DRAWER, ZÁLOŽKA „SOUVISLOSTI" · VARIANTA S GRAFEM
+  =========================================================
+  ⛔ POUŽIJ JEN NA VÝSLOVNÉ ZADÁNÍ („se grafem", „zobrazený graf
+     souvislostí"). VÝCHOZÍ varianta záložky je BEZ grafu →
+     `drawer-tab-souvislosti.html`.
+
+  OBSAH ZÁLOŽKY do slotu `item-drawer-shell.html` (nebo `-stacked.html`).
+  Vlož CELÝ, neskládej z hlavy. Zdroj pravdy: master prototyp,
+  bloky `zak_showSouvislosti` + `zak_souvisGraphOn` (modul Zakázky).
+
+  Skladba (pořadí je závazné):
+    1. řádek nástrojů: oko · ikona grafu · vpravo „PŘIDEJ DALŠÍ DO"
+       (plná pilulka, defaultní modrá #1572e8)
+    2. GRAF souvislostí (plocha 740 × 480, vycentrovaná)
+    3. odkaz „Skrýt graf" (šedý, s ikonou grafu)
+    4. skupiny navázaných záznamů – VÝCHOZÍ STAV: VŠECHNY SBALENÉ
+
+  Stavba grafu:
+    • střed = tento záznam → tmavý bod `#2b2540`, `r=6`, na `370,240`
+    • 1. úroveň = SKUPINY → text `13px/600` `#3c3a52` na bílém podkladu
+      (`padding:3px 8px`), popisek ve formátu „Skupina (n/n)"
+    • 2. úroveň = NAVÁZANÉ ZÁZNAMY → zelené pilulky `#43a047`, bílý text
+      `11px/700`, `radius:6px`
+    • spojnice = `<line>` `stroke:#c9d6e8`, `stroke-width:1.5`
+      (střed → skupina, skupina → záznam)
+    • uzly jsou HTML `div`y absolutně pozicované NAD `<svg>` (aby byl text
+      ostrý); `transform:translate(-50%,-50%)` je centruje na souřadnici
+
+  ⛔ V ITEMU (draweru) SE BARVA MODULU NEPOUŽÍVÁ – tlačítka jsou vždy
+     v defaultní modré `#1572e8`. Zelená `#43a047` u uzlů a `#00c853`
+     u „+" jsou sémantické, nepřebarvuj je.
+
+  Měň JEN data: názvy skupin, počty, názvy záznamů + souřadnice uzlů tak,
+  aby se popisky nepřekrývaly. Rozměry plochy, barvy a tloušťky nech.
+-->
+<div style="padding:20px;font-family:'Nunito',sans-serif">
+
+  <!-- 1 · řádek nástrojů -->
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
+    <i class="fa-regular fa-eye" style="font-size:16px;color:#9a95ad;cursor:pointer"></i>
+    <div style="display:inline-flex;cursor:pointer"><i class="fa-solid fa-diagram-project" style="font-size:15px;color:#9a95ad"></i></div>
+    <div style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;background:#1572e8;color:#fff;font-size:12px;font-weight:800;padding:9px 18px;border-radius:50px;cursor:pointer;letter-spacing:.02em;white-space:nowrap"><i class="fa-solid fa-plus" style="font-size:11px"></i>PŘIDEJ DALŠÍ DO</div>
+  </div>
+
+  <!-- 2 · GRAF SOUVISLOSTÍ -->
+  <div style="position:relative;width:100%;max-width:740px;height:480px;margin:0 auto 8px">
+    <svg viewBox="0 0 740 480" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">
+      <!-- střed → skupiny -->
+      <line x1="370" y1="240" x2="370" y2="120" stroke="#c9d6e8" stroke-width="1.5"></line>
+      <line x1="370" y1="240" x2="230" y2="240" stroke="#c9d6e8" stroke-width="1.5"></line>
+      <line x1="370" y1="240" x2="520" y2="240" stroke="#c9d6e8" stroke-width="1.5"></line>
+      <line x1="370" y1="240" x2="300" y2="350" stroke="#c9d6e8" stroke-width="1.5"></line>
+      <!-- skupiny → navázané záznamy -->
+      <line x1="370" y1="120" x2="480" y2="50"  stroke="#c9d6e8" stroke-width="1.5"></line>
+      <line x1="370" y1="120" x2="230" y2="65"  stroke="#c9d6e8" stroke-width="1.5"></line>
+      <line x1="230" y1="240" x2="100" y2="240" stroke="#c9d6e8" stroke-width="1.5"></line>
+      <line x1="520" y1="240" x2="620" y2="270" stroke="#c9d6e8" stroke-width="1.5"></line>
+      <line x1="300" y1="350" x2="160" y2="405" stroke="#c9d6e8" stroke-width="1.5"></line>
+      <line x1="300" y1="350" x2="320" y2="430" stroke="#c9d6e8" stroke-width="1.5"></line>
+      <!-- střed = tento záznam -->
+      <circle cx="370" cy="240" r="6" fill="#2b2540"></circle>
+    </svg>
+
+    <!-- skupina: Smlouvy -->
+    <div style="position:absolute;left:370px;top:120px;transform:translate(-50%,-50%);font-size:13px;color:#3c3a52;white-space:nowrap;font-weight:600;background:#fff;padding:3px 8px">Smlouvy (2/2)</div>
+    <div style="position:absolute;left:480px;top:50px;transform:translate(-50%,-50%);background:#43a047;color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:6px;white-space:nowrap">Rámcová smlouva Stavba 1</div>
+    <div style="position:absolute;left:230px;top:65px;transform:translate(-50%,-50%);background:#43a047;color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:6px;white-space:nowrap">Dodatek 2 Stavba 3</div>
+
+    <!-- skupina: Přijaté faktury -->
+    <div style="position:absolute;left:230px;top:240px;transform:translate(-50%,-50%);font-size:13px;color:#3c3a52;white-space:nowrap;font-weight:600;background:#fff;padding:3px 8px">Přijaté faktury (1/1)</div>
+    <div style="position:absolute;left:100px;top:240px;transform:translate(-50%,-50%);background:#43a047;color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:6px;white-space:nowrap">240325 Ferrum s.r.o.</div>
+
+    <!-- skupina: Zaměstnanci -->
+    <div style="position:absolute;left:520px;top:240px;transform:translate(-50%,-50%);font-size:13px;color:#3c3a52;white-space:nowrap;font-weight:600;background:#fff;padding:3px 8px">Zaměstnanci (1/1)</div>
+    <div style="position:absolute;left:620px;top:270px;transform:translate(-50%,-50%);background:#43a047;color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:6px;white-space:nowrap">Jaroslav Dvořák</div>
+
+    <!-- skupina: Firmy -->
+    <div style="position:absolute;left:300px;top:350px;transform:translate(-50%,-50%);font-size:13px;color:#3c3a52;white-space:nowrap;font-weight:600;background:#fff;padding:3px 8px">Firmy (2/2)</div>
+    <div style="position:absolute;left:160px;top:405px;transform:translate(-50%,-50%);background:#43a047;color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:6px;white-space:nowrap">Kovárna Kovy a Syn</div>
+    <div style="position:absolute;left:320px;top:430px;transform:translate(-50%,-50%);background:#43a047;color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:6px;white-space:nowrap">Hlavní správce klíčů s.r.o.</div>
+  </div>
+
+  <!-- 3 · přepínač zpět na seznam -->
+  <div style="display:inline-flex;align-items:center;gap:6px;color:#9a95ad;font-size:12px;cursor:pointer;margin-bottom:14px"><i class="fa-solid fa-diagram-project" style="font-size:12px"></i>Skrýt graf</div>
+
+  <!-- 4 · SKUPINY NAVÁZANÝCH ZÁZNAMŮ – VÝCHOZÍ STAV: VŠECHNY SBALENÉ.
+       Rozbal jen tu, kterou zadání chce (podoba rozbalené skupiny je
+       v `drawer-tab-souvislosti.html`). -->
+  <div style="border-bottom:1px solid #f0eef8">
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 4px;cursor:pointer">
+      <i class="fa-solid fa-chevron-right" style="font-size:11px;color:#9a95ad;width:12px"></i>
+      <span style="font-size:14px;color:#2b2540;flex:1">Firmy (2)</span>
+      <i class="fa-solid fa-plus" style="color:#00c853;font-size:15px;cursor:pointer"></i>
+    </div>
+  </div>
+  <div style="border-bottom:1px solid #f0eef8">
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 4px;cursor:pointer">
+      <i class="fa-solid fa-chevron-right" style="font-size:11px;color:#9a95ad;width:12px"></i>
+      <span style="font-size:14px;color:#2b2540;flex:1">Přijaté faktury (1)</span>
+      <i class="fa-solid fa-plus" style="color:#00c853;font-size:15px;cursor:pointer"></i>
+    </div>
+  </div>
+  <div style="border-bottom:1px solid #f0eef8">
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 4px;cursor:pointer">
+      <i class="fa-solid fa-chevron-right" style="font-size:11px;color:#9a95ad;width:12px"></i>
+      <span style="font-size:14px;color:#2b2540;flex:1">Zaměstnanci (1)</span>
+      <i class="fa-solid fa-plus" style="color:#00c853;font-size:15px;cursor:pointer"></i>
+    </div>
+  </div>
+  <div style="border-bottom:1px solid #f0eef8">
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 4px;cursor:pointer">
+      <i class="fa-solid fa-chevron-right" style="font-size:11px;color:#9a95ad;width:12px"></i>
+      <span style="font-size:14px;color:#2b2540;flex:1">Smlouvy (2)</span>
+      <i class="fa-solid fa-plus" style="color:#00c853;font-size:15px;cursor:pointer"></i>
+    </div>
+  </div>
+
+</div>

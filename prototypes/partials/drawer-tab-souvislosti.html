@@ -1,0 +1,98 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free) + Nunito. Řádky níže je načtou,
+     aby se blok vykreslil i při samostatném otevření souboru. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<!--
+  APTIEN — DRAWER, ZÁLOŽKA „SOUVISLOSTI"
+  =====================================
+  OBSAH ZÁLOŽKY do slotu `item-drawer-shell.html` (nebo `-stacked.html`).
+  Vlož CELÝ, neskládej z hlavy. Zdroj pravdy: master prototyp,
+  blok `zak_showSouvislosti` (referenční modul Zakázky).
+
+  Skladba (pořadí je závazné):
+    1. horní řádek nástrojů: oko (náhled) · ikona grafu (přepínač) ·
+       vpravo „PŘIDEJ DALŠÍ DO" – DEFAULTNÍ MODRÁ #1572e8, pilulka
+    2. seznam skupin navázaných záznamů – rozbalovací řádek
+       „<Skupina> (<počet>)" + zelené „+", po rozbalení řádky odkazů
+       a řádek „Zobrazeno 1 - N z N záznamů"
+
+  ⚠ VÝCHOZÍ STAV: **graf SKRYTÝ a všechny skupiny SBALENÉ.**
+     • Graf → jen na výslovné zadání; pak použij variantu
+       `drawer-tab-souvislosti-graf.html` (tento partial graf neobsahuje).
+     • Rozbalenou skupinu vlož jen tu, kterou zadání chce (podoba je níže
+       v zakomentovaném bloku „ROZBALENÁ SKUPINA").
+
+  ⛔ V ITEMU (draweru) SE BARVA MODULU NEPOUŽÍVÁ. Všechna tlačítka mají
+     defaultní barvu tlačítka aplikace `#1572e8`. Barva modulu (`c800`)
+     platí jen na úrovni EVIDENCE (toolbar „PŘIDAT …", kanban „+ Přidat").
+
+  Měň JEN data: názvy skupin, počty, názvy navázaných záznamů.
+  Struktura, barvy a rozměry zůstávají.
+-->
+<div style="padding:20px;font-family:'Nunito',sans-serif">
+
+  <!-- 1 · řádek nástrojů -->
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
+    <i class="fa-regular fa-eye" style="font-size:16px;color:#9a95ad;cursor:pointer"></i>
+    <div style="display:inline-flex;cursor:pointer"><i class="fa-solid fa-diagram-project" style="font-size:15px;color:#9a95ad"></i></div>
+    <!-- „PŘIDEJ DALŠÍ DO" = pilulka, defaultní modrá #1572e8 (§7.1.4) -->
+    <div style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;background:#1572e8;color:#fff;font-size:12px;font-weight:800;padding:9px 18px;border-radius:50px;cursor:pointer;letter-spacing:.02em;white-space:nowrap"><i class="fa-solid fa-plus" style="font-size:11px"></i>PŘIDEJ DALŠÍ DO</div>
+  </div>
+
+  <!-- 2 · SKUPINY NAVÁZANÝCH ZÁZNAMŮ
+       VÝCHOZÍ STAV = VŠECHNY SBALENÉ (chevron „›"). Rozbalenou skupinu
+       vlož jen na zadání – podoba je v zakomentovaném bloku pod seznamem.
+       GRAF tento partial neobsahuje → varianta `-graf.html`. -->
+
+  <div style="border-bottom:1px solid #f0eef8">
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 4px;cursor:pointer">
+      <i class="fa-solid fa-chevron-right" style="font-size:11px;color:#9a95ad;width:12px"></i>
+      <span style="font-size:14px;color:#2b2540;flex:1">Firmy (2)</span>
+      <i class="fa-solid fa-plus" style="color:#00c853;font-size:15px;cursor:pointer"></i>
+    </div>
+  </div>
+
+  <div style="border-bottom:1px solid #f0eef8">
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 4px;cursor:pointer">
+      <i class="fa-solid fa-chevron-right" style="font-size:11px;color:#9a95ad;width:12px"></i>
+      <span style="font-size:14px;color:#2b2540;flex:1">Přijaté faktury (1)</span>
+      <i class="fa-solid fa-plus" style="color:#00c853;font-size:15px;cursor:pointer"></i>
+    </div>
+  </div>
+
+  <div style="border-bottom:1px solid #f0eef8">
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 4px;cursor:pointer">
+      <i class="fa-solid fa-chevron-right" style="font-size:11px;color:#9a95ad;width:12px"></i>
+      <span style="font-size:14px;color:#2b2540;flex:1">Zaměstnanci (1)</span>
+      <i class="fa-solid fa-plus" style="color:#00c853;font-size:15px;cursor:pointer"></i>
+    </div>
+  </div>
+
+  <div style="border-bottom:1px solid #f0eef8">
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 4px;cursor:pointer">
+      <i class="fa-solid fa-chevron-right" style="font-size:11px;color:#9a95ad;width:12px"></i>
+      <span style="font-size:14px;color:#2b2540;flex:1">Smlouvy (2)</span>
+      <i class="fa-solid fa-plus" style="color:#00c853;font-size:15px;cursor:pointer"></i>
+    </div>
+  </div>
+
+  <!-- ROZBALENÁ SKUPINA – použij JEN na zadání. Nahraď sbalenou hlavičku
+       té skupiny tímto blokem (chevron „⌄" + odsazené řádky + počítadlo).
+
+  <div style="border-bottom:1px solid #f0eef8">
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 4px;cursor:pointer">
+      <i class="fa-solid fa-chevron-down" style="font-size:11px;color:#9a95ad;width:12px"></i>
+      <span style="font-size:14px;color:#2b2540;flex:1">Přijaté faktury (1)</span>
+      <i class="fa-solid fa-plus" style="color:#00c853;font-size:15px;cursor:pointer"></i>
+    </div>
+    <div style="padding:2px 4px 18px 26px">
+      <div style="display:flex;align-items:center;gap:6px;padding:9px 0;border-top:1px solid #f5f4fa">
+        <span style="font-size:13px;color:#1572e8;text-decoration:underline;width:200px;flex-shrink:0;cursor:pointer">Přijaté faktury<i class="fa-solid fa-arrow-right" style="font-size:10px;margin-left:6px"></i></span>
+        <span style="font-size:13px;color:#1572e8;text-decoration:underline;cursor:pointer">240325 Ferrum s.r.o.</span>
+      </div>
+      <div style="font-size:11px;color:#b0aac8;text-align:right;margin-top:10px">Zobrazeno 1 - 1 z 1 záznamů</div>
+    </div>
+  </div>
+  -->
+
+</div>
