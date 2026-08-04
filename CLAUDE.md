@@ -118,6 +118,34 @@ data. Nic nerekonstruuj."*
 
 ---
 
+## 🖼 Formát výstupu screenshotů (platí pro každý vizuál)
+
+**Každý generovaný náhled / screenshot má rozměr přesně 1920 × 1080 px,
+layout se navrhuje na 1920 CSS px a renderuje se na DPR 1.** Typografie a
+rozměry prvků tedy zůstávají v běžných hodnotách aplikace (text 13–16 px,
+horní lišta 66 px, sidebar 260 px) – nic se nepřepočítává.
+
+**Na obrázku musí být vidět celá obrazovka** – nic odříznutého na pravém ani
+spodním okraji, žádný scroll, celý tab strip včetně poslední záložky, celý
+sidebar, celý obsah pohledu (u dashboardu banner **i** karty **i** tabulka).
+Když se obsah nevejde, zredukuj obsah (méně řádků, nižší banner), neodsekávej
+okraj.
+
+Rám v `.dc.html`:
+
+```html
+<div style="width:1920px;height:1080px;position:relative;overflow:hidden">
+```
+
+⛔ **Nikdy `fullPage: true`**, nikdy neupscalovat menší obrázek.
+⛔ **Nezavádět `transform: scale()` ani `deviceScaleFactor: 1.5`** – varianta
+„hustota 13" displeje" byla zamítnuta (celá obrazovka se pak do rámu nevejde).
+
+> Detail, odůvodnění a checklist kontroly:
+> **`prototypes/Aptien-pravidla-screenshotu.md`**
+
+---
+
 ## ⭐ Zdroj pravdy: hlavní je TENTO repozitář
 
 Při tvorbě design systému se **načítají všechny repozitáře**, ale
@@ -381,6 +409,7 @@ tab strip + sidebar):
   - `Aptien-pravidla-pouziti-UI.md` – referenční spec chování UI (desktop)
   - `Aptien-menu-reference.md` – kompletní levé menu k doslovnému zkopírování + pravidla aktivního stavu
   - `Aptien-mobil-intranet-pravidla.md` – spec + podmínky viditelnosti pro zaměstnance (mobil)
+  - `Aptien-pravidla-screenshotu.md` – **formát výstupu vizuálů** (1920 × 1080, DPR 1, celá obrazovka viditelná) + zamítnutá varianta 13"
   - `partials/` – **hotové statické bloky k doslovnému vložení** (nerekonstruovat):
     `sidebar-menu.html` (levé menu s inline SVG ikonami),
     `evidence-toolbar.html` (toolbar), `evidence-dashboard.html` (Dashboard),
