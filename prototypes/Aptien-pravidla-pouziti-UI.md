@@ -504,7 +504,7 @@ vlož ho doslovně a do slotu přidej obsah aktivní záložky.
 
 | Záložka | Partial | Skladba (zkráceně) |
 |---|---|---|
-| Detaily | `partials/drawer-tab-detaily.html` | svislý seznam polí – řádek `min-height:52px`, ikona nápovědy `32px` + label `210px` vpravo + hodnota; 7 typů polí |
+| Detaily | `partials/drawer-tab-detaily.html` | svislý seznam polí – řádek `min-height:52px`, ikona nápovědy `32px` + label `210px` vpravo + hodnota; **8 typů polí, chování vstupů viz §7.1.5** |
 | Souvislosti | `partials/drawer-tab-souvislosti.html` | řádek nástrojů (oko · graf · „PŘIDEJ DALŠÍ DO") → skupiny navázaných záznamů, **bez grafu** |
 | Souvislosti **s grafem** | `partials/drawer-tab-souvislosti-graf.html` | totéž + graf `740 × 480` a odkaz „Skrýt graf" — **jen na výslovné zadání** |
 | Zápisy | `partials/drawer-tab-zapisy.html` | 4 šedé filtry → hlavička (kruhové „+", sloupce, EXPORT) → časová osa s kolečky dle typu |
@@ -545,6 +545,35 @@ Pravidla:
 
 > **Jak to napsat do promptu:** *„…záložka Plány aktivit, rozbalená
 > skupina Nástup zaměstnance"* nebo *„…záložka Souvislosti se grafem"*.
+
+#### 7.1.5 Záložka Detaily — pole a chování vstupů
+
+Řádek pole je vždy stejný: **ikona nápovědy `32px`** → **label `210px`
+zarovnaný vpravo + tužka** → **hodnota** (`padding:0 18px`).
+Řádek `min-height:52px`, `padding:10px 0`, spodní linka `1px solid #f0eef8`.
+
+**Šířky hodnot — pravidlo:** text jednořádkový, text víceřádkový a výčet
+jsou `width:100%` sloupce hodnoty, takže jsou **vizuálně stejně široké
+a zarovnané pod sebou**. Jediná výjimka je **datum** (`120px` + ikona
+kalendáře) — to zůstává přesně jako v prototypu, neroztahuj ho.
+
+| Typ pole | Vzhled a chování |
+|---|---|
+| **Text jednořádkový** | krátká hodnota. `<input>` `width:100%`, lem `1px solid #e0dded`, `radius:4px`, `padding:6px 10px`, `13px`. Zůstává na jednom řádku. |
+| **Text víceřádkový** | dlouhá hodnota. **Šířka se nemění** (`width:100%`, stejná jako input), **roste jen do výšky** podle obsahu; text se řádně **zalamuje** (`white-space:pre-wrap`, `word-break:break-word`, `line-height:1.5`), `min-height:72px` (~3 řádky). **Nikdy neroluje, nemá scrollbar, netvoří `…`.** Řádek pole má `align-items:flex-start`, aby label zůstal nahoře. V aplikaci je to auto-rostoucí `textarea`, ve statickém vizuálu `div` se stejným rámem. |
+| **Výčet (enum)** | `width:100%` jako input, stejný rám. Uvnitř **barevný puntík `10px`** (`border-radius:50%`) + **text hodnoty** `13px` `#1a1a2e`, vpravo `chevron-down` `#9a95ad` `10px`. Ne nativní `<select>` s automatickou šířkou. |
+| **Datum** | `<input>` **pevných `120px`** + ikona `calendar-days` `#b0aac5` vedle. Beze změn dle prototypu. |
+| **Datum prázdné** | totéž, placeholder `dd.mm.rrrr`, text `#aaa`. |
+| **Odkaz na záznam / osobu** | „→" `#888` + podtržený odkaz `#1a1a2e` `13px/600`; u vícehodnotového pole pod ním „+ přidat". |
+| **Prázdné pole** | jen odkaz „+ přidat" (`#1572e8`, `12px/600`). |
+
+**Barva puntíku u výčtu** je barva té hodnoty (sémantická — např. stav
+zakázky: Poptávka `#DD2C00`, Nabídka poslána `#FF8F00`, Realizace
+`#00C853`, Hotovo `#00BFA5`, Zrušeno `#9E9E9E`). **Nikdy barva modulu.**
+
+**Jak vybrat text jednořádkový vs. víceřádkový:** podle délky hodnoty —
+krátká (název, číslo, částka, SPZ) → jednořádkový; víceřádková věta a víc
+(popis, poznámka, adresa) → víceřádkový. Nemíchej to v jednom poli.
 
 #### 7.1.4 Tlačítka v itemu (draweru) — barva a TVAR
 

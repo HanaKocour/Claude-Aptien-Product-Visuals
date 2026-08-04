@@ -55,7 +55,7 @@ zeptej, než abys cokoli domýšlel.
 > - `evidence-drawer.html` – **pole záznamu (záložka Detaily)** do slotu shellu; jeho vlastní akční sloupec je zkrácený – ber ho ze shellu
 > - `konverzace-list.html` – **Moje konverzace / seznam** (hledání + „+", karty konverzací)
 > - `konverzace-chat.html` – **Moje konverzace / otevřený chat** (title bar, AI SOUHRN, bubliny, composer)
-> - `drawer-tab-detaily.html` – obsah **záložky Detaily** (svislý seznam polí, 7 typů polí)
+> - `drawer-tab-detaily.html` – obsah **záložky Detaily** (svislý seznam polí, 8 typů polí; text jednořádkový / víceřádkový a výčet mají plnou šířku, datum `120px` – pravidla §7.1.5)
 > - `drawer-tab-souvislosti.html` – obsah **záložky Souvislosti** (nástroje + skupiny navázaných záznamů, **bez grafu**, vše sbalené)
 > - `drawer-tab-souvislosti-graf.html` – Souvislosti **se zobrazeným grafem** – jen na výslovné zadání
 > - `drawer-tab-zapisy.html` – obsah **záložky Zápisy** (filtry + hlavička sloupců + časová osa)
