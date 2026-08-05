@@ -10,6 +10,12 @@ Nic nevynechávej, nepřidávej ani nepřejmenovávej.*
 > z hlavy – jen přesuň aktivní stav na položku dle otevřené obrazovky a
 > uprav personu. Tabulka níže je referenční přehled obsahu toho bloku.
 
+> ✅ **Sbalený (collapsed) stav = samostatný soubor
+> `partials/sidebar-menu-collapsed.html`.** Použij ho MÍSTO otevřeného
+> menu jen na výslovné zadání ("sbalené menu", "zavřený sidebar",
+> "collapsed", "jen ikony"). Jinak generuj vždy otevřený stav — to je
+> výchozí chování (odpovídá `sidebarCollapsed:false` v master prototypu).
+
 > **Ikony:** názvy ve sloupci „Ikona" jsou přesné soubory ze složky
 > **`Awesome-font-icons/`** (Font Awesome, styl `solid` + `fw`).
 > Použij právě tyto soubory.
@@ -52,7 +58,11 @@ Nic nevynechávej, nepřidávej ani nepřejmenovávej.*
    (persona se mění dle zadání, ale skladba zůstává).
 2. **Skupina „MŮJ PRACOVNÍ PROSTOR"** – 15 osobních položek (viz níže).
 3. **Skupina „NAŠE FIRMA"** – 7 firemních položek (viz níže).
-4. Menu je **sbalitelné** (jen ikony) a **rolovatelné**.
+4. Menu je **sbalitelné** (jen ikony, přes šipku nahoře) a **rolovatelné**.
+   Otevřený stav (výchozí, 220px) = `sidebar-menu.html`. Sbalený stav
+   (56px, jen ikony, bez badge a nadpisů skupin, obsah vedle sidebaru se
+   automaticky roztáhne) = `sidebar-menu-collapsed.html` — použij ho jen
+   na výslovné zadání, jinak vždy generuj otevřený stav.
 
 ---
 

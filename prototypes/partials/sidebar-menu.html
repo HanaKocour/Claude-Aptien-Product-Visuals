@@ -1,10 +1,20 @@
 <!--
-  APTIEN — LEVÉ MENU (sidebar) · STATICKÝ BLOK K DOSLOVNÉMU VLOŽENÍ
+  APTIEN — LEVÉ MENU (sidebar) · OTEVŘENÝ (VÝCHOZÍ) STAV
   ================================================================
-  Při generování obrazovky VLOŽ TENTO BLOK CELÝ, beze změny struktury.
-  NEREKONSTRUUJ menu z hlavy a NEPOUŽÍVEJ Font Awesome třídy pro ikony
-  položek — ikony jsou zde jako inline SVG (část z nich je FA Pro a ve
-  Free CDN by se nevykreslila).
+  Toto je VÝCHOZÍ stav menu — při generování obrazovky ho použij VŽDY,
+  pokud zadání výslovně nežádá sbalené menu. VLOŽ TENTO BLOK CELÝ, beze
+  změny struktury. NEREKONSTRUUJ menu z hlavy a NEPOUŽÍVEJ Font Awesome
+  třídy pro ikony položek — ikony jsou zde jako inline SVG (část z nich
+  je FA Pro a ve Free CDN by se nevykreslila).
+
+  Menu je SBALITELNÉ (ikona šipky nahoře). Sbalený (collapsed) stav —
+  jen ikony, nav 56px, žádný text/badge, obsah vedle sidebaru se
+  automaticky roztáhne (má flex:1;min-width:0) — je hotový jako
+  samostatný soubor `sidebar-menu-collapsed.html`. Použij ho MÍSTO
+  tohoto souboru pouze na výslovné zadání ("sbalené menu", "zavřený
+  sidebar", "collapsed", "jen ikony"); jinak vždy generuj OTEVŘENÝ stav
+  (tento soubor) — přesně jako výchozí `sidebarCollapsed:false` v master
+  prototypu `Aptien-aplikace-offline.html`.
 
   Co smíš měnit:
     - profil (jméno / role / avatar) dle persony,
@@ -18,6 +28,13 @@
   Badge: alert = #FF3D00/bílá, grey = #e6e3ef/#8a84a0.
 -->
 <nav style="width:220px;flex-shrink:0;background:#fff;border-right:1px solid #ececec;display:flex;flex-direction:column;overflow-y:auto;padding-bottom:20px;font-family:'Nunito',sans-serif">
+
+  <!-- Sbalovací šipka (vždy přítomná) — otevřený stav: zarovnaná doprava,
+       ikona "úhly vlevo". Po kliknutí (v interaktivním prototypu
+       `toggleSidebar()`) se stav přepne na `sidebar-menu-collapsed.html`. -->
+  <div style="display:flex;justify-content:flex-end;padding:8px 14px 2px">
+    <i class="fa-solid fa-angles-left" style="color:#b9b4cf;font-size:15px;cursor:pointer"></i>
+  </div>
 
   <!-- Profil (persona se mění, skladba zůstává).
        Avatar: iniciály jako podklad (vždy se vykreslí) + fotka přes ně;
