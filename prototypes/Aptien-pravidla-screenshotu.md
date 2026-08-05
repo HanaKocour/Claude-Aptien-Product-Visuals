@@ -3,8 +3,8 @@
 Závazný formát výstupu pro všechny generované produktové vizuály (náhledy
 `.dc.html`, screenshoty do `screenshots/`, podklady pro web a knowledge base).
 
-Zkrácená verze tohoto pravidla je v `CLAUDE.md`, sekce
-*„Formát výstupu screenshotů"*. Tady je detail a odůvodnění.
+Zkrácená verze je v `CLAUDE.md`, sekce *„🖼 Formát výstupu screenshotů"*.
+Tady je detail, odůvodnění a checklist.
 
 ---
 
@@ -13,33 +13,25 @@ Zkrácená verze tohoto pravidla je v `CLAUDE.md`, sekce
 | Parametr | Hodnota |
 |---|---|
 | Rozměr výstupního obrázku | **přesně 1920 × 1080 px** |
-| Šířka, na kterou se navrhuje layout | **1920 CSS px** |
-| `deviceScaleFactor` / DPR | **1** |
+| Šířka, na kterou se navrhuje layout | **1536 × 864 CSS px** |
+| Zvětšení do výstupního rámu | **1,25×** |
 | Orientace | landscape |
 | Formát souboru | PNG (bezztrátový), pokud není řečeno jinak |
 
-Typografie a rozměry prvků tedy zůstávají v běžných hodnotách aplikace –
-běžný text 13–16 px, ikony 14–21 px, horní lišta 66 px, sidebar 260 px.
-Nic se nepřepočítává ani nezvětšuje.
+Uvnitř té 1536px vrstvy se používají **běžné velikosti aplikace** – text 13–16 px,
+ikony 14–21 px, horní lišta 66 px, sidebar 260 px. Zvětšení 1,25× obstará rám,
+v markupu se nic nepřepočítává.
 
-## 2. Celá obrazovka musí být vidět
+Ve výsledném obrázku pak běžný text vychází na **~19 px** – UI působí, jako by se
+uživatel na obrazovku díval z normální pracovní vzdálenosti, ne z odstupu.
 
-Na obrázku je vždy **kompletní obrazovka aplikace**:
-
-- nic odříznutého na pravém ani spodním okraji,
-- žádný scroll – `scrollWidth` = 1920, `scrollHeight` = 1080,
-- celá horní lišta i tab strip, včetně poslední záložky,
-- celý sidebar (všech 15 osobních + 7 firemních položek),
-- celý obsah pohledu – u dashboardu tedy hero banner **i** karty **i** tabulka.
-
-Když se obsah nevejde, **neškrtá se okraj** – zredukuje se obsah (méně řádků
-tabulky, nižší banner), aby se celá skladba do 1920 × 1080 vešla.
-
-## 3. Rám v `.dc.html` náhledech
+## 2. Rám v `.dc.html` náhledech
 
 ```html
-<div style="width:1920px;height:1080px;position:relative;overflow:hidden">
-  <!-- celé UI aplikace -->
+<div style="width:1920px;height:1080px;overflow:hidden;position:relative">
+  <div style="width:1536px;height:864px;transform:scale(1.25);transform-origin:top left">
+    <!-- celé UI aplikace, navržené na 1536 × 864 -->
+  </div>
 </div>
 ```
 
@@ -50,51 +42,73 @@ A v `data-props` náhledu:
         data-props='{"$preview":{"width":1920,"height":1080}}'></script>
 ```
 
-## 4. Render přes Playwright / headless Chromium
+## 3. Render přes Playwright / headless Chromium
 
 ```js
 const context = await browser.newContext({
-  viewport: { width: 1920, height: 1080 },
-  deviceScaleFactor: 1,
+  viewport: { width: 1536, height: 864 },
+  deviceScaleFactor: 1.25,
 });
 const page = await context.newPage();
 await page.goto(url);
 await page.screenshot({ path: 'out.png' });   // soubor = 1920 × 1080 px
 ```
 
-Chromium CLI: `--window-size=1920,1080 --force-device-scale-factor=1`
+Chromium CLI: `--window-size=1536,864 --force-device-scale-factor=1.25`
 
 ⛔ **Nikdy `fullPage: true`** – rozbije výšku 1080.
 ⛔ **Neupscalovat** menší obrázek na 1920 × 1080 – vždy renderovat nativně.
 
-## 5. Zamítnutá varianta: hustota 13" displeje (rozhodnuto 4. 8. 2026)
+## 4. Rozpočet obsahu – co se do rámu vejde
 
-V úvaze bylo renderovat vizuály v optické hustotě 13" notebooku – tedy layout
-navržený na **1280 × 720 CSS px** a zvětšený **1,5×** (buď
-`deviceScaleFactor: 1.5`, nebo `transform: scale(1.5)` uvnitř rámu
-1920 × 1080). Prvky by byly o 50 % větší a text ~21 px místo ~15 px.
+1536 × 864 logických px je **pevný rozpočet**. Do dashboardu evidence se vejde:
 
-**Zamítnuto.** Při té hustotě je k dispozici jen 1280 × 720 logických px a
-celá obrazovka se do rámu nevejde – odřízne se poslední pill-tlačítko view
-switcheru (vejdou se ~3 z 5) a tabulka spadne pod fold. U produktových
-vizuálů je přednější, že je vidět **celá funkce**, než že jsou prvky velké.
+- horní lišta + tab strip (všechny záložky modulu),
+- evidence toolbar včetně **všech 5 pill-tlačítek** (Dashboard / Seznam / Kanban /
+  Tabulka / Kalendář),
+- hero banner s 3 metrikami,
+- řada **3 statistických karet**,
+- řada **3 donut karet**.
 
-⛔ **Nezavádět znovu** `transform: scale()` ani `deviceScaleFactor: 1.5`,
-ani „pro lepší čitelnost". Když někdo požaduje větší UI, znamená to změnu
-tohoto pravidla – ne ad-hoc výjimku v jednom souboru.
+**Tabulka kapitol se do dashboardu už nevejde** – patří na samostatný vizuál
+pohledu „Tabulka" nebo „Seznam". Nedávat ji na dashboard a nedoufat, že to projde.
 
-### Známý důsledek
+Sidebar má 22 položek a v 864 px končí u *„Směrnice a dokumenty"*. **To je
+v pořádku** – v reálné aplikaci sidebar taky scrolluje. Odříznutý sidebar dole
+není chyba, odříznutý **obsah vpravo nebo hlavní pohled dole je chyba.**
 
-Celoobrazovkový screenshot 1920 × 1080 zmenšený pod ~800 px šířky (malá
-miniatura na webu) není čitelný – běžný text má při šířce 600 px na obrazovce
-jen ~4,7 px. Řešení **není** měnit render, ale u malých náhledů použít
-**výřez** z toho samého obrázku 1920 × 1080 (např. oblast 960 × 540 s
-bannerem nebo hlavičkou tabulky).
+Když se skladba nevejde, **ubírej obsah** (méně karet, nižší banner, méně řádků),
+**nikdy neodsekávej okraj** a **nikdy nesnižuj hustotu pod 1,25×.**
 
-## 6. Kontrola před odevzdáním
+## 5. Historie rozhodnutí
 
-1. Skutečné rozměry souboru = 1920 × 1080 px (`identify` / `file`).
-2. `scrollWidth` / `scrollHeight` = 1920 / 1080 – nic nepřetéká.
-3. Vizuální kontrola pravého a spodního okraje – žádný odseknutý prvek.
-4. Sidebar má všech 22 položek, tab strip všechny záložky, view switcher
-   všech 5 pohledů.
+- **4. 8. 2026, ráno** – zvažována hustota 13" displeje (návrh na 1280 × 720,
+  zvětšení 1,5×, text ~22 px). **Zamítnuto**: při 1,5× se vejde jen banner +
+  3 statistické karty a jen 2 pill-tlačítka z 5; screen působí prázdně.
+- **4. 8. 2026, odpoledne** – zvažováno ponechat hustotu 1,0× (návrh na
+  1920 × 1080, text ~15 px). **Zamítnuto**: UI působí příliš „z dálky".
+  Při této hustotě se navíc do rámu nevešla celá tabulka – původní soubor
+  `ShodaISO9001Nahled1920x1080.dc.html` měl přetékající obsah a spodní řádky
+  tabulky byly odříznuté, i když to na první pohled nebylo vidět.
+- **4. 8. 2026, platné** – **hustota 1,25×** (návrh na 1536 × 864, text ~19 px)
+  jako kompromis mezi velikostí prvků a množstvím obsahu.
+
+Zkoušena byla i hustota 1,875× (návrh na 1024 × 576): do rámu se nevejde ani
+banner se statistickými kartami. **Nepoužitelné.**
+
+## 6. Známý důsledek pro web
+
+Celoobrazovkový screenshot 1920 × 1080 zmenšený pod ~800 px šířky (malá miniatura)
+není plně čitelný. Řešení **není** měnit render, ale u malých náhledů použít
+**výřez** z toho samého obrázku 1920 × 1080 (např. oblast 960 × 540 s bannerem
+nebo hlavičkou tabulky).
+
+## 7. Checklist před odevzdáním
+
+1. Skutečné rozměry souboru = **1920 × 1080 px** (`identify` / `file`).
+2. Vnitřní vrstva je 1536 × 864 se `transform: scale(1.25)`.
+3. Hlavní pohled **nepřetéká** – `scrollHeight` scrollovacího kontejneru
+   = jeho `clientHeight`. Ověřit, ne odhadovat pohledem.
+4. Evidence toolbar nepřetéká vodorovně – vidět všech 5 pill-tlačítek.
+5. Tab strip: vidět všechny záložky modulu včetně poslední.
+6. Běžný text ve výsledném obrázku má **~19 px**, ne ~15 px.

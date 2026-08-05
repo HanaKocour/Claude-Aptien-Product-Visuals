@@ -120,26 +120,41 @@ data. Nic nerekonstruuj."*
 
 ## 🖼 Formát výstupu screenshotů (platí pro každý vizuál)
 
-**Každý generovaný náhled / screenshot má rozměr přesně 1920 × 1080 px,
-layout se navrhuje na 1920 CSS px a renderuje se na DPR 1.** Typografie a
-rozměry prvků tedy zůstávají v běžných hodnotách aplikace (text 13–16 px,
-horní lišta 66 px, sidebar 260 px) – nic se nepřepočítává.
+**Každý generovaný náhled / screenshot má rozměr přesně 1920 × 1080 px.
+UI se navrhuje na 1536 × 864 CSS px a zvětšuje se 1,25× do výstupního rámu.**
 
-**Na obrázku musí být vidět celá obrazovka** – nic odříznutého na pravém ani
-spodním okraji, žádný scroll, celý tab strip včetně poslední záložky, celý
-sidebar, celý obsah pohledu (u dashboardu banner **i** karty **i** tabulka).
-Když se obsah nevejde, zredukuj obsah (méně řádků, nižší banner), neodsekávej
-okraj.
+Uvnitř té 1536px vrstvy platí běžné velikosti aplikace (text 13–16 px, horní
+lišta 66 px, sidebar 260 px) – v markupu se nic nepřepočítává, zvětšení obstará
+rám. Ve výsledku má běžný text ~19 px, takže UI nepůsobí „z dálky".
 
 Rám v `.dc.html`:
 
 ```html
-<div style="width:1920px;height:1080px;position:relative;overflow:hidden">
+<div style="width:1920px;height:1080px;overflow:hidden;position:relative">
+  <div style="width:1536px;height:864px;transform:scale(1.25);transform-origin:top left">
+    <!-- celé UI aplikace, navržené na 1536 × 864 -->
+  </div>
+</div>
 ```
 
+Playwright: `viewport: {width:1536, height:864}`, `deviceScaleFactor: 1.25`.
+
+**Rozpočet obsahu.** Do dashboardu evidence se vejde: tab strip + toolbar
+včetně všech 5 pill-tlačítek + hero banner + řada 3 statistických karet +
+řada 3 donut karet. **Tabulka kapitol se na dashboard už nevejde** – patří na
+samostatný vizuál pohledu Tabulka / Seznam. Sidebar v 864 px končí u „Směrnice
+a dokumenty" – **to je v pořádku**, v reálné app taky scrolluje. Odříznutý
+**hlavní pohled** dole nebo vpravo je chyba.
+
+Když se skladba nevejde, **ubírej obsah** (méně karet, nižší banner), nikdy
+neodsekávej okraj a **nikdy nesnižuj hustotu pod 1,25×**.
+
 ⛔ **Nikdy `fullPage: true`**, nikdy neupscalovat menší obrázek.
-⛔ **Nezavádět `transform: scale()` ani `deviceScaleFactor: 1.5`** – varianta
-„hustota 13" displeje" byla zamítnuta (celá obrazovka se pak do rámu nevejde).
+⛔ **Nepoužívat hustotu 1,0× ani 1,5×** – obě byly 4. 8. 2026 vyzkoušené
+a zamítnuté (1,0× působí příliš vzdáleně, při 1,5× se vejdou jen 2 pill-tlačítka
+z 5 a screen je prázdný).
+⛔ **Přetečení vždy ověřit měřením**, ne pohledem – původní `ShodaISO9001…`
+náhled měl odříznuté spodní řádky tabulky, aniž to bylo na první pohled vidět.
 
 > Detail, odůvodnění a checklist kontroly:
 > **`prototypes/Aptien-pravidla-screenshotu.md`**
@@ -409,7 +424,7 @@ tab strip + sidebar):
   - `Aptien-pravidla-pouziti-UI.md` – referenční spec chování UI (desktop)
   - `Aptien-menu-reference.md` – kompletní levé menu k doslovnému zkopírování + pravidla aktivního stavu
   - `Aptien-mobil-intranet-pravidla.md` – spec + podmínky viditelnosti pro zaměstnance (mobil)
-  - `Aptien-pravidla-screenshotu.md` – **formát výstupu vizuálů** (1920 × 1080, DPR 1, celá obrazovka viditelná) + zamítnutá varianta 13"
+  - `Aptien-pravidla-screenshotu.md` – **formát výstupu vizuálů** (1920 × 1080, návrh na 1536 × 864 se zvětšením 1,25×), rozpočet obsahu a checklist
   - `partials/` – **hotové statické bloky k doslovnému vložení** (nerekonstruovat):
     `sidebar-menu.html` (levé menu s inline SVG ikonami),
     `evidence-toolbar.html` (toolbar), `evidence-dashboard.html` (Dashboard),
