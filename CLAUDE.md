@@ -256,8 +256,8 @@ obrazovky.
 
 | Prvek | Barva | Pravidlo |
 |---|---|---|
-| Top bar | fialová `#6200EA` | vždy, na všech obrazovkách |
-| Pruh se záložkami (tab strip) | fialová `#6200EA` | pozadí pruhu za taby – stejná fialová jako top bar, splývá do jednoho fialového pásu |
+| Top bar | tmavě šedá `#424242` | vždy, na všech obrazovkách (dřív brandová fialová `#6200EA`) |
+| Pruh se záložkami (tab strip) | tmavě šedá `#424242` | pozadí pruhu za taby – stejná tmavě šedá jako top bar, splývá do jednoho pásu |
 | Tlačítka / akce / odkazy / aktivní prvky | modrá `#1572e8` | aktivní pohled ve view switcheru, „Uložit změny", odkazy v polích |
 | **Všechna „přidat" v evidenci** | **barva modulu `c800`** | „PŘIDAT …" v toolbaru, „+ Přidat" v kanban sloupcích, inline „+ přidat" v polích draweru — VÝJIMKA z modré |
 | **Aktivní záložka (tab)** | **barva modulu `c800`** | přebírá barvu, kterou má text/ikona té záložky, když je neaktivní – pozadí aktivní záložky = její `c800`, text bílý |

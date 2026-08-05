@@ -374,7 +374,7 @@
 <div style="display:flex;flex-direction:column;height:100vh;font-family:'Nunito',sans-serif;overflow:hidden">
 
   <!-- TOP BAR -->
-  <div style="flex-shrink:0;height:56px;background:#6200EA;display:flex;align-items:center;padding:0 32px;gap:14px;z-index:40">
+  <div style="flex-shrink:0;height:56px;background:#424242;display:flex;align-items:center;padding:0 32px;gap:14px;z-index:40">
     <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-right:4px">
       <img src="assets/img/681a831d.svg" style="height:28px;width:auto;filter:brightness(0) invert(1);flex-shrink:0">
       <span style="font-weight:800;font-size:19px;color:#fff;letter-spacing:-.01em">aptien</span>
@@ -389,7 +389,7 @@
       <div style="position:relative;cursor:pointer">
         <i class="fa-solid fa-bell" style="font-size:17px;color:#fff"></i>
         <!-- Notifikační bublina zvonečku: VŽDY červená #FF3D00 (počítadlo/alert), lem v barvě top baru. Nikdy modrá. -->
-        <span style="position:absolute;top:-7px;right:-9px;background:#FF3D00;color:#fff;font-size:9.5px;font-weight:800;border-radius:10px;min-width:17px;height:17px;display:flex;align-items:center;justify-content:center;padding:0 3px;border:1.5px solid #6200EA">60</span>
+        <span style="position:absolute;top:-7px;right:-9px;background:#FF3D00;color:#fff;font-size:9.5px;font-weight:800;border-radius:10px;min-width:17px;height:17px;display:flex;align-items:center;justify-content:center;padding:0 3px;border:1.5px solid #424242">60</span>
       </div>
       <i class="fa-solid fa-comment-dots" style="font-size:17px;cursor:pointer;color:#fff"></i>
       <i class="fa-solid fa-mobile-screen-button" style="font-size:17px;cursor:pointer;color:#fff"></i>
@@ -399,7 +399,7 @@
   </div>
 
   <!-- TAB STRIP -->
-  <div class="tab-strip" style="flex-shrink:0;background:#6200EA;display:flex;align-items:flex-end;gap:2px;padding:6px 0 0 12px;overflow-x:auto;z-index:30">
+  <div class="tab-strip" style="flex-shrink:0;background:#424242;display:flex;align-items:flex-end;gap:2px;padding:6px 0 0 12px;overflow-x:auto;z-index:30">
     <sc-for list="{{ tabItems }}" as="tab" hint-placeholder-count="16">
       <div sc-camel-on-click="{{ tab.onClick }}" style="flex-shrink:0;cursor:pointer;padding:7px 15px;border-radius:6px 6px 0 0;font-size:12px;font-weight:{{ tab.fontWeight }};color:{{ tab.textColor }};white-space:nowrap;background:{{ tab.bgColor }};transition:color .15s,background .15s;user-select:none">{{ tab.label }}</div>
     </sc-for>

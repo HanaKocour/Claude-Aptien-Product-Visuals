@@ -123,7 +123,8 @@ Nic nevynechávej, nepřidávej ani nepřejmenovávej.*
 
 Aktivní **záložka** (nahoře) **přebírá barvu svého modulu (`c800`)** – tj.
 tu, kterou má text/ikona záložky, když je neaktivní (pozadí aktivní záložky
-= její `c800`, text bílý). Pruh za taby je fialový `#6200EA`. Barvy a ikony
+= její `c800`, text bílý). Pruh za taby je tmavě šedý `#424242` (dřív fialový
+`#6200EA`). Barvy a ikony
 jednotlivých záložek viz `Aptien-pravidla-pouziti-UI.md`, sekce *Tab strip*.
 
 ---

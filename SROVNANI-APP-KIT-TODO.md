@@ -63,3 +63,19 @@ hodnoty kolidují s app-kit HTML nebo layoutem prototypu, platí prototyp:
   nedostupný. Doporučeno příště otevřít oba master prototypy přes lokální
   server a vizuálně ověřit (hlavně kontrast modrý aktivní tab na fialovém
   pruhu a čitelnost světlého sidebaru).
+
+## 🔄 Update 5. 8. 2026 — top bar a tab strip: fialová → tmavě šedá
+
+Rozhodnutí uživatele **ruší bod výše** ("top bar zůstává fialový `#6200EA`",
+"pruh se záložkami rovněž fialový"): **top bar i tab strip (pozadí pruhu za
+taby) jsou nově `#424242`** (tmavě šedá), na desktopu i všude, kde se tyto
+dva prvky generují. Změněno v `Aptien-aplikace-offline.html` (ř. 377 top bar,
+tab strip, notifikační badge okraj), `CLAUDE.md`, `Aptien-pravidla-pouziti-UI.md`
+a `Aptien-menu-reference.md`.
+
+**Beze změny zůstává** (byla to jiná, samostatně zdůvodněná fialová, ne
+identita top baru): token `--a700-deep-purple`/`#6200EA` v systémové paletě
+A700 (avatary, štítky), tlačítko „AI SOUHRN" v konverzacích/draweru, avatarová
+barva u konkrétních osob a mobilní tlačítko „AI souhrn" v
+`Aptien-mobil-intranet.html` (mobilní home top bar je stejně samostatně tmavý
+`#111`, netýká se ho to).
