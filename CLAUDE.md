@@ -16,9 +16,8 @@ Nic víc. Struktura obrazovky se nikdy nepředělává.
   avatary / profilové obrázky.
 - ⛔ **Nikdy neměň (kopíruj přesně z prototypu):** rozvržení a strukturu,
   všechny komponenty a sekce, **celé levé menu se VŠEMI položkami**
-  (obě skupiny – osobní i „Naše firma") – platí ve stejném rozsahu pro
-  OBA stavy sidebaru (otevřený i sbalený, viz níže), taby, barvy a jejich
-  role, fonty, rozměry, skladbu banneru a karet.
+  (obě skupiny – osobní i „Naše firma"), taby, barvy a jejich role,
+  fonty, rozměry, skladbu banneru a karet.
 
 Když zadání zmiňuje nový modul/obrazovku, **nestav nový layout** – vezmi
 nejbližší existující prototyp, zkopíruj ho 1:1 a jen vyměň data. Nikdy
@@ -30,17 +29,6 @@ zeptej, než abys cokoli domýšlel.
 > **`prototypes/Aptien-menu-reference.md`**. Vždy vlož všechny položky,
 > označ jako aktivní **jen jednu** (dle otevřené obrazovky, jinak „Moje
 > domovská stránka") a nezaměňuj badge (počty) za zvýraznění.
-
-> **Sidebar je sbalitelný (šipka nahoře) – výchozí stav pro generování je
-> VŽDY OTEVŘENÝ.** Sbalený (collapsed) stav – jen ikony, bez textu a bez
-> badge, nav 56px místo 220px – generuj POUZE na výslovné zadání ("sbalené
-> menu", "zavřený sidebar", "collapsed", "jen ikony"). Otevřený stav =
-> `partials/sidebar-menu.html`, sbalený = `partials/sidebar-menu-collapsed.html`
-> (stejný vzor jako `drawer-tab-plany.html` vs. `-rozbaleno.html` –
-> výchozí varianta + varianta jen na vyžádání). V obou souborech je stejné
-> pořadí a počet položek (15 + 7) a stejné ikony. Content area vedle
-> sidebaru má vždy `flex:1;min-width:0`, takže se při sbaleném menu
-> automaticky roztáhne – nic se nepočítá ručně.
 
 > Tohle je nejčastější chyba: generátor začne vynechávat položky menu,
 > měnit barvy podle „tématu" modulu nebo předělávat layout. **Nedělej to.**
@@ -56,8 +44,7 @@ zeptej, než abys cokoli domýšlel.
 
 > ✅ **Hotové bloky k DOSLOVNÉMU vložení (nerekonstruovat!)** v
 > `prototypes/partials/`:
-> - `sidebar-menu.html` – celé levé menu, **otevřený (výchozí) stav** (15 + 7 položek, inline SVG ikony, aktivní stav, badge, sbalovací šipka nahoře)
-> - `sidebar-menu-collapsed.html` – celé levé menu, **sbalený stav** (jen ikony, 56px, bez textu a badge) – jen na výslovné zadání
+> - `sidebar-menu.html` – celé levé menu (15 + 7 položek, inline SVG ikony, aktivní stav, badge)
 > - `evidence-toolbar.html` – **toolbar** (ikona+název, PŘIDAT v barvě modulu, hledání, view switcher – všech 5, aktivní modrá)
 > - `evidence-dashboard.html` – pohled **Dashboard** (hero banner „pruh" + mřížka bílých karet)
 > - `evidence-table.html` – pohled **Tabulka** (horní lišta, sticky sloupec, hlavička + filtry, řádky)
@@ -162,12 +149,6 @@ a dokumenty" – **to je v pořádku**, v reálné app taky scrolluje. Odříznu
 Když se skladba nevejde, **ubírej obsah** (méně karet, nižší banner), nikdy
 neodsekávej okraj a **nikdy nesnižuj hustotu pod 1,25×**.
 
-Sbalený sidebar (viz `sidebar-menu-collapsed.html`) uvolní cca 164 px
-(220 → 56 px) ve prospěch hlavního pohledu – content area má `flex:1`,
-takže se roztáhne automaticky. I tak platí stejný rozpočet obsahu a
-stejná hustota 1,25×; uvolněný prostor jde do šířky existujících prvků
-(např. širší tabulka), nepřidávej kvůli němu nové sekce ani karty navíc.
-
 ⛔ **Nikdy `fullPage: true`**, nikdy neupscalovat menší obrázek.
 ⛔ **Nepoužívat hustotu 1,0× ani 1,5×** – obě byly 4. 8. 2026 vyzkoušené
 a zamítnuté (1,0× působí příliš vzdáleně, při 1,5× se vejdou jen 2 pill-tlačítka
@@ -245,8 +226,7 @@ nemění ani nevymýšlí:
   ho zadání zmiňuje. Použij nejbližší existující modul jako předlohu a jen
   vyměň obsah.
 - **Celé menu** – sidebar má vždy **všechny** položky z prototypu (obě
-  skupiny). Nikdy žádnou položku nevynechávej ani nepřidávej – platí i ve
-  sbaleném (collapsed) stavu, tam jen bez textu a badge.
+  skupiny). Nikdy žádnou položku nevynechávej ani nepřidávej.
 
 ### 🎨 Barevné role jsou PEVNÉ (nejčastější chyba)
 
@@ -256,8 +236,8 @@ obrazovky.
 
 | Prvek | Barva | Pravidlo |
 |---|---|---|
-| Top bar | tmavě šedá `#424242` | vždy, na všech obrazovkách (dřív brandová fialová `#6200EA`) |
-| Pruh se záložkami (tab strip) | tmavě šedá `#424242` | pozadí pruhu za taby – stejná tmavě šedá jako top bar, splývá do jednoho pásu |
+| Top bar | tmavě šedá `#424242` | vždy, na všech obrazovkách (`#6200EA` je STARÁ barva, v prototypu už není) |
+| Pruh se záložkami (tab strip) | tmavě šedá `#424242` | pozadí pruhu za taby – stejná šedá jako top bar, splývá do jednoho šedého pásu. Jednotlivé neaktivní taby jsou bílé pilulky (`#fff`) s textem v barvě modulu `c800` – to zůstává. |
 | Tlačítka / akce / odkazy / aktivní prvky | modrá `#1572e8` | aktivní pohled ve view switcheru, „Uložit změny", odkazy v polích |
 | **Všechna „přidat" v evidenci** | **barva modulu `c800`** | „PŘIDAT …" v toolbaru, „+ Přidat" v kanban sloupcích, inline „+ přidat" v polích draweru — VÝJIMKA z modré |
 | **Aktivní záložka (tab)** | **barva modulu `c800`** | přebírá barvu, kterou má text/ikona té záložky, když je neaktivní – pozadí aktivní záložky = její `c800`, text bílý |
@@ -446,8 +426,7 @@ tab strip + sidebar):
   - `Aptien-mobil-intranet-pravidla.md` – spec + podmínky viditelnosti pro zaměstnance (mobil)
   - `Aptien-pravidla-screenshotu.md` – **formát výstupu vizuálů** (1920 × 1080, návrh na 1536 × 864 se zvětšením 1,25×), rozpočet obsahu a checklist
   - `partials/` – **hotové statické bloky k doslovnému vložení** (nerekonstruovat):
-    `sidebar-menu.html` (levé menu s inline SVG ikonami, otevřený/výchozí stav),
-    `sidebar-menu-collapsed.html` (levé menu, sbalený stav – jen ikony, jen na výslovné zadání),
+    `sidebar-menu.html` (levé menu s inline SVG ikonami),
     `evidence-toolbar.html` (toolbar), `evidence-dashboard.html` (Dashboard),
     `evidence-table.html` (Tabulka), `evidence-list.html` (Seznam),
     `evidence-kanban.html` (Kanban), `item-drawer-shell.html` (rám draweru + akční sloupec),
