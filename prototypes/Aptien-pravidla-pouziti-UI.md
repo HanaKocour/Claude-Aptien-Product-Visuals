@@ -390,6 +390,70 @@ Pravidla:
   kitu (`Claude-HK-Aptien-App`: „systémové štítky / badge / micro labely
   = Nunito · 10px"). Zaoblený „pill" (`999px`) se pro štítky nepoužívá.
 
+#### 6.5.2 Ukazatel „% SPLNĚNO" (PEVNÉ pravidlo)
+
+Číslo v pravé části hero boxu je **podíl potvrzených dokumentů**, nic
+jiného:
+
+```
+% SPLNĚNO = potvrzené dokumenty / všechny přiřazené dokumenty × 100
+```
+
+- **100 % nastane VÝHRADNĚ tehdy, když jsou potvrzené všechny dokumenty.**
+  Dokud zbývá byť jediný nepotvrzený dokument, ukazatel nesmí být na 100 %
+  a hero box nesmí být v zeleném stavu *„Máte splněno!"*.
+- **Procenta se NEVÁŽOU na termín potvrzení.** Dokument po termínu, zítřejší,
+  budoucí i bez termínu se do čitatele i jmenovatele počítá **úplně stejně**.
+  Termín ovlivňuje **jen barvu** tlačítka a štítku (§6.5.1) a štítek
+  *„N po termínu"* v hero boxu – **nikdy ne procenta**.
+- **Jmenovatel se nezadává ručně.** Je to počet dokumentů k potvrzení plus
+  počet již potvrzených (v prototypu `DOCS.length + CONFIRMED_DOCS_LIST.length`),
+  takže se nemůže rozejít se seznamy na stránce. Nikdy nepiš do prototypu
+  pevnou konstantu typu „celkem 29".
+- Text pod pruhem je vždy **„N z M potvrzeno"** se stejnými čísly, ze
+  kterých vzniklo procento. Procento se zapisuje s **mezerou před `%`**
+  (`29 %`), dle české typografie.
+- **Dlaždice kategorií se řídí stejnou logikou:** dokud má kategorie
+  nepotvrzené dokumenty → modré **„N k potvrzení"**; když je vše potvrzené →
+  šedé **„N dokumentů"**. Ve stavu 100 % tedy na žádné dlaždici nesmí zůstat
+  „k potvrzení".
+
+#### 6.5.3 Sbalitelná skupina „Potvrzeno" – kdy je otevřená a kdy zavřená
+
+| Stav stránky | Sekce „Dokumenty" | Skupina „Potvrzeno" |
+|---|---|---|
+| **Nic nepotvrzeno** (0 %) | nadpis *„K potvrzení"*, všechny dokumenty v seznamu | **nezobrazuje se vůbec** (není co ukázat) |
+| **Částečně potvrzeno** | nadpis *„K potvrzení"* + seznam nepotvrzených | sbalitelná skupina s ikonou ✔, názvem *Potvrzeno* a počtem – **výchozí stav ZAVŘENÝ** (`chevron-down`); rozbalí se **jen kliknutím** uživatele (`chevron-up`) |
+| **Vše splněno** (100 %) | nadpis *„Potvrzeno"* | **žádná sbalitelná skupina** – potvrzené dokumenty jsou rovnou **rozbalený** seznam pod nadpisem |
+
+- Skupina „Potvrzeno" je tedy **vždy zavřená po otevření stránky**
+  (`smernConfirmedOpen: false`) – ať je potvrzený jeden dokument, nebo
+  šestnáct. Otevírá ji výhradně uživatel klikem na hlavičku.
+- **Právě potvrzený dokument se přesune** ze seznamu „K potvrzení" do
+  skupiny „Potvrzeno", počet v zeleném štítku i procenta se okamžitě
+  přepočítají.
+- Řádek potvrzeného dokumentu má sloupec **„Potvrzeno"** s datem a časem a
+  sekundární lemovanou akci **OTEVŘÍT** – nikdy tam není tlačítko POTVRDIT
+  ani štítek termínu.
+
+#### 6.5.4 Hotové bloky stránky „Moje směrnice"
+
+Celá stránka je hotová ve čtyřech stavech – **neskládej ji z hlavy**, vlož
+příslušný partial doslovně:
+
+| Stav | Partial | Čísla v bloku |
+|---|---|---|
+| Částečně potvrzeno (**výchozí**, skupina „Potvrzeno" zavřená) | `partials/smernice-moje.html` | 5 z 17 → 29 %, 12 k potvrzení, 7 po termínu |
+| Nic nepotvrzeno | `partials/smernice-moje-nepotvrzeno.html` | 0 z 17 → 0 %, 17 k potvrzení, 9 po termínu |
+| Částečně potvrzeno, skupina „Potvrzeno" **rozbalená** | `partials/smernice-moje-potvrzeno-rozbaleno.html` | stejné jako výchozí, seznam otevřený |
+| Vše splněno | `partials/smernice-moje-splneno.html` | 17 z 17 → 100 %, zelený hero |
+
+Skladba všech bloků je shodná: nadpis + podnadpis → hledání (pilulka) →
+hero box s procenty → sekce „Dokumenty" (K potvrzení / Potvrzeno) →
+sbalitelná skupina „Potvrzeno" (jen když něco zbývá) → „Procházet /
+Všechny dokumenty" s dlaždicemi kategorií. **Měň jen data**, nikoli logiku
+procent (§6.5.2), barvy dle termínu (§6.5.1) ani chování skupiny (§6.5.3).
+
 ### 6.6 Moje konverzace (menu `konv`)
 
 Obrazovka „Moje konverzace" (položka menu `konv`, `activeNav = 'konv'`) má

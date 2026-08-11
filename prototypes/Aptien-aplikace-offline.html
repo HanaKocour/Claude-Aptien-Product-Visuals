@@ -2295,12 +2295,15 @@ class Component extends DCLogic {
     { id: 8, title: 'KL Tor zireael',                 file: 'checklist.png',      category: 'Řády', catColor: '#285828', deadline: '10.07.2026', overdueKind: 'soon',    overdueText: 'za 1 den' },
     { id: 9, title: 'Test velikosti tile komponenty', file: 'portr.png',          category: 'Požární bezpečnost', catColor: '#d9463e', deadline: null, overdueKind: 'noDeadline', overdueText: null }
   ,
-    { id: 10, title: 'Bezpečnostní směrnice 2026',  file: 'bezpecnost.pdf',    category: 'Řády', catColor: '#285828', deadline: '21.07.2026', overdueKind: 'future',     overdueText: 'za 5 dní' },
-    { id: 11, title: 'GDPR poučení',                file: 'gdpr.pdf',          category: 'Řády', catColor: '#285828', deadline: '28.07.2026', overdueKind: 'future',     overdueText: 'za 12 dní' },
+    { id: 10, title: 'Bezpečnostní směrnice 2026',  file: 'bezpecnost.pdf',    category: 'Řády', catColor: '#285828', deadline: '14.07.2026', overdueKind: 'future',     overdueText: 'za 5 dní' },
+    { id: 11, title: 'GDPR poučení',                file: 'gdpr.pdf',          category: 'Řády', catColor: '#285828', deadline: '21.07.2026', overdueKind: 'future',     overdueText: 'za 12 dní' },
     { id: 12, title: 'Etický kodex',                file: 'etika.pdf',         category: 'Řády', catColor: '#285828', deadline: null,         overdueKind: 'noDeadline',  overdueText: null }
   ];
-  SMERNICE_TOTAL = 29;
-  SMERNICE_BASE_CONFIRMED = 20;
+  // 100 % SPLNĚNO = potvrzené VŠECHNY přiřazené dokumenty. Procenta se NEVÁŽOU
+  // na termín potvrzení (viz Aptien-pravidla-pouziti-UI.md §6.5.2) – jmenovatel
+  // je DOCS (k potvrzení) + CONFIRMED_DOCS_LIST (už potvrzené), proto se
+  // celkový počet nikde nezadává ručně a nemůže se rozejít se seznamy.
+  SMERNICE_NOW = '11.08.2026 09:12';
 
   CONFIRMED_DOCS_LIST = [
     { name: 'BOZP na pracovišti',   file: 'Dummy Směrnice 9.docx',  cat: 'Bezpečnost práce', catColor: '#d9463e', confirmedAt: '09.07.2026 13:44' },
@@ -2310,19 +2313,23 @@ class Component extends DCLogic {
     { name: 'Organizační příručka', file: 'prirucka_2026.pdf',      cat: 'Manažerské',       catColor: '#1a3a58', confirmedAt: '09.07.2026 13:44' }
   ];
 
+  // `total` = počet dokumentů v kategorii. Text dlaždice se dopočítává:
+  // dokud v kategorii něco zbývá potvrdit → modré „N k potvrzení",
+  // po potvrzení všeho → šedé „N dokumentů". Nezadávej text ručně.
   SMERNICE_CATEGORIES = [
-    { title: 'Standardy fyzioterapie',        count: '1 k potvrzení', icon: 'scale-balanced', bg: '#a8c4ec', iconColor: '#2d5080' },
-    { title: 'Směrnice IT',                   count: '1 k potvrzení', icon: 'circle-info',    bg: '#c2b4e2', iconColor: '#4a2d80' },
-    { title: 'Metodické pokyny',              count: '1 k potvrzení', icon: 'users',          bg: '#b4bac8', iconColor: '#2a2f4a' },
-    { title: 'Řády',                          count: '9 dokumentů',   icon: 'laptop',         bg: '#b8d4b8', iconColor: '#285828' },
-    { title: 'Příkazy ředitele',              count: '2 dokumenty',   icon: 'building',       bg: '#d0c8b4', iconColor: '#5a4a28' },
-    { title: 'Standardy ošetřovatelské péče', count: '30 dokumentů',  icon: 'bed',            bg: '#a8d0e0', iconColor: '#1a5870' },
-    { title: 'Směrnice odborné',              count: '8 dokumentů',   icon: 'user',           bg: '#d4b8cc', iconColor: '#6a2a5a' },
-    { title: 'Směrnice personální',           count: '4 dokumenty',   icon: 'chart-line',     bg: '#e0c0c0', iconColor: '#802828' },
-    { title: 'Směrnice technické',            count: '13 dokumentů',  icon: 'wrench',         bg: '#c8c0e0', iconColor: '#3a2870' },
-    { title: 'Směrnice ekonomické',           count: '2 dokumenty',   icon: 'coins',          bg: '#d4d0a8', iconColor: '#585020' },
-    { title: 'Směrnice managerské',           count: '9 dokumentů',   icon: 'briefcase',      bg: '#b4c8d8', iconColor: '#1a3a58' }
+    { title: 'Standardy fyzioterapie',        total: 22, icon: 'scale-balanced', bg: '#a8c4ec', iconColor: '#2d5080' },
+    { title: 'Směrnice IT',                   total: 8,  icon: 'circle-info',    bg: '#c2b4e2', iconColor: '#4a2d80' },
+    { title: 'Metodické pokyny',              total: 15, icon: 'users',          bg: '#b4bac8', iconColor: '#2a2f4a' },
+    { title: 'Řády',                          total: 9,  icon: 'laptop',         bg: '#b8d4b8', iconColor: '#285828' },
+    { title: 'Příkazy ředitele',              total: 2,  icon: 'building',       bg: '#d0c8b4', iconColor: '#5a4a28' },
+    { title: 'Standardy ošetřovatelské péče', total: 30, icon: 'bed',            bg: '#a8d0e0', iconColor: '#1a5870' },
+    { title: 'Směrnice odborné',              total: 8,  icon: 'user',           bg: '#d4b8cc', iconColor: '#6a2a5a' },
+    { title: 'Směrnice personální',           total: 4,  icon: 'chart-line',     bg: '#e0c0c0', iconColor: '#802828' },
+    { title: 'Směrnice technické',            total: 13, icon: 'wrench',         bg: '#c8c0e0', iconColor: '#3a2870' },
+    { title: 'Směrnice ekonomické',           total: 2,  icon: 'coins',          bg: '#d4d0a8', iconColor: '#585020' },
+    { title: 'Směrnice managerské',           total: 9,  icon: 'briefcase',      bg: '#b4c8d8', iconColor: '#1a3a58' }
   ];
+  plCount(n) { return n === 1 ? '1 dokument' : (n >= 2 && n <= 4 ? n + ' dokumenty' : n + ' dokumentů'); }
 
   SMERNICE_CAT_DOCS = {
     'Standardy fyzioterapie': [{ docId: 1, name: 'Libor pokus 3', file: '2229_Info.pdf', catName: 'Standardy fyzioterapie', catColor: '#cc9900', deadline: '19.06.2026', overdue: '20 dní po termínu' }],
@@ -2801,17 +2808,23 @@ class Component extends DCLogic {
 
     // ══ SMĚRNICE renderVals ══
     const pendingDocs = this.DOCS.filter(d => !confirmedDocs.includes(d.id));
-    const confirmedCount = Math.min(this.SMERNICE_BASE_CONFIRMED + confirmedDocs.length, this.SMERNICE_TOTAL);
-    const pct = Math.min(100, Math.round((confirmedCount / this.SMERNICE_TOTAL) * 100));
+    // Právě potvrzené dokumenty se přesouvají do seznamu „Potvrzeno" – počty se
+    // tak nemohou rozejít a po potvrzení posledního dokumentu vyjde přesně 100 %.
+    const justConfirmedDocs = this.DOCS.filter(d => confirmedDocs.includes(d.id))
+      .map(d => ({ name: d.title, file: d.file, cat: d.category, catColor: d.catColor, confirmedAt: this.SMERNICE_NOW }));
+    const confirmedDocsList = [...this.CONFIRMED_DOCS_LIST, ...justConfirmedDocs];
+    const smernTotal = this.DOCS.length + this.CONFIRMED_DOCS_LIST.length;
+    const confirmedCount = confirmedDocsList.length;
+    // % SPLNĚNO = potvrzené / všechny. Nezávisí na termínu potvrzení (§6.5.2).
+    const pct = Math.round((confirmedCount / smernTotal) * 100);
     const smernAllDone = pendingDocs.length === 0;
     const smernHasPending = !smernAllDone;
     const CAT_BASE = ';border-radius:14px;padding:22px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;box-shadow:0 3px 10px rgba(0,0,0,.03);cursor:pointer;transition:transform .15s';
     const smernCats = this.SMERNICE_CATEGORIES.map(c => {
-      const m = c.count.match(/^(\d+)\s+(.*)/);
-      const num = m ? m[1] : '';
-      const suffix = m ? m[2] : c.count;
-      const isPending = suffix.includes('k potvrzen');
-      return { ...c, cardStyle: 'background:' + c.bg + CAT_BASE, cardHover: 'background:' + c.bg + CAT_BASE + ';transform:translateY(-2px)', onClick: () => this.setState({ selectedSmernCat: c.title }), countNumBlue: isPending ? num : '', countGray: isPending ? ' k potvrzení' : c.count };
+      const catDocs = this.SMERNICE_CAT_DOCS[c.title] || [];
+      const pendingInCat = catDocs.filter(d => d.docId != null && !confirmedDocs.includes(d.docId)).length;
+      const isPending = pendingInCat > 0;
+      return { ...c, count: this.plCount(c.total), cardStyle: 'background:' + c.bg + CAT_BASE, cardHover: 'background:' + c.bg + CAT_BASE + ';transform:translateY(-2px)', onClick: () => this.setState({ selectedSmernCat: c.title }), countNumBlue: isPending ? String(pendingInCat) : '', countGray: isPending ? ' k potvrzení' : this.plCount(c.total) };
     });
 
     const getBadgeBtn = (d) => {
@@ -3033,7 +3046,7 @@ class Component extends DCLogic {
       zak_activeDrawerTabLabel: (this.ZAK_DRAWER_TABS.find(t => t.key === drawerTab) || {}).label || '',
       // směrnice
       smernAllDone, smernHasPending,
-      smernPct: pct + '%', smernCountText: confirmedCount + ' z ' + this.SMERNICE_TOTAL + ' potvrzeno',
+      smernPct: pct + ' %', smernCountText: confirmedCount + ' z ' + smernTotal + ' potvrzeno',
       smernBarStyle: 'height:100%;background:#1572e8;width:' + pct + '%;border-radius:3px;transition:width .3s',
       smernPendingNum: pendingDocs.length, smernSubtitle: smernAllDone ? 'Všechny požadované dokumenty máte potvrzené.' : 'Začněte těmi nejnaléhavějšími nahoře.',
       overdueCount: pendingDocs.filter(d => d.overdueKind === 'overdue').length,
@@ -3042,12 +3055,15 @@ class Component extends DCLogic {
       smernBoxStyle: smernAllDone
         ? 'background:linear-gradient(135deg,#f0faf4,#e8f8ed);border:1px solid #c8e8d4;border-radius:14px;padding:22px 26px;display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;gap:20px;flex-wrap:wrap'
         : 'background:#fff;border-radius:14px;padding:22px 26px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 15px rgba(0,0,0,.04);margin-bottom:30px;border:1px solid #ededf2;gap:20px;flex-wrap:wrap',
-      smernConfirmedDocs: this.CONFIRMED_DOCS_LIST, smernPendingDocs, smernCats,
-      smernConfirmedOpen, smernConfirmedNum: this.CONFIRMED_DOCS_LIST.length,
+      smernConfirmedDocs: confirmedDocsList, smernPendingDocs, smernCats,
+      // Sbalitelná skupina „Potvrzeno" je výchozí ZAVŘENÁ (smernConfirmedOpen:false)
+      // a zobrazuje se jen dokud něco zbývá potvrdit. Při 100 % je seznam rovnou
+      // rozbalený pod nadpisem „Dokumenty / Potvrzeno" (§6.5.3).
+      smernConfirmedOpen, smernConfirmedNum: confirmedCount,
       smernConfirmedChevron: smernConfirmedOpen ? 'fa-solid fa-chevron-up' : 'fa-solid fa-chevron-down',
       toggleSmernConfirmed: () => this.setState(s => ({ smernConfirmedOpen: !s.smernConfirmedOpen })),
       selectedSmernTitle: selectedSmernCatData ? selectedSmernCatData.title : '',
-      selectedSmernCatCount: selectedSmernCatData ? selectedSmernCatData.count : '',
+      selectedSmernCatCount: selectedSmernCatData ? selectedSmernCatData.total : '',
       selectedSmernBg: selectedSmernCatData ? selectedSmernCatData.bg : '',
       selectedSmernIcon: selectedSmernCatData ? selectedSmernCatData.icon : '',
       selectedSmernIconColor: selectedSmernCatData ? selectedSmernCatData.iconColor : '',
