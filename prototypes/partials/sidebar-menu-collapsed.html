@@ -1,12 +1,20 @@
 <!--
-  APTIEN — LEVÉ MENU (sidebar) · SBALENÝ (COLLAPSED) STAV
-  ========================================================
-  Použij POUZE na výslovné zadání ("sbalené menu", "zavřený sidebar",
-  "collapsed sidebar", "jen ikony"). Výchozí stav pro generování je VŽDY
-  OTEVŘENÝ — k tomu slouží `sidebar-menu.html`. Tenhle soubor je jeho
-  sbalený protějšek (stejný vzor jako `drawer-tab-plany.html` vs.
-  `-rozbaleno.html`): stejná struktura a pořadí položek (15 + 7), jen bez
-  textu a badgí — vidět jsou pouze ikony.
+  APTIEN — LEVÉ MENU (sidebar) · SBALENÝ (COLLAPSED) STAV = **VÝCHOZÍ**
+  =====================================================================
+  ⭐ Toto je VÝCHOZÍ stav menu — při generování obrazovky použij VŽDY tento
+  soubor, pokud zadání výslovně nežádá otevřené (rozbalené) menu. Otevřený
+  stav (220px s texty a badgi) je v `sidebar-menu.html` a použije se jen na
+  výslovné zadání („otevřené menu", „rozbalený sidebar", „menu s texty").
+  Odpovídá `sidebarCollapsed:true` v master prototypu
+  `Aptien-aplikace-offline.html`.
+
+  Struktura a pořadí položek jsou shodné s otevřeným stavem (15 + 7), jen
+  bez textu a badgí — vidět jsou pouze ikony.
+
+  ⛔ SBALENÉ MENU NEZOBRAZUJE POSUVNÍK. Obsah se dál roluje (22 položek se
+  do 864 px nevejde), ale scrollbar je skrytý — `scrollbar-width:none`
+  + `::-webkit-scrollbar { width:0 }` přes třídu `aptien-sb-collapsed`.
+  V 56px pruhu by posuvník zabral desetinu šířky a rozsekal ikony.
 
   Co zůstává STEJNÉ jako v otevřeném stavu:
     - pořadí, počet (15 + 7) a ikony položek (stejné inline SVG),
@@ -16,22 +24,27 @@
 
   Co se v tomto stavu MĚNÍ oproti otevřenému:
     - šířka nav: 56px (místo 220px),
-    - žádné textové popisky ani nadpisy skupin ("Můj pracovní prostor" /
-      "Naše firma" úplně mizí — položky jdou v souvislé řadě, přesně jak
-      to dělá master prototyp `Aptien-aplikace-offline.html` po
-      `toggleSidebar()`),
+    - žádné textové popisky ani nadpisy skupin („Můj pracovní prostor" /
+      „Naše firma" úplně mizí — položky jdou v souvislé řadě, přesně jak
+      to dělá master prototyp `Aptien-aplikace-offline.html`),
     - žádné badge (počty) — v collapsed stavu se nezobrazují vůbec,
-    - šipka nahoře se otočí: `fa-angles-right`, zarovnaná na střed.
+    - šipka nahoře je `fa-angles-right`, zarovnaná na střed,
+    - **žádný posuvník** (viz výše).
 
-  Vlož tento blok CELÝ místo `sidebar-menu.html`, jen přesuň aktivní stav
-  (pozadí rgba(21,114,232,.10) + barvu ikony #1572e8) na položku
-  odpovídající otevřené obrazovce — stejné pravidlo jako u otevřeného menu.
+  Vlož tento blok CELÝ, jen přesuň aktivní stav (pozadí
+  rgba(21,114,232,.10) + barvu ikony #1572e8) na položku odpovídající
+  otevřené obrazovce — stejné pravidlo jako u otevřeného menu.
 
-  Obsah vedle sidebaru (content area) má vždy `flex:1;min-width:0` — při
-  použití tohoto souboru se automaticky roztáhne o uvolněných ~164px,
-  nic se nepočítá ručně.
+  Obsah vedle sidebaru (content area) má vždy `flex:1;min-width:0` — proti
+  otevřenému menu se automaticky roztáhne o uvolněných ~164px, nic se
+  nepočítá.
 -->
-<nav style="width:56px;flex-shrink:0;background:#fff;border-right:1px solid #ececec;display:flex;flex-direction:column;align-items:center;overflow-y:auto;overflow-x:hidden;padding-bottom:20px;font-family:'Nunito',sans-serif">
+<style>
+  /* Sbalený sidebar NEZOBRAZUJE posuvník (obsah se stále roluje). */
+  .aptien-sb-collapsed { scrollbar-width: none; -ms-overflow-style: none; }
+  .aptien-sb-collapsed::-webkit-scrollbar { width: 0; height: 0; }
+</style>
+<nav class="aptien-sb-collapsed" style="width:56px;flex-shrink:0;background:#fff;border-right:1px solid #ececec;display:flex;flex-direction:column;align-items:center;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:20px;font-family:'Nunito',sans-serif">
 
   <!-- Sbalovací šipka — sbalený stav: na střed, ikona "úhly vpravo" -->
   <div style="display:flex;justify-content:center;width:100%;padding:8px 0 2px">

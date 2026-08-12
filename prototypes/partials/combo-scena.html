@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<title>Aptien — kombinované vizuály · šablona a vzorník</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<!--
+  APTIEN — KOMBINOVANÝ VIZUÁL („scéna") · STATICKÝ BLOK K DOSLOVNÉMU VLOŽENÍ
+  =========================================================================
+  Vizuál, který ukazuje TOK mezi dvěma místy (e-mail → aplikace,
+  aplikace → notifikace, aplikace → aplikace, mobil ↔ desktop).
+  Nahrazuje dřívější ilustrace s fialovým pozadím, konfetami a sparkly —
+  ty vedle screenshotů z aplikace působily jako pěst na oko.
+
+  ⛔ TŘÍDY `cv-*` PATŘÍ POUZE RÁMU SCÉNY (plocha, panel, popiska, konektor).
+     Uvnitř panelu s aplikací se používá VÝHRADNĚ markup z partialů
+     (inline styly, Nunito, Font Awesome) — nikdy vlastní `cv-` třídy.
+     Stejné pravidlo jako u `item-drawer-prototyp.html` a jeho `.kd-*`.
+
+  ⛔ Panel „aplikace" NIKDY nepřekresluj. Je to VÝŘEZ skutečného UI:
+     vezmi blok z `prototypes/partials/` (drawer, seznam, tabulka…) a jen
+     vyměň data. Nekresli vlastní „appku ve stylu Aptienu".
+
+  Pravidla, geometrie a checklist: `Aptien-pravidla-kombinovanych-vizualu.md`.
+  Rozměr, hustota a render: `Aptien-pravidla-screenshotu.md`
+  (výstup 1920×1080, návrh 1536×864, scale 1,25×).
+
+  Soubor obsahuje 4 hotové scény. Do výstupu ber VŽDY JEN JEDNU:
+    #scene-a  A · e-mail → aplikace          (vyplněné: SÚKL)
+    #scene-b  B · aplikace → e-mail / notifikace
+    #scene-c  C · aplikace → aplikace
+    #scene-d  D · mobil ↔ desktop            (překryv, BEZ šipky)
+-->
+<style>
+  /* ---- tokeny scény (NEJSOU to app tokeny, platí jen pro rám) -------- */
+  :root{
+    --cv-bg:#f4f4f7;          /* plocha scény – neutrální, NE fialová    */
+    --cv-line:#e4e2ed;        /* okraj panelu = jako karty v aplikaci    */
+    --cv-muted:#8a84a0;       /* popiska nad panelem                     */
+    --cv-accent:#1572e8;      /* JEDINÁ akcentová barva scény            */
+    --cv-arrow:#a8c4ea;
+    --cv-shadow:0 10px 30px rgba(30,27,46,.12);
+  }
+
+  /* ---- rám 1920×1080 (viz Aptien-pravidla-screenshotu.md) ----------- */
+  .cv-frame{width:1920px;height:1080px;overflow:hidden;position:relative;background:var(--cv-bg)}
+  .cv-stage{width:1536px;height:864px;transform:scale(1.25);transform-origin:top left;
+            background:var(--cv-bg);font-family:'Nunito',sans-serif;-webkit-font-smoothing:antialiased}
+  /* padding 56 → využitelná plocha 1424 × 752 CSS px.
+     Panely mají zaplnit 70–90 % výšky (≥ 530 px). Když je panel nižší,
+     PŘIDEJ ŘÁDKY DAT — nikdy nezvětšuj fonty ani nescaluj panel.        */
+  .cv-scene{box-sizing:border-box;width:1536px;height:864px;padding:56px;
+            display:flex;align-items:center;justify-content:center}
+
+  /* ---- sloupec = popiska + panel ------------------------------------ */
+  .cv-col{display:flex;flex-direction:column;justify-content:center;flex-shrink:0}
+  .cv-cap{font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+          color:var(--cv-muted);margin:0 0 10px 4px;white-space:nowrap}
+  .cv-wrap{position:relative}
+  .cv-panel{background:#fff;border:1px solid var(--cv-line);border-radius:12px;
+            box-shadow:var(--cv-shadow);overflow:hidden}
+
+  /* okenní lišta = signál „cizí aplikace" (e-mail, prohlížeč). VŽDY šedá;
+     barvu ve scéně nese jen konektor a samotné UI Aptienu.              */
+  .cv-chrome{height:28px;background:#f0eff4;border-bottom:1px solid #e8e6ef;
+             display:flex;align-items:center;gap:6px;padding:0 12px}
+  .cv-dot{width:8px;height:8px;border-radius:50%;background:#d6d3e0;flex-shrink:0}
+  .cv-chrome span{font-size:10.5px;font-weight:700;color:#9a94ae;margin-left:6px}
+
+  /* ---- konektor: pilulka (max ~14 znaků) + přerušovaná šipka -------- */
+  .cv-conn{display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+  .cv-pill{display:inline-flex;align-items:center;gap:7px;background:var(--cv-accent);color:#fff;
+           font-size:11px;font-weight:800;letter-spacing:.05em;padding:6px 14px;border-radius:999px;
+           white-space:nowrap;box-shadow:0 2px 8px rgba(21,114,232,.30);margin-bottom:12px}
+  .cv-pill i{font-size:10px}
+
+  /* ---- odznak „stalo se to samo" (nepovinný, max 1 na scénu) -------- */
+  .cv-badge{position:absolute;bottom:-13px;right:-13px;width:34px;height:34px;border-radius:50%;
+            background:#43A047;border:3px solid var(--cv-bg);display:flex;align-items:center;
+            justify-content:center;color:#fff;font-size:14px;box-shadow:0 3px 10px rgba(67,160,71,.35)}
+
+  /* ---- telefon (varianta B a D) ------------------------------------- */
+  .cv-phone{width:296px;border-radius:30px;background:#fff;border:1px solid var(--cv-line);
+            box-shadow:0 14px 36px rgba(30,27,46,.16);overflow:hidden}
+  .cv-phone-top{height:26px;background:#424242;display:flex;align-items:center;justify-content:center}
+  .cv-phone-notch{width:76px;height:8px;border-radius:999px;background:#2b2b2b}
+
+  /* ---- jen pro tento vzorník, do výstupu NEKOPÍRUJ ----------------- */
+  body{margin:0;background:#dedde4;font-family:'Nunito',sans-serif}
+  .vz{padding:26px 0 6px;text-align:center;font-size:15px;font-weight:800;color:#4a4660}
+</style>
+</head>
+<body>
+
+<!-- ==================================================================== -->
+<!-- A · E-MAIL → APLIKACE            (vyplněné: SÚKL e-maily a věstníky) -->
+<!-- Sloupce: 520 + 168 + 736 = 1424                                      -->
+<!-- ==================================================================== -->
+<p class="vz">A · e-mail → aplikace &nbsp;·&nbsp; 1920 × 1080</p>
+<section class="cv-frame" id="scene-a">
+<div class="cv-stage">
+<div class="cv-scene">
+
+  <!-- ---------- ZDROJ: e-mailová schránka (cizí aplikace) ------------- -->
+  <div class="cv-col" style="width:520px">
+    <div class="cv-cap">Vaše e-mailová schránka</div>
+    <div class="cv-panel">
+      <div class="cv-chrome"><i class="cv-dot"></i><i class="cv-dot"></i><i class="cv-dot"></i><span>Doručená pošta</span></div>
+
+      <div style="padding:10px 16px;border-bottom:1px solid #f2f1f7">
+        <div style="display:flex;align-items:center;gap:8px;background:#f7f6fa;border:1px solid #ececf3;border-radius:999px;padding:5px 12px">
+          <i class="fa-solid fa-magnifying-glass" style="color:#b0aac8;font-size:11px"></i>
+          <span style="font-size:11.5px;color:#b5b0c4">Hledat v poště</span>
+        </div>
+      </div>
+
+      <div style="padding:6px 0 8px">
+        <!-- běžná pošta = ztlumená, není hrdinou obrázku -->
+        <div style="display:flex;gap:11px;padding:9px 16px;align-items:flex-start">
+          <i class="fa-regular fa-envelope" style="font-size:13px;color:#c0bbcf;margin-top:3px"></i>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:700;color:#6e6885;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Objednávka č. 2024-114 — potvrzení</div>
+            <div style="font-size:11.5px;color:#a5a0b8;margin-top:2px">obchod@dodavatel.cz · 10. 6. 2024</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:11px;padding:9px 16px;align-items:flex-start">
+          <i class="fa-regular fa-envelope" style="font-size:13px;color:#c0bbcf;margin-top:3px"></i>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:700;color:#6e6885;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Smlouva o dílo — k podpisu</div>
+            <div style="font-size:11.5px;color:#a5a0b8;margin-top:2px">kratka@firma.cz · 11. 6. 2024</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:11px;padding:9px 16px;align-items:flex-start">
+          <i class="fa-regular fa-envelope" style="font-size:13px;color:#c0bbcf;margin-top:3px"></i>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:700;color:#6e6885;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Faktura č. 2024-0192</div>
+            <div style="font-size:11.5px;color:#a5a0b8;margin-top:2px">dodavatel@firma.cz · 12. 6. 2024</div>
+          </div>
+        </div>
+
+        <!-- ZVÝRAZNĚNÉ e-maily = ty, které systém zpracuje.
+             Zvýraznění = tint #eef4fe + modrý pruh vlevo, tj. stejné jako
+             aktivní položka v sidebaru. Žádná nová barva. -->
+        <div style="display:flex;gap:11px;padding:11px 16px;align-items:flex-start;background:#eef4fe;box-shadow:inset 3px 0 0 #1572e8;margin:5px 0 0">
+          <i class="fa-solid fa-envelope" style="font-size:13px;color:#1572e8;margin-top:3px"></i>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:800;color:#1e1b2e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">SÚKL — Změna v registraci LP</div>
+            <div style="font-size:11.5px;color:#7d7794;margin-top:2px">noreply@sukl.cz · 13. 6. 2024</div>
+            <div style="display:inline-flex;align-items:center;gap:6px;margin-top:7px;background:#fff;border:1px solid #e0dded;border-radius:6px;padding:4px 9px">
+              <i class="fa-solid fa-file-pdf" style="font-size:12px;color:#E53935"></i>
+              <span style="font-size:11px;font-weight:700;color:#4a4660">rozhodnuti_24117.pdf</span>
+              <span style="font-size:11px;color:#a5a0b8">218 kB</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:11px;padding:11px 16px;align-items:flex-start;background:#eef4fe;box-shadow:inset 3px 0 0 #1572e8">
+          <i class="fa-solid fa-envelope" style="font-size:13px;color:#1572e8;margin-top:3px"></i>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:800;color:#1e1b2e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Věstník SÚKL 06/2024</div>
+            <div style="font-size:11.5px;color:#7d7794;margin-top:2px">vestnik@sukl.cz · 14. 6. 2024</div>
+            <div style="display:inline-flex;align-items:center;gap:6px;margin-top:7px;background:#fff;border:1px solid #e0dded;border-radius:6px;padding:4px 9px">
+              <i class="fa-solid fa-file-pdf" style="font-size:12px;color:#E53935"></i>
+              <span style="font-size:11px;font-weight:700;color:#4a4660">vestnik_2024_06.pdf</span>
+              <span style="font-size:11px;color:#a5a0b8">1,4 MB</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:11px;padding:9px 16px;align-items:flex-start;margin-top:5px">
+          <i class="fa-regular fa-envelope" style="font-size:13px;color:#c0bbcf;margin-top:3px"></i>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:700;color:#6e6885;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Pozvánka na školení BOZP</div>
+            <div style="font-size:11.5px;color:#a5a0b8;margin-top:2px">skoleni@bozp-servis.cz · 14. 6. 2024</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------- KONEKTOR ---------------------------------------------- -->
+  <div class="cv-conn" style="width:168px">
+    <div class="cv-pill"><i class="fa-solid fa-bolt"></i>AUTO-IMPORT</div>
+    <svg width="140" height="14" viewBox="0 0 140 14" fill="none">
+      <path d="M2 7 H120" stroke="#a8c4ea" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="7 7"/>
+      <path d="M122 1 L134 7 L122 13 Z" fill="#a8c4ea"/>
+    </svg>
+  </div>
+
+  <!-- ---------- CÍL: Aptien (VÝŘEZ SKUTEČNÉHO UI) --------------------- -->
+  <!-- Řádky polí = 1:1 struktura z `partials/drawer-tab-detaily.html`,
+       měněná jsou POUZE data (názvy polí a hodnoty).                     -->
+  <div class="cv-col" style="width:736px">
+    <div class="cv-cap">Aptien — záznam vznikl sám</div>
+    <div class="cv-wrap">
+      <div class="cv-badge"><i class="fa-solid fa-check"></i></div>
+      <div class="cv-panel">
+
+        <!-- horní lišta aplikace: VŽDY #424242 -->
+        <div style="height:40px;background:#424242;display:flex;align-items:center;padding:0 16px;gap:10px">
+          <i class="fa-solid fa-bolt" style="color:#fff;font-size:13px"></i>
+          <span style="color:#fff;font-weight:800;font-size:15px;letter-spacing:-.01em">aptien</span>
+          <div style="flex:1"></div>
+          <div style="position:relative;margin-right:8px">
+            <i class="fa-solid fa-bell" style="color:#d8d5e0;font-size:13px"></i>
+            <span style="position:absolute;top:-6px;right:-8px;background:#FF3D00;color:#fff;font-size:9px;font-weight:800;border-radius:999px;padding:1px 4px;border:1.5px solid #424242">3</span>
+          </div>
+          <div style="width:24px;height:24px;border-radius:50%;background:#8d8d8d;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:800">JS</div>
+        </div>
+
+        <!-- hlavička záznamu -->
+        <div style="display:flex;align-items:center;gap:10px;padding:12px 20px;border-bottom:1px solid #f0eef8">
+          <i class="fa-solid fa-file-lines" style="font-size:16px;color:#1572e8"></i>
+          <span style="font-size:15px;font-weight:800;color:#1e1b2e">Úřední oznámení SÚKL</span>
+          <div style="flex:1"></div>
+          <div style="display:flex;align-items:center;gap:7px;border:1px solid #e0dded;border-radius:999px;padding:4px 12px;background:#fff">
+            <span style="width:9px;height:9px;border-radius:50%;background:#FF8F00"></span>
+            <span style="font-size:11.5px;font-weight:700;color:#4a4660">Ke zpracování</span>
+          </div>
+        </div>
+
+        <!-- item tabs (aktivní tab = barva evidence, kam záznam patří) -->
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 20px;border-bottom:1px solid #f0eef8">
+          <div style="font-size:11.5px;font-weight:800;color:#fff;background:#1572e8;border-radius:999px;padding:4px 13px">Detaily</div>
+          <div style="font-size:11.5px;font-weight:600;color:#6b6585;padding:4px 8px">Přílohy <span style="color:#a5a0b8">1</span></div>
+          <div style="font-size:11.5px;font-weight:600;color:#6b6585;padding:4px 8px">Souvislosti</div>
+          <div style="font-size:11.5px;font-weight:600;color:#6b6585;padding:4px 8px">Zápisy</div>
+          <div style="font-size:11.5px;font-weight:600;color:#6b6585;padding:4px 8px">Plány aktivit</div>
+        </div>
+
+        <!-- POLE ZÁZNAMU -->
+        <div style="padding:2px 20px 0;font-family:'Nunito',sans-serif">
+
+          <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+            <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+            <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Typ oznámení</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+            <div style="flex:1;min-width:0;padding:0 18px"><input type="text" value="Změna v registraci LP" style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;outline:none;background:#fff"></div>
+          </div>
+
+          <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+            <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+            <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Číslo jednací</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+            <div style="flex:1;min-width:0;padding:0 18px"><input type="text" value="sukl/2024/24117" style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;outline:none;background:#fff"></div>
+          </div>
+
+          <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+            <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+            <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Přípravek</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+            <div style="flex:1;min-width:0;padding:0 18px"><input type="text" value="Paralen 500 mg tbl. nob." style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;outline:none;background:#fff"></div>
+          </div>
+
+          <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+            <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+            <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Šarže</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+            <div style="flex:1;min-width:0;padding:0 18px"><input type="text" value="B240617" style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;outline:none;background:#fff"></div>
+          </div>
+
+          <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+            <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+            <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Datum přijetí</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+            <div style="flex:1;min-width:0;padding:0 18px"><div style="display:inline-flex;align-items:center;gap:8px"><input type="text" value="13. 6. 2024" style="border:1px solid #e5e5e5;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;background:#fff;outline:none;width:120px"><i class="fa-regular fa-calendar-days" style="color:#b0aac5;font-size:15px"></i></div></div>
+          </div>
+
+          <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+            <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+            <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Odpovědná osoba</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+            <div style="flex:1;min-width:0;padding:0 18px"><div style="display:flex;align-items:center;gap:6px"><i class="fa-solid fa-arrow-right" style="font-size:10px;color:#888"></i><a href="#" style="font-size:13px;color:#1a1a2e;font-weight:600;text-decoration:underline;text-underline-offset:3px">Jana Svobodová</a></div></div>
+          </div>
+
+          <div style="display:flex;align-items:center;min-height:52px;padding:10px 0">
+            <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+            <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Příloha</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+            <div style="flex:1;min-width:0;padding:0 18px">
+              <div style="display:flex;align-items:center;gap:10px;border:1px solid #e0dded;border-radius:6px;padding:7px 12px;background:#fff">
+                <i class="fa-solid fa-file-pdf" style="font-size:15px;color:#E53935"></i>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:12.5px;font-weight:700;color:#1a1a2e">rozhodnuti_24117.pdf</div>
+                  <div style="font-size:11px;color:#a5a0b8">2 strany · 218 kB · staženo z e-mailu</div>
+                </div>
+                <i class="fa-solid fa-download" style="font-size:13px;color:#1572e8"></i>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+</section>
+
+
+<!-- ==================================================================== -->
+<!-- B · APLIKACE → E-MAIL / NOTIFIKACE                                   -->
+<!-- Sloupce: 736 + 168 + 520 = 1424                                      -->
+<!-- ==================================================================== -->
+<p class="vz">B · aplikace → e-mail / notifikace &nbsp;·&nbsp; 1920 × 1080</p>
+<section class="cv-frame" id="scene-b">
+<div class="cv-stage">
+<div class="cv-scene">
+
+  <!-- ZDROJ: Aptien (výřez skutečného UI – evidence Směrnice, pohled Seznam) -->
+  <div class="cv-col" style="width:736px">
+    <div class="cv-cap">Aptien hlídá termíny</div>
+    <div class="cv-panel">
+      <div style="height:40px;background:#424242;display:flex;align-items:center;padding:0 16px;gap:10px">
+        <i class="fa-solid fa-bolt" style="color:#fff;font-size:13px"></i>
+        <span style="color:#fff;font-weight:800;font-size:15px;letter-spacing:-.01em">aptien</span>
+      </div>
+
+      <!-- toolbar evidence – skladba z partials/evidence-toolbar.html -->
+      <div style="padding:10px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #f0eef8">
+        <i class="fa-solid fa-book" style="font-size:16px;color:#1572e8"></i>
+        <span style="font-size:15px;font-weight:800;color:#1e1b2e">Směrnice</span>
+        <div style="display:flex;align-items:center;gap:7px;background:#1572e8;color:#fff;font-size:11px;font-weight:800;padding:6px 14px;border-radius:999px;letter-spacing:.04em;white-space:nowrap;box-shadow:0 2px 6px rgba(21,114,232,.30)">
+          <i class="fa-solid fa-plus" style="font-size:10px"></i>PŘIDAT SMĚRNICI
+        </div>
+        <div style="display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #e0dded;border-radius:999px;padding:5px 14px;width:150px">
+          <i class="fa-solid fa-magnifying-glass" style="color:#b0aac8;font-size:12px"></i>
+          <span style="font-size:12px;color:#c0bdd0">Hledej...</span>
+        </div>
+        <div style="flex:1"></div>
+        <div style="display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;font-size:12px;font-weight:600;border:1.5px solid #1572e8;background:#e8f0fd;color:#1572e8"><i class="fa-solid fa-list" style="font-size:12px"></i>Seznam</div>
+      </div>
+
+      <!-- řádky s termíny (termínové barvy = sémantické, viz §6.6.1) -->
+      <div style="padding:4px 0 8px">
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid #f6f5fa">
+          <i class="fa-solid fa-file-lines" style="font-size:13px;color:#1572e8;width:16px;text-align:center"></i>
+          <span style="flex:1;font-size:13px;color:#1e1b2e;font-weight:600">Směrnice BOZP — školení nových zaměstnanců</span>
+          <span style="font-size:11px;font-weight:800;color:#fff;background:#E53935;border-radius:999px;padding:4px 11px">2 dny po termínu</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid #f6f5fa">
+          <i class="fa-solid fa-file-lines" style="font-size:13px;color:#1572e8;width:16px;text-align:center"></i>
+          <span style="flex:1;font-size:13px;color:#1e1b2e;font-weight:600">Provozní řád skladu hořlavin</span>
+          <span style="font-size:11px;font-weight:800;color:#fff;background:#FB8C00;border-radius:999px;padding:4px 11px">za 1 den</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid #f6f5fa">
+          <i class="fa-solid fa-file-lines" style="font-size:13px;color:#1572e8;width:16px;text-align:center"></i>
+          <span style="flex:1;font-size:13px;color:#1e1b2e;font-weight:600">Politika kvality ISO 9001</span>
+          <span style="font-size:11px;font-weight:800;color:#fff;background:#43A047;border-radius:999px;padding:4px 11px">za 12 dní</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid #f6f5fa">
+          <i class="fa-solid fa-file-lines" style="font-size:13px;color:#1572e8;width:16px;text-align:center"></i>
+          <span style="flex:1;font-size:13px;color:#1e1b2e;font-weight:600">Směrnice o ochraně osobních údajů</span>
+          <span style="font-size:11px;font-weight:800;color:#fff;background:#43A047;border-radius:999px;padding:4px 11px">za 30 dní</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid #f6f5fa">
+          <i class="fa-solid fa-file-lines" style="font-size:13px;color:#1572e8;width:16px;text-align:center"></i>
+          <span style="flex:1;font-size:13px;color:#1e1b2e;font-weight:600">Pravidla používání firemních vozidel</span>
+          <span style="font-size:11px;font-weight:800;color:#fff;background:#43A047;border-radius:999px;padding:4px 11px">za 45 dní</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid #f6f5fa">
+          <i class="fa-solid fa-file-lines" style="font-size:13px;color:#1572e8;width:16px;text-align:center"></i>
+          <span style="flex:1;font-size:13px;color:#1e1b2e;font-weight:600">Řád skladového hospodářství</span>
+          <span style="font-size:11px;font-weight:800;color:#fff;background:#43A047;border-radius:999px;padding:4px 11px">za 61 dní</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid #f6f5fa">
+          <i class="fa-solid fa-file-lines" style="font-size:13px;color:#1572e8;width:16px;text-align:center"></i>
+          <span style="flex:1;font-size:13px;color:#1e1b2e;font-weight:600">Postup při pracovním úrazu</span>
+          <span style="font-size:11px;font-weight:800;color:#fff;background:#43A047;border-radius:999px;padding:4px 11px">za 88 dní</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid #f6f5fa">
+          <i class="fa-solid fa-file-lines" style="font-size:13px;color:#1572e8;width:16px;text-align:center"></i>
+          <span style="flex:1;font-size:13px;color:#1e1b2e;font-weight:600">Směrnice o zacházení s chemickými látkami</span>
+          <span style="font-size:11px;font-weight:800;color:#fff;background:#43A047;border-radius:999px;padding:4px 11px">za 104 dní</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid #f6f5fa">
+          <i class="fa-solid fa-file-lines" style="font-size:13px;color:#1572e8;width:16px;text-align:center"></i>
+          <span style="flex:1;font-size:13px;color:#1e1b2e;font-weight:600">Etický kodex</span>
+          <span style="font-size:11px;font-weight:800;color:#fff;background:#43A047;border-radius:999px;padding:4px 11px">∞ Bez termínu</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 20px">
+          <i class="fa-solid fa-file-lines" style="font-size:13px;color:#1572e8;width:16px;text-align:center"></i>
+          <span style="flex:1;font-size:13px;color:#1e1b2e;font-weight:600">Pravidla home office</span>
+          <span style="font-size:11px;font-weight:800;color:#fff;background:#43A047;border-radius:999px;padding:4px 11px">∞ Bez termínu</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cv-conn" style="width:168px">
+    <div class="cv-pill"><i class="fa-solid fa-paper-plane"></i>UPOZORNÍ SÁM</div>
+    <svg width="140" height="14" viewBox="0 0 140 14" fill="none">
+      <path d="M2 7 H120" stroke="#a8c4ea" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="7 7"/>
+      <path d="M122 1 L134 7 L122 13 Z" fill="#a8c4ea"/>
+    </svg>
+  </div>
+
+  <!-- CÍL: e-mail + push v telefonu -->
+  <div class="cv-col" style="width:520px">
+    <div class="cv-cap">Lidé dostanou upozornění</div>
+
+    <div class="cv-panel" style="margin-bottom:18px">
+      <div class="cv-chrome"><i class="cv-dot"></i><i class="cv-dot"></i><i class="cv-dot"></i><span>Doručená pošta</span></div>
+      <div style="display:flex;gap:11px;padding:14px 16px;align-items:flex-start;background:#eef4fe;box-shadow:inset 3px 0 0 #1572e8">
+        <i class="fa-solid fa-envelope" style="font-size:13px;color:#1572e8;margin-top:3px"></i>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:800;color:#1e1b2e">Aptien — připomínka termínu</div>
+          <div style="font-size:11.5px;color:#7d7794;margin-top:2px">no-reply@aptien.com · dnes 7:00</div>
+          <div style="font-size:12px;color:#4a4660;margin-top:6px;line-height:1.5">Směrnice „Provozní řád skladu hořlavin“ vyprší zítra. Potvrďte seznámení jedním kliknutím.</div>
+          <div style="display:inline-flex;align-items:center;gap:7px;margin-top:10px;background:#1572e8;color:#fff;font-size:11px;font-weight:800;border-radius:999px;padding:6px 14px;letter-spacing:.04em">POTVRDIT SEZNÁMENÍ</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:center">
+      <div class="cv-phone">
+        <div class="cv-phone-top"><div class="cv-phone-notch"></div></div>
+        <div style="background:#424242;padding:0 16px 10px;display:flex;align-items:center;gap:9px">
+          <i class="fa-solid fa-bolt" style="color:#fff;font-size:12px"></i>
+          <span style="color:#fff;font-weight:800;font-size:14px">aptien</span>
+        </div>
+        <div style="padding:14px 14px 18px">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#8a84a0;margin-bottom:10px">Moje upozornění</div>
+
+          <div style="border:1px solid #ececf3;border-radius:10px;padding:11px 12px;margin-bottom:9px;display:flex;gap:10px">
+            <div style="width:26px;height:26px;border-radius:7px;background:#424242;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fa-solid fa-bolt" style="color:#fff;font-size:11px"></i></div>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:baseline;gap:7px"><span style="font-size:12px;font-weight:800;color:#1e1b2e">Aptien</span><span style="font-size:10.5px;color:#a5a0b8">teď</span></div>
+              <div style="font-size:12px;color:#4a4660;margin-top:3px;line-height:1.45">Zítra vyprší 1 směrnice k seznámení.</div>
+            </div>
+          </div>
+
+          <div style="border:1px solid #ececf3;border-radius:10px;padding:11px 12px;margin-bottom:9px;display:flex;gap:10px">
+            <div style="width:26px;height:26px;border-radius:7px;background:#424242;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fa-solid fa-bolt" style="color:#fff;font-size:11px"></i></div>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:baseline;gap:7px"><span style="font-size:12px;font-weight:800;color:#1e1b2e">Aptien</span><span style="font-size:10.5px;color:#a5a0b8">včera</span></div>
+              <div style="font-size:12px;color:#4a4660;margin-top:3px;line-height:1.45">Směrnice BOZP je 2 dny po termínu.</div>
+            </div>
+          </div>
+
+          <div style="border:1px solid #ececf3;border-radius:10px;padding:11px 12px;display:flex;gap:10px">
+            <div style="width:26px;height:26px;border-radius:7px;background:#424242;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fa-solid fa-bolt" style="color:#fff;font-size:11px"></i></div>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:baseline;gap:7px"><span style="font-size:12px;font-weight:800;color:#1e1b2e">Aptien</span><span style="font-size:10.5px;color:#a5a0b8">pondělí</span></div>
+              <div style="font-size:12px;color:#4a4660;margin-top:3px;line-height:1.45">Nová verze Politiky kvality ISO 9001.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+</section>
+
+
+<!-- ==================================================================== -->
+<!-- C · APLIKACE → APLIKACE                                              -->
+<!-- Sloupce: 640 + 144 + 640 = 1424                                      -->
+<!-- ==================================================================== -->
+<p class="vz">C · aplikace → aplikace &nbsp;·&nbsp; 1920 × 1080</p>
+<section class="cv-frame" id="scene-c">
+<div class="cv-stage">
+<div class="cv-scene">
+
+  <div class="cv-col" style="width:640px">
+    <div class="cv-cap">Záznam v evidenci</div>
+    <div class="cv-panel">
+      <div style="height:40px;background:#424242;display:flex;align-items:center;padding:0 16px;gap:10px">
+        <i class="fa-solid fa-bolt" style="color:#fff;font-size:13px"></i>
+        <span style="color:#fff;font-weight:800;font-size:15px;letter-spacing:-.01em">aptien</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 20px;border-bottom:1px solid #f0eef8">
+        <i class="fa-solid fa-briefcase" style="font-size:16px;color:#1565C0"></i>
+        <span style="font-size:15px;font-weight:800;color:#1e1b2e">Řezací stroj XPR200</span>
+        <div style="flex:1"></div>
+        <div style="display:flex;align-items:center;gap:7px;border:1px solid #e0dded;border-radius:999px;padding:4px 12px"><span style="width:9px;height:9px;border-radius:50%;background:#FF8F00"></span><span style="font-size:11.5px;font-weight:700;color:#4a4660">Revize se blíží</span></div>
+      </div>
+      <div style="padding:2px 20px 0">
+
+        <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+          <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+          <div style="width:180px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Inventární číslo</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px"></i></div>
+          <div style="flex:1;min-width:0;padding:0 18px"><input type="text" value="STR-2019-041" style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;outline:none;background:#fff"></div>
+        </div>
+
+        <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+          <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+          <div style="width:180px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Umístění</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px"></i></div>
+          <div style="flex:1;min-width:0;padding:0 18px"><input type="text" value="Hala B — linka 2" style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;outline:none;background:#fff"></div>
+        </div>
+
+        <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+          <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+          <div style="width:180px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Termín revize</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px"></i></div>
+          <div style="flex:1;min-width:0;padding:0 18px"><div style="display:inline-flex;align-items:center;gap:8px"><input type="text" value="28. 8. 2026" style="border:1px solid #e5e5e5;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;background:#fff;outline:none;width:120px"><i class="fa-regular fa-calendar-days" style="color:#b0aac5;font-size:15px"></i></div></div>
+        </div>
+
+        <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+          <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+          <div style="width:180px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Perioda revize</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px"></i></div>
+          <div style="flex:1;min-width:0;padding:0 18px">
+            <div style="width:100%;display:flex;align-items:center;gap:10px;border:1px solid #e0dded;border-radius:4px;padding:6px 10px;background:#fff">
+              <span style="width:10px;height:10px;border-radius:50%;background:#1572e8;flex-shrink:0"></span>
+              <span style="flex:1;font-size:13px;color:#1a1a2e">1× ročně</span>
+              <i class="fa-solid fa-chevron-down" style="font-size:10px;color:#9a95ad;flex-shrink:0"></i>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+          <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+          <div style="width:180px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Odpovědná osoba</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px"></i></div>
+          <div style="flex:1;min-width:0;padding:0 18px"><div style="display:flex;align-items:center;gap:6px"><i class="fa-solid fa-arrow-right" style="font-size:10px;color:#888"></i><a href="#" style="font-size:13px;color:#1a1a2e;font-weight:600;text-decoration:underline;text-underline-offset:3px">Jiří Rychlý</a></div></div>
+        </div>
+
+        <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+          <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+          <div style="width:180px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Servisní firma</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px"></i></div>
+          <div style="flex:1;min-width:0;padding:0 18px;display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;align-items:center;gap:6px"><i class="fa-solid fa-arrow-right" style="font-size:10px;color:#888"></i><a href="#" style="font-size:13px;color:#1a1a2e;font-weight:600;text-decoration:underline;text-underline-offset:3px">TechServis CZ s.r.o.</a></div>
+            <div style="margin-top:2px"><a href="#" style="font-size:12px;color:#1572e8;text-decoration:none;font-weight:600">+ přidat</a></div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;min-height:52px;padding:10px 0">
+          <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+          <div style="width:180px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Poslední revize</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px"></i></div>
+          <div style="flex:1;min-width:0;padding:0 18px"><div style="display:inline-flex;align-items:center;gap:8px"><input type="text" value="28. 8. 2025" style="border:1px solid #e5e5e5;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;background:#fff;outline:none;width:120px"><i class="fa-regular fa-calendar-days" style="color:#b0aac5;font-size:15px"></i></div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="cv-conn" style="width:144px">
+    <div class="cv-pill"><i class="fa-solid fa-arrow-right-arrow-left"></i>VYTVOŘÍ ÚKOL</div>
+    <svg width="120" height="14" viewBox="0 0 120 14" fill="none">
+      <path d="M2 7 H100" stroke="#a8c4ea" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="7 7"/>
+      <path d="M102 1 L114 7 L102 13 Z" fill="#a8c4ea"/>
+    </svg>
+  </div>
+
+  <div class="cv-col" style="width:640px">
+    <div class="cv-cap">Moje úkoly</div>
+    <div class="cv-wrap">
+      <div class="cv-badge"><i class="fa-solid fa-check"></i></div>
+      <div class="cv-panel">
+        <div style="height:40px;background:#424242;display:flex;align-items:center;padding:0 16px;gap:10px">
+          <i class="fa-solid fa-bolt" style="color:#fff;font-size:13px"></i>
+          <span style="color:#fff;font-weight:800;font-size:15px;letter-spacing:-.01em">aptien</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:12px 20px;border-bottom:1px solid #f0eef8">
+          <i class="fa-solid fa-clipboard-check" style="font-size:16px;color:#1572e8"></i>
+          <span style="font-size:15px;font-weight:800;color:#1e1b2e">Moje úkoly</span>
+          <div style="flex:1"></div>
+          <span style="background:#FF3D00;color:#fff;font-size:10px;font-weight:800;border-radius:999px;padding:2px 8px">6</span>
+        </div>
+        <div style="padding:4px 0 8px">
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 20px;background:#eef4fe;box-shadow:inset 3px 0 0 #1572e8">
+            <i class="fa-regular fa-square" style="font-size:14px;color:#1572e8"></i>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:13px;font-weight:800;color:#1e1b2e">Zajistit revizi — Řezací stroj XPR200</div>
+              <div style="font-size:11.5px;color:#7d7794;margin-top:2px">Jiří Rychlý · termín 28. 8. 2026</div>
+            </div>
+            <span style="font-size:11px;font-weight:800;color:#fff;background:#FB8C00;border-radius:999px;padding:4px 11px">za 16 dní</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid #f6f5fa">
+            <i class="fa-regular fa-square" style="font-size:14px;color:#c5c0d8"></i>
+            <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:#4a4660">Doplnit protokol o školení — Hala B</div></div>
+            <span style="font-size:11px;font-weight:700;color:#8a84a0">2. 9. 2026</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid #f6f5fa">
+            <i class="fa-regular fa-square" style="font-size:14px;color:#c5c0d8"></i>
+            <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:#4a4660">Schválit objednávku OOPP 09/2026</div></div>
+            <span style="font-size:11px;font-weight:700;color:#8a84a0">5. 9. 2026</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid #f6f5fa">
+            <i class="fa-regular fa-square" style="font-size:14px;color:#c5c0d8"></i>
+            <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:#4a4660">Zkontrolovat hasicí přístroje — Hala A</div></div>
+            <span style="font-size:11px;font-weight:700;color:#8a84a0">11. 9. 2026</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid #f6f5fa">
+            <i class="fa-regular fa-square" style="font-size:14px;color:#c5c0d8"></i>
+            <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:#4a4660">Předat nářadí novému technikovi</div></div>
+            <span style="font-size:11px;font-weight:700;color:#8a84a0">18. 9. 2026</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid #f6f5fa">
+            <i class="fa-regular fa-square" style="font-size:14px;color:#c5c0d8"></i>
+            <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:#4a4660">Uzavřít zakázku „Balicí linka Alfa“</div></div>
+            <span style="font-size:11px;font-weight:700;color:#8a84a0">30. 9. 2026</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid #f6f5fa">
+            <i class="fa-regular fa-square" style="font-size:14px;color:#c5c0d8"></i>
+            <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:#4a4660">Objednat kalibraci měřidel — Svařovna</div></div>
+            <span style="font-size:11px;font-weight:700;color:#8a84a0">7. 10. 2026</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid #f6f5fa">
+            <i class="fa-regular fa-square" style="font-size:14px;color:#c5c0d8"></i>
+            <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:#4a4660">Aktualizovat provozní deník lakovny</div></div>
+            <span style="font-size:11px;font-weight:700;color:#8a84a0">15. 10. 2026</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 20px">
+            <i class="fa-regular fa-square" style="font-size:14px;color:#c5c0d8"></i>
+            <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:#4a4660">Zaškolit obsluhu na Řezací stroj XPR200</div></div>
+            <span style="font-size:11px;font-weight:700;color:#8a84a0">22. 10. 2026</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+</section>
+
+
+<!-- ==================================================================== -->
+<!-- D · MOBIL ↔ DESKTOP                                                  -->
+<!-- Stejná tříčlenná mřížka jako A–C, jen konektor je OBOUSMĚRNÝ:        -->
+<!-- není to tok, je to „stejná data, dvě zařízení". Bez zeleného odznaku.-->
+<!-- Sloupce: 296 (telefon) + 144 + 984 (desktop) = 1424                  -->
+<!-- ⛔ Panely se NEPŘEKRÝVAJÍ — překryv zakrýval první sloupec tabulky.  -->
+<!-- ==================================================================== -->
+<p class="vz">D · mobil ↔ desktop &nbsp;·&nbsp; 1920 × 1080</p>
+<section class="cv-frame" id="scene-d">
+<div class="cv-stage">
+<div class="cv-scene">
+
+  <!-- telefon (mobilní intranet zaměstnance) -->
+  <div class="cv-col" style="width:296px">
+    <div class="cv-cap">Zaměstnanec na telefonu</div>
+    <div class="cv-phone">
+      <div class="cv-phone-top"><div class="cv-phone-notch"></div></div>
+      <div style="background:#424242;padding:0 16px 12px;display:flex;align-items:center;gap:9px">
+        <i class="fa-solid fa-bolt" style="color:#fff;font-size:12px"></i>
+        <span style="color:#fff;font-weight:800;font-size:14px">aptien</span>
+      </div>
+      <div style="padding:14px 16px 18px">
+        <div style="font-size:13px;font-weight:800;color:#1e1b2e;margin-bottom:10px">Moje ochranné pomůcky</div>
+        <div style="border:1px solid #ececf3;border-radius:10px;padding:11px 12px;margin-bottom:9px;display:flex;align-items:center;gap:10px">
+          <i class="fa-solid fa-helmet-safety" style="font-size:15px;color:#D84315"></i>
+          <div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:700;color:#1e1b2e">Ochranná přilba MSA V-Gard</div><div style="font-size:11px;color:#8a84a0;margin-top:2px">vydáno 4. 3. 2026</div></div>
+        </div>
+        <div style="border:1px solid #ececf3;border-radius:10px;padding:11px 12px;margin-bottom:9px;display:flex;align-items:center;gap:10px">
+          <i class="fa-solid fa-glasses" style="font-size:15px;color:#D84315"></i>
+          <div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:700;color:#1e1b2e">Ochranné brýle uvex i-3</div><div style="font-size:11px;color:#8a84a0;margin-top:2px">vydáno 2. 6. 2026</div></div>
+        </div>
+        <div style="border:1px solid #ececf3;border-radius:10px;padding:11px 12px;margin-bottom:9px;display:flex;align-items:center;gap:10px">
+          <i class="fa-solid fa-vest" style="font-size:15px;color:#D84315"></i>
+          <div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:700;color:#1e1b2e">Reflexní vesta HiVis 2.0</div><div style="font-size:11px;color:#8a84a0;margin-top:2px">vydáno 27. 7. 2026</div></div>
+        </div>
+        <div style="border:1px solid #ececf3;border-radius:10px;padding:11px 12px;display:flex;align-items:center;gap:10px;background:#fff7ef">
+          <i class="fa-solid fa-mitten" style="font-size:15px;color:#FB8C00"></i>
+          <div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:700;color:#1e1b2e">Rukavice Ansell 11-435</div><div style="font-size:11px;color:#c26200;margin-top:2px;font-weight:700">k výměně</div></div>
+        </div>
+        <div style="margin-top:14px;background:#1572e8;color:#fff;font-size:11.5px;font-weight:800;border-radius:999px;padding:9px 0;text-align:center;letter-spacing:.04em">POŽÁDAT O VÝMĚNU</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- konektor: OBOUSMĚRNÝ, protože nejde o tok, ale o stejná data -->
+  <div class="cv-conn" style="width:144px">
+    <div class="cv-pill"><i class="fa-solid fa-arrow-right-arrow-left"></i>STEJNÁ DATA</div>
+    <svg width="120" height="14" viewBox="0 0 120 14" fill="none">
+      <path d="M18 7 H102" stroke="#a8c4ea" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="7 7"/>
+      <path d="M18 1 L6 7 L18 13 Z" fill="#a8c4ea"/>
+      <path d="M102 1 L114 7 L102 13 Z" fill="#a8c4ea"/>
+    </svg>
+  </div>
+
+  <!-- desktop (evidence, pohled Tabulka) -->
+  <div class="cv-col" style="width:984px">
+    <div class="cv-cap">Správce na počítači</div>
+    <div class="cv-panel">
+      <div style="height:40px;background:#424242;display:flex;align-items:center;padding:0 16px;gap:10px">
+        <i class="fa-solid fa-bolt" style="color:#fff;font-size:13px"></i>
+        <span style="color:#fff;font-weight:800;font-size:15px;letter-spacing:-.01em">aptien</span>
+        <div style="flex:1"></div>
+        <div style="width:24px;height:24px;border-radius:50%;background:#8d8d8d;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:800">JR</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 20px;border-bottom:1px solid #f0eef8">
+        <i class="fa-solid fa-helmet-safety" style="font-size:16px;color:#D84315"></i>
+        <span style="font-size:15px;font-weight:800;color:#1e1b2e">Ochranné pomůcky</span>
+        <div style="display:flex;align-items:center;gap:7px;background:#D84315;color:#fff;font-size:11px;font-weight:800;padding:6px 14px;border-radius:999px;letter-spacing:.04em;box-shadow:0 2px 6px rgba(216,67,21,.28)"><i class="fa-solid fa-plus" style="font-size:10px"></i>PŘIDAT POMŮCKU</div>
+        <div style="display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #e0dded;border-radius:999px;padding:5px 14px;width:150px">
+          <i class="fa-solid fa-magnifying-glass" style="color:#b0aac8;font-size:12px"></i>
+          <span style="font-size:12px;color:#c0bdd0">Hledej...</span>
+        </div>
+        <div style="flex:1"></div>
+        <div style="display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;font-size:12px;font-weight:600;border:1.5px solid #1572e8;background:#e8f0fd;color:#1572e8"><i class="fa-solid fa-table" style="font-size:12px"></i>Tabulka</div>
+      </div>
+      <div>
+        <div style="display:flex;padding:9px 20px;background:#faf9fc;border-bottom:1px solid #eeecf5;font-size:11px;font-weight:800;color:#6b6585;letter-spacing:.03em">
+          <span style="flex:2.2">Pomůcka</span><span style="flex:1.4">Zaměstnanec</span><span style="flex:1.1">Středisko</span><span style="flex:.9">Vydáno</span><span style="width:110px">Stav</span>
+        </div>
+        <div style="display:flex;align-items:center;padding:10px 20px;border-bottom:1px solid #f6f5fa;font-size:12.5px;color:#1e1b2e">
+          <span style="flex:2.2;font-weight:600">Ochranná přilba MSA V-Gard</span><span style="flex:1.4">Petr Novák</span><span style="flex:1.1;color:#6b6585">Hala B</span><span style="flex:.9;color:#6b6585">4. 3. 2026</span><span style="width:110px"><span style="font-size:11px;font-weight:800;color:#fff;background:#43A047;border-radius:999px;padding:3px 10px">Vydáno</span></span>
+        </div>
+        <div style="display:flex;align-items:center;padding:10px 20px;border-bottom:1px solid #f6f5fa;font-size:12.5px;color:#1e1b2e">
+          <span style="flex:2.2;font-weight:600">Pracovní rukavice Ansell 11-435</span><span style="flex:1.4">Marie Dvořáková</span><span style="flex:1.1;color:#6b6585">Sklad</span><span style="flex:.9;color:#6b6585">17. 5. 2026</span><span style="width:110px"><span style="font-size:11px;font-weight:800;color:#fff;background:#FB8C00;border-radius:999px;padding:3px 10px">Vyměnit</span></span>
+        </div>
+        <div style="display:flex;align-items:center;padding:10px 20px;border-bottom:1px solid #f6f5fa;font-size:12.5px;color:#1e1b2e">
+          <span style="flex:2.2;font-weight:600">Respirátor 3M 8822 FFP2</span><span style="flex:1.4">Jan Bílek</span><span style="flex:1.1;color:#6b6585">Lakovna</span><span style="flex:.9;color:#6b6585">2. 6. 2026</span><span style="width:110px"><span style="font-size:11px;font-weight:800;color:#fff;background:#43A047;border-radius:999px;padding:3px 10px">Vydáno</span></span>
+        </div>
+        <div style="display:flex;align-items:center;padding:10px 20px;border-bottom:1px solid #f6f5fa;font-size:12.5px;color:#1e1b2e">
+          <span style="flex:2.2;font-weight:600">Ochranné brýle uvex i-3</span><span style="flex:1.4">Petr Novák</span><span style="flex:1.1;color:#6b6585">Hala B</span><span style="flex:.9;color:#6b6585">2. 6. 2026</span><span style="width:110px"><span style="font-size:11px;font-weight:800;color:#fff;background:#43A047;border-radius:999px;padding:3px 10px">Vydáno</span></span>
+        </div>
+        <div style="display:flex;align-items:center;padding:10px 20px;border-bottom:1px solid #f6f5fa;font-size:12.5px;color:#1e1b2e">
+          <span style="flex:2.2;font-weight:600">Bezpečnostní obuv Bata Industrials</span><span style="flex:1.4">Jan Bílek</span><span style="flex:1.1;color:#6b6585">Lakovna</span><span style="flex:.9;color:#6b6585">21. 6. 2026</span><span style="width:110px"><span style="font-size:11px;font-weight:800;color:#fff;background:#43A047;border-radius:999px;padding:3px 10px">Vydáno</span></span>
+        </div>
+        <div style="display:flex;align-items:center;padding:10px 20px;border-bottom:1px solid #f6f5fa;font-size:12.5px;color:#1e1b2e">
+          <span style="flex:2.2;font-weight:600">Chrániče sluchu Peltor X4A</span><span style="flex:1.4">Marie Dvořáková</span><span style="flex:1.1;color:#6b6585">Sklad</span><span style="flex:.9;color:#6b6585">30. 6. 2026</span><span style="width:110px"><span style="font-size:11px;font-weight:800;color:#fff;background:#43A047;border-radius:999px;padding:3px 10px">Vydáno</span></span>
+        </div>
+        <div style="display:flex;align-items:center;padding:10px 20px;border-bottom:1px solid #f6f5fa;font-size:12.5px;color:#1e1b2e">
+          <span style="flex:2.2;font-weight:600">Svářečská kukla Speedglas 9100</span><span style="flex:1.4">Tomáš Král</span><span style="flex:1.1;color:#6b6585">Svařovna</span><span style="flex:.9;color:#6b6585">14. 7. 2026</span><span style="width:110px"><span style="font-size:11px;font-weight:800;color:#fff;background:#43A047;border-radius:999px;padding:3px 10px">Vydáno</span></span>
+        </div>
+        <div style="display:flex;align-items:center;padding:10px 20px;border-bottom:1px solid #f6f5fa;font-size:12.5px;color:#1e1b2e">
+          <span style="flex:2.2;font-weight:600">Reflexní vesta HiVis 2.0</span><span style="flex:1.4">Petr Novák</span><span style="flex:1.1;color:#6b6585">Hala B</span><span style="flex:.9;color:#6b6585">27. 7. 2026</span><span style="width:110px"><span style="font-size:11px;font-weight:800;color:#fff;background:#43A047;border-radius:999px;padding:3px 10px">Vydáno</span></span>
+        </div>
+        <div style="display:flex;align-items:center;padding:10px 20px;font-size:12.5px;color:#1e1b2e">
+          <span style="flex:2.2;font-weight:600">Ochranný oblek Tyvek 500</span><span style="flex:1.4">Tomáš Král</span><span style="flex:1.1;color:#6b6585">Lakovna</span><span style="flex:.9;color:#6b6585">3. 8. 2026</span><span style="width:110px"><span style="font-size:11px;font-weight:800;color:#fff;background:#FB8C00;border-radius:999px;padding:3px 10px">Vyměnit</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+</section>
+
+</body>
+</html>

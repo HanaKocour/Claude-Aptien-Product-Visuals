@@ -19,7 +19,8 @@ Tady je detail, odůvodnění a checklist.
 | Formát souboru | PNG (bezztrátový), pokud není řečeno jinak |
 
 Uvnitř té 1536px vrstvy se používají **běžné velikosti aplikace** – text 13–16 px,
-ikony 14–21 px, horní lišta 66 px, sidebar 260 px. Zvětšení 1,25× obstará rám,
+ikony 14–21 px, horní lišta 66 px, sidebar **56 px (výchozí sbalený stav)**
+nebo 220 px (otevřený, jen na zadání). Zvětšení 1,25× obstará rám,
 v markupu se nic nepřepočítává.
 
 Ve výsledném obrázku pak běžný text vychází na **~19 px** – UI působí, jako by se
@@ -73,8 +74,10 @@ Chromium CLI: `--window-size=1536,864 --force-device-scale-factor=1.25`
 **Tabulka kapitol se do dashboardu už nevejde** – patří na samostatný vizuál
 pohledu „Tabulka" nebo „Seznam". Nedávat ji na dashboard a nedoufat, že to projde.
 
-Sidebar má 22 položek a v 864 px končí u *„Směrnice a dokumenty"*. **To je
-v pořádku** – v reálné aplikaci sidebar taky scrolluje. Odříznutý sidebar dole
+Sidebar má 22 položek a je ve **výchozím stavu sbalený (56 px, jen ikony,
+bez viditelného posuvníku)** – vejde se ho tak do 864 px víc a obsahu vpravo
+zbývá ~164 px navíc. I tak může spodní ikona odejít pod hranu: **to je
+v pořádku** – v reálné aplikaci sidebar taky roluje. Odříznutý sidebar dole
 není chyba, odříznutý **obsah vpravo nebo hlavní pohled dole je chyba.**
 
 Když se skladba nevejde, **ubírej obsah** (méně karet, nižší banner, méně řádků),

@@ -1,20 +1,14 @@
 <!--
-  APTIEN — LEVÉ MENU (sidebar) · OTEVŘENÝ (VÝCHOZÍ) STAV
+  APTIEN — LEVÉ MENU (sidebar) · OTEVŘENÝ (ROZBALENÝ) STAV
   ================================================================
-  Toto je VÝCHOZÍ stav menu — při generování obrazovky ho použij VŽDY,
-  pokud zadání výslovně nežádá sbalené menu. VLOŽ TENTO BLOK CELÝ, beze
-  změny struktury. NEREKONSTRUUJ menu z hlavy a NEPOUŽÍVEJ Font Awesome
-  třídy pro ikony položek — ikony jsou zde jako inline SVG (část z nich
-  je FA Pro a ve Free CDN by se nevykreslila).
-
-  Menu je SBALITELNÉ (ikona šipky nahoře). Sbalený (collapsed) stav —
-  jen ikony, nav 56px, žádný text/badge, obsah vedle sidebaru se
-  automaticky roztáhne (má flex:1;min-width:0) — je hotový jako
-  samostatný soubor `sidebar-menu-collapsed.html`. Použij ho MÍSTO
-  tohoto souboru pouze na výslovné zadání ("sbalené menu", "zavřený
-  sidebar", "collapsed", "jen ikony"); jinak vždy generuj OTEVŘENÝ stav
-  (tento soubor) — přesně jako výchozí `sidebarCollapsed:false` v master
-  prototypu `Aptien-aplikace-offline.html`.
+  ⚠️ Toto NENÍ výchozí stav. Výchozí je **sbalené** menu
+  (`sidebar-menu-collapsed.html`, 56px, jen ikony) — odpovídá
+  `sidebarCollapsed:true` v master prototypu. Tento soubor použij POUZE na
+  výslovné zadání („otevřené menu", „rozbalený sidebar", „menu s texty",
+  „menu s popisky"). VLOŽ TENTO BLOK CELÝ, beze změny struktury.
+  NEREKONSTRUUJ menu z hlavy a NEPOUŽÍVEJ Font Awesome třídy pro ikony
+  položek — ikony jsou zde jako inline SVG (část z nich je FA Pro a ve Free
+  CDN by se nevykreslila).
 
   Co smíš měnit:
     - profil (jméno / role / avatar) dle persony,
@@ -22,10 +16,7 @@
       odpovídá otevřené obrazovce (jinak nech „Moje domovská stránka").
   Co NIKDY neměň: pořadí a počet položek (15 + 7), texty, ikony, barvy.
 
-  Aktivní položka = background:rgba(21,114,232,.10); color:#1572e8;
-    font-weight:700; a barva ikony (span) #1572e8.
-  Neaktivní = background:transparent; color:#555; ikona #9a93b5.
-  Badge: alert = #FF3D00/bílá, grey = #e6e3ef/#8a84a0.
+  Aktivní položka = pozadí rgba(21,114,232,.10) + text/ikona #1572e8.
 -->
 <nav style="width:220px;flex-shrink:0;background:#fff;border-right:1px solid #ececec;display:flex;flex-direction:column;overflow-y:auto;padding-bottom:20px;font-family:'Nunito',sans-serif">
 

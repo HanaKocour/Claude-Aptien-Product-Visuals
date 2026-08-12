@@ -5,16 +5,24 @@ celé menu se všemi položkami**, ve stejném pořadí, se stejnými ikonami.
 Nic nevynechávej, nepřidávej ani nepřejmenovávej.*
 
 > ✅ **Nejjednodušší a nejspolehlivější cesta: vlož hotový statický blok
-> `partials/sidebar-menu.html` CELÝ** (obsahuje všech 15 + 7 položek,
+> `partials/sidebar-menu-collapsed.html` CELÝ** — nebo
+> `partials/sidebar-menu.html`, když zadání žádá otevřené menu (oba
+> obsahují všech 15 + 7 položek,
 > inline SVG ikony, správné barvy, aktivní stav i badge). Neskládej menu
 > z hlavy – jen přesuň aktivní stav na položku dle otevřené obrazovky a
 > uprav personu. Tabulka níže je referenční přehled obsahu toho bloku.
 
-> ✅ **Sbalený (collapsed) stav = samostatný soubor
-> `partials/sidebar-menu-collapsed.html`.** Použij ho MÍSTO otevřeného
-> menu jen na výslovné zadání ("sbalené menu", "zavřený sidebar",
-> "collapsed", "jen ikony"). Jinak generuj vždy otevřený stav — to je
-> výchozí chování (odpovídá `sidebarCollapsed:false` v master prototypu).
+> ⭐ **VÝCHOZÍ STAV JE SBALENÝ (collapsed) = `partials/sidebar-menu-collapsed.html`**
+> (56 px, jen ikony). Používej ho vždy, pokud zadání výslovně nežádá otevřené
+> menu. Odpovídá `sidebarCollapsed:true` v master prototypu.
+> **Otevřený stav (`partials/sidebar-menu.html`, 220 px s texty a badgi)
+> generuj jen na výslovné zadání** („otevřené menu", „rozbalený sidebar",
+> „menu s texty", „menu s popisky").
+>
+> ⛔ **Sbalené menu NEZOBRAZUJE posuvník** — obsah se dál roluje, ale
+> scrollbar je skrytý (`scrollbar-width:none` + `::-webkit-scrollbar{width:0}`
+> přes třídu `aptien-sb-collapsed`). V 56px pruhu by zabral desetinu šířky.
+> Detail: pravidla UI §3.0.
 
 > **Ikony:** názvy ve sloupci „Ikona" jsou přesné soubory ze složky
 > **`Awesome-font-icons/`** (Font Awesome, styl `solid` + `fw`).
@@ -59,10 +67,11 @@ Nic nevynechávej, nepřidávej ani nepřejmenovávej.*
 2. **Skupina „MŮJ PRACOVNÍ PROSTOR"** – 15 osobních položek (viz níže).
 3. **Skupina „NAŠE FIRMA"** – 7 firemních položek (viz níže).
 4. Menu je **sbalitelné** (jen ikony, přes šipku nahoře) a **rolovatelné**.
-   Otevřený stav (výchozí, 220px) = `sidebar-menu.html`. Sbalený stav
-   (56px, jen ikony, bez badge a nadpisů skupin, obsah vedle sidebaru se
-   automaticky roztáhne) = `sidebar-menu-collapsed.html` — použij ho jen
-   na výslovné zadání, jinak vždy generuj otevřený stav.
+   **Sbalený stav je VÝCHOZÍ** (56px, jen ikony, bez badge, bez nadpisů
+   skupin, **bez viditelného posuvníku**; obsah vedle sidebaru se
+   automaticky roztáhne) = `sidebar-menu-collapsed.html`. Otevřený stav
+   (220px, texty + badge) = `sidebar-menu.html` — použij jen na výslovné
+   zadání.
 
 ---
 

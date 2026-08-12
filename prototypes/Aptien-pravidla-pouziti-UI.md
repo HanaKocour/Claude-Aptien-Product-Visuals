@@ -62,6 +62,36 @@ Menu je rozdělené do dvou logických skupin. Každá položka = **ikona
 zvýrazněná, ostatní tlumené. Menu je **sbalitelné** (jen ikony) a
 **rolovatelné** nezávisle na obsahu; dole je sekce profilu.
 
+#### 3.0 Výchozí stav sidebaru = SBALENÝ (PEVNÉ pravidlo)
+
+> ⭐ **Výchozí stav menu je SBALENÝ (collapsed).** Odpovídá
+> `sidebarCollapsed:true` v master prototypu. Otevřený (rozbalený) stav se
+> generuje **jen na výslovné zadání.**
+
+| Stav | Šířka | Obsah | Kdy |
+|---|---|---|---|
+| **Sbalený (VÝCHOZÍ)** | **56 px** | jen ikony (15 + 7), aktivní stav, avatar; **bez textů, bez nadpisů skupin, bez badgí** | vždy, pokud zadání nežádá jinak |
+| Otevřený | 220 px | ikona + text, nadpisy skupin, badge, profil s jménem a rolí | jen na výslovné zadání („otevřené menu", „rozbalený sidebar", „menu s texty") |
+
+Hotové bloky: `partials/sidebar-menu-collapsed.html` (výchozí) a
+`partials/sidebar-menu.html` (otevřený). Přepínají se šipkou nahoře
+(`fa-angles-right` ve sbaleném, `fa-angles-left` v otevřeném) přes
+`toggleSidebar()`.
+
+⛔ **SBALENÝ SIDEBAR NEZOBRAZUJE POSUVNÍK.** Obsah se dál roluje (22 položek
+se do 864 px nevejde), ale scrollbar je **skrytý**:
+
+```
+scrollbar-width: none;  -ms-overflow-style: none;
+.aptien-sb-collapsed::-webkit-scrollbar { width: 0; height: 0; }
+```
+
+V 56px pruhu by posuvník zabral přes desetinu šířky a opticky rozsekal
+svislou řadu ikon. V **otevřeném** stavu posuvník zůstává normální.
+
+Obsah vedle sidebaru má vždy `flex:1;min-width:0`, takže se při sbaleném
+menu automaticky roztáhne o uvolněných ~164 px — nic se nepřepočítává.
+
 ### 3.1 Osobní / pracovní věci uživatele (NAV_WORK)
 
 | Položka | Ikona | Badge |
@@ -989,7 +1019,7 @@ Poslední úprava*.
 |---|---|
 | **Top bar** | Tmavě šedý pruh (`#424242`, výška 56 px), vlevo bílé logo + název prostoru, vpravo akční ikony. Notifikační bublina u zvonečku je **vždy červená `#FF3D00`** (počítadlo/alert), nikdy modrá; lem v barvě top baru. |
 | **Tab strip** | Tmavě šedý pruh (`#424242`) se záložkami otevřených záznamů; **aktivní záložka = barva modulu `c800`** (bílý text), neaktivní bílé s textem dle `c800`, zaoblené horní rohy. |
-| **Sidebar menu** | **Bílý panel** (`#fff`, šířka 220 px, pravý okraj `1px solid var(--gray-10)`), dvě skupiny (osobní / „Naše firma"), ikona+text, badge, sbalitelné, rolovatelné, profil dole; aktivní položka = tint `rgba(21,114,232,.10)` + text `#1572e8`. |
+| **Sidebar menu** | **Bílý panel** (`#fff`, pravý okraj `1px solid var(--gray-10)`), **výchozí stav sbalený = 56 px jen ikony bez posuvníku**, otevřený 220 px (ikona+text, badge, nadpisy skupin) jen na zadání; dvě skupiny (osobní / „Naše firma"), rolovatelné, profil dole; aktivní položka = tint `rgba(21,114,232,.10)` + text `#1572e8`. Viz §3.0. |
 | **Content area** | Hlavní plocha; hostí dashboard / seznam / kanban / tabulku. Světlé pozadí (`--canvas #f9f9fb`). |
 | **View switcher** | Výsuvný „pill" přepínač pohledů (Dashboard / Seznam / Kanban / Tabulka / Kalendář). |
 | **Hero banner** | Úvodní blok dashboardu s názvem oblasti a popisem. Pozadí = **2-stupňový gradient** (`135deg`): 1. barva = základní barva modulu (`c800`), 2. barva = tatáž barva +30 % bílé. Viz 9.1. |
@@ -1033,9 +1063,11 @@ natvrdo zapsané hodnoty.**
   avatary/štítky, jen se už nepoužívá pro top bar.)
 
 **Sidebar (světlé menu):** bílá plocha `#fff`, pravý okraj
-`1px solid var(--gray-10)`, šířka 220 px; popisky skupin `10px/700`
-uppercase `var(--gray-60)` LS `.08em`; položky text `#555`, aktivní =
-tint `rgba(21,114,232,.10)` + text `#1572e8`.
+`1px solid var(--gray-10)`; **šířka 56 px ve výchozím sbaleném stavu**,
+220 px v otevřeném (§3.0); popisky skupin `10px/700` uppercase
+`var(--gray-60)` LS `.08em` (jen v otevřeném stavu); položky text `#555`,
+aktivní = tint `rgba(21,114,232,.10)` + text `#1572e8`. Sbalený stav je
+bez viditelného posuvníku.
 
 **Záložky:** aktivní = barva modulu (`c800`, bílý text), neaktivní bílé
 s textem v barvě modulu (`c800`).

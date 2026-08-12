@@ -358,6 +358,8 @@
     .commentItem.toRight .item-Content .comment-info{text-align:right;}
     .commentItem.toRight .item-Avatar{margin:5px 0 10px 5px;}
     ::-webkit-scrollbar-track { background: transparent; }
+    /* Sbalený sidebar bez posuvníku (§3) — obsah se dál roluje. */
+    .aptien-sb-collapsed::-webkit-scrollbar { width: 0; height: 0; }
     .risk-row:hover { background: rgba(233,30,99,.04) !important; }
     .op-row:hover { background: rgba(216,67,21,.04) !important; }
     .zak-row:hover { background: rgba(21,101,192,.05) !important; }
@@ -410,7 +412,7 @@
   <div style="flex:1;display:flex;min-height:0;overflow:hidden">
 
     <!-- SIDEBAR -->
-    <nav style="{{ sidebarStyle }}">
+    <nav class="{{ sidebarClass }}" style="{{ sidebarStyle }}">
       <div style="display:flex;justify-content:{{ collapseAlign }};padding:8px 14px 2px">
         <i class="{{ collapseIconCls }}" sc-camel-on-click="{{ toggleSidebar }}" style="color:#b9b4cf;font-size:15px;cursor:pointer"></i>
       </div>
@@ -2186,7 +2188,8 @@ class Component extends DCLogic {
     activeTab: 12,
     activeNav: 'domu',
     openKonvId: null,
-    sidebarCollapsed: false,
+    // VÝCHOZÍ STAV SIDEBARU = SBALENÝ (jen ikony, 56px). Pravidla §3.
+    sidebarCollapsed: true,
     views: { 0: 'seznam', 2: 'dashboard', 8: 'dashboard', 12: 'kanban' },
     drawerOpen: false,
     drawerModule: null,  // 'rizika' | 'op' | 'zakazky' | 'zamestnanec'
@@ -2833,7 +2836,11 @@ class Component extends DCLogic {
     const activeTabLabel = activeTabData ? activeTabData.label : '';
 
     // ── Sidebar ──
-    const sidebarStyle = 'width:' + (collapsed ? '56px' : '220px') + ';flex-shrink:0;background:#fff;border-right:1px solid #ececec;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;padding-bottom:20px;transition:width .22s ease';
+    // Sbalený sidebar NEZOBRAZUJE posuvník (obsah se dál roluje) — v 56px
+    // pruhu by scrollbar zabral desetinu šířky a rozsekal ikony. §3
+    const sidebarStyle = 'width:' + (collapsed ? '56px' : '220px') + ';flex-shrink:0;background:#fff;border-right:1px solid #ececec;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;padding-bottom:20px;transition:width .22s ease'
+      + (collapsed ? ';scrollbar-width:none;-ms-overflow-style:none' : '');
+    const sidebarClass = collapsed ? 'aptien-sb-collapsed' : '';
     const showSidebarFull = !collapsed;
     const showSidebarCollapsed = collapsed;
     const collapseIconCls = collapsed ? 'fa-solid fa-angles-right' : 'fa-solid fa-angles-left';
@@ -3295,7 +3302,7 @@ class Component extends DCLogic {
     return {
       // shared
       tabItems, activeTabColor, activeTabIcon, activeTabLabel,
-      sidebarStyle, showSidebarFull, showSidebarCollapsed, collapseIconCls, collapseAlign,
+      sidebarStyle, sidebarClass, showSidebarFull, showSidebarCollapsed, collapseIconCls, collapseAlign,
       toggleSidebar: () => this.toggleSidebar(),
       navWork, navCompany, contentAreaBg, viewButtons,
       // content routing
