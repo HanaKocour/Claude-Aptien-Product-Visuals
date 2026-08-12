@@ -959,14 +959,6 @@
         </div>
       </sc-if>
 
-      <!-- ══ ZAKÁZKY — KALENDÁŘ (placeholder) ══ -->
-      <sc-if value="{{ showZakCalPlaceholder }}" hint-placeholder-val="{{ false }}">
-        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">
-          <i class="fa-solid fa-calendar" style="font-size:38px;color:#d0cce0"></i>
-          <div style="font-size:16px;font-weight:800;color:#3c4150">Kalendář</div>
-          <div style="font-size:12px;color:#9aa2b0">Tento pohled bude dostupný v dalším kroku</div>
-        </div>
-      </sc-if>
 
       <!-- ══════════════════════════════════════
            SMĚRNICE — MOJE SMĚRNICE (main)
@@ -1219,6 +1211,98 @@
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#f5f6f7">
           <i class="fa-solid fa-users" style="font-size:36px;opacity:.18;color:#2b2d30"></i>
           <div style="font-size:15px;font-weight:700;color:#6c7280">Tento pohled bude přidán v dalším kroku</div>
+        </div>
+      </sc-if>
+
+
+      <!-- ══ AUDITY A KONTROLY ══ -->
+      <!-- ══ TOOLBAR: AUDITY A KONTROLY ══ -->
+      <sc-if value="{{ showAudToolbar }}" hint-placeholder-val="{{ false }}">
+        <div style="flex-shrink:0;padding:10px 20px;display:flex;align-items:center;gap:10px">
+          <i class="fa-solid fa-clipboard-check" style="font-size:18px;color:#FF8F00;flex-shrink:0"></i>
+          <span style="font-size:16px;font-weight:800;color:#1e1b2e;flex-shrink:0">Audity a kontroly</span>
+          <i class="fa-solid fa-circle-info" style="color:#b0aac8;font-size:13px;cursor:pointer;flex-shrink:0"></i>
+          <div style="display:flex;align-items:center;gap:7px;background:#FF8F00;color:#fff;font-size:11px;font-weight:800;padding:6px 14px;border-radius:999px;cursor:pointer;letter-spacing:.04em;white-space:nowrap;box-shadow:0 2px 6px rgba(255,143,0,.28);flex-shrink:0">
+            <i class="fa-solid fa-plus" style="font-size:10px"></i>PŘIDAT AUDIT
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #e0dded;border-radius:999px;padding:5px 14px;flex-shrink:0;width:190px">
+            <i class="fa-solid fa-magnifying-glass" style="color:#b0aac8;font-size:12px"></i>
+            <span style="font-size:12px;color:#c0bdd0">Hledej...</span>
+          </div>
+          <i class="fa-regular fa-star" style="color:#c5c0d8;font-size:15px;cursor:pointer;flex-shrink:0"></i>
+          <i class="fa-solid fa-filter" style="color:#c5c0d8;font-size:13px;cursor:pointer;flex-shrink:0"></i>
+          <div style="flex:1"></div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <sc-for list="{{ viewButtons }}" as="vb" hint-placeholder-count="5">
+              <div sc-camel-on-click="{{ vb.onClick }}" style="{{ vb.style }}"><i class="{{ vb.icon }}" style="font-size:12px"></i>{{ vb.label }}</div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ══ AUDITY A KONTROLY — OSTATNÍ POHLEDY (příprava) ══ -->
+      <sc-if value="{{ showAudPlaceholder }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#f5f6f7">
+          <i class="fa-solid fa-clipboard-check" style="font-size:36px;opacity:.18;color:#2b2d30"></i>
+          <div style="font-size:15px;font-weight:700;color:#6c7280">Tento pohled bude přidán v dalším kroku</div>
+        </div>
+      </sc-if>
+
+      <!-- ══════════════════════════════════════
+           EVIDENCE — POHLED KALENDÁŘ (generický: Zaměstnanci / Zakázky / Audity)
+           Pravidla §5.5. Skladba: navigační lišta (‹ › + název období + přepínač
+           Den/Týden/Měsíc/1 Rok) → mřížka (sticky hlavička period, sticky levý
+           sloupec položek, buňka = svisle stohované pruhy + „+další: N").
+           Barvy pruhů = PEVNÉ ROLE (modrá plán / červená zápis / fialová událost).
+           Přepínač období je TMAVĚ ŠEDÝ #424242 s inverzí aktivní volby — NENÍ to
+           view switcher a nikdy není modrý.
+      ══════════════════════════════════════ -->
+      <sc-if value="{{ showCalendar }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;display:flex;flex-direction:column;min-height:0;padding:0 20px 14px">
+
+          <!-- navigační lišta kalendáře -->
+          <div style="flex-shrink:0;display:flex;align-items:center;gap:9px;padding:8px 0 10px">
+            <div sc-camel-on-click="{{ cal_onPrev }}" style="{{ cal_circleStyle }}"><i class="fa-solid fa-chevron-left"></i></div>
+            <div sc-camel-on-click="{{ cal_onNext }}" style="{{ cal_circleStyle }}"><i class="fa-solid fa-chevron-right"></i></div>
+            <div style="flex:1;text-align:center;font-size:17px;font-weight:800;color:#1e1b2e;white-space:nowrap">{{ cal_title }}</div>
+            <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+              <sc-for list="{{ cal_periodPills }}" as="pp" hint-placeholder-count="4">
+                <div sc-camel-on-click="{{ pp.onClick }}" style="{{ pp.style }}">{{ pp.label }}</div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- mřížka: období × položky evidence -->
+          <div style="flex:1;min-height:0;overflow:auto;background:#fff;border:1px solid #e4e2ed;border-radius:10px">
+            <div style="{{ cal_innerStyle }}">
+              <!-- značka „teď" -->
+              <div style="{{ cal_markerStyle }}"></div>
+              <div style="{{ cal_markerTriStyle }}"></div>
+              <!-- hlavička period -->
+              <div style="display:flex;position:sticky;top:0;z-index:3;background:#fff;border-bottom:1px solid #e4e2ed">
+                <div style="{{ cal_hdrFirstStyle }}">{{ cal_firstHdr }}</div>
+                <sc-for list="{{ cal_headCells }}" as="hc" hint-placeholder-count="12">
+                  <div style="{{ hc.style }}">{{ hc.label }}</div>
+                </sc-for>
+              </div>
+              <!-- řádky = položky evidence -->
+              <sc-for list="{{ cal_rows }}" as="row" hint-placeholder-count="16">
+                <div style="display:flex;min-height:28px">
+                  <div style="{{ cal_nameStyle }}">{{ row.name }}</div>
+                  <sc-for list="{{ row.cells }}" as="cell" hint-placeholder-count="12">
+                    <div style="{{ cal_cellStyle }}">
+                      <sc-for list="{{ cell.bars }}" as="bar" hint-placeholder-count="1">
+                        <div style="{{ bar.style }}" title="{{ bar.title }}"><span style="{{ bar.timeStyle }}">{{ bar.time }}</span>{{ bar.text }}</div>
+                      </sc-for>
+                      <sc-if value="{{ cell.showMore }}" hint-placeholder-val="{{ false }}">
+                        <div style="font-size:10px;font-weight:700;color:#8b8698;padding:1px 5px 2px;cursor:pointer;white-space:nowrap">{{ cell.moreLabel }}</div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </div>
+          </div>
         </div>
       </sc-if>
 
@@ -2116,6 +2200,8 @@ class Component extends DCLogic {
     selectedSmernCat: null,
     smernConfirmedOpen: false,
     tablePageSize: 10,
+    // Pohled Kalendář: období se drží PER ZÁLOŽKA (stejně jako `views`), default 'rok'.
+    calPeriods: { 0: 'rok', 12: 'rok', 14: 'rok' },
     zamItemTab: 'detaily',
     zamOpenGroups: { nastup: true, zdravi: true }
   };
@@ -2429,6 +2515,140 @@ class Component extends DCLogic {
     { name: 'Eva Sedláková', position: 'Recepční', initials: 'ES', color: '#00695C', planStatus: 'ok', planLabel: '3 V pořádku' }
   ];
 
+
+  // ══════════════════════════════════════════════════════════════════════
+  //  KALENDÁŘ (pohled „Kalendář" v evidenci) — pravidla §5.5
+  //  Barvy pruhů jsou PEVNÉ ROLE, nemění se podle modulu:
+  //    p = plánovaná aktivita #0091EA · z = zápis #EF5350 · u = událost #6200EA
+  //  Přepínač období je tmavě šedý #424242 (výjimka z modré, §5.5.3).
+  // ══════════════════════════════════════════════════════════════════════
+  CAL_KIND       = { p: '#0091EA', z: '#EF5350', u: '#6200EA' };
+  CAL_MONTHS     = ['led','\u00fano','b\u0159e','dub','kv\u011b','\u010dvn','\u010dvc','srp','z\u00e1\u0159','\u0159\u00edj','lis','pro'];
+  CAL_MONTHS_NOM = ['Leden','\u00danor','B\u0159ezen','Duben','Kv\u011bten','\u010cerven','\u010cervenec','Srpen','Z\u00e1\u0159\u00ed','\u0158\u00edjen','Listopad','Prosinec'];
+  CAL_MONTHS_GEN = ['ledna','\u00fanora','b\u0159ezna','dubna','kv\u011btna','\u010dervna','\u010dervence','srpna','z\u00e1\u0159\u00ed','\u0159\u00edjna','listopadu','prosince'];
+  CAL_DOW        = ['P','\u00da','S','\u010c','P','S','N'];   // po út st čt pá so ne
+  CAL_NOW        = { y: 2026, m: 8, d: 12, h: 10 };  // „teď" v prototypu = 12. 8. 2026 10:30
+  CAL_WEEK       = [10, 11, 12, 13, 14, 15, 16];     // zobrazený týden (10.–16. 8. 2026)
+  CAL_PERIODS    = [
+    { key: 'den',   label: 'Den' },
+    { key: 'tyden', label: 'T\u00fdden' },
+    { key: 'mesic', label: 'M\u011bs\u00edc' },
+    { key: 'rok',   label: '1 Rok' }
+  ];
+  // šířka sloupce jmen / šířka sloupce období / velikost písma hlavičky
+  CAL_GEOM = {
+    rok:   { name: 240, col:   86, fs: 11 },
+    mesic: { name: 188, col:   35, fs: 10 },
+    tyden: { name: 240, col:  147, fs: 11 },
+    den:   { name: 240, col: 1030, fs: 11 }
+  };
+
+  CAL_ZAM_YEAR = [
+    { name:'Adéla Sládková', cells:{5:[['Roční revize BOZP','p']],7:[['Oprava klávesnice','z']]} },
+    { name:'Aleš Coufal', cells:{7:[['Interní audit ISO 9001 – účastník','u']]} },
+    { name:'Alena Štiková', cells:{4:[['Pravidelné školení BOZP','p'],['Zápis ze školení','z']],7:[['Pravidelné školení BOZP','p'],['Zápis ze školení','z']],9:[['Kontrola OIP – účastník','u']]} },
+    { name:'Alexander Nagy', cells:{7:[['Výstupní pohovor','u'],['Předání agendy','z']]} },
+    { name:'Cole Edwin Turner', cells:{2:[['Školení jeřábníků','u'],['Zápis ze školení','z']],7:[['Školení jeřábníků','u']]} },
+    { name:'David Hašek', cells:{} },
+    { name:'Hana Kocourová', cells:{0:[['Nastavit plán na 30, 60 a 90 dní','p'],['Docházka – korekce','z']],1:[['Nastavit plán na 30, 60 a 90 dní','p']],2:[['Nastavit plán na 30, 60 a 90 dní','p'],['Školení řidičů','z']],5:[['Pravidelná lékařská prohlídka','z']],7:[['Nastavit plán na 30, 60 a 90 dní','p'],['Zápis z jednání','z']]}, more:{5:4,7:4} },
+    { name:'Jan Doležal', cells:{2:[['Nastavit plán na 30, 60 a 90 dní','p']],7:[['Předání notebooku','z']]} },
+    { name:'Karolína Fišerová', cells:{0:[['Pravidelné školení BOZP','p']],5:[['Vstupní lékařská prohlídka','z']],7:[['Hodnotící pohovor','u'],['Vstupní lékařská prohlídka','z']]} },
+    { name:'Lucie Marešová', cells:{5:[['Onboarding meeting','u']],7:[['Očkování','p']]} },
+    { name:'Michal Král', cells:{0:[['Denní kontrola linky','p']],1:[['Denní kontrola linky','p']],2:[['Denní kontrola linky','p']],3:[['Denní kontrola linky','p']],4:[['Denní kontrola linky','p']],5:[['Denní kontrola linky','p']],6:[['Denní kontrola linky','p']],7:[['Denní kontrola linky','p']],8:[['Denní kontrola linky','p']],9:[['Denní kontrola linky','p']],10:[['Denní kontrola linky','p']],11:[['Denní kontrola linky','p']]} },
+    { name:'Ondřej Vávra', cells:{0:[['Připravit mzdový výměr','p']],1:[['Připravit mzdový výměr','p']],2:[['Připravit mzdový výměr','p']],3:[['Připravit mzdový výměr','p']],4:[['Připravit mzdový výměr','p']],5:[['Připravit mzdový výměr','p']],6:[['Připravit mzdový výměr','p']],7:[['Připravit mzdový výměr','p']],8:[['Připravit mzdový výměr','p']],9:[['Připravit mzdový výměr','p']],10:[['Připravit mzdový výměr','p']],11:[['Připravit mzdový výměr','p']]} },
+    { name:'Petra Nováková', cells:{1:[['Revize mzdy','p']],7:[['Školení první pomoci','u']],10:[['Roční hodnocení','p']]} },
+    { name:'Radek Šimek', cells:{3:[['Docházka – korekce','z']],7:[['Zápis z jednání','z']]} },
+    { name:'Tereza Bláhová', cells:{7:[['Předání OOPP','z']],10:[['Hodnotící pohovor','u']]} },
+    { name:'Veronika Horáková', cells:{1:[['Pravidelné školení BOZP','p']],7:[['Pravidelné školení BOZP','p']],9:[['Audit GDPR – účastník','u']]} }
+  ];
+
+  CAL_ZAM_AUG = [
+    { name:'Adéla Sládková', items:[[3,null,'Oprava klávesnice','z']] },
+    { name:'Aleš Coufal', items:[[14,'9 - 12','Interní audit ISO 9001 – účastník','u']] },
+    { name:'Alena Štiková', items:[[10,null,'Pravidelné školení BOZP','p'],[12,'9:15','Zápis ze školení','z']] },
+    { name:'Alexander Nagy', items:[[4,'9:51','Výstupní pohovor','u'],[11,null,'Předání agendy','z']] },
+    { name:'Cole Edwin Turner', items:[[24,null,'Školení jeřábníků','u']] },
+    { name:'David Hašek', items:[] },
+    { name:'Hana Kocourová', items:[[4,'9:49','Oprava klávesnice','z'],[4,'9:52','Zápis z porady','z'],[10,'14:39 - 14:54','Zápis z jednání','z'],[10,'15 - 17','Meeting s dodavatelem','u'],[12,'8:30','Pravidelná lékařská prohlídka','z'],[16,null,'Nastavit plán na 30, 60 a 90 dní','p']] },
+    { name:'Jan Doležal', items:[[12,'11:15','Předání notebooku','z']] },
+    { name:'Karolína Fišerová', items:[[5,null,'Vstupní lékařská prohlídka','z'],[12,'13 - 14','Hodnotící pohovor','u']] },
+    { name:'Lucie Marešová', items:[[13,null,'Očkování','p']] },
+    { name:'Michal Král', items:[[1,null,'Denní kontrola linky','p'],[2,null,'Denní kontrola linky','p'],[3,null,'Denní kontrola linky','p'],[4,null,'Denní kontrola linky','p'],[5,null,'Denní kontrola linky','p'],[6,null,'Denní kontrola linky','p'],[7,null,'Denní kontrola linky','p'],[8,null,'Denní kontrola linky','p'],[9,null,'Denní kontrola linky','p'],[10,null,'Denní kontrola linky','p'],[11,null,'Denní kontrola linky','p'],[12,null,'Denní kontrola linky','p'],[13,null,'Denní kontrola linky','p'],[14,null,'Denní kontrola linky','p'],[15,null,'Denní kontrola linky','p'],[16,null,'Denní kontrola linky','p'],[17,null,'Denní kontrola linky','p'],[18,null,'Denní kontrola linky','p'],[19,null,'Denní kontrola linky','p'],[20,null,'Denní kontrola linky','p'],[21,null,'Denní kontrola linky','p'],[22,null,'Denní kontrola linky','p'],[23,null,'Denní kontrola linky','p'],[24,null,'Denní kontrola linky','p'],[25,null,'Denní kontrola linky','p'],[26,null,'Denní kontrola linky','p'],[27,null,'Denní kontrola linky','p'],[28,null,'Denní kontrola linky','p'],[29,null,'Denní kontrola linky','p'],[30,null,'Denní kontrola linky','p'],[31,null,'Denní kontrola linky','p']] },
+    { name:'Ondřej Vávra', items:[[25,null,'Připravit mzdový výměr','p']] },
+    { name:'Petra Nováková', items:[[7,null,'Školení první pomoci','u']] },
+    { name:'Radek Šimek', items:[[19,null,'Zápis z jednání','z']] },
+    { name:'Tereza Bláhová', items:[[26,null,'Předání OOPP','z']] },
+    { name:'Veronika Horáková', items:[[2,null,'Pravidelné školení BOZP','p']] }
+  ];
+
+  CAL_ZAK_YEAR = [
+    { name:'Balicí linka Alfa', cells:{1:[['Zápis z jednání se zákazníkem','z']],4:[['Kontrolní den','u']],8:[['Zápis z předávacího řízení','z']]} },
+    { name:'Detektor kovů BOEKELS', cells:{5:[['Předání zakázky','u']]} },
+    { name:'Dodávka palet 2026', cells:{0:[['Měsíční fakturace','p']],1:[['Měsíční fakturace','p']],2:[['Měsíční fakturace','p']],3:[['Měsíční fakturace','p']],4:[['Měsíční fakturace','p']],5:[['Měsíční fakturace','p']],6:[['Měsíční fakturace','p']],7:[['Měsíční fakturace','p']],8:[['Měsíční fakturace','p']],9:[['Měsíční fakturace','p']],10:[['Měsíční fakturace','p']],11:[['Měsíční fakturace','p']]} },
+    { name:'Dopravník L25', cells:{7:[['Zápis z reklamace','z'],['Jednání s dodavatelem','u']]} },
+    { name:'Kryty 400 ks', cells:{0:[['Zápis z jednání se zákazníkem','z']],2:[['Kontrolní den','u']],10:[['Předání zakázky','u']]} },
+    { name:'Montáž rozvodny R2', cells:{3:[['Zápis z kontroly kvality','z']],6:[['Kontrolní den','u']]}, more:{6:2} },
+    { name:'Obalovací linka 1', cells:{6:[['Zápis ze zkušebního provozu','z']],7:[['Zahájení realizace','u']]} },
+    { name:'Rekonstrukce skladu C', cells:{2:[['Zápis z kontrolního dne','z']],3:[['Zápis z kontrolního dne','z']],4:[['Zápis z kontrolního dne','z']],11:[['Kolaudace','u']]} },
+    { name:'Řezací stroj XPR200', cells:{8:[['Zápis o uvedení do provozu','z']]} },
+    { name:'Servis lisu HP-40', cells:{1:[['Zápis ze servisního zásahu','z']],9:[['Plánovaná odstávka','u']]} },
+    { name:'Modernizace linky Beta', cells:{5:[['Zápis z jednání se zákazníkem','z']],6:[['Zahájení realizace','u']],10:[['Kontrolní den','u']]} },
+    { name:'Výměna osvětlení hal', cells:{4:[['Zápis z obhlídky','z']],7:[['Předání zakázky','u']]} },
+    { name:'Zabezpečení areálu', cells:{9:[['Zápis z jednání','z']],11:[['Předání zakázky','u']]} },
+    { name:'Zabezpečení haly B', cells:{0:[['Zápis z obhlídky','z']],6:[['Kontrolní den','u'],['Zápis z kontroly','z']]} }
+  ];
+
+  CAL_ZAK_AUG = [
+    { name:'Balicí linka Alfa', items:[] },
+    { name:'Detektor kovů BOEKELS', items:[] },
+    { name:'Dodávka palet 2026', items:[[28,null,'Měsíční fakturace','p']] },
+    { name:'Dopravník L25', items:[[6,null,'Zápis z reklamace','z'],[11,'10 - 12','Jednání s dodavatelem','u']] },
+    { name:'Kryty 400 ks', items:[] },
+    { name:'Montáž rozvodny R2', items:[] },
+    { name:'Obalovací linka 1', items:[[12,'9:30','Zahájení realizace','u']] },
+    { name:'Rekonstrukce skladu C', items:[] },
+    { name:'Řezací stroj XPR200', items:[] },
+    { name:'Servis lisu HP-40', items:[] },
+    { name:'Modernizace linky Beta', items:[] },
+    { name:'Výměna osvětlení hal', items:[[20,null,'Předání zakázky','u']] },
+    { name:'Zabezpečení areálu', items:[] },
+    { name:'Zabezpečení haly B', items:[] }
+  ];
+
+  CAL_AUD_YEAR = [
+    { name:'Audit BOZP – výroba', cells:{2:[['Zápis z auditu','z']],8:[['Termín auditu','u']]} },
+    { name:'Audit dodavatele Metalux', cells:{4:[['Zápis z auditu dodavatele','z']],5:[['Následná kontrola','u']]} },
+    { name:'Audit GDPR', cells:{9:[['Zápis z auditu','z'],['Termín auditu','u']]} },
+    { name:'Audit systému kvality', cells:{1:[['Zápis z auditu','z']],7:[['Termín auditu','u']]} },
+    { name:'Dozorový audit ISO 27001', cells:{6:[['Zápis z dozorového auditu','z']],7:[['Termín auditu','u']]}, more:{7:1} },
+    { name:'Interní audit ISO 9001', cells:{0:[['Zápis z auditu','z']],3:[['Termín auditu','u']],9:[['Zápis z opakovaného auditu','z']]} },
+    { name:'Interní audit skladu', cells:{2:[['Čtvrtletní inventura','p']],5:[['Čtvrtletní inventura','p']],8:[['Čtvrtletní inventura','p']],11:[['Čtvrtletní inventura','p']]} },
+    { name:'Kontrola ČIŽP', cells:{10:[['Zápis z kontroly','z']]} },
+    { name:'Kontrola hygienické stanice', cells:{3:[['Zápis z kontroly','z']],4:[['Následná kontrola','u']]} },
+    { name:'Kontrola měřidel', cells:{0:[['Kalibrace měřidel','p']],6:[['Kalibrace měřidel','p']]} },
+    { name:'Kontrola OIP', cells:{9:[['Zápis z kontroly','z'],['Termín kontroly','u']]} },
+    { name:'Kontrola požární ochrany', cells:{5:[['Zápis z kontroly','z']],11:[['Termín kontroly','u']]} },
+    { name:'Recertifikace ISO 14001', cells:{8:[['Zápis z recertifikace','z']],9:[['Termín auditu','u']]}, more:{9:2} },
+    { name:'Revize elektro – hala A', cells:{1:[['Zápis z revize','z']],7:[['Termín revize','u']]} }
+  ];
+
+  CAL_AUD_AUG = [
+    { name:'Audit BOZP – výroba', items:[] },
+    { name:'Audit dodavatele Metalux', items:[] },
+    { name:'Audit GDPR', items:[] },
+    { name:'Audit systému kvality', items:[[18,'9 - 12','Termín auditu','u']] },
+    { name:'Dozorový audit ISO 27001', items:[[12,'8 - 16','Termín auditu','u'],[13,null,'Příprava podkladů','z']] },
+    { name:'Interní audit ISO 9001', items:[] },
+    { name:'Interní audit skladu', items:[] },
+    { name:'Kontrola ČIŽP', items:[] },
+    { name:'Kontrola hygienické stanice', items:[] },
+    { name:'Kontrola měřidel', items:[] },
+    { name:'Kontrola OIP', items:[] },
+    { name:'Kontrola požární ochrany', items:[] },
+    { name:'Recertifikace ISO 14001', items:[] },
+    { name:'Revize elektro – hala A', items:[[11,null,'Termín revize','u']] }
+  ];
+
   mkAvatar(user, size) {
     size = size || 26;
     if (user.usePhoto) return React.createElement('img', { src: (window.__resources && window.__resources.karAvatar) || 'uploads/karolina-avatar.png', style: { width: size + 'px', height: size + 'px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 } });
@@ -2440,6 +2660,122 @@ class Component extends DCLogic {
   setActiveView(key) {
     const tab = this.state.activeTab;
     if (tab !== null) this.setState(s => ({ views: { ...s.views, [tab]: key } }));
+  }
+
+
+  setCalPeriod(key) {
+    const tab = this.state.activeTab;
+    if (tab !== null) this.setState(s => ({ calPeriods: { ...s.calPeriods, [tab]: key } }));
+  }
+
+  // Písmeno dne týdne + číslo dne s tečkou — „S 12." (§5.5.4)
+  calDayLabel(d) {
+    const dow = new Date(this.CAL_NOW.y, this.CAL_NOW.m - 1, d).getDay();  // 0 = nedele
+    return this.CAL_DOW[(dow + 6) % 7] + ' ' + d + '.';
+  }
+
+  // ══ Výpočet pohledu Kalendář pro aktivní evidenci a období (§5.5) ══
+  calVals(activeTab, period) {
+    const P    = this.CAL_GEOM[period] ? period : 'rok';
+    const G    = this.CAL_GEOM[P];
+    const NOW  = this.CAL_NOW;
+    const KIND = this.CAL_KIND;
+    // Sloupec JMEN je pevný, sloupce OBDOBÍ jsou PRUŽNÉ (flex:1 + min-width),
+    // aby mřížka vyplnila celou šířku okna a při úzkém okně se vodorovně rolovala.
+    const boxN = w => 'width:' + w + 'px;flex:0 0 ' + w + 'px;box-sizing:border-box;';
+    const boxC = w => 'flex:1 1 0;min-width:' + w + 'px;box-sizing:border-box;';
+    const mod  = activeTab === 12 ? 'zak' : activeTab === 14 ? 'aud' : 'zam';
+    const firstHdr = mod === 'zak' ? 'Zak\u00e1zky' : mod === 'aud' ? 'Audity a kontroly' : 'Zam\u011bstnanci';
+
+    const hdrFirstStyle = 'position:sticky;left:0;z-index:5;background:#fff;' + boxN(G.name)
+      + 'padding:8px 12px;font-size:11.5px;font-weight:700;color:#3d3a52;border-right:1px solid #e4e2ed';
+    const hdrCellStyle = boxC(G.col) + 'padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;'
+      + 'font-size:' + G.fs + 'px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3';
+    const nameStyle = 'position:sticky;left:0;z-index:2;background:#fff;' + boxN(G.name)
+      + 'padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;'
+      + 'border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'
+      + 'display:flex;align-items:center';
+    const cellStyle = boxC(G.col) + 'padding:4px 3px;border-bottom:1px solid #eeedf4;'
+      + 'border-right:1px solid #f4f3f8;overflow:hidden';
+
+    const mkBar = (text, kind, time) => ({
+      style: 'background:' + KIND[kind] + ';color:#fff;font-size:10px;font-weight:600;line-height:1.2;'
+        + 'padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'
+        + 'margin-bottom:2px;cursor:pointer',
+      timeStyle: time ? 'font-weight:800;margin-right:4px' : 'display:none',
+      time: time || '', text: text, title: (time ? time + ' ' : '') + text
+    });
+    const mkCell = (bars, moreN) => ({
+      bars: bars, showMore: moreN > 0, moreLabel: moreN > 0 ? '+dal\u0161\u00ed: ' + moreN : ''
+    });
+
+    let headCells, rows, title, markerK, nCols;
+
+    if (P === 'rok') {
+      // Roční pohled: sloupec = měsíc. Aktivita s periodou <= 1 měsíc se ve sloupci
+      // objeví jen JEDNOU (proto je denní aktivita vidět 12x, ne 365x) — §5.5.5.
+      headCells = this.CAL_MONTHS.map(m => ({ style: hdrCellStyle, label: m }));
+      const data = mod === 'zak' ? this.CAL_ZAK_YEAR : mod === 'aud' ? this.CAL_AUD_YEAR : this.CAL_ZAM_YEAR;
+      rows = data.map(r => ({
+        name: r.name,
+        cells: this.CAL_MONTHS.map((m, i) =>
+          mkCell((r.cells[i] || []).map(b => mkBar(b[0], b[1], null)), (r.more || {})[i] || 0))
+      }));
+      title = String(NOW.y);
+      nCols = 12;
+      markerK = ((NOW.m - 1) + (NOW.d - 1 + NOW.h / 24) / 31) / 12;
+    } else {
+      // Pohledy po dnech: sloupec = den, pruh patří do buňky svého dne
+      // a NEROZTAHUJE se přes víc sloupců (§5.5.4).
+      const days = P === 'den' ? [NOW.d]
+                 : P === 'tyden' ? this.CAL_WEEK
+                 : Array.from({ length: 31 }, (v, i) => i + 1);
+      headCells = days.map(d => ({ style: hdrCellStyle, label: this.calDayLabel(d) }));
+      const data = mod === 'zak' ? this.CAL_ZAK_AUG : mod === 'aud' ? this.CAL_AUD_AUG : this.CAL_ZAM_AUG;
+      rows = data.map(r => ({
+        name: r.name,
+        cells: days.map(d => {
+          const hits = (r.items || []).filter(it => it[0] === d);
+          const shown = hits.slice(0, 3);
+          return mkCell(shown.map(it => mkBar(it[2], it[3], it[1])), hits.length - shown.length);
+        })
+      }));
+      title = P === 'den'
+        ? NOW.d + '. ' + this.CAL_MONTHS_GEN[NOW.m - 1] + ' ' + NOW.y
+        : P === 'tyden'
+          ? this.CAL_WEEK[0] + '. \u2013 ' + this.CAL_WEEK[6] + '. ' + NOW.m + '. ' + NOW.y
+          : this.CAL_MONTHS_NOM[NOW.m - 1] + ' ' + NOW.y;
+      const iNow = days.indexOf(NOW.d);
+      nCols = days.length;
+      markerK = ((iNow < 0 ? 0 : iNow) + NOW.h / 24) / days.length;
+    }
+
+    const markerPos = 'calc(' + G.name + 'px + (100% - ' + G.name + 'px) * ' + markerK.toFixed(6) + ')';
+    const pillBase = 'padding:6px 15px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;'
+      + 'white-space:nowrap;border:1.5px solid #424242;';
+    return {
+      cal_firstHdr: firstHdr, cal_title: title, cal_headCells: headCells, cal_rows: rows,
+      cal_hdrFirstStyle: hdrFirstStyle, cal_nameStyle: nameStyle, cal_cellStyle: cellStyle,
+      // Obal mřížky: min-width = součet minim, jinak se roztáhne na 100 % okna.
+      cal_innerStyle: 'position:relative;min-width:' + (G.name + nCols * G.col) + 'px',
+      // Značka „teď": svislá linka #FF3D00 + trojúhelník v hlavičce. Poloha je
+      // POMĚROVÁ (calc), aby držela i při roztažení sloupců; skrývá se za sticky
+      // sloupcem jmen (§5.5.2).
+      cal_markerStyle: 'position:absolute;top:0;bottom:0;left:' + markerPos
+        + ';width:2px;background:#FF3D00;z-index:1;pointer-events:none',
+      cal_markerTriStyle: 'position:absolute;top:0;left:calc(' + markerPos + ' - 4px);'
+        + 'width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;'
+        + 'border-top:7px solid #FF3D00;z-index:4;pointer-events:none',
+      cal_circleStyle: 'width:29px;height:29px;border-radius:999px;background:#424242;color:#fff;display:flex;'
+        + 'align-items:center;justify-content:center;cursor:pointer;font-size:12px;flex-shrink:0',
+      // Aktivní volba = INVERZE (bílé pozadí, šedý text). Nikdy modrá.
+      cal_periodPills: this.CAL_PERIODS.map(pp => ({
+        label: pp.label,
+        style: pillBase + (pp.key === P ? 'background:#fff;color:#424242' : 'background:#424242;color:#fff'),
+        onClick: () => this.setCalPeriod(pp.key)
+      })),
+      cal_onPrev: () => {}, cal_onNext: () => {}
+    };
   }
 
   confirmDoc(id) {
@@ -2468,7 +2804,7 @@ class Component extends DCLogic {
   // ── RENDER ───────────────────────────────
   renderVals() {
     const { activeTab, activeNav, sidebarCollapsed, drawerOpen, drawerModule, drawerStack, selectedIdx, drawerTab,
-            confirmedDocs, selectedDokCat, selectedSmernCat, smernConfirmedOpen, tablePageSize, zamItemTab, zamOpenGroups, zakSouvisOpen, zakSouvisGraph } = this.state;
+            confirmedDocs, selectedDokCat, selectedSmernCat, smernConfirmedOpen, tablePageSize, zamItemTab, zamOpenGroups, zakSouvisOpen, zakSouvisGraph, calPeriods } = this.state;
     const ACC = '#1572e8';
     const collapsed = sidebarCollapsed;
 
@@ -2480,7 +2816,8 @@ class Component extends DCLogic {
     const isZakázky    = activeTab === 12;
     const isSmernice   = activeTab === 4 || navOwnsContent;
     const isZamestnanec = activeTab === 0;
-    const hasActiveModule = isRizika || isOP || isZakázky || isSmernice || isZamestnanec || isKonv;
+    const isAudity     = activeTab === 14;
+    const hasActiveModule = isRizika || isOP || isZakázky || isSmernice || isZamestnanec || isAudity || isKonv;
     const nothingSelected = activeTab === null && !navOwnsContent && !isKonv;
 
     const activeView = (activeTab !== null ? this.state.views[activeTab] : null) || 'dashboard';
@@ -2532,11 +2869,12 @@ class Component extends DCLogic {
     });
 
     // ── Content flags ──
-    const showToolbar = isRizika || isOP || isZakázky || isZamestnanec;
+    const showToolbar = isRizika || isOP || isZakázky || isZamestnanec || isAudity;
     const showRizikaToolbar  = isRizika;
     const showOPToolbar      = isOP;
     const showZakToolbar     = isZakázky;
     const showZamToolbar     = isZamestnanec;
+    const showAudToolbar     = isAudity;
     const showRizikaDashboard = isRizika && activeView === 'dashboard';
     const showRizikaList      = isRizika && activeView !== 'dashboard';
     const showOPDashboard    = isOP && activeView === 'dashboard';
@@ -2545,13 +2883,16 @@ class Component extends DCLogic {
     const showZakList            = isZakázky && activeView === 'seznam';
     const showZakKanban          = isZakázky && activeView === 'kanban';
     const showZakTable           = isZakázky && activeView === 'tabulka';
-    const showZakCalPlaceholder  = isZakázky && activeView === 'kalendar';
+    // Pohled Kalendář je JEDEN generický blok pro všechny evidence, které ho mají
+    // (Zaměstnanci / Zakázky / Audity a kontroly) — data přepíná calVals(). §5.5
+    const showCalendar = (isZakázky || isZamestnanec || isAudity) && activeView === 'kalendar';
     const showSmernMain   = (activeTab === 4 || activeNav === 'smern') && !selectedSmernCat;
     const showSmernDetail = (activeTab === 4 || activeNav === 'smern') && !!selectedSmernCat;
     const showDokTilesView  = activeNav === 'dok' && !selectedDokCat;
     const showDokDetailView = activeNav === 'dok' && !!selectedDokCat;
     const showZamestnanec = isZamestnanec && activeView === 'seznam';
-    const showZamPlaceholder = isZamestnanec && activeView !== 'seznam';
+    const showZamPlaceholder = isZamestnanec && activeView !== 'seznam' && activeView !== 'kalendar';
+    const showAudPlaceholder = isAudity && activeView !== 'kalendar';
     const showPlaceholder = activeTab !== null && !hasActiveModule && !navOwnsContent;
     const showEmpty = nothingSelected;
 
@@ -2949,6 +3290,8 @@ class Component extends DCLogic {
       hover: ac.disabled ? 'display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#bbb;cursor:not-allowed' : 'display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#1572e8;cursor:pointer;background:rgba(21,114,232,.05)'
     }));
 
+    const cal = this.calVals(activeTab, (calPeriods || {})[activeTab] || 'rok');
+
     return {
       // shared
       tabItems, activeTabColor, activeTabIcon, activeTabLabel,
@@ -2959,7 +3302,8 @@ class Component extends DCLogic {
       showRizikaToolbar, showOPToolbar, showZakToolbar, showZamToolbar,
       showRizikaDashboard, showRizikaList,
       showOPDashboard, showOPList,
-      showZakDashboard, showZakList, showZakKanban, showZakTable, showZakCalPlaceholder,
+      showZakDashboard, showZakList, showZakKanban, showZakTable,
+      showCalendar, showAudToolbar, showAudPlaceholder, ...cal,
       showSmernMain, showSmernDetail, showDokTilesView, showDokDetailView,
       showZamestnanec, showKonv: isKonv, showPlaceholder, showEmpty, showZamPlaceholder,
       drawerThread: (this.KONV_THREADS['eb'] || []).map(m => {

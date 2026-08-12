@@ -140,7 +140,7 @@ přepínaných výsuvným „pill" přepínačem. Každá záložka si drží sv
 | Seznam | list | jednoduchý výpis |
 | Kanban | table-columns | sloupce podle stavu |
 | Tabulka | table | řádky × sloupce, stránkování po 10 |
-| Kalendář | calendar | *„Vyžaduje připojení na internet"* (placeholder) |
+| Kalendář | calendar | **plný pohled** — období Den / Týden / Měsíc / 1 Rok, viz **§5.5** |
 
 Přepnutí pohledu nemění data, jen jejich prezentaci.
 
@@ -221,7 +221,7 @@ všechny pohledy zvlášť:**
 | Seznam | `showZakList` | `zak_listRows` |
 | Kanban | `showZakKanban` | `zak_kanbanCols` |
 | Tabulka | `showZakTable` | `zak_tableRows` (stránkování `tablePageSize`) |
-| Kalendář | `showZakCalPlaceholder` | placeholder („Vyžaduje připojení…") |
+| Kalendář | `showCalendar` (generický) | `calVals(activeTab, calPeriods[activeTab])` — viz §5.5 |
 
 > **Rizika (tab 8) a Ochranné pomůcky (tab 2) mají zatím jen dva layouty:**
 > `dashboard` a generický **seznam** (`showRizikaList` / `showOPList` =
@@ -287,12 +287,194 @@ s tabulkou: **sticky první sloupec** (akce oko + tužka), hlavička se
 seřaditelnými sloupci + **řádek filtrů** (inputy/selecty), tělo řádků
 (kategorie = chip, stav = pilulka, název = modrý odkaz).
 
-**Kalendář** (`showZakCalPlaceholder`): placeholder na střed (ikona +
-„Kalendář" + „Tento pohled bude dostupný v dalším kroku").
+**Kalendář** (`showCalendar` → `calVals()`): **vlastní plná skladba**, viz
+**§5.5** — navigační lišta (`‹ ›` + název období + přepínač Den/Týden/Měsíc/
+1 Rok) + mřížka období × položky. Dřívější placeholder „Tento pohled bude
+dostupný v dalším kroku" **už neplatí**.
 
 > Rizika a Ochranné pomůcky zatím vlastní Seznam/Kanban/Tabulku nemají –
 > spadnou do generického seznamu. Když je potřeba plný pohled, **zkopíruj
 > blok ze Zakázek** a vyměň data.
+
+
+### 5.5 Kalendář — POVINNÁ skladba
+
+> Kalendář zobrazuje **stejná data jako ostatní pohledy**, jen v časové ose.
+> Referenční layouty = `partials/evidence-kalendar-zamestnanci*.html` (čtyři
+> období) a blok `<sc-if value="{{ showCalendar }}">` v master prototypu.
+> **Nezačínej kalendář od nuly** — vlož partial a vyměň data.
+
+Skladba shora dolů:
+
+1. **Toolbar evidence** (§5.1) — nad kalendářem, aktivní pohled *Kalendář*
+   modrý. Nemizí.
+2. **Navigační lišta kalendáře** — `‹` `›` **plné tmavě šedé kruhy**
+   (`#424242`, bílá ikona, `29px`) → název období vycentrovaný
+   (`17px/800`, `#1e1b2e`) → **přepínač období** vpravo.
+   **Žádná legenda barev** — v aplikaci není.
+3. **Mřížka** — bílá karta (`radius 10px`, `1px solid #e4e2ed`), uvnitř
+   rolovatelná:
+   - **sticky hlavička** (bílá, `border-bottom #e4e2ed`) — první buňka =
+     název evidence („Zaměstnanci", „Zakázky", „Audity a kontroly"),
+     dále buňky period;
+   - **sticky levý sloupec** = položky evidence, jeden **řádek = jedna
+     položka**, řazeno abecedně, `min-height:28px`;
+   - **buňka** = svisle **stohované pruhy** (max 3) + `+další: N`
+     (`10px/700`, `#8b8698`).
+
+**Mřížka VŽDY vyplní celou šířku okna** — nikdy nezůstává zmenšená
+s prázdným místem vpravo. Řádek i hlavička jsou `display:flex` a:
+
+| Sloupec | Chování |
+|---|---|
+| **jmen** (první) | **pevný**: `width:Npx;flex:0 0 Npx` + `position:sticky;left:0` |
+| **období** (ostatní) | **pružný**: `flex:1 1 0;min-width:Npx` — roztáhne se na dostupnou šířku |
+
+Obal mřížky má `position:relative;min-width:<jmen + počet × min. sloupce>px`.
+Při širokém okně se sloupce roztáhnou (a texty pruhů jsou čitelnější), při
+úzkém spadnou na minimum a mřížka se **vodorovně roluje**.
+
+Všechny buňky mají `box-sizing:border-box` — bez toho se mřížka rozjede
+o šířku rámečků a padding.
+
+#### 5.5.1 Barvy pruhů jsou PEVNÉ (role, ne dekorace)
+
+| Typ záznamu | Barva | Kde vzniká |
+|---|---|---|
+| **Plánované aktivity** | **modrá `#0091EA`** | Plány aktivit (§7.1.3) — periodické i jednorázové |
+| **Zápisy** | **červená `#EF5350`** | záložka Zápisy (§7.1.2) |
+| **Události** | **fialová `#6200EA`** | termíny / události navázané na položku |
+
+⛔ Tyto tři barvy **nepřebírají barvu modulu** a nemění se podle evidence.
+
+Pruh: `border-radius:2px`, text `10px/600` bílý, jednořádkový s `…`, plný
+text v tooltipu (`title`). **Časovaný záznam má čas na začátku pruhu tučně**
+(`font-weight:800`, `margin-right:4px`) — `14:39 - 14:54 Zápis z jednání`,
+`15 - 17 Meeting s dodavatelem`, `8:30 Pravidelná lékařská prohlídka`.
+
+Zastoupení typů se liší podle evidence — **skladba je vždy stejná**:
+
+| Evidence | Co v kalendáři převažuje |
+|---|---|
+| Zaměstnanci | plánované aktivity (modrá) + zápisy + události |
+| Zakázky | **zápisy (červená) a události (fialová)**; modrá výjimečně (např. měsíční fakturace) |
+| Audity a kontroly | **zápisy (červená) a události (fialová)**; modrá u periodických kontrol |
+
+#### 5.5.2 Značka „teď"
+
+Svislá linka **`#FF3D00`** (2 px) přes celou výšku mřížky + trojúhelník téže
+barvy v hlavičce. Leží **proporčně v aktuálním sloupci** — v ročním pohledu
+podle dne v měsíci, v pohledech po dnech podle času v rámci dne. Za sticky
+sloupcem jmen se skrývá (`z-index:1` proti `z-index:2` sloupce).
+
+⛔ Poloha se **nezadává v pixelech** (sloupce jsou pružné), ale **poměrem**:
+
+```
+left: calc(<šířka sloupce jmen>px + (100% - <šířka sloupce jmen>px) * k)
+k = (index sloupce + podíl uvnitř sloupce) / počet sloupců
+```
+
+Trojúhelník je na `calc(<totéž> - 4px)`. Pevný pixelový offset by se při
+roztažení okna rozjel.
+
+#### 5.5.3 Přepínač období — Den / Týden / Měsíc / 1 Rok
+
+> ⚠️ **Výjimka z §5.** Přepínač období **NENÍ view switcher** a **není
+> modrý.** Je **tmavě šedý `#424242`** a aktivní volba se značí **inverzí.**
+
+| Stav | Vzhled |
+|---|---|
+| **neaktivní** | plné pozadí `#424242`, **bílý text**, lem `#424242` |
+| **aktivní** | **bílé pozadí**, text `#424242`, lem `#424242` |
+
+Pilulka `padding:6px 15px`, `border-radius:999px`, `11.5px/700`. Vždy
+všechny 4 volby, v pořadí **Den · Týden · Měsíc · 1 Rok**. Šipky `‹ ›`
+mají stejnou šedou jako neaktivní pilulka.
+⛔ Nikdy nepřebírá barvu modulu ani modrou `#1572e8`.
+
+#### 5.5.4 Období a jejich mřížka
+
+| Období | Sloupce | Sloupec jmen (pevný) | **Min.** šířka sloupce období | Nadpis |
+|---|---|---|---|---|
+| **Den** | 1 (dnešní den) | `240 px` | `1030 px` | `12. srpna 2026` |
+| **Týden** | 7 dní | `240 px` | `147 px` | `10. – 16. 8. 2026` |
+| **Měsíc** | dny měsíce (28–31) | `188 px` | `35 px` | `Srpen 2026` |
+| **1 Rok** | 12 měsíců | `240 px` | `86 px` | `2026` |
+
+Uvedené hodnoty jsou **minima**, ne pevné šířky — minima jsou nastavená tak,
+aby se každé období právě vešlo do návrhové šířky 1536 px. V širším okně se
+sloupce **roztáhnou rovnoměrně** na celou šířku (např. při 2600 px má měsíc
+v ročním pohledu ~175 px a den v měsíčním ~69 px, takže texty pruhů jsou
+čitelné bez tooltipu).
+
+**Hlavička sloupce v pohledech po dnech = písmeno dne týdne + číslo dne
+s tečkou:** `S 1.` `N 2.` `P 3.` `Ú 4.` `S 5.` `Č 6.` `P 7.` …
+(Po=`P`, Út=`Ú`, St=`S`, Čt=`Č`, Pá=`P`, So=`S`, Ne=`N`; jednopísmenná
+zkratka je záměrně nejednoznačná — takhle to má aplikace.) V ročním pohledu
+jsou hlavičky `led` … `pro`.
+
+⛔ **Pruh se NIKDY neroztahuje přes víc sloupců** — není to Gantt. Patří
+vždy do buňky svého dne / měsíce; víc záznamů v jedné buňce se **stohuje
+pod sebe**. **Víkendy se nepodbarvují.**
+
+#### 5.5.5 Periodicita — jak se aktivita promítá do období
+
+> Každá aktivita se v kalendáři zobrazí **podle své periody**, a to
+> tolikrát, kolikrát do zobrazeného období spadne.
+
+| Perioda aktivity | Den | Týden | Měsíc | 1 Rok |
+|---|---|---|---|---|
+| **denní** | 1× | 7× | 28–31× | 12× (jeden pruh v každém měsíci) |
+| **týdenní** | 0–1× | 1× | 4–5× | 12× |
+| **měsíční** | 0–1× | 0–1× | **1×** (na svém dni) | **12×** (v každém sloupci měsíce) |
+| **čtvrtletní** | 0–1× | 0–1× | 0–1× | **4×** |
+| **roční** | 0–1× | 0–1× | 0–1× | **1×** (v měsíci, kdy nastává) |
+| **jednorázová** | 0–1× | 0–1× | 0–1× | 1× |
+
+Obecné pravidlo ve dvou větách:
+
+- **Aktivita s periodou kratší nebo rovnou šířce jednoho sloupce se v tom
+  sloupci zobrazí jen JEDNOU.** Proto je denní aktivita v ročním pohledu
+  vidět 12× — jednou za měsíc, ne 365× — a roční aktivita je v ročním
+  pohledu vidět jen 1×, i když „rok se také opakuje".
+- **Aktivita s periodou kratší než celé zobrazené období, ale delší než
+  sloupec, se duplikuje do každého sloupce, do kterého spadne.**
+
+Přebývající pruhy v buňce (nad 3) se schovají pod `+další: N`.
+
+> **Kontrola konzistence dat.** Partialy `-mesic`, `-tyden` a `-den` vycházejí
+> z **jednoho datasetu srpna 2026** — Měsíc = 1.–31., Týden = 10.–16., Den = 12.
+> Roční pohled má ve sloupci `srp` **tytéž záznamy** (nad 3 pod `+další: N`).
+> Když se data mění, měň je ve všech partialech i v prototypu současně,
+> jinak přestanou na sebe navazovat.
+
+#### 5.5.6 Zaměstnanci — dva zdroje aktivit
+
+**U evidence Zaměstnanci se v řádku zobrazují dvě skupiny záznamů:**
+
+1. aktivity, zápisy a události **vázané na položku** (na zaměstnance jako
+   záznam) — školení, prohlídky, mzdové úkony, předání majetku;
+2. aktivity, **kde je uživatel účastníkem** jiného záznamu — např.
+   *„Interní audit ISO 9001 – účastník"*, *„Kontrola OIP – účastník"*.
+
+Obě skupiny se zobrazují **stejnými pruhy, bez rozlišení** — barva se řídí
+typem záznamu (§5.5.1), ne tím, odkud záznam přišel.
+
+> U ostatních evidencí (Zakázky, Audity a kontroly, …) je zdroj jen jeden:
+> záznamy vázané na položku.
+
+#### 5.5.7 Stav a routing v prototypu
+
+- `calPeriods` – mapa `{ indexZáložky: 'den'|'tyden'|'mesic'|'rok' }`;
+  **období se drží per záložka** stejně jako `views`. Default `rok`.
+- `setCalPeriod(key)` nastaví `calPeriods[activeTab] = key`.
+- `showCalendar = (isZakázky || isZamestnanec || isAudity) && activeView === 'kalendar'`
+  — **jeden generický blok pro všechny evidence**; data přepíná `calVals()`.
+- `calVals(activeTab, period)` počítá hlavičku, řádky, styly buněk
+  (`boxN` pevný sloupec jmen / `boxC` pružné sloupce období), `cal_innerStyle`
+  s `min-width`, poměrovou značku „teď" a pilulky období. Datové konstanty: `CAL_ZAM_YEAR` / `CAL_ZAM_AUG`,
+  `CAL_ZAK_YEAR` / `CAL_ZAK_AUG`, `CAL_AUD_YEAR` / `CAL_AUD_AUG`,
+  geometrie `CAL_GEOM`, „teď" `CAL_NOW`.
 
 ---
 
@@ -349,7 +531,17 @@ Seznam zaměstnanců (dashboard placeholder *„bude přidáno v dalším
 kroku"*) + detail zaměstnance (drawer). Detail – pole: Jméno, Příjmení,
 Oddělení, Pracovní pozice, Datum nástupu, Typ úvazku, E-mail, Telefon.
 
-### 6.5 Směrnice (dva pohledy)
+### 6.5 Audity a kontroly
+
+Evidence auditů, kontrol a revizí (záložka 14, `c800 #FF8F00`, ikona
+`clipboard-check`). Primární akce **PŘIDAT AUDIT**. Zatím má vlastní layout
+jen pohled **Kalendář** (§5.5) — v něm převažují **zápisy** (červená) a
+**události / termíny** (fialová), modrá u periodických kontrol (čtvrtletní
+inventura, kalibrace měřidel). Ostatní pohledy spadnou do placeholderu
+„Tento pohled bude přidán v dalším kroku"; až budou potřeba, **zkopíruj
+příslušný blok ze Zakázek** a vyměň data.
+
+### 6.6 Směrnice (dva pohledy)
 
 - **Moje směrnice** (osobní) – *„Zkontrolujte a potvrďte své dokumenty"*,
   vyhledávání *„Vyhledejte dokument nebo kategorii"*, stav *Máte splněno!*
@@ -358,7 +550,7 @@ Oddělení, Pracovní pozice, Datum nástupu, Typ úvazku, E-mail, Telefon.
 - **Směrnice a dokumenty** (firemní) – *„Všechny oficiální směrnice,
   návody a materiály na jednom místě."*, členění na kategorie.
 
-#### 6.5.1 Barva tlačítka „POTVRDIT" a štítku podle termínu (PEVNÉ pravidlo)
+#### 6.6.1 Barva tlačítka „POTVRDIT" a štítku podle termínu (PEVNÉ pravidlo)
 
 Na stránce **„Moje směrnice"** se barva potvrzovacího tlačítka a štítku
 u každého dokumentu řídí **výhradně termínem potvrzení**. Barva se
@@ -390,7 +582,7 @@ Pravidla:
   kitu (`Claude-HK-Aptien-App`: „systémové štítky / badge / micro labely
   = Nunito · 10px"). Zaoblený „pill" (`999px`) se pro štítky nepoužívá.
 
-#### 6.5.2 Ukazatel „% SPLNĚNO" (PEVNÉ pravidlo)
+#### 6.6.2 Ukazatel „% SPLNĚNO" (PEVNÉ pravidlo)
 
 Číslo v pravé části hero boxu je **podíl potvrzených dokumentů**, nic
 jiného:
@@ -404,7 +596,7 @@ jiného:
   a hero box nesmí být v zeleném stavu *„Máte splněno!"*.
 - **Procenta se NEVÁŽOU na termín potvrzení.** Dokument po termínu, zítřejší,
   budoucí i bez termínu se do čitatele i jmenovatele počítá **úplně stejně**.
-  Termín ovlivňuje **jen barvu** tlačítka a štítku (§6.5.1) a štítek
+  Termín ovlivňuje **jen barvu** tlačítka a štítku (§6.6.1) a štítek
   *„N po termínu"* v hero boxu – **nikdy ne procenta**.
 - **Jmenovatel se nezadává ručně.** Je to počet dokumentů k potvrzení plus
   počet již potvrzených (v prototypu `DOCS.length + CONFIRMED_DOCS_LIST.length`),
@@ -418,7 +610,7 @@ jiného:
   šedé **„N dokumentů"**. Ve stavu 100 % tedy na žádné dlaždici nesmí zůstat
   „k potvrzení".
 
-#### 6.5.3 Sbalitelná skupina „Potvrzeno" – kdy je otevřená a kdy zavřená
+#### 6.6.3 Sbalitelná skupina „Potvrzeno" – kdy je otevřená a kdy zavřená
 
 | Stav stránky | Sekce „Dokumenty" | Skupina „Potvrzeno" |
 |---|---|---|
@@ -436,7 +628,7 @@ jiného:
   sekundární lemovanou akci **OTEVŘÍT** – nikdy tam není tlačítko POTVRDIT
   ani štítek termínu.
 
-#### 6.5.4 Hotové bloky stránky „Moje směrnice"
+#### 6.6.4 Hotové bloky stránky „Moje směrnice"
 
 Celá stránka je hotová ve čtyřech stavech – **neskládej ji z hlavy**, vlož
 příslušný partial doslovně:
@@ -452,9 +644,9 @@ Skladba všech bloků je shodná: nadpis + podnadpis → hledání (pilulka) →
 hero box s procenty → sekce „Dokumenty" (K potvrzení / Potvrzeno) →
 sbalitelná skupina „Potvrzeno" (jen když něco zbývá) → „Procházet /
 Všechny dokumenty" s dlaždicemi kategorií. **Měň jen data**, nikoli logiku
-procent (§6.5.2), barvy dle termínu (§6.5.1) ani chování skupiny (§6.5.3).
+procent (§6.6.2), barvy dle termínu (§6.6.1) ani chování skupiny (§6.6.3).
 
-### 6.6 Moje konverzace (menu `konv`)
+### 6.7 Moje konverzace (menu `konv`)
 
 Obrazovka „Moje konverzace" (položka menu `konv`, `activeNav = 'konv'`) má
 **dva stavy** řízené `openKonvId`:

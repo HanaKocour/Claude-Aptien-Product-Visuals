@@ -1,0 +1,627 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free). Řádek níže načte FA, aby se
+     vykreslily i při samostatném otevření souboru. V master prototypu se FA
+     načítá z jeho assetů, takže tam je tento <link> nadbytečný (neškodí). -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!--
+  APTIEN — EVIDENCE / POHLED „KALENDÁŘ" · ZAMĚSTNANCI · období MĚSÍC (srpen 2026)
+  ==========================================================================
+  Při generování pohledu Kalendář VLOŽ TENTO BLOK CELÝ. NEREKONSTRUUJ ho.
+  Skladba (pravidla §5.5):
+    navigační lišta (‹ › + název období + přepínač Den/Týden/Měsíc/1 Rok)
+    → mřížka: sticky hlavička period, sticky levý sloupec položek,
+      řádek = položka evidence, buňka = svisle stohované pruhy + „+další: N".
+  BARVY PRUHŮ jsou PEVNÉ (role, ne dekorace) — neměň je a nepřebarvuj podle
+  modulu:
+    Plánované aktivity  modrá   #0091EA
+    Zápisy              červená #EF5350
+    Události            fialová #6200EA
+  PŘEPÍNAČ OBDOBÍ i navigační šipky jsou TMAVĚ ŠEDÉ #424242 (výjimka z modré
+  §5 — přepínač období NENÍ view switcher). Aktivní volba = INVERZE:
+  bílé pozadí + šedý text a lem; neaktivní = plná šedá + bílý text.
+  Značka „teď" = svislá linka #FF3D00 + trojúhelník v hlavičce, umístěná
+  proporčně v aktuálním sloupci.
+  Měň jen data (názvy položek, texty a časy pruhů, období).
+  Toolbar patří NAD tento blok.
+  POZOR — Zaměstnanci: v řádku se zobrazují NEJEN aktivity vázané na
+  položku (zaměstnance), ale i aktivity, kde je uživatel ÚČASTNÍK jiného
+  záznamu (např. „Interní audit ISO 9001 – účastník"). Pruhy se nerozlišují.
+  Pohledy po dnech (Den / Týden / Měsíc): hlavička sloupce = písmeno dne
+  týdne + číslo dne s tečkou („S 12."). Pruh se NEROZTAHUJE přes víc dní —
+  patří vždy do buňky svého dne a pruhy se v buňce stohují pod sebe.
+  Časované záznamy mají čas na začátku pruhu tučně („14:39 - 14:54 …").
+-->
+<div style="flex:1;display:flex;flex-direction:column;min-height:0;padding:0 20px 14px;font-family:'Nunito',sans-serif">
+<div style="flex-shrink:0;display:flex;align-items:center;gap:9px;padding:8px 0 10px">
+  <div style="width:29px;height:29px;border-radius:999px;background:#424242;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;flex-shrink:0"><i class="fa-solid fa-chevron-left"></i></div>
+  <div style="width:29px;height:29px;border-radius:999px;background:#424242;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;flex-shrink:0"><i class="fa-solid fa-chevron-right"></i></div>
+  <div style="flex:1;text-align:center;font-size:17px;font-weight:800;color:#1e1b2e;white-space:nowrap">Srpen 2026</div>
+  <div style="display:flex;align-items:center;gap:6px;flex-shrink:0"><div style="padding:6px 15px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid #424242;background:#424242;color:#fff">Den</div><div style="padding:6px 15px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid #424242;background:#424242;color:#fff">Týden</div><div style="padding:6px 15px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid #424242;background:#fff;color:#424242">Měsíc</div><div style="padding:6px 15px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid #424242;background:#424242;color:#fff">1 Rok</div></div>
+</div>
+<div style="flex:1;min-height:0;overflow:auto;background:#fff;border:1px solid #e4e2ed;border-radius:10px">
+  <div style="position:relative;min-width:1273px">
+    <!-- Značka „teď": svislá linka #FF3D00 + trojúhelník v hlavičce -->
+    <div style="position:absolute;top:0;bottom:0;left:calc(188px + (100% - 188px) * 0.368280);width:2px;background:#FF3D00;z-index:1;pointer-events:none"></div>
+    <div style="position:absolute;top:0;left:calc(calc(188px + (100% - 188px) * 0.368280) - 4px);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid #FF3D00;z-index:4;pointer-events:none" title="teď · 12. 8. 2026 10:30"></div>
+    <!-- hlavička period -->
+    <div style="display:flex;position:sticky;top:0;z-index:3;background:#fff;border-bottom:1px solid #e4e2ed">
+      <div style="position:sticky;left:0;z-index:5;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:8px 12px;font-size:11.5px;font-weight:700;color:#3d3a52;border-right:1px solid #e4e2ed">Zaměstnanci</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">S 1.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">N 2.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">P 3.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Ú 4.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">S 5.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Č 6.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">P 7.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">S 8.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">N 9.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">P 10.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Ú 11.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">S 12.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Č 13.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">P 14.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">S 15.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">N 16.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">P 17.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Ú 18.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">S 19.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Č 20.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">P 21.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">S 22.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">N 23.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">P 24.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Ú 25.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">S 26.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Č 27.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">P 28.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">S 29.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">N 30.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">P 31.</div>
+    </div>
+    <!-- řádky = položky evidence -->
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Adéla Sládková</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Oprava klávesnice"><span style="display:none"></span>Oprava klávesnice</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Aleš Coufal</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="9 - 12 Interní audit ISO 9001 – účastník"><span style="font-weight:800;margin-right:4px">9 - 12</span>Interní audit ISO 9001 – účastník</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Alena Štiková</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Pravidelné školení BOZP"><span style="display:none"></span>Pravidelné školení BOZP</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="9:15 Zápis ze školení"><span style="font-weight:800;margin-right:4px">9:15</span>Zápis ze školení</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Alexander Nagy</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="9:51 Výstupní pohovor"><span style="font-weight:800;margin-right:4px">9:51</span>Výstupní pohovor</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Předání agendy"><span style="display:none"></span>Předání agendy</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Cole Edwin Turner</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Školení jeřábníků"><span style="display:none"></span>Školení jeřábníků</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">David Hašek</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Hana Kocourová</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="9:49 Oprava klávesnice"><span style="font-weight:800;margin-right:4px">9:49</span>Oprava klávesnice</div><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="9:52 Zápis z porady"><span style="font-weight:800;margin-right:4px">9:52</span>Zápis z porady</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="14:39 - 14:54 Zápis z jednání"><span style="font-weight:800;margin-right:4px">14:39 - 14:54</span>Zápis z jednání</div><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="15 - 17 Meeting s dodavatelem"><span style="font-weight:800;margin-right:4px">15 - 17</span>Meeting s dodavatelem</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="8:30 Pravidelná lékařská prohlídka"><span style="font-weight:800;margin-right:4px">8:30</span>Pravidelná lékařská prohlídka</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Nastavit plán na 30, 60 a 90 dní"><span style="display:none"></span>Nastavit plán na 30, 60 a 90 dní</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Jan Doležal</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="11:15 Předání notebooku"><span style="font-weight:800;margin-right:4px">11:15</span>Předání notebooku</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Karolína Fišerová</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Vstupní lékařská prohlídka"><span style="display:none"></span>Vstupní lékařská prohlídka</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="13 - 14 Hodnotící pohovor"><span style="font-weight:800;margin-right:4px">13 - 14</span>Hodnotící pohovor</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Lucie Marešová</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Očkování"><span style="display:none"></span>Očkování</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Michal Král</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Ondřej Vávra</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Připravit mzdový výměr"><span style="display:none"></span>Připravit mzdový výměr</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Petra Nováková</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Školení první pomoci"><span style="display:none"></span>Školení první pomoci</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Radek Šimek</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Zápis z jednání"><span style="display:none"></span>Zápis z jednání</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Tereza Bláhová</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Předání OOPP"><span style="display:none"></span>Předání OOPP</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Veronika Horáková</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Pravidelné školení BOZP"><span style="display:none"></span>Pravidelné školení BOZP</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+  </div>
+</div>
+</div>

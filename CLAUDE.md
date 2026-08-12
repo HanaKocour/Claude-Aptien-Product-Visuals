@@ -50,6 +50,12 @@ zeptej, než abys cokoli domýšlel.
 > - `evidence-table.html` – pohled **Tabulka** (horní lišta, sticky sloupec, hlavička + filtry, řádky)
 > - `evidence-list.html` – pohled **Seznam** (karta: řazení → řádky → spodní lišta)
 > - `evidence-kanban.html` – pohled **Kanban** (5 sloupců s pevnými barvami, karty, +Přidat)
+> - `evidence-kalendar-zamestnanci.html` – pohled **Kalendář**, evidence Zaměstnanci, období **1 Rok** (řádek = zaměstnanec, sloupec = měsíc). Modrá = plánované aktivity, červená = zápisy, fialová = události. Zahrnuje i aktivity, kde je uživatel **účastníkem** jiného záznamu.
+> - `evidence-kalendar-zamestnanci-mesic.html` – tentýž pohled, období **Měsíc** (31 sloupců `S 1.` … `P 31.`, pruhy stohované v buňce dne)
+> - `evidence-kalendar-zamestnanci-tyden.html` – období **Týden** (7 sloupců, plné texty s časem)
+> - `evidence-kalendar-zamestnanci-den.html` – období **Den** (1 sloupec na celou šířku)
+> - `evidence-kalendar-zakazky.html` – pohled **Kalendář**, evidence Zakázky (převažují zápisy a události)
+> - `evidence-kalendar-audity.html` – pohled **Kalendář**, evidence Audity a kontroly (převažují zápisy a události)
 > - `item-drawer-shell.html` – **rám item draweru** (backdrop → panel 80%/920 → spine → hlavička → item tabs → tělo se slotem pro obsah záložky + **kompletní akční sloupec** Zabalit → stavová pilulka → … → Historie změn → Uložit změny *(výchozí šedá/neaktivní, aktivní jen dle zadání)* + blok metadat). Zdroj pravdy pro akce; obsah záložky se vkládá do slotu.
 > - `item-drawer-stacked.html` – **vrstvený drawer** (stoh spine = víc otevřených navázaných záznamů + modulová tlačítka v hlavičce + přetékací „›" u tabů); akční sloupec shodný se shellem
 > - `evidence-drawer.html` – **pole záznamu (záložka Detaily)** do slotu shellu; jeho vlastní akční sloupec je zkrácený – ber ho ze shellu
@@ -95,6 +101,8 @@ Postup pro každou obrazovku:
 | Evidence – tabulka | `evidence-toolbar.html` + `evidence-table.html` |
 | Evidence – seznam | `evidence-toolbar.html` + `evidence-list.html` |
 | Evidence – kanban | `evidence-toolbar.html` + `evidence-kanban.html` |
+| Evidence – kalendář (výchozí období 1 Rok) | `evidence-toolbar.html` + `evidence-kalendar-zamestnanci.html` / `-zakazky.html` / `-audity.html` |
+| Kalendář, období Měsíc / Týden / Den | `evidence-toolbar.html` + `evidence-kalendar-zamestnanci-mesic.html` / `-tyden.html` / `-den.html` |
 | Detail záznamu (drawer) – **obyčejný, častější** | výše + `item-drawer-shell.html`, do jeho slotu `drawer-tab-detaily.html` |
 | Drawer, záložka **Detaily** | `item-drawer-shell.html`, do slotu `drawer-tab-detaily.html` |
 | Akční sloupec draweru (menu akcí) | `item-drawer-shell.html` – celý výčet včetně „Zabalit" a stavové pilulky; „Uložit změny" jen při neuložených změnách (pravidla §7.2) |
@@ -244,6 +252,11 @@ obrazovky.
 | Sidebar | bílý `#fff` | světlý panel, pravý okraj `1px solid var(--gray-10)`; aktivní položka = tint `rgba(21,114,232,.10)` + text `#1572e8` |
 | Barva modulu (`c800`) | dle tabulky záložek | text/ikona neaktivní záložky, **pozadí aktivní záložky** a chip dané záložky – nic víc |
 | Sémantické (zelená/červená/oranžová/modrá) | dle stavu | jen stavy, ne dekorace |
+| **Pruh v kalendáři – plánovaná aktivita** | **modrá `#0091EA`** | pevná role, nezávisle na modulu (pravidla §5.5.1) |
+| **Pruh v kalendáři – zápis** | **červená `#EF5350`** | pevná role |
+| **Pruh v kalendáři – událost** | **fialová `#6200EA`** | pevná role |
+| Značka „teď" v kalendáři | `#FF3D00` | stejná červená jako notifikační bublina |
+| **Přepínač období v kalendáři** (Den/Týden/Měsíc/1 Rok) + šipky `‹ ›` | tmavě šedá `#424242` | **VÝJIMKA z modré** — není to view switcher; aktivní volba = inverze (bílé pozadí, šedý text) |
 
 > **Konkrétní chyba, které se vyvaruj:** neobarvuj **view switcher**
 > „tématickou" barvou modulu (např. teal `#00BFA5`) – ten je vždy modrý.
@@ -292,8 +305,8 @@ obrazovky.
 > `Aptien-pravidla-pouziti-UI.md` §5.3.
 
 > **Skelet ostatních pohledů i drawer je taky pevný a bere se z prototypu
-> (referenční modul Zakázky):** Seznam / Kanban / Tabulka / Kalendář viz
-> `Aptien-pravidla-pouziti-UI.md` §5.4; item detail drawer (backdrop →
+> (referenční modul Zakázky):** Seznam / Kanban / Tabulka viz
+> `Aptien-pravidla-pouziti-UI.md` §5.4, **Kalendář má vlastní sekci §5.5**; item detail drawer (backdrop →
 > panel `80%`/`min 920px` → spine → hlavička → item tabs → tělo + pravý
 > sloupec akcí) viz §7.1. Nezačínej žádný pohled od nuly – kopíruj blok.
 
@@ -313,12 +326,25 @@ obrazovky.
 > Pro jiný modul spočti 2. barvu stejným poměrem:
 > `round(kanál × 0,7 + 76,5)` pro R, G i B.
 
+> **Kalendář evidence má vlastní pevnou skladbu (§5.5) — už to není
+> placeholder.** Navigační lišta (`‹ ›` + název období + přepínač
+> **Den / Týden / Měsíc / 1 Rok**) → mřížka, kde **řádek = položka evidence**
+> a **sloupec = období**. Pruhy v buňce se **stohují pod sebe a NEROZTAHUJÍ
+> se přes víc sloupců** (není to Gantt). Barvy pruhů jsou pevné role
+> (modrá plán / červená zápis / fialová událost) a **přepínač období je
+> tmavě šedý `#424242`, ne modrý** — je to výjimka z pravidla o modrých
+> přepínačích. **Mřížka vždy vyplní celou šířku okna**: sloupec jmen je pevný
+> (`flex:0 0 Npx`), sloupce období pružné (`flex:1 1 0;min-width:Npx`) —
+> nikdy nenechávej mřížku zmenšenou s prázdným místem vpravo. U evidence
+> **Zaměstnanci** se v řádku zobrazují i aktivity, kde je uživatel jen
+> **účastníkem** jiného záznamu.
+
 > **Termínové barvy u „Moje směrnice":** tlačítko „POTVRDIT" i štítek se
 > barví podle termínu – **červená jen dnes a v minulosti** („X dní po
 > termínu"), **oranžová zítra** („za 1 den"), **zelená pozítří a dál**
 > („za X dní") a **bez termínu** zelená („∞ Bez termínu"). Není to vždy
 > červené a zelené má taky štítek! Detail viz
-> `Aptien-pravidla-pouziti-UI.md`, sekce 6.5.1.
+> `Aptien-pravidla-pouziti-UI.md`, sekce 6.6.1.
 
 > **`.md` popis je jen doplněk, ne zadání.** `Aptien-pravidla-pouziti-UI.md`
 > popisuje pravidla a chování. Zdrojem struktury je vždy konkrétní **HTML
@@ -354,7 +380,9 @@ tab strip + sidebar):
 | Ochranné pomůcky | modul *Ochranné pomůcky* |
 | Směrnice (policies) | modul *Směrnice* |
 | Obecná evidence + pohledy (dashboard / list / tabulka / drawer) | přepínač pohledů v evidenci |
-| Pohledy evidence (Dashboard / Seznam / Kanban / Tabulka / Kalendář) | referenční modul **Zakázky** (má všechny pohledy zvlášť); řízeno `views[tab]` / `activeView` – viz `Aptien-pravidla-pouziti-UI.md` §5.2 |
+| Pohledy evidence (Dashboard / Seznam / Kanban / Tabulka) | referenční modul **Zakázky** (má všechny pohledy zvlášť); řízeno `views[tab]` / `activeView` – viz `Aptien-pravidla-pouziti-UI.md` §5.2 |
+| Pohled **Kalendář** (Zaměstnanci / Zakázky / Audity a kontroly) | generický blok `showCalendar`; období řídí `calPeriods[tab]` + `calVals()` – viz §5.5 |
+| Audity a kontroly | modul *Audity a kontroly* (tab 14, `c800 #FF8F00`) – zatím jen pohled Kalendář |
 | Moje směrnice | blok `showSmernMain` (menu `smern` / tab 4) – viz routing níže |
 | Směrnice a dokumenty | blok `showDokTilesView` (menu `dok`) – viz routing níže |
 | Moje konverzace | blok `isKonv` (menu `konv`) |
@@ -429,7 +457,10 @@ tab strip + sidebar):
     `sidebar-menu.html` (levé menu s inline SVG ikonami),
     `evidence-toolbar.html` (toolbar), `evidence-dashboard.html` (Dashboard),
     `evidence-table.html` (Tabulka), `evidence-list.html` (Seznam),
-    `evidence-kanban.html` (Kanban), `item-drawer-shell.html` (rám draweru + akční sloupec),
+    `evidence-kanban.html` (Kanban),
+    `evidence-kalendar-zamestnanci.html` / `-mesic` / `-tyden` / `-den`,
+    `evidence-kalendar-zakazky.html`, `evidence-kalendar-audity.html` (Kalendář),
+    `item-drawer-shell.html` (rám draweru + akční sloupec),
     `item-drawer-stacked.html` (vrstvený drawer se stohem spine),
     `evidence-drawer.html` (pole záznamu do záložky Detaily),
     `konverzace-list.html` (Moje konverzace – seznam),

@@ -1,0 +1,117 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free). Řádek níže načte FA, aby se
+     vykreslily i při samostatném otevření souboru. V master prototypu se FA
+     načítá z jeho assetů, takže tam je tento <link> nadbytečný (neškodí). -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!--
+  APTIEN — EVIDENCE / POHLED „KALENDÁŘ" · ZAMĚSTNANCI · období DEN (12. 8. 2026)
+  ==========================================================================
+  Při generování pohledu Kalendář VLOŽ TENTO BLOK CELÝ. NEREKONSTRUUJ ho.
+  Skladba (pravidla §5.5):
+    navigační lišta (‹ › + název období + přepínač Den/Týden/Měsíc/1 Rok)
+    → mřížka: sticky hlavička period, sticky levý sloupec položek,
+      řádek = položka evidence, buňka = svisle stohované pruhy + „+další: N".
+  BARVY PRUHŮ jsou PEVNÉ (role, ne dekorace) — neměň je a nepřebarvuj podle
+  modulu:
+    Plánované aktivity  modrá   #0091EA
+    Zápisy              červená #EF5350
+    Události            fialová #6200EA
+  PŘEPÍNAČ OBDOBÍ i navigační šipky jsou TMAVĚ ŠEDÉ #424242 (výjimka z modré
+  §5 — přepínač období NENÍ view switcher). Aktivní volba = INVERZE:
+  bílé pozadí + šedý text a lem; neaktivní = plná šedá + bílý text.
+  Značka „teď" = svislá linka #FF3D00 + trojúhelník v hlavičce, umístěná
+  proporčně v aktuálním sloupci.
+  Měň jen data (názvy položek, texty a časy pruhů, období).
+  Toolbar patří NAD tento blok.
+  POZOR — Zaměstnanci: v řádku se zobrazují NEJEN aktivity vázané na
+  položku (zaměstnance), ale i aktivity, kde je uživatel ÚČASTNÍK jiného
+  záznamu (např. „Interní audit ISO 9001 – účastník"). Pruhy se nerozlišují.
+  Pohledy po dnech (Den / Týden / Měsíc): hlavička sloupce = písmeno dne
+  týdne + číslo dne s tečkou („S 12."). Pruh se NEROZTAHUJE přes víc dní —
+  patří vždy do buňky svého dne a pruhy se v buňce stohují pod sebe.
+  Časované záznamy mají čas na začátku pruhu tučně („14:39 - 14:54 …").
+-->
+<div style="flex:1;display:flex;flex-direction:column;min-height:0;padding:0 20px 14px;font-family:'Nunito',sans-serif">
+<div style="flex-shrink:0;display:flex;align-items:center;gap:9px;padding:8px 0 10px">
+  <div style="width:29px;height:29px;border-radius:999px;background:#424242;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;flex-shrink:0"><i class="fa-solid fa-chevron-left"></i></div>
+  <div style="width:29px;height:29px;border-radius:999px;background:#424242;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;flex-shrink:0"><i class="fa-solid fa-chevron-right"></i></div>
+  <div style="flex:1;text-align:center;font-size:17px;font-weight:800;color:#1e1b2e;white-space:nowrap">12. srpna 2026</div>
+  <div style="display:flex;align-items:center;gap:6px;flex-shrink:0"><div style="padding:6px 15px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid #424242;background:#fff;color:#424242">Den</div><div style="padding:6px 15px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid #424242;background:#424242;color:#fff">Týden</div><div style="padding:6px 15px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid #424242;background:#424242;color:#fff">Měsíc</div><div style="padding:6px 15px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid #424242;background:#424242;color:#fff">1 Rok</div></div>
+</div>
+<div style="flex:1;min-height:0;overflow:auto;background:#fff;border:1px solid #e4e2ed;border-radius:10px">
+  <div style="position:relative;min-width:1270px">
+    <!-- Značka „teď": svislá linka #FF3D00 + trojúhelník v hlavičce -->
+    <div style="position:absolute;top:0;bottom:0;left:calc(240px + (100% - 240px) * 0.416667);width:2px;background:#FF3D00;z-index:1;pointer-events:none"></div>
+    <div style="position:absolute;top:0;left:calc(calc(240px + (100% - 240px) * 0.416667) - 4px);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid #FF3D00;z-index:4;pointer-events:none" title="teď · 10:30"></div>
+    <!-- hlavička period -->
+    <div style="display:flex;position:sticky;top:0;z-index:3;background:#fff;border-bottom:1px solid #e4e2ed">
+      <div style="position:sticky;left:0;z-index:5;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:8px 12px;font-size:11.5px;font-weight:700;color:#3d3a52;border-right:1px solid #e4e2ed">Zaměstnanci</div>
+      <div style="flex:1 1 0;min-width:1030px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:11px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">S 12.</div>
+    </div>
+    <!-- řádky = položky evidence -->
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Adéla Sládková</div>
+      <div style="flex:1 1 0;min-width:1030px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Aleš Coufal</div>
+      <div style="flex:1 1 0;min-width:1030px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Alena Štiková</div>
+      <div style="flex:1 1 0;min-width:1030px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="9:15 Zápis ze školení"><span style="font-weight:800;margin-right:4px">9:15</span>Zápis ze školení</div></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Alexander Nagy</div>
+      <div style="flex:1 1 0;min-width:1030px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Cole Edwin Turner</div>
+      <div style="flex:1 1 0;min-width:1030px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">David Hašek</div>
+      <div style="flex:1 1 0;min-width:1030px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Hana Kocourová</div>
+      <div style="flex:1 1 0;min-width:1030px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="8:30 Pravidelná lékařská prohlídka"><span style="font-weight:800;margin-right:4px">8:30</span>Pravidelná lékařská prohlídka</div></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Jan Doležal</div>
+      <div style="flex:1 1 0;min-width:1030px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="11:15 Předání notebooku"><span style="font-weight:800;margin-right:4px">11:15</span>Předání notebooku</div></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Karolína Fišerová</div>
+      <div style="flex:1 1 0;min-width:1030px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="13 - 14 Hodnotící pohovor"><span style="font-weight:800;margin-right:4px">13 - 14</span>Hodnotící pohovor</div></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Lucie Marešová</div>
+      <div style="flex:1 1 0;min-width:1030px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Michal Král</div>
+      <div style="flex:1 1 0;min-width:1030px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Denní kontrola linky"><span style="display:none"></span>Denní kontrola linky</div></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Ondřej Vávra</div>
+      <div style="flex:1 1 0;min-width:1030px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Petra Nováková</div>
+      <div style="flex:1 1 0;min-width:1030px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Radek Šimek</div>
+      <div style="flex:1 1 0;min-width:1030px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Tereza Bláhová</div>
+      <div style="flex:1 1 0;min-width:1030px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Veronika Horáková</div>
+      <div style="flex:1 1 0;min-width:1030px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+  </div>
+</div>
+</div>
