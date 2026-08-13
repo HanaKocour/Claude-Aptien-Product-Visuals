@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<title>Šablona vizuálu — e-mail → aplikace</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<!--
+  ŠABLONA VIZUÁLU · „E-MAIL → APLIKACE"
+  =====================================
+  Šablona pro generování produktových obrázků, které ukazují, že něco
+  přijde e-mailem a v Aptienu z toho SÁM vznikne záznam s přílohou.
+  (Příklad, na kterém je postavená: automatické stahování e-mailů
+  a věstníků ze SÚKL.)
+
+  TOHLE NENÍ PROTOTYP. Prototyp v `prototypes/` říká, jak vypadá aplikace.
+  Tato šablona říká, jak vypadá OBRÁZEK. Vzhled je hotový a zmrazený —
+  ty měníš jen DATA.
+
+  ────────────────────────────────────────────────────────────────────────
+  JAK POUŽÍT
+  ────────────────────────────────────────────────────────────────────────
+  1. Zkopíruj tento soubor pod novým názvem (např. `faktury-do-evidence.html`).
+  2. Přepiš jen to, co je označené  ✏️ MĚŇ  (najdi si je v souboru).
+  3. Vyrenderuj:  node render.js faktury-do-evidence.html
+     → PNG přesně 1920 × 1080 px.
+  Prompt k vyplnění, když to má generovat Claude: `PROMPT-email-do-aplikace.md`.
+
+  ────────────────────────────────────────────────────────────────────────
+  ✏️ CO SE MĚNÍ (najdi v souboru podle značek)
+  ────────────────────────────────────────────────────────────────────────
+  ✏️ POPISKA VLEVO      – nadpisek nad schránkou (VERZÁLKY, max ~30 znaků)
+  ✏️ SLOŽKA             – „Doručená pošta"
+  ✏️ POŠTA              – řádky e-mailů: ztlumené = kulisa,
+                          zvýrazněné = ty, které systém zpracuje (1–2)
+  ✏️ KONEKTOR           – text pilulky, max ~14 znaků
+  ✏️ POPISKA VPRAVO     – nadpisek nad Aptienem
+  ✏️ NÁZEV POLOŽKY      – = PŘEDMĚT ZVÝRAZNĚNÉHO E-MAILU (to je pointa:
+                          z předmětu se stane název záznamu)
+  ✏️ EVIDENCE           – chip s názvem evidence v hlavičce karty
+  ✏️ STAV               – stavová pilulka + barva puntíku
+  ✏️ OBRÁZEK POLOŽKY    – <img> s fotkou, nebo prázdný placeholder,
+                          když fotka není zadaná (NEVYHAZUJ ho)
+  ✏️ POLE ZÁZNAMU       – názvy polí a hodnoty (typy polí viz
+                          `prototypes/partials/drawer-tab-detaily.html`)
+  ✏️ PŘÍLOHA            – název souboru a popis pod ním
+
+  ────────────────────────────────────────────────────────────────────────
+  ⛔ CO SE NEMĚNÍ (jinak přestane platit vzhled, o který tu jde)
+  ────────────────────────────────────────────────────────────────────────
+  ⛔ Rám: `.cv-frame` 1920×1080 a `.cv-stage` 1536×864 se `scale(1.25)`.
+     Sloupce 520 + 168 + 736 = 1424. Nesahej na to.
+  ⛔ Plocha scény `#f4f4f7` — jednolitá, nikdy gradient, nikdy barva modulu.
+  ⛔ Konektor je vždy modrý `#1572e8`, šipka `#a8c4ea` přerušovaná.
+  ⛔ Horní lišta aplikace `#424242`, logo Aptien `height:28px`, wordmark
+     19px/800 — to jsou skutečné proporce z `Aptien-aplikace-offline.html`.
+     Logo je inline SVG z `prototypes/assets/img/681a831d.svg`; NEnahrazuj
+     ho ikonou (`fa-bolt`) a nezmenšuj.
+  ⛔ ITEM TABS = složkové taby 1:1 z `prototypes/partials/item-drawer-shell.html`
+     (aktivní bílý vyvýšený se stínem + modrý text 700). NEDĚLEJ z nich
+     pilulky — to je styl view switcheru, ne itemu.
+  ⛔ Karta položky má VŽDY místo pro obrázek 110×110 vpravo v hlavičce.
+     Bez zadané fotky tam zůstane prázdný placeholder (dashed rámeček
+     + `fa-image`) — stejně jako v draweru. Nemazat.
+  ⛔ Struktura řádku pole (32px nápověda / 210px label vpravo / hodnota)
+     je z `drawer-tab-detaily.html`. Měň hodnoty, ne strukturu.
+  ⛔ Zvýraznění e-mailu = tint `#eef4fe` + `inset 3px 0 0 #1572e8`
+     (stejné jako aktivní položka sidebaru). Žádná nová barva.
+  ⛔ Do obrázku nepatří nadpis ani claim — ty jsou na webu vedle obrázku.
+     V obrázku smí být jen: 2 popisky, 1 pilulka konektoru a data v UI.
+  ⛔ Panel s aplikací drž na 70–90 % využitelné výšky (530–680 px).
+     Když je nízký, PŘIDEJ ŘÁDKY DAT; když přeteče, UBER je.
+     Nikdy nezvětšuj fonty a nescaluj panel.
+
+  ────────────────────────────────────────────────────────────────────────
+  LOGA TŘETÍCH STRAN
+  ────────────────────────────────────────────────────────────────────────
+  ⚠️ Gmail a Outlook jsou tu ZJEDNODUŠENÁ inline SVG (kreslená ručně).
+     Před publikací na web je nahraď oficiálními SVG z brand assets
+     Googlu / Microsoftu a projdi jejich pravidla použití (ochranná zóna,
+     minimální velikost, povolené barevné varianty).
+     Strip pod schránkou (Gmail · Outlook · obálka) je nepovinný — když ho
+     nechceš, smaž celý `<div class="cv-prov">`.
+-->
+<style>
+  /* ---- tokeny scény (NEJSOU to app tokeny, platí jen pro rám) -------- */
+  :root{
+    --cv-bg:#f4f4f7;          /* plocha scény – neutrální, NE fialová    */
+    --cv-line:#e4e2ed;        /* okraj panelu = jako karty v aplikaci    */
+    --cv-muted:#8a84a0;       /* popiska nad panelem                     */
+    --cv-accent:#1572e8;      /* JEDINÁ akcentová barva scény            */
+    --cv-arrow:#a8c4ea;
+    --cv-shadow:0 10px 30px rgba(30,27,46,.12);
+  }
+
+  /* ---- rám 1920×1080 (viz Aptien-pravidla-screenshotu.md) ----------- */
+  .cv-frame{width:1920px;height:1080px;overflow:hidden;position:relative;background:var(--cv-bg)}
+  .cv-stage{width:1536px;height:864px;transform:scale(1.25);transform-origin:top left;
+            background:var(--cv-bg);font-family:'Nunito',sans-serif;-webkit-font-smoothing:antialiased}
+  /* padding 56 → využitelná plocha 1424 × 752 CSS px.
+     Panely mají zaplnit 70–90 % výšky (≥ 530 px). Když je panel nižší,
+     PŘIDEJ ŘÁDKY DAT — nikdy nezvětšuj fonty ani nescaluj panel.        */
+  .cv-scene{box-sizing:border-box;width:1536px;height:864px;padding:56px;
+            display:flex;align-items:center;justify-content:center}
+
+  /* ---- sloupec = popiska + panel ------------------------------------ */
+  .cv-col{display:flex;flex-direction:column;justify-content:center;flex-shrink:0}
+  .cv-cap{font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+          color:var(--cv-muted);margin:0 0 10px 4px;white-space:nowrap}
+  .cv-wrap{position:relative}
+  .cv-panel{background:#fff;border:1px solid var(--cv-line);border-radius:12px;
+            box-shadow:var(--cv-shadow);overflow:hidden}
+
+  /* okenní lišta = signál „cizí aplikace" (e-mail, prohlížeč). VŽDY šedá;
+     barvu ve scéně nese jen konektor a samotné UI Aptienu.              */
+  .cv-chrome{height:28px;background:#f0eff4;border-bottom:1px solid #e8e6ef;
+             display:flex;align-items:center;gap:6px;padding:0 12px}
+  .cv-dot{width:8px;height:8px;border-radius:50%;background:#d6d3e0;flex-shrink:0}
+  .cv-chrome span{font-size:10.5px;font-weight:700;color:#9a94ae;margin-left:6px}
+
+  /* ---- konektor: pilulka (max ~14 znaků) + přerušovaná šipka -------- */
+  .cv-conn{display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+  .cv-pill{display:inline-flex;align-items:center;gap:7px;background:var(--cv-accent);color:#fff;
+           font-size:11px;font-weight:800;letter-spacing:.05em;padding:6px 14px;border-radius:999px;
+           white-space:nowrap;box-shadow:0 2px 8px rgba(21,114,232,.30);margin-bottom:12px}
+  .cv-pill i{font-size:10px}
+
+  /* ---- odznak „stalo se to samo" (nepovinný, max 1 na scénu) -------- */
+  .cv-badge{position:absolute;bottom:-13px;right:-13px;width:34px;height:34px;border-radius:50%;
+            background:#43A047;border:3px solid var(--cv-bg);display:flex;align-items:center;
+            justify-content:center;color:#fff;font-size:14px;box-shadow:0 3px 10px rgba(67,160,71,.35)}
+
+  /* ---- telefon (varianta B a D) ------------------------------------- */
+  .cv-phone{width:296px;border-radius:30px;background:#fff;border:1px solid var(--cv-line);
+            box-shadow:0 14px 36px rgba(30,27,46,.16);overflow:hidden}
+  .cv-phone-top{height:26px;background:#424242;display:flex;align-items:center;justify-content:center}
+  .cv-phone-notch{width:76px;height:8px;border-radius:999px;background:#2b2b2b}
+
+  /* ---- strip značek pošty pod panelem schránky ---------------------- */
+  .cv-prov{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:18px}
+  .cv-prov-chip{display:flex;align-items:center;justify-content:center;width:38px;height:38px;
+                background:#fff;border:1px solid var(--cv-line);border-radius:11px;
+                box-shadow:0 4px 12px rgba(30,27,46,.08)}
+
+  body{margin:0;background:#dedde4;font-family:'Nunito',sans-serif}
+</style>
+</head>
+<body>
+
+<section class="cv-frame" id="vizual">
+<div class="cv-stage">
+<div class="cv-scene">
+
+  <!-- ---------- ZDROJ: e-mailová schránka (cizí aplikace) ------------- -->
+  <div class="cv-col" style="width:520px">
+    <!-- ✏️ POPISKA VLEVO -->
+    <div class="cv-cap">Vaše e-mailová schránka</div>
+    <div class="cv-panel">
+      <div class="cv-chrome"><i class="cv-dot"></i><i class="cv-dot"></i><i class="cv-dot"></i>
+        <svg viewBox="0 0 512 400" style="width:19px;height:15px;flex-shrink:0;margin-left:8px">
+          <path fill="#4285f4" d="M34.9 384.6h81.4V187.2L0 100v249.7c0 19.3 15.6 34.9 34.9 34.9z"/>
+          <path fill="#34a853" d="M395.7 384.6h81.4c19.3 0 34.9-15.6 34.9-34.9V100L395.7 187.2z"/>
+          <path fill="#fbbc04" d="M395.7 92.3v94.9L512 100V57.4c0-39.4-45-61.9-76.5-38.3z"/>
+          <path fill="#ea4335" d="M116.3 187.2V92.3L256 197 395.7 92.3v94.9L256 292z"/>
+          <path fill="#c5221f" d="M0 57.4V100l116.3 87.2V92.3L76.5 19.1C45-4.5 0 18 0 57.4z"/>
+        </svg>
+        <!-- ✏️ SLOŽKA -->
+        <span>Doručená pošta</span></div>
+
+      <div style="padding:10px 16px;border-bottom:1px solid #f2f1f7">
+        <div style="display:flex;align-items:center;gap:8px;background:#f7f6fa;border:1px solid #ececf3;border-radius:999px;padding:5px 12px">
+          <i class="fa-solid fa-magnifying-glass" style="color:#b0aac8;font-size:11px"></i>
+          <span style="font-size:11.5px;color:#b5b0c4">Hledat v poště</span>
+        </div>
+      </div>
+
+      <!-- ✏️ POŠTA — ztlumené řádky = kulisa, zvýrazněné (tint #eef4fe + modrý pruh) = ty zpracované. Zvýrazni 1–2. -->
+      <div style="padding:6px 0 8px">
+        <!-- běžná pošta = ztlumená, není hrdinou obrázku -->
+        <div style="display:flex;gap:11px;padding:9px 16px;align-items:flex-start">
+          <i class="fa-regular fa-envelope" style="font-size:13px;color:#c0bbcf;margin-top:3px"></i>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:700;color:#6e6885;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Objednávka č. 2024-114 — potvrzení</div>
+            <div style="font-size:11.5px;color:#a5a0b8;margin-top:2px">obchod@dodavatel.cz · 10. 6. 2024</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:11px;padding:9px 16px;align-items:flex-start">
+          <i class="fa-regular fa-envelope" style="font-size:13px;color:#c0bbcf;margin-top:3px"></i>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:700;color:#6e6885;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Smlouva o dílo — k podpisu</div>
+            <div style="font-size:11.5px;color:#a5a0b8;margin-top:2px">kratka@firma.cz · 11. 6. 2024</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:11px;padding:9px 16px;align-items:flex-start">
+          <i class="fa-regular fa-envelope" style="font-size:13px;color:#c0bbcf;margin-top:3px"></i>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:700;color:#6e6885;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Faktura č. 2024-0192</div>
+            <div style="font-size:11.5px;color:#a5a0b8;margin-top:2px">dodavatel@firma.cz · 12. 6. 2024</div>
+          </div>
+        </div>
+
+        <!-- ZVÝRAZNĚNÉ e-maily = ty, které systém zpracuje.
+             Zvýraznění = tint #eef4fe + modrý pruh vlevo, tj. stejné jako
+             aktivní položka v sidebaru. Žádná nová barva. -->
+        <div style="display:flex;gap:11px;padding:11px 16px;align-items:flex-start;background:#eef4fe;box-shadow:inset 3px 0 0 #1572e8;margin:5px 0 0">
+          <i class="fa-solid fa-envelope" style="font-size:13px;color:#1572e8;margin-top:3px"></i>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:800;color:#1e1b2e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">SÚKL — Změna v registraci LP</div>
+            <div style="font-size:11.5px;color:#7d7794;margin-top:2px">noreply@sukl.cz · 13. 6. 2024</div>
+            <div style="display:inline-flex;align-items:center;gap:6px;margin-top:7px;background:#fff;border:1px solid #e0dded;border-radius:6px;padding:4px 9px">
+              <i class="fa-solid fa-file-pdf" style="font-size:12px;color:#E53935"></i>
+              <span style="font-size:11px;font-weight:700;color:#4a4660">rozhodnuti_24117.pdf</span>
+              <span style="font-size:11px;color:#a5a0b8">218 kB</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:11px;padding:11px 16px;align-items:flex-start;background:#eef4fe;box-shadow:inset 3px 0 0 #1572e8">
+          <i class="fa-solid fa-envelope" style="font-size:13px;color:#1572e8;margin-top:3px"></i>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:800;color:#1e1b2e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Věstník SÚKL 06/2024</div>
+            <div style="font-size:11.5px;color:#7d7794;margin-top:2px">vestnik@sukl.cz · 14. 6. 2024</div>
+            <div style="display:inline-flex;align-items:center;gap:6px;margin-top:7px;background:#fff;border:1px solid #e0dded;border-radius:6px;padding:4px 9px">
+              <i class="fa-solid fa-file-pdf" style="font-size:12px;color:#E53935"></i>
+              <span style="font-size:11px;font-weight:700;color:#4a4660">vestnik_2024_06.pdf</span>
+              <span style="font-size:11px;color:#a5a0b8">1,4 MB</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:11px;padding:9px 16px;align-items:flex-start;margin-top:5px">
+          <i class="fa-regular fa-envelope" style="font-size:13px;color:#c0bbcf;margin-top:3px"></i>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:700;color:#6e6885;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Pozvánka na školení BOZP</div>
+            <div style="font-size:11.5px;color:#a5a0b8;margin-top:2px">skoleni@bozp-servis.cz · 14. 6. 2024</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- funguje s jakoukoli schránkou: Gmail · Outlook · IMAP -->
+    <div class="cv-prov">
+      <div class="cv-prov-chip"><svg viewBox="0 0 512 400" style="width:21px;height:16.5px;flex-shrink:0">
+          <path fill="#4285f4" d="M34.9 384.6h81.4V187.2L0 100v249.7c0 19.3 15.6 34.9 34.9 34.9z"/>
+          <path fill="#34a853" d="M395.7 384.6h81.4c19.3 0 34.9-15.6 34.9-34.9V100L395.7 187.2z"/>
+          <path fill="#fbbc04" d="M395.7 92.3v94.9L512 100V57.4c0-39.4-45-61.9-76.5-38.3z"/>
+          <path fill="#ea4335" d="M116.3 187.2V92.3L256 197 395.7 92.3v94.9L256 292z"/>
+          <path fill="#c5221f" d="M0 57.4V100l116.3 87.2V92.3L76.5 19.1C45-4.5 0 18 0 57.4z"/>
+        </svg></div>
+      <div class="cv-prov-chip"><svg viewBox="0 0 48 48" style="width:21px;height:21px">
+          <rect x="18" y="9" width="28" height="30" rx="2.5" fill="#0364B8"/>
+          <path fill="#28A8EA" d="M18 15.5 32 25.5 46 15.5v-4a2.5 2.5 0 0 0-2.5-2.5h-23A2.5 2.5 0 0 0 18 11.5z"/>
+          <rect x="2" y="12" width="23" height="24" rx="3" fill="#0F5FA8"/>
+          <ellipse cx="13.5" cy="24" rx="6" ry="7.6" fill="none" stroke="#fff" stroke-width="3.3"/>
+        </svg></div>
+      <div class="cv-prov-chip"><i class="fa-solid fa-envelope" style="font-size:16px;color:#9a93b5"></i></div>
+    </div>
+  </div>
+
+  <!-- ---------- KONEKTOR ---------------------------------------------- -->
+  <div class="cv-conn" style="width:168px">
+    <!-- ✏️ KONEKTOR — max ~14 znaků -->
+    <div class="cv-pill"><i class="fa-solid fa-bolt"></i>AUTO-IMPORT</div>
+    <svg width="140" height="14" viewBox="0 0 140 14" fill="none">
+      <path d="M2 7 H120" stroke="#a8c4ea" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="7 7"/>
+      <path d="M122 1 L134 7 L122 13 Z" fill="#a8c4ea"/>
+    </svg>
+  </div>
+
+  <!-- ---------- CÍL: Aptien (VÝŘEZ SKUTEČNÉHO UI) --------------------- -->
+  <!-- Řádky polí = 1:1 struktura z `partials/drawer-tab-detaily.html`,
+       měněná jsou POUZE data (názvy polí a hodnoty).                     -->
+  <div class="cv-col" style="width:736px">
+    <!-- ✏️ POPISKA VPRAVO -->
+    <div class="cv-cap">Aptien — záznam vznikl sám</div>
+    <div class="cv-wrap">
+      <div class="cv-badge"><i class="fa-solid fa-check"></i></div>
+      <div class="cv-panel">
+
+        <!-- horní lišta aplikace: VŽDY #424242 -->
+        <div style="height:56px;background:#424242;display:flex;align-items:center;padding:0 20px;gap:14px">
+          <svg viewBox="0 0 598.3 651.4" style="width:25.7px;height:28px;flex-shrink:0">
+            <g transform="translate(-400.9,-201.5)">
+              <path fill="#fff" d="m 990.7,648.5 c -7.2,-17.3 -16.8,-33.3 -25.3,-50.4 -5,-10 -10,-20 -14.9,-29.9 -12.6,-25.3 -25.2,-50.6 -37.8,-75.8 -14,-28 -27.9,-56 -41.9,-83.9 -12.7,-25.4 -25.4,-50.8 -38,-76.2 -8.8,-17.6 -17.5,-35.2 -26.3,-52.7 -2.4,-4.9 -5,-9.7 -7.3,-14.7 -0.2,-0.3 -0.3,-0.7 -0.5,-1 -18.2,-37.9 -57.1,-62.4 -99.2,-62.4 -42.4,0 -80.2,23.7 -98.8,61.6 L 415.2,635 l -1.6,3.2 c -8.3,15.7 -12.7,33.5 -12.7,51.4 0,5.6 0.4,11.1 1.2,16.6 1.4,9 3.9,17.9 7.4,26.3 5.4,12.7 13,24.1 22.7,34 l 0.3,0.3 c 49.1,53.1 151.5,86.1 267.1,86.1 31.5,0 63,-2.4 94.1,-7.6 28,-4.7 55.6,-11.7 82.1,-21.7 22.9,-8.7 45.1,-19.6 64.9,-34 12.3,-9 24.7,-18 34.3,-30 8.6,-10.7 15.2,-22.9 19.2,-36 3.3,-10.6 5,-21.6 5,-32.7 0,-14.5 -2.8,-29 -8.5,-42.4 z M 786,352 l -11.4,22.8 -172.1,345 -6.4,12.9 c -15.7,31.1 -47.9,52.4 -85.2,52.4 -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-16.2 4,-31.4 11.1,-44.8 l 1.7,-3.4 183.8,-368.6 1.6,-3.3 c 15.5,-31.8 48.1,-53.6 85.8,-53.6 52.7,0 95.5,42.8 95.5,95.5 0.1,14.5 -3.1,28.3 -8.9,40.6 z m 103.3,434.4 c -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-52.7 42.8,-95.5 95.5,-95.5 52.7,0 95.5,42.8 95.5,95.5 0,52.7 -42.7,95.5 -95.5,95.5 z"/>
+            </g>
+          </svg>
+          <span style="color:#fff;font-weight:800;font-size:19px;letter-spacing:-.01em;margin-left:-6px">aptien</span>
+          <div style="flex:1"></div>
+          <div style="position:relative;margin-right:8px">
+            <i class="fa-solid fa-bell" style="color:#fff;font-size:17px"></i>
+            <span style="position:absolute;top:-6px;right:-8px;background:#FF3D00;color:#fff;font-size:9px;font-weight:800;border-radius:999px;padding:1px 4px;border:1.5px solid #424242">3</span>
+          </div>
+          <div style="width:30px;height:30px;border-radius:50%;background:#8d8d8d;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:800">JS</div>
+        </div>
+
+        <!-- hlavička záznamu -->
+        <!-- HLAVIČKA KARTY POLOŽKY — skladba z partials/item-drawer-shell.html:
+             vlevo název + chipy, vpravo OBRÁZEK POLOŽKY 110×110.
+             ⛔ Obrázek se z karty nevyhazuje. Když fotka není zadaná,
+                zůstane PRÁZDNÝ PLACEHOLDER (2px dashed #d8d6e2 + fa-image
+                28px #cdd0d8) — přesně jako v draweru. -->
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:16px 20px 14px;border-bottom:1px solid #f0eef8">
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:10px">
+              <i class="fa-solid fa-file-lines" style="font-size:17px;color:#1572e8"></i>
+              <!-- ✏️ NÁZEV POLOŽKY = PŘEDMĚT ZVÝRAZNĚNÉHO E-MAILU -->
+              <span style="font-size:17px;font-weight:800;color:#1e1b2e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">SÚKL — Změna v registraci LP</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:12px">
+              <!-- ✏️ EVIDENCE — chip s názvem evidence, do které záznam patří -->
+              <span style="display:inline-flex;align-items:center;background:#eceff1;color:#59676d;padding:4px 12px;border-radius:4px;font-size:10px;font-weight:600">Úřední oznámení</span>
+              <!-- ✏️ STAV — text; barva puntíku dle stavu (#FF8F00 čeká, #43A047 hotovo, #E53935 po termínu) -->
+              <div style="display:flex;align-items:center;gap:7px;border:1px solid #e0dded;border-radius:999px;padding:4px 12px">
+                <span style="width:9px;height:9px;border-radius:50%;background:#FF8F00"></span>
+                <span style="font-size:11.5px;font-weight:700;color:#4a4660">Ke zpracování</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ✏️ OBRÁZEK POLOŽKY — sem vlož <img> s fotkou (viz šablona
+               `aplikace-do-emailu.html`, jak vypadá vyplněný stav).
+               Když fotka není zadaná, nech tento placeholder tak, jak je. -->
+          <div style="width:110px;height:110px;border:2px dashed #d8d6e2;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="fa-regular fa-image" style="font-size:28px;color:#cdd0d8"></i>
+          </div>
+        </div>
+
+        <!-- ITEM TABS = složkové taby, styl 1:1 z partials/item-drawer-shell.html
+             (aktivní = bílý vyvýšený se stínem + modrý text 700;
+              neaktivní = text #263238/600 bez pozadí; počet = modrý kruh 20px).
+             ⛔ Nedělej z nich pilulky – to je styl view switcheru, ne itemu. -->
+        <div style="flex-shrink:0;display:flex;align-items:flex-end;padding:14px 20px 0;background:#fff">
+          <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;white-space:nowrap;font-size:12px;font-weight:700;color:#1572e8;background:#fff;border-top-left-radius:8px;border-top-right-radius:8px;box-shadow:0 5px 20px rgba(0,0,0,.10);clip-path:inset(-30px -30px 0 -30px);margin-bottom:-1px;position:relative;z-index:2">Detaily</div>
+          <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Přílohy<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#1572e8;color:#fff;border-radius:50%;font-size:10px;font-weight:700;margin-left:4px">1</span></div>
+          <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Souvislosti</div>
+          <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Zápisy</div>
+          <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Plány aktivit</div>
+        </div>
+
+        <!-- POLE ZÁZNAMU -->
+        <!-- ✏️ POLE ZÁZNAMU — měň názvy polí a hodnoty, NE strukturu řádku -->
+        <div style="padding:2px 20px 0;font-family:'Nunito',sans-serif">
+
+          
+          <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+            <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+            <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Číslo jednací</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+            <div style="flex:1;min-width:0;padding:0 18px"><input type="text" value="sukl/2024/24117" style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;outline:none;background:#fff"></div>
+          </div>
+
+          <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+            <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+            <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Přípravek</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+            <div style="flex:1;min-width:0;padding:0 18px"><input type="text" value="Paralen 500 mg tbl. nob." style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;outline:none;background:#fff"></div>
+          </div>
+
+          
+          <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+            <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+            <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Datum přijetí</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+            <div style="flex:1;min-width:0;padding:0 18px"><div style="display:inline-flex;align-items:center;gap:8px"><input type="text" value="13. 6. 2024" style="border:1px solid #e5e5e5;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;background:#fff;outline:none;width:120px"><i class="fa-regular fa-calendar-days" style="color:#b0aac5;font-size:15px"></i></div></div>
+          </div>
+
+          <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+            <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+            <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Odpovědná osoba</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+            <div style="flex:1;min-width:0;padding:0 18px"><div style="display:flex;align-items:center;gap:6px"><i class="fa-solid fa-arrow-right" style="font-size:10px;color:#888"></i><a href="#" style="font-size:13px;color:#1a1a2e;font-weight:600;text-decoration:underline;text-underline-offset:3px">Jana Svobodová</a></div></div>
+          </div>
+
+          <div style="display:flex;align-items:center;min-height:52px;padding:10px 0">
+            <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+            <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Příloha</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+            <div style="flex:1;min-width:0;padding:0 18px">
+              <div style="display:flex;align-items:center;gap:10px;border:1px solid #e0dded;border-radius:6px;padding:7px 12px;background:#fff">
+                <i class="fa-solid fa-file-pdf" style="font-size:15px;color:#E53935"></i>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:12.5px;font-weight:700;color:#1a1a2e">rozhodnuti_24117.pdf</div>
+                  <div style="font-size:11px;color:#a5a0b8">2 strany · 218 kB · staženo z e-mailu</div>
+                </div>
+                <i class="fa-solid fa-download" style="font-size:13px;color:#1572e8"></i>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+</section>
+
+</body>
+</html>

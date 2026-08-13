@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<title>Šablona vizuálu — aplikace → e-mail / notifikace</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<!--
+  ŠABLONA VIZUÁLU · „APLIKACE → E-MAIL / NOTIFIKACE"
+  ==================================================
+  Obrácený tok než `email-do-aplikace.html`: záznam už v Aptienu je
+  a APLIKACE SAMA rozešle upozornění — e-mailem a push notifikací.
+  (Příklad, na kterém je postavená: kontrola stavby s fotodokumentací.)
+
+  TOHLE NENÍ PROTOTYP. Prototyp v `prototypes/` říká, jak vypadá aplikace.
+  Tato šablona říká, jak vypadá OBRÁZEK. Vzhled je hotový a zmrazený —
+  ty měníš jen DATA.
+
+  ────────────────────────────────────────────────────────────────────────
+  JAK POUŽÍT
+  ────────────────────────────────────────────────────────────────────────
+  1. Zkopíruj tento soubor pod novým názvem (např. `revize-upozorneni.html`).
+  2. Přepiš jen to, co je označené  ✏️ MĚŇ.
+  3. Vyrenderuj:  node render.js revize-upozorneni.html
+     → PNG přesně 1920 × 1080 px.
+  Prompt k vyplnění: `PROMPT-aplikace-do-emailu.md`.
+
+  ────────────────────────────────────────────────────────────────────────
+  ✏️ CO SE MĚNÍ
+  ────────────────────────────────────────────────────────────────────────
+  ✏️ POPISKA VLEVO      – nadpisek nad Aptienem (VERZÁLKY, max ~30 znaků)
+  ✏️ NÁZEV POLOŽKY      – název záznamu; POUŽIJ HO I JAKO PŘEDMĚT E-MAILU
+  ✏️ EVIDENCE           – chip s názvem evidence + barva ikony (c800 modulu)
+  ✏️ STAV               – stavová pilulka + barva puntíku
+  ✏️ OBRÁZEK POLOŽKY    – <img> s fotkou záznamu (tady vyplněný)
+  ✏️ POLE ZÁZNAMU       – názvy polí a hodnoty
+  ✏️ KONEKTOR           – text pilulky, max ~14 znaků
+  ✏️ POPISKA VPRAVO     – nadpisek nad schránkou
+  ✏️ NOTIFIKAČNÍ E-MAIL – předmět (= název položky), tělo, text tlačítka
+  ✏️ PUSH               – text push notifikace (celý blok je nepovinný)
+
+  ────────────────────────────────────────────────────────────────────────
+  ⛔ CO SE NEMĚNÍ
+  ────────────────────────────────────────────────────────────────────────
+  ⛔ Rám: `.cv-frame` 1920×1080 a `.cv-stage` 1536×864 se `scale(1.25)`.
+     Sloupce **736 + 168 + 520 = 1424** — hlavní panel (Aptien) je VLEVO,
+     protože o něm obrázek vypráví; notifikace je důsledek vpravo.
+  ⛔ Plocha scény `#f4f4f7` — jednolitá, nikdy gradient, nikdy barva modulu.
+  ⛔ Konektor je vždy modrý `#1572e8`, šipka `#a8c4ea` přerušovaná,
+     míří ZLEVA DOPRAVA (z aplikace do pošty).
+  ⛔ Horní lišta aplikace `#424242`, logo Aptien `height:28px` (inline SVG
+     z `prototypes/assets/img/681a831d.svg`), wordmark 19px/800.
+     Nenahrazuj ho ikonou a nezmenšuj.
+  ⛔ Karta položky má VŽDY obrázek 110×110 vpravo v hlavičce. Když fotka
+     není zadaná, zůstane prázdný placeholder (2px dashed `#d8d6e2` +
+     `fa-image` 28px `#cdd0d8`) — viz `email-do-aplikace.html`. Nemazat.
+  ⛔ ITEM TABS = složkové taby 1:1 z `prototypes/partials/item-drawer-shell.html`.
+     NEDĚLEJ z nich pilulky — to je styl view switcheru.
+  ⛔ Struktura řádku pole (32px nápověda / 210px label vpravo / hodnota)
+     je z `drawer-tab-detaily.html`. Měň hodnoty, ne strukturu.
+  ⛔ Zvýrazněný e-mail = tint `#eef4fe` + `inset 3px 0 0 #1572e8`.
+  ⛔ Do obrázku nepatří nadpis ani claim — jen 2 popisky, 1 pilulka
+     konektoru a data v UI.
+  ⛔ Vyšší panel drž na 70–90 % využitelné výšky (530–680 px). Když je
+     nízký, PŘIDEJ ŘÁDKY DAT; když přeteče, UBER je. Nezvětšuj fonty.
+
+  ────────────────────────────────────────────────────────────────────────
+  POINTA TOHOTO VIZUÁLU
+  ────────────────────────────────────────────────────────────────────────
+  Předmět notifikačního e-mailu = název položky, znak za znak. Divák musí
+  na dvou místech vidět tentýž text a pochopit, že to psal systém, ne člověk.
+  Odesílatel je vždy `no-reply@aptien.com` a e-mail nese tlačítko zpět
+  do aplikace.
+
+  ────────────────────────────────────────────────────────────────────────
+  OBRÁZEK POLOŽKY / LOGA
+  ────────────────────────────────────────────────────────────────────────
+  · Fotka je vložená jako `data:` URI (JPEG 300×300), aby byl soubor
+    samostatný a šel vyrenderovat i offline. Zdroj:
+    `files/Photos and pictures/fotka stavby základová deska.png`.
+    Když ji měníš: středový výřez na kvadrát, 300×300, JPEG q82.
+  ⚠️ Gmail je ZJEDNODUŠENÉ inline SVG (kreslené ručně). Před publikací
+     nahraď oficiálním SVG z brand assets Googlu a projdi jejich pravidla
+     použití. Strip značek pošty tu není — schránka má značku v liště.
+-->
+<style>
+  /* ---- tokeny scény (NEJSOU to app tokeny, platí jen pro rám) -------- */
+  :root{
+    --cv-bg:#f4f4f7;          /* plocha scény – neutrální, NE fialová    */
+    --cv-line:#e4e2ed;        /* okraj panelu = jako karty v aplikaci    */
+    --cv-muted:#8a84a0;       /* popiska nad panelem                     */
+    --cv-accent:#1572e8;      /* JEDINÁ akcentová barva scény            */
+    --cv-arrow:#a8c4ea;
+    --cv-shadow:0 10px 30px rgba(30,27,46,.12);
+  }
+
+  /* ---- rám 1920×1080 (viz Aptien-pravidla-screenshotu.md) ----------- */
+  .cv-frame{width:1920px;height:1080px;overflow:hidden;position:relative;background:var(--cv-bg)}
+  .cv-stage{width:1536px;height:864px;transform:scale(1.25);transform-origin:top left;
+            background:var(--cv-bg);font-family:'Nunito',sans-serif;-webkit-font-smoothing:antialiased}
+  /* padding 56 → využitelná plocha 1424 × 752 CSS px.
+     Panely mají zaplnit 70–90 % výšky (≥ 530 px). Když je panel nižší,
+     PŘIDEJ ŘÁDKY DAT — nikdy nezvětšuj fonty ani nescaluj panel.        */
+  .cv-scene{box-sizing:border-box;width:1536px;height:864px;padding:56px;
+            display:flex;align-items:center;justify-content:center}
+
+  /* ---- sloupec = popiska + panel ------------------------------------ */
+  .cv-col{display:flex;flex-direction:column;justify-content:center;flex-shrink:0}
+  .cv-cap{font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+          color:var(--cv-muted);margin:0 0 10px 4px;white-space:nowrap}
+  .cv-wrap{position:relative}
+  .cv-panel{background:#fff;border:1px solid var(--cv-line);border-radius:12px;
+            box-shadow:var(--cv-shadow);overflow:hidden}
+
+  /* okenní lišta = signál „cizí aplikace" (e-mail, prohlížeč). VŽDY šedá;
+     barvu ve scéně nese jen konektor a samotné UI Aptienu.              */
+  .cv-chrome{height:28px;background:#f0eff4;border-bottom:1px solid #e8e6ef;
+             display:flex;align-items:center;gap:6px;padding:0 12px}
+  .cv-dot{width:8px;height:8px;border-radius:50%;background:#d6d3e0;flex-shrink:0}
+  .cv-chrome span{font-size:10.5px;font-weight:700;color:#9a94ae;margin-left:6px}
+
+  /* ---- konektor: pilulka (max ~14 znaků) + přerušovaná šipka -------- */
+  .cv-conn{display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+  .cv-pill{display:inline-flex;align-items:center;gap:7px;background:var(--cv-accent);color:#fff;
+           font-size:11px;font-weight:800;letter-spacing:.05em;padding:6px 14px;border-radius:999px;
+           white-space:nowrap;box-shadow:0 2px 8px rgba(21,114,232,.30);margin-bottom:12px}
+  .cv-pill i{font-size:10px}
+
+  /* ---- odznak „stalo se to samo" (nepovinný, max 1 na scénu) -------- */
+  .cv-badge{position:absolute;bottom:-13px;right:-13px;width:34px;height:34px;border-radius:50%;
+            background:#43A047;border:3px solid var(--cv-bg);display:flex;align-items:center;
+            justify-content:center;color:#fff;font-size:14px;box-shadow:0 3px 10px rgba(67,160,71,.35)}
+
+  /* ---- telefon (varianta B a D) ------------------------------------- */
+  .cv-phone{width:296px;border-radius:30px;background:#fff;border:1px solid var(--cv-line);
+            box-shadow:0 14px 36px rgba(30,27,46,.16);overflow:hidden}
+  .cv-phone-top{height:26px;background:#424242;display:flex;align-items:center;justify-content:center}
+  .cv-phone-notch{width:76px;height:8px;border-radius:999px;background:#2b2b2b}
+
+  /* ---- strip značek pošty pod panelem schránky ---------------------- */
+  .cv-prov{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:18px}
+  .cv-prov-chip{display:flex;align-items:center;justify-content:center;width:38px;height:38px;
+                background:#fff;border:1px solid var(--cv-line);border-radius:11px;
+                box-shadow:0 4px 12px rgba(30,27,46,.08)}
+
+  body{margin:0;background:#dedde4;font-family:'Nunito',sans-serif}
+</style>
+</head>
+<body>
+
+<section class="cv-frame" id="vizual">
+<div class="cv-stage">
+<div class="cv-scene">
+
+  <!-- ============ ZDROJ: Aptien — karta položky s fotkou ============= -->
+  <div class="cv-col" style="width:736px">
+    <!-- ✏️ POPISKA VLEVO -->
+    <div class="cv-cap">Aptien hlídá termín kontroly</div>
+    <div class="cv-panel">
+
+      <!-- horní lišta aplikace: skutečné proporce z prototypu (56 / 28 / 19) -->
+      <div style="height:56px;background:#424242;display:flex;align-items:center;padding:0 20px;gap:14px">
+        <svg viewBox="0 0 598.3 651.4" style="width:25.7px;height:28px;flex-shrink:0">
+            <g transform="translate(-400.9,-201.5)">
+              <path fill="#fff" d="m 990.7,648.5 c -7.2,-17.3 -16.8,-33.3 -25.3,-50.4 -5,-10 -10,-20 -14.9,-29.9 -12.6,-25.3 -25.2,-50.6 -37.8,-75.8 -14,-28 -27.9,-56 -41.9,-83.9 -12.7,-25.4 -25.4,-50.8 -38,-76.2 -8.8,-17.6 -17.5,-35.2 -26.3,-52.7 -2.4,-4.9 -5,-9.7 -7.3,-14.7 -0.2,-0.3 -0.3,-0.7 -0.5,-1 -18.2,-37.9 -57.1,-62.4 -99.2,-62.4 -42.4,0 -80.2,23.7 -98.8,61.6 L 415.2,635 l -1.6,3.2 c -8.3,15.7 -12.7,33.5 -12.7,51.4 0,5.6 0.4,11.1 1.2,16.6 1.4,9 3.9,17.9 7.4,26.3 5.4,12.7 13,24.1 22.7,34 l 0.3,0.3 c 49.1,53.1 151.5,86.1 267.1,86.1 31.5,0 63,-2.4 94.1,-7.6 28,-4.7 55.6,-11.7 82.1,-21.7 22.9,-8.7 45.1,-19.6 64.9,-34 12.3,-9 24.7,-18 34.3,-30 8.6,-10.7 15.2,-22.9 19.2,-36 3.3,-10.6 5,-21.6 5,-32.7 0,-14.5 -2.8,-29 -8.5,-42.4 z M 786,352 l -11.4,22.8 -172.1,345 -6.4,12.9 c -15.7,31.1 -47.9,52.4 -85.2,52.4 -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-16.2 4,-31.4 11.1,-44.8 l 1.7,-3.4 183.8,-368.6 1.6,-3.3 c 15.5,-31.8 48.1,-53.6 85.8,-53.6 52.7,0 95.5,42.8 95.5,95.5 0.1,14.5 -3.1,28.3 -8.9,40.6 z m 103.3,434.4 c -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-52.7 42.8,-95.5 95.5,-95.5 52.7,0 95.5,42.8 95.5,95.5 0,52.7 -42.7,95.5 -95.5,95.5 z"/>
+            </g>
+          </svg>
+        <span style="color:#fff;font-weight:800;font-size:19px;letter-spacing:-.015em;margin-left:-6px">aptien</span>
+        <div style="flex:1"></div>
+        <div style="position:relative;margin-right:11px">
+          <i class="fa-solid fa-bell" style="color:#fff;font-size:17px"></i>
+          <span style="position:absolute;top:-6px;right:-8px;background:#FF3D00;color:#fff;font-size:9px;font-weight:800;border-radius:999px;padding:1px 4px;border:1.5px solid #424242">2</span>
+        </div>
+        <div style="width:30px;height:30px;border-radius:50%;background:#8d8d8d;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:800">JR</div>
+      </div>
+
+      <!-- HLAVIČKA KARTY: název + chipy vlevo, OBRÁZEK 110×110 vpravo -->
+      <div style="display:flex;align-items:flex-start;gap:16px;padding:16px 20px 14px;border-bottom:1px solid #f0eef8">
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:10px">
+            <!-- ✏️ EVIDENCE — ikona v barvě modulu (Zakázky #1565C0) -->
+            <i class="fa-solid fa-briefcase" style="font-size:17px;color:#1565C0"></i>
+            <!-- ✏️ NÁZEV POLOŽKY — použij ho i jako předmět e-mailu vpravo -->
+            <span style="font-size:17px;font-weight:800;color:#1e1b2e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Základová deska — hala D</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:12px">
+            <!-- ✏️ EVIDENCE — chip -->
+            <span style="display:inline-flex;align-items:center;background:#eceff1;color:#59676d;padding:4px 12px;border-radius:4px;font-size:10px;font-weight:600">Zakázky</span>
+            <!-- ✏️ STAV -->
+            <div style="display:flex;align-items:center;gap:7px;border:1px solid #e0dded;border-radius:999px;padding:4px 12px">
+              <span style="width:9px;height:9px;border-radius:50%;background:#FF8F00"></span>
+              <span style="font-size:11.5px;font-weight:700;color:#4a4660">Ke kontrole</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ✏️ OBRÁZEK POLOŽKY — vyplněný stav. Fotka je data: URI, aby byl
+             soubor samostatný. Rozměr rámečku 110×110 neměň. -->
+        <img src="data:image/jpeg;base64,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" alt="Fotodokumentace záznamu"
+             style="width:110px;height:110px;border-radius:8px;object-fit:cover;flex-shrink:0;border:1px solid #e4e2ed">
+      </div>
+
+      <!-- ITEM TABS = složkové taby 1:1 z partials/item-drawer-shell.html
+           ⛔ Nedělej z nich pilulky – to je styl view switcheru, ne itemu. -->
+      <div style="flex-shrink:0;display:flex;align-items:flex-end;padding:14px 20px 0;background:#fff">
+        <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;white-space:nowrap;font-size:12px;font-weight:700;color:#1572e8;background:#fff;border-top-left-radius:8px;border-top-right-radius:8px;box-shadow:0 5px 20px rgba(0,0,0,.10);clip-path:inset(-30px -30px 0 -30px);margin-bottom:-1px;position:relative;z-index:2">Detaily</div>
+        <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Přílohy<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#1572e8;color:#fff;border-radius:50%;font-size:10px;font-weight:700;margin-left:4px">3</span></div>
+        <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Souvislosti</div>
+        <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Zápisy</div>
+        <div style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 20px;white-space:nowrap;font-size:12px;font-weight:600;color:#263238;background:none">Plány aktivit</div>
+      </div>
+
+      <!-- ✏️ POLE ZÁZNAMU — měň názvy polí a hodnoty, NE strukturu řádku -->
+      <div style="padding:2px 20px 0;font-family:'Nunito',sans-serif">
+          <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+            <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+            <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Číslo zakázky</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+            <div style="flex:1;min-width:0;padding:0 18px"><input type="text" value="ZAK-2026-114" style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;outline:none;background:#fff"></div>
+          </div>
+          <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+            <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+            <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Zákazník</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+            <div style="flex:1;min-width:0;padding:0 18px"><div style="display:flex;align-items:center;gap:6px"><i class="fa-solid fa-arrow-right" style="font-size:10px;color:#888"></i><a href="#" style="font-size:13px;color:#1a1a2e;font-weight:600;text-decoration:underline;text-underline-offset:3px">LMN Projekty s.r.o.</a></div></div>
+          </div>
+          <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+            <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+            <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Místo</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+            <div style="flex:1;min-width:0;padding:0 18px"><input type="text" value="Hala D — sever" style="width:100%;border:1px solid #e0dded;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;outline:none;background:#fff"></div>
+          </div>
+          <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+            <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+            <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Termín kontroly</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+            <div style="flex:1;min-width:0;padding:0 18px"><div style="display:inline-flex;align-items:center;gap:8px"><input type="text" value="14. 8. 2026" style="border:1px solid #e5e5e5;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;background:#fff;outline:none;width:120px"><i class="fa-regular fa-calendar-days" style="color:#b0aac5;font-size:15px"></i></div></div>
+          </div>
+          <div style="display:flex;align-items:center;min-height:52px;border-bottom:1px solid #f0eef8;padding:10px 0">
+            <div style="width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-question" style="font-size:12px;color:#c9c4d8"></i></div>
+            <div style="width:210px;flex-shrink:0;display:flex;align-items:flex-start;gap:6px"><span style="flex:1;text-align:right;font-size:12px;color:#6b6585;font-weight:600;line-height:1.5">Odpovědná osoba</span><i class="fa-solid fa-pen" style="color:#d5d0e5;font-size:10px;margin-top:3px;flex-shrink:0"></i></div>
+            <div style="flex:1;min-width:0;padding:0 18px"><div style="display:flex;align-items:center;gap:6px"><i class="fa-solid fa-arrow-right" style="font-size:10px;color:#888"></i><a href="#" style="font-size:13px;color:#1a1a2e;font-weight:600;text-decoration:underline;text-underline-offset:3px">Jiří Rychlý</a></div></div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ KONEKTOR: z aplikace doprava do pošty ============== -->
+  <div class="cv-conn" style="width:168px">
+    <!-- ✏️ KONEKTOR — max ~14 znaků -->
+    <div class="cv-pill"><i class="fa-solid fa-paper-plane"></i>UPOZORNÍ SÁM</div>
+    <svg width="140" height="14" viewBox="0 0 140 14" fill="none">
+      <path d="M2 7 H120" stroke="#a8c4ea" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="7 7"/>
+      <path d="M122 1 L134 7 L122 13 Z" fill="#a8c4ea"/>
+    </svg>
+  </div>
+
+  <!-- ============ CÍL: notifikace v poště + push =================== -->
+  <div class="cv-col" style="width:520px">
+    <!-- ✏️ POPISKA VPRAVO -->
+    <div class="cv-cap">Odpovědný člověk to má v poště</div>
+
+    <div class="cv-panel" style="margin-bottom:18px">
+      <div class="cv-chrome"><i class="cv-dot"></i><i class="cv-dot"></i><i class="cv-dot"></i>
+        <svg viewBox="0 0 512 400" style="width:19px;height:15px;flex-shrink:0;margin-left:8px">
+          <path fill="#4285f4" d="M34.9 384.6h81.4V187.2L0 100v249.7c0 19.3 15.6 34.9 34.9 34.9z"/>
+          <path fill="#34a853" d="M395.7 384.6h81.4c19.3 0 34.9-15.6 34.9-34.9V100L395.7 187.2z"/>
+          <path fill="#fbbc04" d="M395.7 92.3v94.9L512 100V57.4c0-39.4-45-61.9-76.5-38.3z"/>
+          <path fill="#ea4335" d="M116.3 187.2V92.3L256 197 395.7 92.3v94.9L256 292z"/>
+          <path fill="#c5221f" d="M0 57.4V100l116.3 87.2V92.3L76.5 19.1C45-4.5 0 18 0 57.4z"/>
+        </svg>
+        <span>Doručená pošta</span></div>
+
+      <div style="padding:6px 0 8px">
+        <div style="display:flex;gap:11px;padding:9px 15px;align-items:center">
+          <i class="fa-regular fa-envelope" style="font-size:13px;color:#c6c1d6"></i>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:700;color:#7a7492;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Dodávka betonu — potvrzení termínu</div>
+            <div style="font-size:11px;color:#aeaabf;margin-top:1px">beton@dodavatel.cz · 11. 8.</div>
+          </div>
+        </div>
+
+        <!-- ✏️ NOTIFIKAČNÍ E-MAIL — předmět = NÁZEV POLOŽKY, znak za znak.
+             Odesílatel je vždy no-reply@aptien.com. -->
+        <div style="display:flex;gap:11px;padding:13px 15px;align-items:flex-start;background:#eef4fe;box-shadow:inset 3px 0 0 #1572e8;margin:4px 0">
+          <i class="fa-solid fa-envelope" style="font-size:13px;color:#1572e8;margin-top:2px"></i>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13.5px;font-weight:800;color:#1e1b2e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Základová deska — hala D</div>
+            <div style="font-size:11px;color:#7d7794;margin-top:2px">no-reply@aptien.com · dnes 7:00</div>
+            <div style="font-size:12px;color:#4a4660;margin-top:7px;line-height:1.5">Termín kontroly je zítra. V záznamu jsou 3 fotky z pracoviště.</div>
+            <div style="display:inline-flex;align-items:center;gap:7px;margin-top:10px;background:#1572e8;color:#fff;font-size:11px;font-weight:800;border-radius:999px;padding:6px 14px;letter-spacing:.04em">OTEVŘÍT ZÁZNAM</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:11px;padding:9px 15px;align-items:center;margin-top:4px">
+          <i class="fa-regular fa-envelope" style="font-size:13px;color:#c6c1d6"></i>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:700;color:#7a7492;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Objednávka č. 2026-088</div>
+            <div style="font-size:11px;color:#aeaabf;margin-top:1px">obchod@dodavatel.cz · 10. 8.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✏️ PUSH — nepovinné. Když nechceš, smaž celý tento blok. -->
+    <div class="cv-panel" style="padding:14px 16px;display:flex;gap:12px;align-items:flex-start">
+      <div style="width:30px;height:30px;border-radius:8px;background:#424242;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg viewBox="0 0 598.3 651.4" style="width:14px;height:15px"><g transform="translate(-400.9,-201.5)"><path fill="#fff" d="m 990.7,648.5 c -7.2,-17.3 -16.8,-33.3 -25.3,-50.4 -5,-10 -10,-20 -14.9,-29.9 -12.6,-25.3 -25.2,-50.6 -37.8,-75.8 -14,-28 -27.9,-56 -41.9,-83.9 -12.7,-25.4 -25.4,-50.8 -38,-76.2 -8.8,-17.6 -17.5,-35.2 -26.3,-52.7 -2.4,-4.9 -5,-9.7 -7.3,-14.7 -0.2,-0.3 -0.3,-0.7 -0.5,-1 -18.2,-37.9 -57.1,-62.4 -99.2,-62.4 -42.4,0 -80.2,23.7 -98.8,61.6 L 415.2,635 l -1.6,3.2 c -8.3,15.7 -12.7,33.5 -12.7,51.4 0,5.6 0.4,11.1 1.2,16.6 1.4,9 3.9,17.9 7.4,26.3 5.4,12.7 13,24.1 22.7,34 l 0.3,0.3 c 49.1,53.1 151.5,86.1 267.1,86.1 31.5,0 63,-2.4 94.1,-7.6 28,-4.7 55.6,-11.7 82.1,-21.7 22.9,-8.7 45.1,-19.6 64.9,-34 12.3,-9 24.7,-18 34.3,-30 8.6,-10.7 15.2,-22.9 19.2,-36 3.3,-10.6 5,-21.6 5,-32.7 0,-14.5 -2.8,-29 -8.5,-42.4 z M 786,352 l -11.4,22.8 -172.1,345 -6.4,12.9 c -15.7,31.1 -47.9,52.4 -85.2,52.4 -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-16.2 4,-31.4 11.1,-44.8 l 1.7,-3.4 183.8,-368.6 1.6,-3.3 c 15.5,-31.8 48.1,-53.6 85.8,-53.6 52.7,0 95.5,42.8 95.5,95.5 0.1,14.5 -3.1,28.3 -8.9,40.6 z m 103.3,434.4 c -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-52.7 42.8,-95.5 95.5,-95.5 52.7,0 95.5,42.8 95.5,95.5 0,52.7 -42.7,95.5 -95.5,95.5 z"/></g></svg>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <span style="font-size:12px;font-weight:800;color:#1e1b2e">Aptien</span>
+          <span style="font-size:11px;color:#a5a0b8">teď</span>
+        </div>
+        <div style="font-size:12px;color:#4a4660;margin-top:3px;line-height:1.5">Zítra máte kontrolu: Základová deska — hala D.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+</section>
+
+</body>
+</html>
