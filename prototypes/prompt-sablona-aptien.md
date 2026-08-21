@@ -134,6 +134,17 @@ Pokud uvedu název, který neodpovídá žádné položce (např. nová evidence
 **Aktivní v sidebaru:** [přesný název položky sidebaru, např. „Moje směrnice"] (layout sidebaru ber z `partials/sidebar-menu.html`)
 **Typ obrazovky:** pohled na aplikaci/agendu (data), NE nastavení / konfigurace
 **Layout / zdroj:** daný pohled, topbar a logo ber z `Aptien-aplikace-offline.html`.
+Pro „Nastavení organizace" použij hotové bloky podle podzáložky:
+Organizace → `partials/nastorg-organizace.html` · Pracovní pozice →
+`partials/nastorg-pracovni-pozice.html` · Katalog požadavků →
+`partials/nastorg-katalog-pozadavku.html` · Nastavení nadřízených →
+`partials/nastorg-nastaveni-nadrizenych.html` · otevřená pozice →
+`partials/nastorg-pozice-<sekce>.html` (modal, ne drawer; sekce =
+`zakladni` / `organizacni` / `naplne` / `kvalifikace` / `pozadavky` /
+`rizika` / `aktivity` / `dokumenty`, prázdný rám je
+`partials/nastorg-pozice-modal.html`). Pro čerstvě založenou pozici bez
+nastavení použij `nastorg-pozice-aktivity-prazdne.html` /
+`nastorg-pozice-dokumenty-prazdne.html`.
 **Přihlášený uživatel:** [jméno + přidej profilovou fotku, nebo „—"]
 **Kontext (jen pro pochopení tématu, NEZOBRAZUJ v obrázku):** [text, nebo „—"]
 **Data k zobrazení:** [popiš, co má v pohledu být; strukturu/formát převezmi z prototypu; realistická data doplň podle praxe]

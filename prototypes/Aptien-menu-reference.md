@@ -107,6 +107,19 @@ Nic nevynechávej, nepřidávej ani nepřejmenovávej.*
 | 6 | Nastavení organizace | `sitemap.svg` | – |
 | 7 | Inventura | `boxes-stacked.svg` | – |
 
+### Nastavení organizace — podzáložky obsahu
+
+Položka `Nastavení organizace` je **nav-owned content**: jejím otevřením se
+ruší aktivní záložka topbaru. Obsah má 4 podzáložky (folder taby uvnitř
+bílé karty, výchozí je první) — viz `Aptien-pravidla-pouziti-UI.md` §11:
+
+| # | Podzáložka | Obsah |
+|---|---|---|
+| 1 | Organizace | organizační strom jednotek |
+| 2 | Pracovní pozice | filtry + seznam karet pozic → modal „Upravit pracovní pozici" |
+| 3 | Katalog požadavků na pracovní pozice | tabulka požadavků s kategoriemi |
+| 4 | Nastavení nadřízených | pravidlo odvození nadřízeného + tabulka výjimek |
+
 > Badge (počty) jsou ukázkové hodnoty; zobrazují se **pořád** u dané
 > položky bez ohledu na to, která je aktivní.
 

@@ -1,0 +1,127 @@
+<meta charset="utf-8">
+<!-- Ikony tohoto bloku jsou Font Awesome (Free). Řádky níže načtou FA a Nunito,
+     aby se blok vykreslil i při samostatném otevření souboru. V master
+     prototypu se obojí načítá z jeho assetů, takže tam jsou nadbytečné. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap">
+<!--
+  APTIEN — NASTAVENÍ ORGANIZACE / ZÁLOŽKA „ORGANIZACE" · STATICKÝ BLOK
+  ====================================================================
+  Vlož CELÝ blok. NEREKONSTRUUJ ho. Skladba (Aptien-pravidla-pouziti-UI.md §11.1–§11.2):
+    1) pruh podzáložek (4 folder taby, aktivní bílý s modrým textem),
+    2) bílá karta s organizačním stromem (.orgchart — vnořené ul/li,
+       spojnice kreslí pseudo-elementy, uzel = modrá hlavička #5b9cef
+       + bílé tělo s ikonami akcí).
+  Měň jen názvy uzlů a strukturu vnoření. Barvy a rozměry uzlu neměň.
+-->
+<style>
+    .orgchart, .orgchart ul { list-style: none; margin: 0px; padding: 0px; }
+    .orgchart { display: flex; justify-content: flex-start; padding: 8px 0px 0px; }
+    .orgchart ul { display: flex; justify-content: center; padding-top: 22px; position: relative; }
+    .orgchart li { display: flex; flex-direction: column; align-items: center; position: relative; padding: 22px 8px 0px; }
+    .orgchart li::before { content: ""; position: absolute; top: 0px; left: 50%; width: 1px; height: 22px; background: rgb(201, 198, 214); }
+    .orgchart li::after { content: ""; position: absolute; top: 0px; height: 1px; background: rgb(201, 198, 214); width: 100%; left: 0px; }
+    .orgchart li:first-child::after { left: 50%; width: 50%; }
+    .orgchart li:last-child::after { left: 0px; width: 50%; }
+    .orgchart li:only-child::after { display: none; }
+    .orgchart > li { padding-top: 0px; }
+    .orgchart > li::before, .orgchart > li::after { display: none; }
+    .orgchart ul::before { content: ""; position: absolute; top: 0px; left: 50%; width: 1px; height: 22px; background: rgb(201, 198, 214); }
+    .org-node { width: 190px; border: 1px solid rgb(91, 156, 239); border-radius: 3px; background: rgb(255, 255, 255); overflow: hidden; flex-shrink: 0; }
+    .org-node-head { background: rgb(91, 156, 239); color: rgb(255, 255, 255); font-size: 11.5px; font-weight: 800; padding: 4px 8px; display: flex; align-items: center; gap: 6px; white-space: nowrap; overflow: hidden; }
+    .org-node-head .org-grip { opacity: 0.85; font-size: 10px; cursor: grab; flex-shrink: 0; }
+    .org-node-head .org-title { flex: 1 1 0%; min-width: 0px; overflow: hidden; text-overflow: ellipsis; text-align: center; }
+    .org-node-body { padding: 8px 8px 7px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .org-node-body .org-dash { color: rgb(176, 170, 200); font-size: 11px; line-height: 1; }
+    .org-node-acts { display: flex; align-items: center; justify-content: center; gap: 12px; }
+    .org-node-acts i { font-size: 12px; color: rgb(107, 114, 128); cursor: pointer; }
+    .org-node-acts i:hover { color: rgb(21, 114, 232); }
+    .org-subtabs { }
+    .org-card { }
+    .org-subtab { flex-shrink: 0; cursor: pointer; padding: 9px 18px; border-radius: 7px 7px 0px 0px; font-size: 13px; white-space: nowrap; user-select: none; transition: background 0.15s, color 0.15s; }
+    .poz-card { background: rgb(255, 255, 255); border: 1px solid rgb(232, 230, 240); border-radius: 8px; box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 3px; padding: 14px 18px; margin-bottom: 10px; cursor: pointer; transition: box-shadow 0.15s, border-color 0.15s; }
+    .poz-card:hover { box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 14px; border-color: rgb(201, 220, 248); }
+    .poz-filter { background: rgb(166, 166, 173); color: rgb(255, 255, 255); border-radius: 4px; height: 32px; display: flex; align-items: center; justify-content: space-between; padding: 0px 12px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+</style>
+<div style="font-family:'Nunito',sans-serif;background:#f5f6f7;display:flex;flex-direction:column;height:100vh;overflow:hidden">
+<div class="org-subtabs" style="flex-shrink: 0; display: flex; align-items: flex-end; gap: 2px; padding: 8px 20px 0px;">
+          
+            <div class="org-subtab" style="background: rgb(255, 255, 255); color: rgb(21, 114, 232); font-weight: 700; box-shadow: rgba(0, 0, 0, 0.05) 0px -1px 5px;">Organizace</div>
+          
+            <div class="org-subtab" style="background: transparent; color: rgb(74, 70, 96); font-weight: 600;">Pracovní pozice</div>
+          
+            <div class="org-subtab" style="background: transparent; color: rgb(74, 70, 96); font-weight: 600;">Katalog požadavků na pracovní pozice</div>
+          
+            <div class="org-subtab" style="background: transparent; color: rgb(74, 70, 96); font-weight: 600;">Nastavení nadřízených</div>
+          
+        </div>
+<div class="org-card" style="flex: 1 1 0%; min-height: 0px; margin: 0px 12px 12px; background: rgb(255, 255, 255); border-radius: 0px 10px 10px; box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 6px; border: 1px solid rgb(228, 226, 237); overflow: auto; padding: 26px 30px 40px;">
+            <div style="font-size: 18px; font-weight: 700; color: rgb(43, 37, 64); margin-bottom: 10px;">Naše organizace</div>
+            <ul class="orgchart">
+              <li>
+                <div class="org-node">
+                  <div class="org-node-head"><i class="fa-solid fa-bars org-grip"></i><span class="org-title">Naše organizace</span></div>
+                  <div class="org-node-body"><span class="org-dash">—</span><div class="org-node-acts"><i class="fa-solid fa-layer-group"></i><i class="fa-solid fa-pen"></i></div></div>
+                </div>
+                <ul>
+                  <li>
+                    <div class="org-node">
+                      <div class="org-node-head"><i class="fa-solid fa-bars org-grip"></i><span class="org-title">Oddělení řízení lidských zd…</span></div>
+                      <div class="org-node-body"><span class="org-dash">—</span><div class="org-node-acts"><i class="fa-solid fa-layer-group"></i><i class="fa-solid fa-pen"></i></div></div>
+                    </div>
+                    <ul>
+                      <li>
+                        <div class="org-node">
+                          <div class="org-node-head"><i class="fa-solid fa-bars org-grip"></i><span class="org-title">Oddělení IT</span></div>
+                          <div class="org-node-body"><span class="org-dash">—</span><div class="org-node-acts"><i class="fa-solid fa-layer-group"></i><i class="fa-solid fa-pen"></i></div></div>
+                        </div>
+                        <ul>
+                          <li>
+                            <div class="org-node">
+                              <div class="org-node-head"><span class="org-title">Juniors</span></div>
+                              <div class="org-node-body"><span class="org-dash">—</span><div class="org-node-acts"><i class="fa-solid fa-layer-group"></i><i class="fa-solid fa-pen"></i></div></div>
+                            </div>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <div class="org-node">
+                      <div class="org-node-head"><span class="org-title">Právní oddělení první</span></div>
+                      <div class="org-node-body"><span class="org-dash">—</span><div class="org-node-acts"><i class="fa-solid fa-layer-group"></i><i class="fa-solid fa-pen"></i></div></div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="org-node">
+                      <div class="org-node-head"><i class="fa-solid fa-bars org-grip"></i><span class="org-title">HR</span></div>
+                      <div class="org-node-body"><span class="org-dash">—</span><div class="org-node-acts"><i class="fa-solid fa-layer-group"></i><i class="fa-solid fa-pen"></i></div></div>
+                    </div>
+                    <ul>
+                      <li>
+                        <div class="org-node">
+                          <div class="org-node-head"><span class="org-title">Právníci</span></div>
+                          <div class="org-node-body"><span class="org-dash">—</span><div class="org-node-acts"><i class="fa-solid fa-layer-group"></i><i class="fa-solid fa-pen"></i><i class="fa-solid fa-trash"></i></div></div>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <div class="org-node">
+                      <div class="org-node-head"><i class="fa-solid fa-bars org-grip"></i><span class="org-title">Asistent</span></div>
+                      <div class="org-node-body"><span class="org-dash">—</span><div class="org-node-acts"><i class="fa-solid fa-layer-group"></i><i class="fa-solid fa-pen"></i></div></div>
+                    </div>
+                    <ul>
+                      <li>
+                        <div class="org-node">
+                          <div class="org-node-head"><span class="org-title">HR PRaha</span></div>
+                          <div class="org-node-body"><span class="org-dash">—</span><div class="org-node-acts"><i class="fa-solid fa-layer-group"></i><i class="fa-solid fa-pen"></i><i class="fa-solid fa-trash"></i></div></div>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+</div>

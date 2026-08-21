@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<title>Šablona vizuálu — nadpis + screen s okraji</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<!--
+  ŠABLONA VIZUÁLU · „NADPIS + SCREEN S OKRAJI"
+  ================================================
+  Rodina „NADPIS + SCREENSHOT": obrázek na produktovou stránku, kde nese
+  význam NADPIS a screenshot je důkaz. Tři varianty téhož rozvržení:
+
+    nadpis-screen-na-hrane.html   nadpis + 1 screen, který přetéká z rámu
+    nadpis-screen-s-okraji.html   nadpis + 1 screen celý v okrajích karty
+    nadpis-dva-screeny.html       nadpis + 2 překryté screeny
+
+  Tohle NENÍ prototyp. Vzhled je hotový a zmrazený — měníš jen nadpis
+  a screenshoty. Pravidla rodiny: `PRAVIDLA-nadpis-a-screen.md`.
+  Prompt k vyplnění: `PROMPT-nadpis-a-screen.md`.
+
+  ────────────────────────────────────────────────────────────────────────
+  JAK POUŽÍT
+  ────────────────────────────────────────────────────────────────────────
+  1. Zkopíruj tento soubor pod novým názvem.
+  2. Přepiš jen to, co je označené  ✏️ MĚŇ.
+  3. Vyrenderuj:  node render.js <soubor>.html   → PNG 1920 × 1080 px.
+
+  ✏️ NADPIS      – 2–4 slova, max ~28 znaků na řádek, max 2 řádky
+  ✏️ SCREENSHOT  – cesta k PNG v `src`
+  Screen je celý v okrajích karty, orýznutý jen zdola.
+
+  ────────────────────────────────────────────────────────────────────────
+  SCREENSHOT — DVĚ CESTY
+  ────────────────────────────────────────────────────────────────────────
+  A) HOTOVÉ PNG (výchozí): `<img src="...">`. Sem patří snímky ze skutečné
+     instance, když chceš ukázat reálná data. Snímek musí být na světlém
+     pozadí a v poměru přibližně 3:2 (např. 1400 × 900) — jinak se rozseká
+     rozvržení. `ukazka-screen.png` je jen zástupný snímek, vyměň ho.
+  B) VYRENDEROVANÝ Z PROTOTYPU: pod `<img>` je zakomentovaný blok
+     `<div class="hs-shot hs-shot-live">`. Odkomentuj ho, `<img>` smaž
+     a doplň dovnitř UI z `prototypes/partials/`. Použij, když chceš vždy
+     aktuální design a ostré písmo místo přeškálovaného snímku.
+
+  ────────────────────────────────────────────────────────────────────────
+  ⛔ CO SE NEMĚNÍ
+  ────────────────────────────────────────────────────────────────────────
+  ⛔ Rám `.hs-frame` 1920×1080 a `.hs-stage` 1536×864 se `scale(1.25)`.
+  ⛔ Plocha `#f4f4f7`, bílá karta radius 28px. Karta se nebarví.
+  ⛔ Nadpis: Nunito **900**, `60px/1.1`, barva `#311B92`, na střed.
+     Nezmenšuj ho, aby se vešel delší text — zkrať text.
+  ⛔ Screenshot má radius 14px, jemný okraj `#e6e4ee` a stín. Nenaklánět,
+     nepřidávat perspektivu, nezaoblovat víc.
+  ⛔ Screenshot se ORÝZNE rámem/kartou, a to je záměr — nikdy ho
+     nezmenšuj tak, aby se vešel celý. Vidět má být horní část obrazovky.
+  ⛔ V obrázku není nic dalšího: žádná pilulka, popiska, šipka, jiskry,
+     gradient ani druhý text. Jen nadpis a screenshot(y).
+  ⛔ Sem NEPATŘÍ scény toku (e-mail → aplikace apod.) — na ty jsou
+     šablony `email-do-aplikace.html` a `aplikace-do-emailu.html`.
+-->
+<style>
+  .hs-frame{width:1920px;height:1080px;overflow:hidden;position:relative;background:#f4f4f7}
+  .hs-stage{width:1536px;height:864px;transform:scale(1.25);transform-origin:top left;
+            position:relative;overflow:hidden;background:#f4f4f7;
+            font-family:'Nunito',sans-serif;-webkit-font-smoothing:antialiased}
+
+  /* bílá karta – nese nadpis; nikdy se nebarví */
+  .hs-card{position:absolute;background:#fff;border-radius:28px;
+           box-shadow:0 10px 34px rgba(30,27,46,.06);box-sizing:border-box;overflow:hidden}
+
+  /* nadpis – Nunito 900, brandová tmavá fialová */
+  .hs-title{margin:0;font-family:'Nunito',sans-serif;font-weight:900;font-size:60px;
+            line-height:1.1;letter-spacing:-.015em;color:#311B92;text-align:center}
+
+  /* screenshot – bez naklonění, bez perspektivy */
+  .hs-shot{position:absolute;border-radius:14px;border:1px solid #e6e4ee;
+           box-shadow:0 22px 60px rgba(30,27,46,.18);display:block}
+  .hs-shot-back{box-shadow:0 14px 40px rgba(30,27,46,.12)}
+
+  body{margin:0;background:#dedde4}
+</style>
+</head>
+<body>
+
+<section class="hs-frame" id="vizual">
+<div class="hs-stage">
+
+  <!-- KARTA — nese nadpis i screen; screen orýzne svým spodním okrajem -->
+  <div class="hs-card" style="left:64px;top:40px;width:1408px;height:784px;display:flex;flex-direction:column;align-items:center;padding:56px 90px 0">
+    <!-- ✏️ NADPIS -->
+    <h1 class="hs-title">Přístroje a BTK</h1>
+
+    <!-- SCREEN — vodorovně na střed, s okraji; zdola ho orýzne karta.
+         ⛔ Nezmenšuj ho, aby se vešel celý. -->
+    <!-- ✏️ SCREENSHOT -->
+    <img class="hs-shot" src="ukazka-screen.png" alt=""
+         style="position:relative;margin-top:44px;width:1120px;flex-shrink:0">
+
+      <!-- B) VARIANTA „vyrenderováno z prototypu": odkomentuj, <img> výše smaž
+           a dovnitř vlož UI z prototypes/partials/. Rozměr drž 1400×900.
+      <div class="hs-shot hs-shot-live" style="position:relative;margin-top:44px;width:1400px;height:900px;overflow:hidden;background:#f9f9fb">
+        ... sem topbar + tab strip + sidebar + obsah z partialů ...
+      </div>
+      -->
+  </div>
+
+</div>
+</section>
+
+</body>
+</html>

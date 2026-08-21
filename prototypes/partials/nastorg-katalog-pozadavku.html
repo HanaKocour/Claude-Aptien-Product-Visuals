@@ -1,0 +1,213 @@
+<meta charset="utf-8">
+<!-- Ikony tohoto bloku jsou Font Awesome (Free). Řádky níže načtou FA a Nunito,
+     aby se blok vykreslil i při samostatném otevření souboru. V master
+     prototypu se obojí načítá z jeho assetů, takže tam jsou nadbytečné. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap">
+<!--
+  APTIEN — NASTAVENÍ ORGANIZACE / ZÁLOŽKA „KATALOG POŽADAVKŮ" · STATICKÝ BLOK
+  ==========================================================================
+  Vlož CELÝ blok. Skladba (§11.4): pruh podzáložek + bílá karta =
+  filtry (Název požadavku, Kategorie) + modré PŘIDAT POŽADAVEK vpravo +
+  tabulka Požadavek / Kategorie / Použito v pozicích / akce.
+  Kategorie je barevný štítek — barvy ber z §11.4, nevymýšlej vlastní.
+-->
+<style>
+    .orgchart, .orgchart ul { list-style: none; margin: 0px; padding: 0px; }
+    .orgchart { display: flex; justify-content: flex-start; padding: 8px 0px 0px; }
+    .orgchart ul { display: flex; justify-content: center; padding-top: 22px; position: relative; }
+    .orgchart li { display: flex; flex-direction: column; align-items: center; position: relative; padding: 22px 8px 0px; }
+    .orgchart li::before { content: ""; position: absolute; top: 0px; left: 50%; width: 1px; height: 22px; background: rgb(201, 198, 214); }
+    .orgchart li::after { content: ""; position: absolute; top: 0px; height: 1px; background: rgb(201, 198, 214); width: 100%; left: 0px; }
+    .orgchart li:first-child::after { left: 50%; width: 50%; }
+    .orgchart li:last-child::after { left: 0px; width: 50%; }
+    .orgchart li:only-child::after { display: none; }
+    .orgchart > li { padding-top: 0px; }
+    .orgchart > li::before, .orgchart > li::after { display: none; }
+    .orgchart ul::before { content: ""; position: absolute; top: 0px; left: 50%; width: 1px; height: 22px; background: rgb(201, 198, 214); }
+    .org-node { width: 190px; border: 1px solid rgb(91, 156, 239); border-radius: 3px; background: rgb(255, 255, 255); overflow: hidden; flex-shrink: 0; }
+    .org-node-head { background: rgb(91, 156, 239); color: rgb(255, 255, 255); font-size: 11.5px; font-weight: 800; padding: 4px 8px; display: flex; align-items: center; gap: 6px; white-space: nowrap; overflow: hidden; }
+    .org-node-head .org-grip { opacity: 0.85; font-size: 10px; cursor: grab; flex-shrink: 0; }
+    .org-node-head .org-title { flex: 1 1 0%; min-width: 0px; overflow: hidden; text-overflow: ellipsis; text-align: center; }
+    .org-node-body { padding: 8px 8px 7px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .org-node-body .org-dash { color: rgb(176, 170, 200); font-size: 11px; line-height: 1; }
+    .org-node-acts { display: flex; align-items: center; justify-content: center; gap: 12px; }
+    .org-node-acts i { font-size: 12px; color: rgb(107, 114, 128); cursor: pointer; }
+    .org-node-acts i:hover { color: rgb(21, 114, 232); }
+    .org-subtabs { }
+    .org-card { }
+    .org-subtab { flex-shrink: 0; cursor: pointer; padding: 9px 18px; border-radius: 7px 7px 0px 0px; font-size: 13px; white-space: nowrap; user-select: none; transition: background 0.15s, color 0.15s; }
+    .poz-card { background: rgb(255, 255, 255); border: 1px solid rgb(232, 230, 240); border-radius: 8px; box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 3px; padding: 14px 18px; margin-bottom: 10px; cursor: pointer; transition: box-shadow 0.15s, border-color 0.15s; }
+    .poz-card:hover { box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 14px; border-color: rgb(201, 220, 248); }
+    .poz-filter { background: rgb(166, 166, 173); color: rgb(255, 255, 255); border-radius: 4px; height: 32px; display: flex; align-items: center; justify-content: space-between; padding: 0px 12px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+</style>
+<div style="font-family:'Nunito',sans-serif;background:#f5f6f7;display:flex;flex-direction:column;height:100vh;overflow:hidden">
+<div class="org-subtabs" style="flex-shrink: 0; display: flex; align-items: flex-end; gap: 2px; padding: 8px 20px 0px;">
+          
+            <div class="org-subtab" style="background: transparent; color: rgb(74, 70, 96); font-weight: 600;">Organizace</div>
+          
+            <div class="org-subtab" style="background: transparent; color: rgb(74, 70, 96); font-weight: 600;">Pracovní pozice</div>
+          
+            <div class="org-subtab" style="background: rgb(255, 255, 255); color: rgb(21, 114, 232); font-weight: 700; box-shadow: rgba(0, 0, 0, 0.05) 0px -1px 5px;">Katalog požadavků na pracovní pozice</div>
+          
+            <div class="org-subtab" style="background: transparent; color: rgb(74, 70, 96); font-weight: 600;">Nastavení nadřízených</div>
+          
+        </div>
+<div class="org-card" style="flex: 1 1 0%; min-height: 0px; margin: 0px 12px 12px; background: rgb(255, 255, 255); border-radius: 0px 10px 10px; box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 6px; border: 1px solid rgb(228, 226, 237); overflow: auto; padding: 18px 20px 30px;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+              <div class="poz-filter" style="flex: 1 1 0%; max-width: 320px;"><span>Název požadavku</span></div>
+              <div class="poz-filter" style="flex: 1 1 0%; max-width: 280px;"><span>Kategorie požadavku</span><i class="fa-solid fa-caret-down" style="font-size: 12px;"></i></div>
+              <div style="flex: 1 1 0%;"></div>
+              <div class="apt-btn-blue"><i class="fa-solid fa-plus" style="font-size: 10px;"></i>PŘIDAT POŽADAVEK</div>
+            </div>
+            <div style="border: 1px solid rgb(237, 239, 245); border-radius: 8px; overflow: hidden;">
+              <div style="display: grid; grid-template-columns: 2.2fr 1.4fr 1fr 90px; gap: 12px; padding: 10px 16px; background: rgb(244, 247, 253); font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: rgb(123, 128, 146);">
+                <div>Požadavek</div><div>Kategorie</div><div>Použito v pozicích</div><div></div>
+              </div>
+              
+                <div style="display: grid; grid-template-columns: 2.2fr 1.4fr 1fr 90px; gap: 12px; padding: 11px 16px; border-top: 1px solid rgb(243, 244, 249); align-items: center;">
+                  <div style="display: flex; align-items: center; gap: 10px; min-width: 0px;">
+                    <i class="fa-solid fa-language" style="font-size: 12px; color: rgb(69, 39, 160); width: 15px; text-align: center; flex-shrink: 0;"></i>
+                    <span style="font-size: 13px; color: rgb(63, 68, 87); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Anglický jazyk</span>
+                  </div>
+                  <div><span style="display: inline-block; font-size: 11px; font-weight: 700; border-radius: 5px; padding: 3px 10px; background: rgb(237, 231, 246); color: rgb(69, 39, 160);">Jazyky</span></div>
+                  <div style="font-size: 13px; color: rgb(107, 114, 128);">9 pozic</div>
+                  <div style="display: flex; align-items: center; gap: 14px; justify-content: flex-end;">
+                    <i class="fa-solid fa-pen" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                    <i class="fa-solid fa-trash" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                  </div>
+                </div>
+              
+                <div style="display: grid; grid-template-columns: 2.2fr 1.4fr 1fr 90px; gap: 12px; padding: 11px 16px; border-top: 1px solid rgb(243, 244, 249); align-items: center;">
+                  <div style="display: flex; align-items: center; gap: 10px; min-width: 0px;">
+                    <i class="fa-solid fa-language" style="font-size: 12px; color: rgb(69, 39, 160); width: 15px; text-align: center; flex-shrink: 0;"></i>
+                    <span style="font-size: 13px; color: rgb(63, 68, 87); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Německý jazyk</span>
+                  </div>
+                  <div><span style="display: inline-block; font-size: 11px; font-weight: 700; border-radius: 5px; padding: 3px 10px; background: rgb(237, 231, 246); color: rgb(69, 39, 160);">Jazyky</span></div>
+                  <div style="font-size: 13px; color: rgb(107, 114, 128);">3 pozice</div>
+                  <div style="display: flex; align-items: center; gap: 14px; justify-content: flex-end;">
+                    <i class="fa-solid fa-pen" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                    <i class="fa-solid fa-trash" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                  </div>
+                </div>
+              
+                <div style="display: grid; grid-template-columns: 2.2fr 1.4fr 1fr 90px; gap: 12px; padding: 11px 16px; border-top: 1px solid rgb(243, 244, 249); align-items: center;">
+                  <div style="display: flex; align-items: center; gap: 10px; min-width: 0px;">
+                    <i class="fa-solid fa-table" style="font-size: 12px; color: rgb(21, 101, 192); width: 15px; text-align: center; flex-shrink: 0;"></i>
+                    <span style="font-size: 13px; color: rgb(63, 68, 87); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Excel středně pokročilý</span>
+                  </div>
+                  <div><span style="display: inline-block; font-size: 11px; font-weight: 700; border-radius: 5px; padding: 3px 10px; background: rgb(227, 242, 253); color: rgb(21, 101, 192);">IT dovednosti</span></div>
+                  <div style="font-size: 13px; color: rgb(107, 114, 128);">12 pozic</div>
+                  <div style="display: flex; align-items: center; gap: 14px; justify-content: flex-end;">
+                    <i class="fa-solid fa-pen" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                    <i class="fa-solid fa-trash" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                  </div>
+                </div>
+              
+                <div style="display: grid; grid-template-columns: 2.2fr 1.4fr 1fr 90px; gap: 12px; padding: 11px 16px; border-top: 1px solid rgb(243, 244, 249); align-items: center;">
+                  <div style="display: flex; align-items: center; gap: 10px; min-width: 0px;">
+                    <i class="fa-solid fa-server" style="font-size: 12px; color: rgb(21, 101, 192); width: 15px; text-align: center; flex-shrink: 0;"></i>
+                    <span style="font-size: 13px; color: rgb(63, 68, 87); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Znalost ERP systému</span>
+                  </div>
+                  <div><span style="display: inline-block; font-size: 11px; font-weight: 700; border-radius: 5px; padding: 3px 10px; background: rgb(227, 242, 253); color: rgb(21, 101, 192);">IT dovednosti</span></div>
+                  <div style="font-size: 13px; color: rgb(107, 114, 128);">4 pozice</div>
+                  <div style="display: flex; align-items: center; gap: 14px; justify-content: flex-end;">
+                    <i class="fa-solid fa-pen" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                    <i class="fa-solid fa-trash" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                  </div>
+                </div>
+              
+                <div style="display: grid; grid-template-columns: 2.2fr 1.4fr 1fr 90px; gap: 12px; padding: 11px 16px; border-top: 1px solid rgb(243, 244, 249); align-items: center;">
+                  <div style="display: flex; align-items: center; gap: 10px; min-width: 0px;">
+                    <i class="fa-solid fa-laptop" style="font-size: 12px; color: rgb(230, 81, 0); width: 15px; text-align: center; flex-shrink: 0;"></i>
+                    <span style="font-size: 13px; color: rgb(63, 68, 87); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">PC s RAM 12gb+</span>
+                  </div>
+                  <div><span style="display: inline-block; font-size: 11px; font-weight: 700; border-radius: 5px; padding: 3px 10px; background: rgb(255, 243, 224); color: rgb(230, 81, 0);">Vybavení</span></div>
+                  <div style="font-size: 13px; color: rgb(107, 114, 128);">14 pozic</div>
+                  <div style="display: flex; align-items: center; gap: 14px; justify-content: flex-end;">
+                    <i class="fa-solid fa-pen" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                    <i class="fa-solid fa-trash" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                  </div>
+                </div>
+              
+                <div style="display: grid; grid-template-columns: 2.2fr 1.4fr 1fr 90px; gap: 12px; padding: 11px 16px; border-top: 1px solid rgb(243, 244, 249); align-items: center;">
+                  <div style="display: flex; align-items: center; gap: 10px; min-width: 0px;">
+                    <i class="fa-solid fa-key" style="font-size: 12px; color: rgb(230, 81, 0); width: 15px; text-align: center; flex-shrink: 0;"></i>
+                    <span style="font-size: 13px; color: rgb(63, 68, 87); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Klíč od budovy</span>
+                  </div>
+                  <div><span style="display: inline-block; font-size: 11px; font-weight: 700; border-radius: 5px; padding: 3px 10px; background: rgb(255, 243, 224); color: rgb(230, 81, 0);">Vybavení</span></div>
+                  <div style="font-size: 13px; color: rgb(107, 114, 128);">7 pozic</div>
+                  <div style="display: flex; align-items: center; gap: 14px; justify-content: flex-end;">
+                    <i class="fa-solid fa-pen" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                    <i class="fa-solid fa-trash" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                  </div>
+                </div>
+              
+                <div style="display: grid; grid-template-columns: 2.2fr 1.4fr 1fr 90px; gap: 12px; padding: 11px 16px; border-top: 1px solid rgb(243, 244, 249); align-items: center;">
+                  <div style="display: flex; align-items: center; gap: 10px; min-width: 0px;">
+                    <i class="fa-solid fa-mobile-screen-button" style="font-size: 12px; color: rgb(230, 81, 0); width: 15px; text-align: center; flex-shrink: 0;"></i>
+                    <span style="font-size: 13px; color: rgb(63, 68, 87); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Služební telefon</span>
+                  </div>
+                  <div><span style="display: inline-block; font-size: 11px; font-weight: 700; border-radius: 5px; padding: 3px 10px; background: rgb(255, 243, 224); color: rgb(230, 81, 0);">Vybavení</span></div>
+                  <div style="font-size: 13px; color: rgb(107, 114, 128);">11 pozic</div>
+                  <div style="display: flex; align-items: center; gap: 14px; justify-content: flex-end;">
+                    <i class="fa-solid fa-pen" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                    <i class="fa-solid fa-trash" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                  </div>
+                </div>
+              
+                <div style="display: grid; grid-template-columns: 2.2fr 1.4fr 1fr 90px; gap: 12px; padding: 11px 16px; border-top: 1px solid rgb(243, 244, 249); align-items: center;">
+                  <div style="display: flex; align-items: center; gap: 10px; min-width: 0px;">
+                    <i class="fa-solid fa-id-card" style="font-size: 12px; color: rgb(46, 125, 50); width: 15px; text-align: center; flex-shrink: 0;"></i>
+                    <span style="font-size: 13px; color: rgb(63, 68, 87); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Řidičský průkaz sk. B</span>
+                  </div>
+                  <div><span style="display: inline-block; font-size: 11px; font-weight: 700; border-radius: 5px; padding: 3px 10px; background: rgb(232, 245, 233); color: rgb(46, 125, 50);">Oprávnění</span></div>
+                  <div style="font-size: 13px; color: rgb(107, 114, 128);">8 pozic</div>
+                  <div style="display: flex; align-items: center; gap: 14px; justify-content: flex-end;">
+                    <i class="fa-solid fa-pen" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                    <i class="fa-solid fa-trash" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                  </div>
+                </div>
+              
+                <div style="display: grid; grid-template-columns: 2.2fr 1.4fr 1fr 90px; gap: 12px; padding: 11px 16px; border-top: 1px solid rgb(243, 244, 249); align-items: center;">
+                  <div style="display: flex; align-items: center; gap: 10px; min-width: 0px;">
+                    <i class="fa-solid fa-truck-ramp-box" style="font-size: 12px; color: rgb(46, 125, 50); width: 15px; text-align: center; flex-shrink: 0;"></i>
+                    <span style="font-size: 13px; color: rgb(63, 68, 87); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Oprávnění na VZV</span>
+                  </div>
+                  <div><span style="display: inline-block; font-size: 11px; font-weight: 700; border-radius: 5px; padding: 3px 10px; background: rgb(232, 245, 233); color: rgb(46, 125, 50);">Oprávnění</span></div>
+                  <div style="font-size: 13px; color: rgb(107, 114, 128);">2 pozice</div>
+                  <div style="display: flex; align-items: center; gap: 14px; justify-content: flex-end;">
+                    <i class="fa-solid fa-pen" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                    <i class="fa-solid fa-trash" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                  </div>
+                </div>
+              
+                <div style="display: grid; grid-template-columns: 2.2fr 1.4fr 1fr 90px; gap: 12px; padding: 11px 16px; border-top: 1px solid rgb(243, 244, 249); align-items: center;">
+                  <div style="display: flex; align-items: center; gap: 10px; min-width: 0px;">
+                    <i class="fa-solid fa-helmet-safety" style="font-size: 12px; color: rgb(194, 24, 91); width: 15px; text-align: center; flex-shrink: 0;"></i>
+                    <span style="font-size: 13px; color: rgb(63, 68, 87); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Školení BOZP pro vedoucí</span>
+                  </div>
+                  <div><span style="display: inline-block; font-size: 11px; font-weight: 700; border-radius: 5px; padding: 3px 10px; background: rgb(252, 228, 236); color: rgb(194, 24, 91);">Školení</span></div>
+                  <div style="font-size: 13px; color: rgb(107, 114, 128);">5 pozic</div>
+                  <div style="display: flex; align-items: center; gap: 14px; justify-content: flex-end;">
+                    <i class="fa-solid fa-pen" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                    <i class="fa-solid fa-trash" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                  </div>
+                </div>
+              
+                <div style="display: grid; grid-template-columns: 2.2fr 1.4fr 1fr 90px; gap: 12px; padding: 11px 16px; border-top: 1px solid rgb(243, 244, 249); align-items: center;">
+                  <div style="display: flex; align-items: center; gap: 10px; min-width: 0px;">
+                    <i class="fa-solid fa-stethoscope" style="font-size: 12px; color: rgb(0, 105, 92); width: 15px; text-align: center; flex-shrink: 0;"></i>
+                    <span style="font-size: 13px; color: rgb(63, 68, 87); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Vstupní lékařská prohlídka</span>
+                  </div>
+                  <div><span style="display: inline-block; font-size: 11px; font-weight: 700; border-radius: 5px; padding: 3px 10px; background: rgb(224, 247, 250); color: rgb(0, 105, 92);">Zdravotní</span></div>
+                  <div style="font-size: 13px; color: rgb(107, 114, 128);">16 pozic</div>
+                  <div style="display: flex; align-items: center; gap: 14px; justify-content: flex-end;">
+                    <i class="fa-solid fa-pen" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                    <i class="fa-solid fa-trash" style="font-size: 12px; color: rgb(144, 150, 166); cursor: pointer;"></i>
+                  </div>
+                </div>
+              
+            </div>
+          </div>
+</div>

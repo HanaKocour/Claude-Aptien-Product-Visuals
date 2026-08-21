@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<title>Aptien — anotační vrstva · šablona a vzorník</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<!--
+  APTIEN — ANOTAČNÍ VRSTVA · STATICKÝ BLOK K DOSLOVNÉMU VLOŽENÍ
+  =============================================================
+  Vrstva, která se kreslí PŘES hotový screenshot aplikace a vytáhne z něj
+  jeden příběh: číslované pilulky s názvy záznamů, šipky do UI, bílý závoj
+  přes zbytek plochy a jeden šikmý štítek s pointou.
+
+  První použití: „Provoz ERP systému HELIOS → Ekonomická a účetní data →
+  ERP aplikace HELIOS → Riziko nedostupnosti ERP aplikace HELIOS" (NIS2),
+  kde se anotují spine (ucha) vrstveného draweru z `item-drawer-stacked.html`.
+
+  ⛔ TŘÍDY `an-*` PATŘÍ POUZE ANOTACI. Uvnitř UI pod anotací se používá
+     VÝHRADNĚ markup z partialů (inline styly, Nunito, Font Awesome) —
+     nikdy vlastní `an-` třídy. Stejné pravidlo jako `cv-*` u combo-scény
+     a `.kd-*` u `item-drawer-prototyp.html`.
+
+  ⛔ ANOTACE MÁ VLASTNÍ PALETU, ZÁMĚRNĚ MIMO BARVY UI (fialová → modrá →
+     zelená → červená). Nikdy nepoužívej barvy modulů (`c800`) ani akční
+     modrou `#1572e8` — anotace by splynula s aplikací a čtenář by ji četl
+     jako součást obrazovky.
+
+  ⛔ ANOTACE SE KRESLÍ ŽIVĚ V TOMTÉŽ DOKUMENTU jako screenshot. Nikdy jako
+     druhá vrstva nad vloženým PNG — doškálovaný obrázek rozbije hustotu
+     1,25× a texty anotace přestanou sedět s texty UI.
+
+  Pravidla, geometrie a checklist: `Aptien-pravidla-anotovanych-vizualu.md`.
+  Rozměr, hustota a render: `Aptien-pravidla-screenshotu.md`
+  (výstup 1920×1080, návrh 1536×864, scale 1,25×).
+
+  ── JAK TO POSKLÁDAT ─────────────────────────────────────────────────────
+  1. Postav normální screenshot na 1536 × 864 (topbar, sidebar, obsah).
+  2. Do stejné vrstvy 1536 × 864 vlož jako POSLEDNÍ blok `<div class="an">`
+     níže (je `position:absolute; inset:0; pointer-events:none`).
+  3. Nastav 4 čísla na `.an`:
+       --an-band-x  levá hrana pruhu, který má zůstat sytý (u kaskády =
+                    levá hrana prvního spine)
+       --an-band-w  šířka toho pruhu (u kaskády = počet spine × 38 px)
+       --an-x       vodorovný start prvního svodu = STŘED prvního spine
+                    (tj. --an-band-x + 19px)
+       --an-y       svislý střed první pilulky (osvědčeno ~400 px)
+  4. Pro každý stupeň jeden `.an-row` s `--i:0,1,2,3` a barevnou třídou
+     `an-c1..an-c4`. Krok `--an-step-x` (38 px) MUSÍ odpovídat šířce spine,
+     jinak přestanou být šipky stejně dlouhé.
+  5. Štítek `.an-note` je nepovinný, ale nanejvýš JEDEN na obrázek. Pozici si
+     dopočítá sám (nad pilulkou č. 1, zarovnaný na její levou hranu); doladit
+     jde přes `--an-note-dx` / `--an-note-dy`.
+
+  Že svod č. 1 přejede přes spine 2–4, je V POŘÁDKU — všechny svody jsou pak
+  stejně dlouhé a nekříží se navzájem. Kdyby každý začínal až za pruhem, ztratí
+  se informace, KTERÉ ucho pilulka popisuje.
+
+  Měň JEN: počet řádků, texty v pilulkách, ikony, 4 čísla výše a text štítku.
+  ─────────────────────────────────────────────────────────────────────────
+-->
+<style>
+  /* ---- tokeny anotace (NEJSOU to app tokeny, platí jen pro vrstvu) ---- */
+  .an{
+    --an-band-x:336px;      /* levá hrana sytého pruhu                    */
+    --an-band-w:152px;      /* jeho šířka (4 spine × 38 px)               */
+    --an-x:355px;           /* střed prvního spine = start prvního svodu  */
+    --an-y:400px;           /* svislý střed pilulky č. 1                  */
+    --an-step-x:38px;       /* = šířka spine v item-drawer-stacked.html   */
+    --an-step-y:80px;       /* svislý rozestup pilulek                    */
+    --an-len:150px;         /* délka svodu (dotek → hrana pilulky)        */
+    --an-wash:rgba(255,255,255,.35);
+    --an-top:66px;          /* pod horní lištu; 0 = přes celou obrazovku  */
+  }
+
+  /* ---- závoj: sytý zůstane jen pruh --an-band-w ---------------------- */
+  .an{position:absolute;inset:0;pointer-events:none;font-family:'Nunito',sans-serif}
+  .an-wash{position:absolute;top:var(--an-top);bottom:0;background:var(--an-wash)}
+  .an-wash-l{left:0;width:var(--an-band-x)}
+  .an-wash-r{left:calc(var(--an-band-x) + var(--an-band-w));right:0}
+  /* ⛔ žádné blur, žádné ztmavení, žádný gradient — jen tenhle bílý překryv */
+
+  /* ---- svod + pilulka: jeden řádek, aby šipka vždy trefila střed ----- */
+  .an-row{position:absolute;display:flex;align-items:center;
+          left:calc(var(--an-x) + var(--i) * var(--an-step-x));
+          top:calc(var(--an-y) + var(--i) * var(--an-step-y));
+          transform:translateY(-50%)}
+  .an-dot{width:12px;height:12px;border-radius:50%;background:var(--c);
+          border:2px solid #fff;box-sizing:border-box;margin-left:-6px;flex-shrink:0}
+  .an-line{width:var(--an-len);height:2.5px;background:var(--c);flex-shrink:0}
+  .an-head{width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;
+           border-left:9px solid var(--c);flex-shrink:0;margin-right:5px}
+
+  .an-pill{display:flex;align-items:center;gap:13px;flex-shrink:0;
+           background:linear-gradient(180deg,#fff,var(--c-tint));
+           border:1.5px solid var(--c);border-radius:999px;
+           box-shadow:0 9px 22px var(--c-glow);padding:10px 24px 10px 10px}
+  .an-ico{position:relative;width:40px;height:40px;border-radius:50%;flex-shrink:0;
+          background:linear-gradient(145deg,var(--c-light),var(--c));
+          color:#fff;display:flex;align-items:center;justify-content:center;
+          box-shadow:0 3px 9px var(--c-glow)}
+  .an-ico i{font-size:15px}
+  .an-num{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;
+          background:#1a1a2e;color:#fff;font-size:10px;font-weight:800;
+          display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
+  .an-t{font-size:15px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;
+        color:#1a1a2e;line-height:1.3;white-space:nowrap}
+  .an-s{font-size:12px;font-weight:600;color:var(--c-dark);line-height:1.3;
+        margin-top:2px;white-space:nowrap}
+  /* stavová pilulka — jen na POSLEDNÍM (cílovém) řádku, max 1 na obrázek */
+  .an-tag{background:var(--c);color:#fff;font-size:10px;font-weight:800;letter-spacing:.05em;
+          text-transform:uppercase;padding:5px 11px;border-radius:999px;flex-shrink:0;margin-left:2px}
+  /* cílový řádek se zvětší o 7 % — jediné povolené zvýraznění */
+  .an-row.is-target .an-pill{transform:scale(1.07);transform-origin:left center}
+
+  /* ---- paleta anotace: fialová → modrá → zelená → červená ------------ */
+  .an-c1{--c:#4F1FE0;--c-light:#7c4ff5;--c-dark:#4F1FE0;--c-tint:#f5f2fe;--c-glow:rgba(79,31,224,.32)}
+  .an-c2{--c:#0EA5E9;--c-light:#5fc8fb;--c-dark:#0b84b8;--c-tint:#eef8fe;--c-glow:rgba(14,165,233,.32)}
+  .an-c3{--c:#10B981;--c-light:#4fe0ab;--c-dark:#0d8f63;--c-tint:#eafbf3;--c-glow:rgba(16,185,129,.32)}
+  .an-c4{--c:#EF4444;--c-light:#fb8a8a;--c-dark:#c62828;--c-tint:#fdeeee;--c-glow:rgba(239,68,68,.32)}
+  /* 5. a 6. stupeň jen výjimečně — víc než 4 pilulky se přestane číst */
+  .an-c5{--c:#F59E0B;--c-light:#fcc55a;--c-dark:#b45309;--c-tint:#fef6e7;--c-glow:rgba(245,158,11,.32)}
+  .an-c6{--c:#64748B;--c-light:#9aa6b8;--c-dark:#475569;--c-tint:#f2f4f7;--c-glow:rgba(100,116,139,.32)}
+
+  /* ---- štítek s pointou (max 1, max ~45 znaků) ----------------------- */
+  /* výchozí pozice je dopočítaná: zarovnáno na levou hranu pilulek,
+     kousek nad pilulkou č. 1. Posunout jde přes --an-note-dx / --an-note-dy. */
+  .an-note{position:absolute;display:flex;align-items:center;gap:11px;
+           left:calc(var(--an-x) + 170px + var(--an-note-dx, 0px));
+           top:calc(var(--an-y) - 102px + var(--an-note-dy, 0px));
+           transform:rotate(-2.5deg);border-radius:12px;padding:10px 21px;
+           background:linear-gradient(135deg,#6c3cf0,#4F1FE0 55%,#2d0f9e);
+           box-shadow:0 12px 26px rgba(45,15,158,.45),0 0 0 3px rgba(255,255,255,.6)}
+  .an-note i{font-size:16px;color:#fff}
+  .an-note span{font-size:18px;font-weight:800;color:#fff;letter-spacing:.01em;white-space:nowrap}
+
+  /* ---- rám podle Aptien-pravidla-screenshotu.md ---------------------- */
+  .an-frame{width:1920px;height:1080px;overflow:hidden;position:relative;background:#fff}
+  .an-stage{width:1536px;height:864px;transform:scale(1.25);transform-origin:top left;
+            position:relative;overflow:hidden;background:#f9f9fb;
+            font-family:'Nunito',sans-serif;-webkit-font-smoothing:antialiased}
+
+  /* ---- jen pro tento vzorník, do výstupu NEKOPÍRUJ ------------------- */
+  body{margin:0;background:#dedde4;font-family:'Nunito',sans-serif}
+  .vz{max-width:1920px;margin:0 auto;padding:28px}
+  .vz h2{font-size:15px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+         color:#5a5478;margin:34px 0 10px}
+  .vz p{font-size:13px;color:#6b6584;margin:0 0 12px;max-width:1100px;line-height:1.55}
+  .vz code{background:#fff;border:1px solid #e4e2ed;border-radius:4px;padding:1px 5px;font-size:12px}
+  .vz-frame{box-shadow:0 8px 40px rgba(0,0,0,.22);background:#fff}
+  /* mock UI pod anotací — NAHRAĎ skutečným screenshotem, nekopíruj */
+  .mock{position:absolute;inset:0;background:#f9f9fb}
+  .mock-top{height:66px;background:#424242}
+  .mock-side{position:absolute;top:66px;left:0;bottom:0;width:236px;background:#fff;border-right:1px solid #ededf2}
+  .mock-list{position:absolute;top:66px;left:236px;bottom:0;width:100px;background:#fff;border-right:1px solid #ededf2}
+  .mock-drawer{position:absolute;top:66px;left:488px;right:0;bottom:0;background:#fff;box-shadow:-8px 0 32px rgba(0,0,0,.10)}
+  .mock-spine{position:absolute;top:66px;bottom:0;width:38px;background:#fff;border-right:1px solid #e8e6f0;
+              display:flex;flex-direction:column;align-items:center;padding-top:14px;gap:14px;overflow:hidden}
+  .mock-spine div{writing-mode:vertical-rl;transform:rotate(180deg);font-weight:700;font-size:12px;
+                  color:#5a5478;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-height:260px}
+</style>
+</head>
+<body>
+<div class="vz">
+
+<h2>Anotační vrstva nad kaskádou drawerů (vyplněný příklad — NIS2)</h2>
+<p>
+  Šedé pod anotací je jen <b>mock</b> (třídy <code>.mock*</code>) — do výstupu ho
+  NEKOPÍRUJ, tam patří skutečný screenshot. Kopíruj blok
+  <code>&lt;div class="an"&gt;…&lt;/div&gt;</code> a tokeny <code>an-*</code>
+  ze <code>&lt;style&gt;</code>.
+</p>
+
+<div class="an-frame vz-frame">
+  <div class="an-stage">
+
+    <!-- ══ MOCK UI — NEKOPÍRUJ, tady patří skutečný screenshot ══════════ -->
+    <div class="mock">
+      <div class="mock-top"></div>
+      <div class="mock-side"></div>
+      <div class="mock-list"></div>
+      <div class="mock-drawer"></div>
+      <div class="mock-spine" style="left:336px"><i class="fa-solid fa-diagram-project" style="color:#00BFA5;font-size:15px"></i><div>Provoz ERP systému HELI…</div></div>
+      <div class="mock-spine" style="left:374px"><i class="fa-solid fa-database" style="color:#1565C0;font-size:15px"></i><div>Ekonomická a účetní da…</div></div>
+      <div class="mock-spine" style="left:412px"><i class="fa-solid fa-desktop" style="color:#37474F;font-size:15px"></i><div>ERP aplikace HELIOS</div></div>
+      <div class="mock-spine" style="left:450px"><i class="fa-solid fa-triangle-exclamation" style="color:#E91E63;font-size:15px"></i><div>Riziko nedostupnosti ERP…</div></div>
+    </div>
+    <!-- ══ /MOCK ═══════════════════════════════════════════════════════ -->
+
+    <!-- ══ ANOTAČNÍ VRSTVA — TENHLE BLOK KOPÍRUJ ═══════════════════════ -->
+    <div class="an" style="--an-band-x:336px;--an-band-w:152px;--an-x:355px;--an-y:400px">
+
+      <!-- závoj: sytý zůstane jen pruh se spine -->
+      <div class="an-wash an-wash-l"></div>
+      <div class="an-wash an-wash-r"></div>
+
+      <!-- štítek s pointou (nepovinný, max 1) -->
+      <div class="an-note">
+        <i class="fa-solid fa-link"></i>
+        <span>Vše je propojené, souvislosti se vám neztratí</span>
+      </div>
+
+      <!-- 1 -->
+      <div class="an-row an-c1" style="--i:0">
+        <span class="an-dot"></span><span class="an-line"></span><span class="an-head"></span>
+        <div class="an-pill">
+          <div class="an-ico"><i class="fa-solid fa-diagram-project"></i><span class="an-num">1</span></div>
+          <div>
+            <div class="an-t">Provoz ERP systému HELIOS</div>
+            <div class="an-s">SLUŽBA · katalog IT služeb</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="an-row an-c2" style="--i:1">
+        <span class="an-dot"></span><span class="an-line"></span><span class="an-head"></span>
+        <div class="an-pill">
+          <div class="an-ico"><i class="fa-solid fa-database"></i><span class="an-num">2</span></div>
+          <div>
+            <div class="an-t">Ekonomická a účetní data</div>
+            <div class="an-s">DATA · evidence datových aktiv</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="an-row an-c3" style="--i:2">
+        <span class="an-dot"></span><span class="an-line"></span><span class="an-head"></span>
+        <div class="an-pill">
+          <div class="an-ico"><i class="fa-solid fa-desktop"></i><span class="an-num">3</span></div>
+          <div>
+            <div class="an-t">ERP aplikace HELIOS</div>
+            <div class="an-s">APLIKACE · katalog aplikací</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 = cíl řetězce -->
+      <div class="an-row an-c4 is-target" style="--i:3">
+        <span class="an-dot"></span><span class="an-line"></span><span class="an-head"></span>
+        <div class="an-pill">
+          <div class="an-ico"><i class="fa-solid fa-triangle-exclamation"></i><span class="an-num">4</span></div>
+          <div>
+            <div class="an-t">Riziko nedostupnosti ERP aplikace HELIOS</div>
+            <div class="an-s">RIZIKO · registr rizik</div>
+          </div>
+          <span class="an-tag">Otevřeno</span>
+        </div>
+      </div>
+
+    </div>
+    <!-- ══ /ANOTAČNÍ VRSTVA ════════════════════════════════════════════ -->
+
+  </div>
+</div>
+
+<h2>Vzorník pilulek — barvy, ikony, stavy</h2>
+<p>
+  Pořadí barev je pevné: <b>fialová → modrá → zelená → červená</b> (od zdroje
+  k důsledku). Při menším počtu stupňů ber prvních N. Barvy 5 a 6 jen výjimečně —
+  víc než 4 pilulky přestane obrázek fungovat. Ikonu ber podle modulu záznamu,
+  ne podle barvy.
+</p>
+
+<div style="background:#fff;border:1px solid #e4e2ed;border-radius:12px;padding:26px 30px;display:flex;flex-direction:column;gap:16px;width:max-content">
+  <div class="an" style="position:static;pointer-events:auto">
+    <div class="an-row an-c1" style="position:static;transform:none;display:flex">
+      <span class="an-dot" style="margin-left:0"></span><span class="an-line" style="width:60px"></span><span class="an-head"></span>
+      <div class="an-pill">
+        <div class="an-ico"><i class="fa-solid fa-diagram-project"></i><span class="an-num">1</span></div>
+        <div><div class="an-t">Název záznamu</div><div class="an-s">SLUŽBA · kde záznam žije</div></div>
+      </div>
+    </div>
+    <div class="an-row an-c2" style="position:static;transform:none;display:flex;margin-top:16px">
+      <span class="an-dot" style="margin-left:0"></span><span class="an-line" style="width:60px"></span><span class="an-head"></span>
+      <div class="an-pill">
+        <div class="an-ico"><i class="fa-solid fa-database"></i><span class="an-num">2</span></div>
+        <div><div class="an-t">Název záznamu</div><div class="an-s">DATA · kde záznam žije</div></div>
+      </div>
+    </div>
+    <div class="an-row an-c3" style="position:static;transform:none;display:flex;margin-top:16px">
+      <span class="an-dot" style="margin-left:0"></span><span class="an-line" style="width:60px"></span><span class="an-head"></span>
+      <div class="an-pill">
+        <div class="an-ico"><i class="fa-solid fa-desktop"></i><span class="an-num">3</span></div>
+        <div><div class="an-t">Název záznamu</div><div class="an-s">APLIKACE · kde záznam žije</div></div>
+      </div>
+    </div>
+    <div class="an-row an-c4 is-target" style="position:static;transform:none;display:flex;margin-top:16px">
+      <span class="an-dot" style="margin-left:0"></span><span class="an-line" style="width:60px"></span><span class="an-head"></span>
+      <div class="an-pill">
+        <div class="an-ico"><i class="fa-solid fa-triangle-exclamation"></i><span class="an-num">4</span></div>
+        <div><div class="an-t">Název záznamu</div><div class="an-s">RIZIKO · kde záznam žije</div></div>
+        <span class="an-tag">Otevřeno</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2>Kdy to použít a kdy ne</h2>
+<p>
+  <b>Použij</b>, když obrázek vypráví <i>řetězec</i> (proklik po souvislostech,
+  postup workflow, cesta záznamu) a bez popisků by čtenář nevěděl, kam se dívat.<br>
+  <b>Nepoužívej</b> na běžný produktový screenshot (ten zůstává čistý, text je
+  vedle na webu) ani na kombinovaný vizuál — tam se tok kreslí konektorem
+  podle <code>combo-scena.html</code>, ne pilulkami.
+</p>
+
+</div>
+</body>
+</html>

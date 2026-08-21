@@ -1132,6 +1132,233 @@ Font Awesome 6 – rodiny `Font Awesome 6 Free` (`solid`, výchozí),
 
 ---
 
+## 11. Nastavení organizace (menu `nastorg`)
+
+Obrazovka „Nastavení organizace" (položka sidebaru `nastorg`,
+`activeNav = 'nastorg'`) je **nav-owned content** — otevřením se ruší
+aktivní záložka topbaru (`activeTab = null`), stejně jako u „Směrnice a
+dokumenty". Nemá toolbar evidence ani view switcher; **nejde o evidenci,
+ale o konfiguraci.**
+
+### 11.1 Podzáložky (folder taby uvnitř obsahu) — PEVNÉ pravidlo
+
+Obrazovka má **přesně 4 podzáložky v tomto pořadí a s tímto textem**:
+
+`Organizace` · `Pracovní pozice` · `Katalog požadavků na pracovní pozice` · `Nastavení nadřízených`
+
+- Pruh podzáložek sedí **nad** bílou kartou obsahu, na ploše `#f5f6f7`,
+  padding `8px 20px 0`, mezera mezi taby 2px.
+- Tab: padding `9px 18px`, radius `7px 7px 0 0`, font 13px.
+  **Aktivní** = pozadí `#fff`, text `#1572e8`, řez 700 (navazuje na kartu
+  pod sebou). **Neaktivní** = pozadí `transparent`, text `#4a4660`, řez 600.
+- Karta obsahu má radius `0 10px 10px 10px` (levý horní roh je hranatý,
+  protože na něj dosedá aktivní tab), `border:1px solid #e4e2ed`,
+  `box-shadow:0 1px 6px rgba(0,0,0,.07)`, `margin:0 12px 12px`.
+- **Výchozí podzáložka = `Organizace`.** Stav drží `orgTab`.
+- Podzáložky **NEJSOU** view switcher — nikdy nemají tvar pilulky ani
+  modrý lem (viz §5).
+
+Hotové bloky: `partials/nastorg-organizace.html`,
+`partials/nastorg-pracovni-pozice.html`,
+`partials/nastorg-katalog-pozadavku.html`,
+`partials/nastorg-nastaveni-nadrizenych.html`.
+
+### 11.2 Záložka „Organizace" — organizační strom
+
+Nadpis `Naše organizace` (18px, řez 700, `#2b2540`), pod ním strom
+jednotek. Strom je klasický CSS org-chart: vnořené `<ul>/<li>`
+(`.orgchart`), spojnice kreslí pseudo-elementy `::before` / `::after`,
+barva spojnice `#c9c6d6`, tloušťka 1px, svislý úsek 22px.
+
+**Uzel (`.org-node`) — PEVNÉ rozměry a barvy:**
+
+- šířka `190px`, `border:1px solid #5b9cef`, radius 3px, tělo bílé;
+- hlavička: pozadí `#5b9cef`, text bílý 11.5px řez 800, na střed,
+  vlevo volitelný „grip" `bars` (jen u jednotek, které lze přesouvat);
+  dlouhý název se **ořezává třemi tečkami**, nezalamuje se;
+- tělo: pomlčka `—` (`#b0aac8`) = prázdný popis jednotky, pod ní řádek
+  ikon akcí `#6b7280`, hover `#1572e8`:
+  `layer-group` (přidat podřízenou jednotku) · `pen` (upravit) ·
+  `trash` (smazat — **jen u listových uzlů bez potomků**).
+
+Modrá `#5b9cef` je `--primary-light`; **nepoužívej `#1572e8`** — plná
+primární modrá je vyhrazená akcím, ne hlavičkám uzlů.
+
+### 11.3 Záložka „Pracovní pozice" — seznam a filtrování
+
+Skladba karty: **řádek filtrů** → **sloupec karet pozic**.
+
+- **Filtry** (`.poz-filter`) jsou 4 v mřížce `1.15fr 1.35fr 1.6fr 1fr`,
+  mezera 14px: `Název pracovní pozice` (bez šipky, textový) ·
+  `Organizační jednotka` · `Požadavek pracovních pozic` · `Proces`
+  (všechny tři s `caret-down`).
+  Vzhled: pozadí **`#a6a6ad`**, text bílý 12.5px řez 600, výška 32px,
+  radius 4px. Filtr této obrazovky je **šedý, ne bílý s lemem** — je to
+  jiná komponenta než hledání v toolbaru evidence (§5.1).
+- **Karta pozice** (`.poz-card`): bílá, `border:1px solid #e8e6f0`,
+  radius 8px, padding `14px 18px`, mezera 10px. Obsahuje název pozice
+  (14px, řez 700, `#3f4457`), pod ním **obsazení** = řádky
+  avatar 26px + jméno (13px, `#6b7280`). Vpravo nahoře ikona
+  `box-archive` (`#9096a6`) = archivace pozice.
+  **Pozice bez obsazení je normální stav** — karta pak obsahuje jen název.
+- Klik na kartu otevírá **modal „Upravit pracovní pozici"** (§11.5),
+  ne drawer.
+
+### 11.4 Záložka „Katalog požadavků na pracovní pozice"
+
+Filtry `Název požadavku` + `Kategorie požadavku` (stejný šedý styl jako
+§11.3), vpravo modré `PŘIDAT POŽADAVEK`. Pod nimi tabulka se sloupci
+**Požadavek · Kategorie · Použito v pozicích · akce** (`pen`, `trash`).
+Hlavička tabulky: pozadí `#f4f7fd`, text 11px uppercase `#7b8092`.
+
+Kategorie je barevný štítek — barvy jsou **pevné**, nevymýšlej vlastní:
+
+| Kategorie | pozadí | text |
+|---|---|---|
+| Jazyky | `#EDE7F6` | `#4527A0` |
+| IT dovednosti | `#E3F2FD` | `#1565C0` |
+| Vybavení | `#FFF3E0` | `#E65100` |
+| Oprávnění | `#E8F5E9` | `#2E7D32` |
+| Školení | `#FCE4EC` | `#C2185B` |
+| Zdravotní | `#E0F7FA` | `#00695C` |
+
+### 11.5 Modal „Upravit pracovní pozici" — POVINNÁ skladba
+
+Detail pracovní pozice se **NEOTEVÍRÁ jako drawer** (§7). Je to
+**formulářové modální okno nad celou aplikací**:
+
+- overlay `rgba(20,22,30,.55)`, `z-index:120`, obsah vystředěný;
+- okno `min(1180px, 94vw) × min(760px, 92vh)`, bílé, radius 12px,
+  stín `0 24px 60px rgba(0,0,0,.35)`;
+- **hlavička**: `Upravit pracovní pozici` (19px, řez 700, `#3f4457`),
+  vpravo `✕` (`#8a90a3`);
+- **tělo** = levá navigace (246px, bílá) + obsah sekce
+  (pozadí **`#f7f8fc`**, padding `26px 30px 30px`, rolovatelný);
+- **patička**: vlevo dvě **šedé pilulky** `#6b7280` s ikonou `print` —
+  `PŘEHLED PRACOVNÍ POZICE`, `PODKLAD PRO INZERÁT`; vpravo **modrá
+  pilulka** `#4a7fe8` `ULOŽIT`.
+
+**Levá navigace — 3 skupiny, pořadí a texty závazné:**
+
+| Skupina | Položky (ikona) |
+|---|---|
+| `POZICE` | Základní nastavení `sliders` · Organizační zařazení `sitemap` · Pracovní náplň `list-check` |
+| `POŽADAVKY` | Kvalifikace a způsobilost `graduation-cap` · Požadavky pracovní pozice `clipboard-check` · Bezpečnostní a zdravotní rizika `triangle-exclamation` |
+| `NÁVAZNÉ` | Plánované aktivity `calendar-check` (počet) · Dokumenty `folder-open` (počet) |
+
+- Nadpis skupiny: 10.5px, uppercase, letter-spacing `.09em`, `#a4a9ba`.
+- **Aktivní položka** = modrá pilulka `#4a7fe8`, bílý text, řez 700,
+  radius 8px, ikona bílá. **Neaktivní** = průhledná, text `#2b2540`
+  řez 500, ikona `#7b8092`.
+- Skupina `NÁVAZNÉ` zobrazuje vpravo počet (aktivní bíle, jinak `#a4a9ba`).
+- **Výchozí otevřená sekce = `Základní nastavení`** (`pozModalSection`).
+
+**Formulářové prvky v obsahu (pevné):**
+
+- popisek pole: 12.5px `#5b6070`, mezera pod 6px;
+- `input`: bílý, `border:1px solid #e2e5ef`, radius 6px, výška 34px;
+- `textarea`: totéž, min. výška 56px, vpravo dole úchyt pro změnu velikosti;
+- `select`: bílý, `border:1px solid #d9dde8`, radius 5px, výchozí hodnota
+  `---`, vpravo `chevron-down`;
+- rozvržení dvousloupcové `1fr 1fr`, mezery `22px 46px`, max. šířka 1040px;
+- **pilulka zaměstnance** (`Přiřazení zaměstnanci`): pozadí `#4a7fe8`,
+  bílý text 13px řez 600, vlevo avatar 24px — **fotka, jinak světlý
+  kroužek `#dfe6f5` s obecnou ikonou `user`**, nikdy barevné iniciály;
+  za posledním chipem kruhové tlačítko `user-plus` s modrým lemem;
+- **řádek přiřazené položky** (procesy, požadavky): bílý pruh
+  `border:1px solid #eceef5`, radius 5px, text **`#c2703a`**, vpravo
+  `trash`; prázdný stav = tentýž pruh s textem
+  „Žádný přiřazený pracovní proces".
+
+**Sekce `Plánované aktivity` a `Dokumenty` — dvě úrovně dědičnosti:**
+
+1. panel **„Pouze pro tuto pracovní pozici"** (hlavička `#f4f7fd`, ikona
+   `user-group` modrá) — u aktivit i s tlačítkem `PŘIDAT NOVOU AKTIVITU`;
+   prázdný stav = **modrá poznámka** (pozadí `#eef4fe`, levý pruh
+   `3px solid #4a7fe8`);
+2. oddělovač **„PŘEVZATO Z NASTAVENÍ ZAMĚSTNANCŮ"** (10.5px uppercase
+   `#a4a9ba` + tenká linka);
+3. panel **„Pro všechny zaměstnance"** s počtem; u aktivit má ikonu
+   `lock` a větu „Odsud je nelze měnit." Uvnitř **sbalitelné skupiny**
+   (§11.5.1); položka = název (`#4a7fe8`) + **šedý štítek periodicity**
+   `#9096a6` (Ročně / Nepravidelná / Jednorázová).
+   U dokumentů je položka **distribuční list**: název + popisek
+   `DISTRIBUČNÍ LIST` + počet, vpravo stav — `Vyžaduje potvrzení · Za N dní`
+   (modře, `circle-check`) nebo `Pouze zveřejněno` (šedě, `circle-info`);
+   pod tím název dokumentu a soubory (`file-pdf` červeně, `file-image` modře).
+
+#### 11.5.1 Sbalitelné skupiny — PEVNÉ pravidlo
+
+Skupiny v obou návazných sekcích jsou **sbalitelné a chovají se stejně**:
+
+- **kliká se na celou hlavičku skupiny**, ne jen na šipku
+  (`cursor:pointer`, hover `#eef2f9`, `user-select:none`);
+- ikona vlevo: **`chevron-down` = otevřeno**, **`chevron-right` = zavřeno**;
+  má pevnou šířku 11px a `text-align:center`, aby text neposkakoval;
+- **výchozí stav = otevřeno**. Stav drží `pozActOpen` (aktivity) a
+  `pozDocOpen` (distribuční listy), klíčem je `key` skupiny; **chybějící
+  klíč znamená otevřeno** — zavírá se až explicitním `false`;
+- zavřená skupina schová celý obsah, hlavička (název + počet) zůstává,
+  takže je z počtu pořád vidět, co se skrývá;
+- v sekci `Dokumenty` je sbalitelnou jednotkou **jeden distribuční list**
+  (hlavička = název + `DISTRIBUČNÍ LIST` + počet + stav vpravo).
+
+#### 11.5.2 Prázdné stavy návazných sekcí — PEVNÉ pravidlo
+
+Čerstvě založená pozice nemá nastavené nic. **Prázdný stav nikdy nemaže
+strukturu sekce** — oba panely i oddělovač zůstávají, jen místo obsahu je
+**modrá poznámka** (`.apt-note`: pozadí `#eef4fe`, levý pruh
+`3px solid #4a7fe8`, text `#4a5163`):
+
+| Panel | Sekce | Text prázdného stavu |
+|---|---|---|
+| Pouze pro tuto pracovní pozici | Aktivity | „Pro tuto pracovní pozici zatím není vyžadována žádná plánovaná aktivita." |
+| Pro všechny zaměstnance | Aktivity | „Zatím nejsou nastavené žádné plánované aktivity pro všechny zaměstnance." |
+| Pouze pro tuto pracovní pozici | Dokumenty | „Tato pracovní pozice není v žádném distribučním listu, takže k ní není přiřazen žádný dokument." |
+| Pro všechny zaměstnance | Dokumenty | „Zatím není nastavený žádný distribuční list pro všechny zaměstnance." |
+
+- **Počty musí sedět s obsahem.** Když je panel „Pro všechny zaměstnance"
+  prázdný, má štítek `0` a **stejně tak počet u položky v levé navigaci**.
+  Nikdy nenech v navigaci 39 / 11, když je sekce prázdná.
+- Tlačítko `PŘIDAT NOVOU AKTIVITU` zůstává i v prázdném stavu — je to
+  jediná cesta, jak aktivitu založit.
+- Panel „Pro všechny zaměstnance" si i v prázdném stavu drží ikonu `lock`
+  a vysvětlující větu; mizí jen sbalitelné skupiny.
+- V prototypu tento stav drží pozice s příznakem `fresh: true`
+  (**„Referent nákupu"**, poslední karta v seznamu) — otevři ji a uvidíš
+  prázdný stav obou sekcí. Ostatní pozice zůstávají s daty.
+
+**Hotové bloky:** rám okna `partials/nastorg-pozice-modal.html` (prázdný
+obsah, k vložení vlastní sekce), jednotlivé sekce:
+
+| Sekce | Partial |
+|---|---|
+| Základní nastavení | `partials/nastorg-pozice-zakladni.html` |
+| Organizační zařazení | `partials/nastorg-pozice-organizacni.html` |
+| Pracovní náplň | `partials/nastorg-pozice-naplne.html` |
+| Kvalifikace a způsobilost | `partials/nastorg-pozice-kvalifikace.html` |
+| Požadavky pracovní pozice | `partials/nastorg-pozice-pozadavky.html` |
+| Bezpečnostní a zdravotní rizika | `partials/nastorg-pozice-rizika.html` |
+| Plánované aktivity | `partials/nastorg-pozice-aktivity.html` |
+| Plánované aktivity — prázdný stav | `partials/nastorg-pozice-aktivity-prazdne.html` |
+| Dokumenty | `partials/nastorg-pozice-dokumenty.html` |
+| Dokumenty — prázdný stav | `partials/nastorg-pozice-dokumenty-prazdne.html` |
+
+### 11.6 Záložka „Nastavení nadřízených"
+
+Nadpis `Jak se určuje nadřízený` + vysvětlující odstavec. Pod ním **3
+karty pravidla** vedle sebe (`Podle organizační jednotky` ·
+`Podle pracovní pozice` · `Ručně u zaměstnance`); karta = radio
+(`circle-dot` / `circle`) + název + popis. **Aktivní** karta má
+`border:1.5px solid #1572e8` a pozadí `#eef4fe`, neaktivní
+`border:1.5px solid #e4e2ed` a bílé pozadí. Vybraná je právě jedna.
+
+Pod tím sekce `Výjimky` s počtem a modrým `PŘIDAT VÝJIMKU`, dále tabulka
+**Zaměstnanec / pozice · Nadřízený · Platí pro · akce** — stejný styl
+tabulky jako §11.4.
+
+---
+
 ## 10. Shrnutí klíčových pravidel
 
 1. Rámec aplikace (top bar `#424242` → tab strip `#424242` → separator →
@@ -1150,6 +1377,9 @@ Font Awesome 6 – rodiny `Font Awesome 6 Free` (`solid`, výchozí),
    `solid` + `fw`.
 8. Komponenty (drawer, karty, view switcher, badge, tlačítka) jsou sdílené
    a chovají se napříč moduly konzistentně.
+9. Konfigurační obrazovky („Nastavení organizace") mají podzáložky ve tvaru
+   folder tabů nad bílou kartou; **detail konfiguračního záznamu se otevírá
+   jako modální formulářové okno, ne jako drawer** (§11).
 
 ---
 

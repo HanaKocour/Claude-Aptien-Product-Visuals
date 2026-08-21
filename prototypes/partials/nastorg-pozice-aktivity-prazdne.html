@@ -1,0 +1,196 @@
+<meta charset="utf-8">
+<!-- Ikony tohoto bloku jsou Font Awesome (Free). Řádky níže načtou FA a Nunito,
+     aby se blok vykreslil i při samostatném otevření souboru. V master
+     prototypu se obojí načítá z jeho assetů, takže tam jsou nadbytečné. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap">
+<!--
+  APTIEN — MODAL „UPRAVIT PRACOVNÍ POZICI" / SEKCE „PLÁNOVANÉ AKTIVITY", PRÁZDNÝ STAV
+  ===================================================================================
+  Vlož CELÝ blok. Stav čerstvě založené pozice, kde ještě není nastavená
+  ŽÁDNÁ aktivita — ani vlastní, ani převzatá:
+    · panel „Pouze pro tuto pracovní pozici" → modrá poznámka
+      „Pro tuto pracovní pozici zatím není vyžadována žádná plánovaná aktivita.",
+    · panel „Pro všechny zaměstnance" → počet 0 + modrá poznámka
+      „Zatím nejsou nastavené žádné plánované aktivity pro všechny zaměstnance.",
+    · v levé navigaci je u „Plánované aktivity" i „Dokumenty" počet 0.
+  Varianta s daty: partials/nastorg-pozice-aktivity.html
+
+  Skladba celého okna je popsaná v Aptien-pravidla-pouziti-UI.md §11.5,
+  prázdné stavy v §11.5.2. Rám (hlavička · levá navigace 246px · patička)
+  je u všech sekcí STEJNÝ — mění se jen obsah vpravo. Modal překrývá celou
+  aplikaci (overlay rgba(20,22,30,.55)) — NENÍ to drawer (§7).
+-->
+<style>
+    .apt-modal-overlay { position: fixed; inset: 0px; background: rgba(20, 22, 30, 0.55); display: flex; align-items: center; justify-content: center; z-index: 120; animation: 0.14s ease 0s 1 normal none running fadeIn; }
+    .apt-modal { width: min(1180px, 94vw); height: min(760px, 92vh); background: rgb(255, 255, 255); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; box-shadow: rgba(0, 0, 0, 0.35) 0px 24px 60px; }
+    .apt-modal-head { flex-shrink: 0; display: flex; align-items: center; padding: 18px 24px 14px; }
+    .apt-modal-title { font-size: 19px; font-weight: 700; color: rgb(63, 68, 87); flex: 1 1 0%; }
+    .apt-modal-close { font-size: 19px; color: rgb(138, 144, 163); cursor: pointer; line-height: 1; }
+    .apt-modal-close:hover { color: rgb(63, 68, 87); }
+    .apt-modal-body { flex: 1 1 0%; min-height: 0px; display: flex; }
+    .apt-modal-nav { width: 246px; flex-shrink: 0; background: rgb(255, 255, 255); padding: 0px 14px 18px; overflow-y: auto; }
+    .apt-modal-nav-group { font-size: 10.5px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: rgb(164, 169, 186); padding: 14px 10px 7px; }
+    .apt-modal-nav-item { display: flex; align-items: center; gap: 11px; padding: 9px 12px; border-radius: 8px; font-size: 13.5px; cursor: pointer; margin-bottom: 2px; transition: background 0.13s, color 0.13s; }
+    .apt-modal-nav-item i { width: 16px; text-align: center; font-size: 13px; flex-shrink: 0; }
+    .apt-modal-content { flex: 1 1 0%; min-width: 0px; background: rgb(247, 248, 252); padding: 26px 30px 30px; overflow-y: auto; }
+    .apt-modal-h2 { font-size: 19px; font-weight: 600; color: rgb(91, 96, 112); margin: 0px 0px 22px; }
+    .apt-modal-foot { flex-shrink: 0; display: flex; align-items: center; gap: 12px; padding: 14px 24px; background: rgb(255, 255, 255); border-top: 1px solid rgb(238, 239, 244); }
+    .apt-btn-grey { display: inline-flex; align-items: center; gap: 9px; background: rgb(107, 114, 128); color: rgb(255, 255, 255); font-size: 12px; font-weight: 700; letter-spacing: 0.03em; padding: 9px 20px; border-radius: 999px; cursor: pointer; white-space: nowrap; }
+    .apt-btn-grey:hover { background: rgb(91, 98, 112); }
+    .apt-btn-blue { display: inline-flex; align-items: center; gap: 8px; background: rgb(74, 127, 232); color: rgb(255, 255, 255); font-size: 12px; font-weight: 700; letter-spacing: 0.03em; padding: 9px 26px; border-radius: 999px; cursor: pointer; white-space: nowrap; }
+    .apt-btn-blue:hover { background: rgb(21, 114, 232); }
+    .apt-f-label { font-size: 12.5px; color: rgb(91, 96, 112); margin-bottom: 6px; }
+    .apt-f-input { background: rgb(255, 255, 255); border: 1px solid rgb(226, 229, 239); border-radius: 6px; height: 34px; display: flex; align-items: center; padding: 0px 11px; font-size: 13px; color: rgb(43, 37, 64); }
+    .apt-f-area { background: rgb(255, 255, 255); border: 1px solid rgb(226, 229, 239); border-radius: 6px; min-height: 56px; padding: 8px 11px; font-size: 13px; color: rgb(43, 37, 64); position: relative; }
+    .apt-f-area::after { content: ""; position: absolute; right: 3px; bottom: 3px; width: 7px; height: 7px; border-right: 1.5px solid rgb(195, 199, 212); border-bottom: 1.5px solid rgb(195, 199, 212); }
+    .apt-f-select { background: rgb(255, 255, 255); border: 1px solid rgb(217, 221, 232); border-radius: 5px; height: 34px; display: flex; align-items: center; justify-content: space-between; padding: 0px 10px; font-size: 13px; color: rgb(107, 114, 128); }
+    .apt-chip-user { display: inline-flex; align-items: center; gap: 8px; background: rgb(74, 127, 232); color: rgb(255, 255, 255); border-radius: 999px; padding: 4px 16px 4px 5px; font-size: 13px; font-weight: 600; }
+    .apt-chip-av { width: 24px; height: 24px; border-radius: 50%; background: rgb(223, 230, 245); color: rgb(139, 147, 168); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; font-size: 11px; }
+    .apt-list-row { display: flex; align-items: center; justify-content: space-between; background: rgb(255, 255, 255); border: 1px solid rgb(236, 238, 245); border-radius: 5px; padding: 9px 13px; margin-bottom: 6px; font-size: 13px; color: rgb(194, 112, 58); }
+    .apt-list-row i { color: rgb(123, 128, 146); cursor: pointer; font-size: 13px; }
+    .apt-panel { background: rgb(255, 255, 255); border: 1px solid rgb(237, 239, 245); border-radius: 8px; overflow: hidden; margin-bottom: 22px; }
+    .apt-panel-head { display: flex; align-items: center; gap: 11px; padding: 13px 18px; background: rgb(244, 247, 253); }
+    .apt-panel-title { font-size: 15px; font-weight: 700; color: rgb(63, 68, 87); }
+    .apt-count-pill { background: rgb(230, 233, 242); color: rgb(91, 96, 112); font-size: 11px; font-weight: 700; border-radius: 5px; padding: 2px 8px; }
+    .apt-note { background: rgb(238, 244, 254); border-left: 3px solid rgb(74, 127, 232); border-radius: 0px 5px 5px 0px; padding: 11px 15px; font-size: 13px; color: rgb(74, 81, 99); }
+    .apt-group { background: rgb(250, 251, 253); border: 1px solid rgb(238, 240, 246); border-radius: 7px; margin: 0px 14px 12px; overflow: hidden; }
+    .apt-group-head { display: flex; align-items: center; gap: 10px; padding: 11px 14px; font-size: 14px; font-weight: 700; color: rgb(63, 68, 87); user-select: none; }
+    .apt-group-head:hover, .apt-doc-head:hover { background: rgb(238, 242, 249); }
+    .apt-act-row { background: rgb(255, 255, 255); border-top: 1px solid rgb(241, 242, 247); padding: 9px 16px; }
+    .apt-act-name { font-size: 13px; color: rgb(74, 127, 232); margin-bottom: 4px; }
+    .apt-tag-grey { display: inline-block; background: rgb(144, 150, 166); color: rgb(255, 255, 255); font-size: 10.5px; font-weight: 700; border-radius: 4px; padding: 2px 8px; }
+    .apt-doc-list { background: rgb(255, 255, 255); border: 1px solid rgb(238, 240, 246); border-radius: 7px; margin: 0px 14px 12px; overflow: hidden; }
+    .apt-doc-head { display: flex; align-items: center; gap: 10px; padding: 11px 14px; background: rgb(250, 251, 253); }
+    .apt-doc-file { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: rgb(74, 127, 232); margin-top: 3px; }
+</style>
+<div style="font-family:'Nunito',sans-serif;position:relative;height:100vh">
+<div class="apt-modal-overlay">
+      <div class="apt-modal">
+        <div class="apt-modal-head">
+          <div class="apt-modal-title">Upravit pracovní pozici</div>
+          <div class="apt-modal-close">✕</div>
+        </div>
+        <div class="apt-modal-body">
+          
+          <div class="apt-modal-nav">
+            <div class="apt-modal-nav-group">Pozice</div>
+            
+              <div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
+                <i class="fa-solid fa-sliders" style="color: rgb(123, 128, 146);"></i>
+                <span style="flex: 1 1 0%; min-width: 0px;">Základní nastavení</span>
+              </div>
+            
+              <div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
+                <i class="fa-solid fa-sitemap" style="color: rgb(123, 128, 146);"></i>
+                <span style="flex: 1 1 0%; min-width: 0px;">Organizační zařazení</span>
+              </div>
+            
+              <div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
+                <i class="fa-solid fa-list-check" style="color: rgb(123, 128, 146);"></i>
+                <span style="flex: 1 1 0%; min-width: 0px;">Pracovní náplň</span>
+              </div>
+            
+            <div class="apt-modal-nav-group">Požadavky</div>
+            
+              <div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
+                <i class="fa-solid fa-graduation-cap" style="color: rgb(123, 128, 146);"></i>
+                <span style="flex: 1 1 0%; min-width: 0px;">Kvalifikace a způsobilost</span>
+              </div>
+            
+              <div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
+                <i class="fa-solid fa-clipboard-check" style="color: rgb(123, 128, 146);"></i>
+                <span style="flex: 1 1 0%; min-width: 0px;">Požadavky pracovní pozice</span>
+              </div>
+            
+              <div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
+                <i class="fa-solid fa-triangle-exclamation" style="color: rgb(123, 128, 146);"></i>
+                <span style="flex: 1 1 0%; min-width: 0px;">Bezpečnostní a zdravotní rizika</span>
+              </div>
+            
+            <div class="apt-modal-nav-group">Návazné</div>
+            
+              <div class="apt-modal-nav-item" style="background: rgb(74, 127, 232); color: rgb(255, 255, 255); font-weight: 700;">
+                <i class="fa-solid fa-calendar-check" style="color: rgb(255, 255, 255);"></i>
+                <span style="flex: 1 1 0%; min-width: 0px;">Plánované aktivity</span>
+                <span style="font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.85);">0</span>
+              </div>
+            
+              <div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
+                <i class="fa-solid fa-folder-open" style="color: rgb(123, 128, 146);"></i>
+                <span style="flex: 1 1 0%; min-width: 0px;">Dokumenty</span>
+                <span style="font-size: 12px; font-weight: 600; color: rgb(164, 169, 186);">0</span>
+              </div>
+            
+          </div>
+
+          
+          <div class="apt-modal-content">
+
+            
+            
+
+            
+            
+
+            
+            
+
+            
+            
+
+            
+            
+
+            
+            
+
+            
+            
+              <div class="apt-modal-h2">Plánované aktivity</div>
+              <div class="apt-panel">
+                <div class="apt-panel-head">
+                  <i class="fa-solid fa-user-group" style="color: rgb(74, 127, 232); font-size: 14px;"></i>
+                  <span class="apt-panel-title">Pouze pro tuto pracovní pozici</span>
+                  <div style="flex: 1 1 0%;"></div>
+                  <div class="apt-btn-blue">PŘIDAT NOVOU AKTIVITU</div>
+                </div>
+                <div style="padding: 14px 18px 18px;">
+                  <div style="font-size: 13px; color: rgb(123, 128, 146); margin-bottom: 12px;">Aktivity nastavené přímo pro tuto pracovní pozici.</div>
+                  <div class="apt-note">Pro tuto pracovní pozici zatím není vyžadována žádná plánovaná aktivita.</div>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px; margin: 0px 0px 12px;">
+                <span style="font-size: 10.5px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: rgb(164, 169, 186); white-space: nowrap;">Převzato z nastavení zaměstnanců</span>
+                <div style="flex: 1 1 0%; height: 1px; background: rgb(230, 233, 242);"></div>
+              </div>
+              <div class="apt-panel" style="background: rgb(250, 251, 253);">
+                <div class="apt-panel-head" style="background: rgb(242, 244, 249);">
+                  <i class="fa-solid fa-lock" style="color: rgb(123, 128, 146); font-size: 13px;"></i>
+                  <span class="apt-panel-title">Pro všechny zaměstnance</span>
+                  <span class="apt-count-pill">0</span>
+                </div>
+                <div style="padding: 12px 18px 4px; font-size: 13px; color: rgb(123, 128, 146);">Tyto aktivity platí pro každého zaměstnance bez ohledu na pracovní pozici. Odsud je nelze měnit.</div>
+                
+                  <div style="padding: 8px 18px 18px;">
+                    <div class="apt-note">Zatím nejsou nastavené žádné plánované aktivity pro všechny zaměstnance.</div>
+                  </div>
+                
+                
+              </div>
+            
+
+            
+            
+
+          </div>
+        </div>
+        <div class="apt-modal-foot">
+          <div class="apt-btn-grey"><i class="fa-solid fa-print" style="font-size: 12px;"></i>PŘEHLED PRACOVNÍ POZICE</div>
+          <div class="apt-btn-grey"><i class="fa-solid fa-print" style="font-size: 12px;"></i>PODKLAD PRO INZERÁT</div>
+          <div style="flex: 1 1 0%;"></div>
+          <div class="apt-btn-blue">ULOŽIT</div>
+        </div>
+      </div>
+    </div>
+</div>
