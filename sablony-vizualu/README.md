@@ -1,13 +1,14 @@
 # Šablony vizuálů
 
-Hotové **šablony pro generování produktových obrázků**. Jsou ve dvou
-rodinách a mají opačné pravidlo o textu:
+Hotové **šablony pro generování produktových obrázků**. Jsou ve čtyřech
+rodinách a mají odlišné pravidlo o textu:
 
 | Rodina | Co ukazuje | Nadpis v obrázku |
 |---|---|---|
 | **Scény toku** | tok mezi dvěma místy (přijde e-mail → vznikne záznam; aplikace sama upozorní) | ⛔ **zakázaný** — text je na webu vedle obrázku |
 | **Nadpis + screenshot** | schopnost nebo oblast, kde význam nese nadpis a screen je důkaz | ✅ **povinný** — je to hlavní obsah |
 | **Kaskáda s anotací** | řetězec provázaných záznamů uvnitř aplikace (proklik po souvislostech) | ✅ jen popisky v pilulkách + 1 štítek s pointou |
+| **Mobil v ruce** | fotorealistická fotka ruky s telefonem nad celou aplikací — totéž živě na obou zařízeních | ⛔ **žádný** — jen UI, fotka a konektor |
 
 ⛔ **Nemíchat.** Každá rodina má vlastní pravidla i vlastní prompt.
 
@@ -44,6 +45,9 @@ do sekce *Historie rozhodnutí* níže.
 | `kaskada-s-anotaci.html` | šablona **kaskáda s anotací** (vyplněná jako NIS2: Služba → Data → Aplikace → Riziko) |
 | `PRAVIDLA-kaskada-s-anotaci.md` | pravidla rodiny „kaskáda s anotací" |
 | `PROMPT-kaskada-s-anotaci.md` | prompt k ní |
+| `mobil-v-ruce.html` | šablona **mobil v ruce** (vyplněná jako stavba: fotka základové desky poslaná z terénu) |
+| `PRAVIDLA-mobil-v-ruce.md` | pravidla rodiny „mobil v ruce" |
+| `PROMPT-mobil-v-ruce.md` | prompt k ní |
 | `render.js` | render šablony do PNG 1920 × 1080 + kontroly |
 | `ukazka-screen.png` | **zástupný** snímek aplikace pro referenční výstupy |
 | `priklad-*.png` | referenční výstupy — takhle to má vypadat |
@@ -58,6 +62,7 @@ do sekce *Historie rozhodnutí* níže.
 | Totéž, ale klidněji, snímek celý na šířku | `nadpis-screen-s-okraji.html` |
 | Schopnost stojí na dvou různých obrazovkách | `nadpis-dva-screeny.html` |
 | Jeden záznam vede na druhý a ten na třetí — řetězec souvislostí | `kaskada-s-anotaci.html` |
+| Kolega v terénu pošle zprávu/fotku z mobilu a v aplikaci se objeví živě | `mobil-v-ruce.html` |
 
 **Scény toku:** hlavní panel je vždy ten, o kterém obrázek vypráví, a je
 širší (736 px). U `email-do-aplikace` je vpravo (Aptien jako cíl),
@@ -73,6 +78,14 @@ nastaví **čtyřmi čísly** na obalu `.an` (`--an-band-x`, `--an-band-w`,
 `--an-x`, `--an-y`) a zbytek se dopočítá. Paleta anotace je záměrně mimo
 barvy UI: fialová → modrá → zelená → červená. Detaily
 v `PRAVIDLA-kaskada-s-anotaci.md`.
+
+**Mobil v ruce:** pozadí je celý screenshot aplikace (topbar + sidebar +
+otevřený záznam s konverzací), nad ním leží skutečná fotka ruky s telefonem
+(`mockups/phone mockup.png`) s vloženým mobilním pohledem do stejné
+konverzace. Jediná rodina, která nepoužívá CSS kreslený rám telefonu.
+Klíčové pravidlo: perspektiva zpráv se otočí mezi zařízeními (kdo píše, má
+zprávu „u sebe" vpravo/modře, na druhém zařízení vlevo/šedě). Detaily
+a gotchas (z-index, rovnováha `<div>`) v `PRAVIDLA-mobil-v-ruce.md`.
 
 ⚠️ **Sada obrázků = jedna varianta.** Když děláš tři obrázky do jedné sekce
 webu, ať mají všechny stejnou variantu, stejnou velikost nadpisu i stejnou
@@ -130,6 +143,21 @@ inline SVG, ty vyjdou vždy).
 - nadpis Nunito **900**, **60 px**, `#311B92`, na střed, max 2 řádky
 - snímek poměr ~**3:2**, radius 14 px, okraj `#e6e4ee`, orýznutý dole
 - rozpočet výšky panelu se tady **nepoužívá** — `render.js` ho přeskočí
+
+**Jen pro mobil v ruce:**
+
+- `.cv-stage` je celá obrazovka aplikace (žádný padding 56 px, žádná
+  neutrální plocha) — telefon a šipka jsou navrstvené nad ní
+- telefon (`.cv-phone-wrap`) **380 × 566 px**, okno displeje
+  `left:112 top:89 width:169 height:369`, radius 22 px — přepočteno
+  z naměřených frakcí `mockups/phone mockup.png` (494×736 px)
+- mobilní obsah se navrhuje na 390×844 a zmenšuje `scale(0.4339,0.4374)`
+  do okna displeje
+- ⚠️ okno displeje mockupu je **neprůhledé bílé** — mobilní obsah musí mít
+  vyšší z-index než fotka telefonu, jinak zůstane displej prázdný
+- konektor vždy **jednosměrný**, plný, `#1572e8`, zprava doleva (telefon
+  → aplikace)
+- detaily a gotchas v `PRAVIDLA-mobil-v-ruce.md`
 
 Detailní pravidla a zdůvodnění jsou v komentáři na začátku každé šablony.
 
@@ -201,3 +229,16 @@ z šablony celý `<div class="cv-prov">`.
   název položky stal předmětem e-mailu, říkalo totéž dvakrát. Spolu s polem
   „Šarže" ubráno taky proto, aby se panel s novou hlavičkou (s obrázkem)
   vešel do rozpočtu 70–90 % výšky.
+- **21. 8. 2026** — přidána čtvrtá rodina **„mobil v ruce"**. Vznikla po
+  dvou pokusech (`mobil-pres-desktop.html`, `mobil-vedle-desktop.html`),
+  které foto-realistickému skládání záměrně předešly ilustrovaným avatarem
+  místo fotky ruky. Oba soubory byly mezitím, ještě před dokončením téhle
+  šablony, z repozitáře úmyslně smazány (na výslovné přání uživatele
+  nebyly obnovovány) — jejich klíčové pravidlo „perspektiva se otáčí mezi
+  zařízeními" i příklad naplnění (Aleš Stavitel / Jaroslav Dvořák, stavba
+  „Výrobní hala Modřice") ale posloužily jako přímý předobraz obsahu nové
+  šablony. Objevena a zdokumentována gotcha: okno displeje ve fotce
+  `mockups/phone mockup.png` je neprůhledé bílé (ne díra), takže mobilní
+  obsah musí mít vyšší z-index než fotka telefonu, jinak zůstane displej
+  prázdný i při technicky správném DOM. Detaily, geometrie a checklist
+  v `PRAVIDLA-mobil-v-ruce.md`.
