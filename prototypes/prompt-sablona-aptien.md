@@ -78,7 +78,7 @@ Menu obsahuje přesně těchto 8 záložek v tomto pořadí a s tímto přesným
 **Přesné položky a ikony sidebaru (Font Awesome) — použij tyto:**
 
 Skupina *MŮJ PRACOVNÍ PROSTOR:*
-Moje domovská stránka `house-chimney` · Moje upozornění `bell` (badge) · Můj kalendář `calendar-days` · Moje úkoly `clipboard-check` (badge) · Moje konverzace `comments` (badge) · Můj tým `people-group` · Moje oblíbené `star` (badge) · Moje žádanky `file-invoice` · Moje hlídače `dog` · Ke schválení `circle-check` (badge) · Reporty `file-chart-column` · O mě `user` · Poznámky `clipboard` (badge) · Moje směrnice `books` · Co jsem dělal `chart-network`
+Moje domovská stránka `house-chimney` · Moje upozornění `bell` (badge) · Můj kalendář `calendar-days` · Moje úkoly `clipboard-check` (badge) · Moje konverzace `comments` (badge) · Můj tým `people-group` · Moje oblíbené `star` (badge) · Moje žádanky `file-invoice` · Moje hlídače `dog` · Ke schválení `circle-check` (badge) · Reporty `file-chart-column` · O mně `user` · Poznámky `clipboard` (badge) · Moje směrnice `books` · Co jsem dělal `chart-network`
 
 Skupina *NAŠE FIRMA:*
 Nástěnka `grid-horizontal` · Směrnice a dokumenty `book-open` · Kolegové `users` · Katalog školení `book-open-reader` · Nastavení směrnic `books` · Nastavení organizace `sitemap` · Inventura `boxes-stacked`

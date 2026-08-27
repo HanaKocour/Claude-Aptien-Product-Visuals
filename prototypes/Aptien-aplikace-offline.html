@@ -347,6 +347,20 @@
     .userBadge ._avatar{display:inline-flex;align-items:center;justify-content:center;width:27px;height:27px;border-radius:27px;background:#e2e4e6;color:#fff;font-family:'Nunito',sans-serif;font-weight:700;}
     .userBadge ._avatar .acronym{font-size:11px;line-height:1;}
     .userBadge.hiddenName ._name{display:none;}
+    /* Aptien App Kit — User Badge, chybějící kusy (kit: background #f2f5f7, radius 30px, ._name 12px #333) */
+    .userBadge--standalone{background:transparent;margin:0;}
+    .userBadge ._name{display:inline-block;margin:0 15px 0 10px;font-size:12px;color:#333;vertical-align:middle;}
+    /* Aptien App Kit — Tag (src/components/core/Tag), použito pod titulkem detailu i jako removable multi-select */
+    .styled-tags{display:flex;gap:4px;flex-wrap:wrap;align-items:center;}
+    .styled-tag{display:inline-flex;align-items:center;background:#eceff1;color:#59676d;padding:6px 12px;border-radius:4px;font-family:'Nunito',sans-serif;font-size:9px;font-weight:600;line-height:1;width:max-content;}
+    .styled-tag i{margin-right:.5rem;line-height:1.5;}
+    .styled-tag--removable{padding-right:6px;gap:6px;}
+    .styled-tag--removable .styled-tag__remove{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:rgba(0,0,0,.08);color:inherit;cursor:pointer;margin-left:4px;font-size:9px;line-height:1;transition:background .15s;}
+    .styled-tag--removable .styled-tag__remove i{margin:0;line-height:1;display:block;}
+    .styled-tag--removable .styled-tag__remove:hover{background:rgba(0,0,0,.18);}
+    /* stejný „remove" knoflík, ale samostatně (vedle userBadge, ne uvnitř .styled-tag) */
+    .tag-remove{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:rgba(0,0,0,.08);color:#59676d;cursor:pointer;font-size:9px;line-height:1;transition:background .15s;flex-shrink:0;}
+    .tag-remove:hover{background:rgba(0,0,0,.18);}
     .commentItem.toRight{float:right;}
     .commentItem.toRight .comment-wrapper{flex-direction:row;display:flex;justify-content:flex-end;width:100%;}
     .commentItem.toRight .comment-Box{text-align:right;}
@@ -433,6 +447,12 @@
     .apt-f-select { background:#fff; border:1px solid #d9dde8; border-radius:5px; height:34px; display:flex; align-items:center; justify-content:space-between; padding:0 10px; font-size:13px; color:#6b7280; }
     .apt-chip-user { display:inline-flex; align-items:center; gap:8px; background:#4a7fe8; color:#fff; border-radius:999px; padding:4px 16px 4px 5px; font-size:13px; font-weight:600; }
     .apt-chip-av { width:24px; height:24px; border-radius:50%; background:#dfe6f5; color:#8b93a8; display:flex; align-items:center; justify-content:center; overflow:hidden; flex-shrink:0; font-size:11px; }
+    /* §7.1.6 – záložka Pracovní zařazení (jen Zaměstnanec) — rámeček pole je
+       neutrální input container (stejná rodina jako .apt-f-select), OBSAH
+       uvnitř je vždy skutečná app-kit komponenta (.userBadge / .styled-tag),
+       viz §7.1.6 poznámka o App Kitu. */
+    .zam-pz-box { border:1px solid #d9dde8; border-radius:4px; padding:8px 10px; min-height:40px; display:flex; align-items:center; flex-wrap:wrap; gap:8px; background:#fff; }
+    .zam-pz-empty { color:#aaa; font-size:13px; cursor:pointer; }
     .apt-list-row { display:flex; align-items:center; justify-content:space-between; background:#fff; border:1px solid #eceef5; border-radius:5px; padding:9px 13px; margin-bottom:6px; font-size:13px; color:#c2703a; }
     .apt-list-row i { color:#7b8092; cursor:pointer; font-size:13px; }
     .apt-panel { background:#fff; border:1px solid #edeff5; border-radius:8px; overflow:hidden; margin-bottom:22px; }
@@ -449,6 +469,70 @@
     .apt-doc-list { background:#fff; border:1px solid #eef0f6; border-radius:7px; margin:0 14px 12px; overflow:hidden; }
     .apt-doc-head { display:flex; align-items:center; gap:10px; padding:11px 14px; background:#fafbfd; }
     .apt-doc-file { display:flex; align-items:center; gap:8px; font-size:12.5px; color:#4a7fe8; margin-top:3px; }
+
+    /* ── NASTAVENÍ SMĚRNIC → Seznamy příjemců (§12) ── */
+    .nsm-toolbar-btn { display:inline-flex; align-items:center; gap:9px; background:#fff; border:1px solid #d9dde8; border-radius:6px; height:36px; padding:0 13px; font-size:13px; color:#4a5163; cursor:pointer; white-space:nowrap; }
+    .nsm-search { display:inline-flex; align-items:center; gap:9px; background:#fff; border:1px solid #d9dde8; border-radius:6px; height:36px; padding:0 13px; font-size:13px; color:#9096a6; flex:1; max-width:320px; }
+    .nsm-section-title { font-size:15px; font-weight:700; color:#2b2540; margin:26px 0 10px; }
+    .nsm-table { background:#fff; border:1px solid #edeff5; border-radius:8px; overflow:hidden; }
+    .nsm-table-row { display:grid; grid-template-columns:1.9fr 1.3fr 1fr .9fr .9fr 1.7fr 24px; gap:10px; align-items:center; padding:11px 14px; border-bottom:1px solid #f4f5f9; font-size:13px; color:#3f4457; }
+    .nsm-table-row:last-child { border-bottom:none; }
+    .nsm-table-head { font-size:11.5px; font-weight:700; color:#8a90a3; background:#fafbfd; border-bottom:1px solid #edeff5; }
+    .nsm-table-row.nsm-row:hover { background:#f7f9fd; }
+    .nsm-link { color:#1572e8; text-decoration:none; cursor:pointer; font-weight:600; }
+    .nsm-link:hover { text-decoration:underline; }
+    .nsm-num { color:#1572e8; text-decoration:underline; text-underline-offset:2px; cursor:pointer; }
+    .nsm-progress-wrap { display:flex; align-items:center; gap:10px; }
+    .nsm-progress-track { width:170px; height:7px; border-radius:4px; background:#e7e9f0; overflow:hidden; flex-shrink:0; }
+    .nsm-progress-fill { height:100%; border-radius:4px; }
+    .nsm-progress-pct { font-size:12px; color:#6b7280; width:32px; flex-shrink:0; }
+    .nsm-kebab { color:#9096a6; cursor:pointer; font-size:14px; padding:4px 6px; }
+    .nsm-kebab:hover { color:#3f4457; }
+
+    /* Modal step banner — „Vyberte zdroj" / „Nastavení seznamu příjemců" */
+    .nsm-step-banner { display:flex; align-items:center; justify-content:center; gap:9px; background:#eef4fe; color:#1572e8; font-size:14px; font-weight:700; padding:13px; border-radius:8px; margin-bottom:20px; }
+
+    /* Selectable card — zdroj / příjemci / způsob doručení. Vzhled je
+       společný, liší se jen rozložení (source card na celou šířku,
+       příjemci/doručení vedle sebe v gridu). */
+    .nsm-card { position:relative; background:#fff; border:1.5px solid #e2e5ef; border-radius:8px; padding:14px 40px 14px 16px; cursor:pointer; transition:border-color .12s,background .12s; }
+    .nsm-card:hover { border-color:#c7d3ec; }
+    .nsm-card.selected { border-color:#1572e8; background:#f3f8ff; }
+    /* align-items:flex-start (ne center) — ikona musí být VŽDY na stejném
+       místě (nad popiskem, zarovnaná s prvním řádkem názvu), ne uprostřed
+       výšky názvu. Bez toho by se u dvouřádkových názvů (např. „Konkrétní
+       zaměstnanci a skupiny“) ikona posunula níž než u jednořádkových. */
+    .nsm-card-title { display:flex; align-items:flex-start; gap:9px; font-size:13.5px; font-weight:700; color:#2b2540; line-height:1.35; }
+    .nsm-card-title i { color:#1572e8; font-size:13px; width:16px; text-align:center; flex-shrink:0; margin-top:1px; }
+    .nsm-card-desc { font-size:12px; color:#8a90a3; margin-top:4px; margin-left:25px; }
+    .nsm-card-mark { position:absolute; top:14px; right:14px; width:18px; height:18px; border-radius:50%; border:1.5px solid #c7cbd8; flex-shrink:0; }
+    .nsm-card.selected .nsm-card-mark { border-color:#1572e8; background:#1572e8; display:flex; align-items:center; justify-content:center; }
+    .nsm-card.selected .nsm-card-mark::after { content:'\2713'; color:#fff; font-size:11px; line-height:1; }
+    .nsm-card-grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+    .nsm-card-grid2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+
+    /* Sekce v editačním modalu (Informace o zdroji / Příjemci / Způsob doručení / Základní informace) */
+    .nsm-sec { margin-bottom:26px; }
+    .nsm-sec-head { display:flex; align-items:center; gap:9px; margin-bottom:12px; }
+    .nsm-sec-head i { color:#5b6070; font-size:13px; width:16px; text-align:center; flex-shrink:0; }
+    .nsm-sec-head-title { font-size:14px; font-weight:700; color:#2b2540; flex:1; }
+    .nsm-info-box { background:#fff; border:1px solid #edeff5; border-radius:8px; padding:14px 16px; }
+    .nsm-info-row { display:flex; gap:14px; padding:6px 0; font-size:13px; }
+    .nsm-info-row .lbl { width:90px; flex-shrink:0; color:#8a90a3; }
+    .nsm-info-row .val { color:#2b2540; font-weight:600; display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
+    .nsm-file-chip { display:inline-flex; align-items:center; gap:7px; font-size:12.5px; color:#4a7fe8; }
+    /* Sdílená třída .apt-btn-blue má výchozí (needitovatelný) odstín
+       #4a7fe8 a teprve na hover ztmavne na primární #1572e8 — starší
+       konvence, kterou tu neměníme globálně (šlo by ovlivnit spoustu
+       jinde už ověřených obrazovek). Tlačítka v „Seznamech příjemců"
+       ale mají být VŽDY plná primární barva `#1572e8` (pravidla UI,
+       „Primární" tlačítko, viz sekce Tlačítka) — proto lokální modifikátor. */
+    .nsm-btn-primary { background:#1572e8 !important; box-shadow:0 2px 6px rgba(21,114,232,.28); }
+    .nsm-btn-primary:hover { background:#0f50a2 !important; }
+    .nsm-radio-inline { display:flex; align-items:center; gap:8px; font-size:13px; color:#2b2540; cursor:pointer; }
+    .nsm-radio-dot { width:16px; height:16px; border-radius:50%; border:1.5px solid #c7cbd8; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+    .nsm-radio-inline.on .nsm-radio-dot { border-color:#1572e8; }
+    .nsm-radio-inline.on .nsm-radio-dot::after { content:''; width:8px; height:8px; border-radius:50%; background:#1572e8; }
   </style>
   
 </helmet>
@@ -1429,6 +1513,54 @@
         </sc-if>
       </sc-if>
 
+      <!-- ══════════════════════════════════════════════════════════
+           NASTAVENÍ SMĚRNIC → SEZNAMY PŘÍJEMCŮ (sidebar `nastsm`) — §12
+           Skladba: nadpis + VYTVOŘIT SEZNAM PŘÍJEMCŮ vpravo → toolbar
+           (Zobrazení, hledání) → skupiny tabulek (Pro všechny
+           zaměstnance / Pro pracovní pozice / Pro konkrétní zaměstnance).
+           Klik na název řádku otevírá editační modal (§12.3).
+           ══════════════════════════════════════════════════════════ -->
+      <sc-if value="{{ showNastSm }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;overflow-y:auto;padding:26px 32px 48px">
+          <div style="display:flex;align-items:center;margin-bottom:20px">
+            <div style="font-size:22px;font-weight:700;color:#2b2540;flex:1">Seznamy příjemců</div>
+            <div class="apt-btn-blue nsm-btn-primary" sc-camel-on-click="{{ nsmOpenCreate }}"><i class="fa-solid fa-plus" style="font-size:10px"></i>VYTVOŘIT SEZNAM PŘÍJEMCŮ</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+            <div class="nsm-toolbar-btn"><i class="fa-regular fa-rectangle-list" style="font-size:12px"></i>Zobrazení<i class="fa-solid fa-chevron-down" style="font-size:10px;margin-left:4px"></i></div>
+            <div class="nsm-search"><i class="fa-solid fa-magnifying-glass" style="font-size:12px"></i>Vyhledat seznam příjemců</div>
+          </div>
+
+          <sc-for list="{{ nsm_groups }}" as="grp" hint-placeholder-count="3">
+            <div class="nsm-section-title">{{ grp.title }}</div>
+            <sc-if value="{{ grp.hasRows }}" hint-placeholder-val="{{ true }}">
+              <div class="nsm-table" style="margin-bottom:8px">
+                <div class="nsm-table-row nsm-table-head">
+                  <div>Název</div><div>Akce zaměstnance</div><div>Termín akce</div><div>Potvrzeno dne</div><div>Čeká</div><div>Splnění</div><div></div>
+                </div>
+                <sc-for list="{{ grp.rows }}" as="r" hint-placeholder-count="5">
+                  <div class="nsm-table-row nsm-row">
+                    <div><span class="nsm-link" sc-camel-on-click="{{ r.onOpen }}">{{ r.name }}</span></div>
+                    <div>{{ r.action }}</div>
+                    <div>{{ r.deadline }}</div>
+                    <div><span class="nsm-num">{{ r.confirmed }}</span></div>
+                    <div><span class="nsm-num">{{ r.pending }}</span></div>
+                    <div class="nsm-progress-wrap">
+                      <div class="nsm-progress-track"><div class="nsm-progress-fill" style="{{ r.barStyle }}"></div></div>
+                      <span class="nsm-progress-pct">{{ r.pctText }}</span>
+                    </div>
+                    <div><i class="fa-solid fa-ellipsis-vertical nsm-kebab"></i></div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ grp.isEmpty }}" hint-placeholder-val="{{ false }}">
+              <div class="nsm-table" style="padding:22px 16px;color:#9096a6;font-size:13px;margin-bottom:8px">Zatím žádný seznam příjemců.</div>
+            </sc-if>
+          </sc-for>
+        </div>
+      </sc-if>
+
       <!-- ══ ZAMĚSTNANCI ══ -->
       <!-- ══ TOOLBAR: ZAMĚSTNANCI ══ -->
       <sc-if value="{{ showZamToolbar }}" hint-placeholder-val="{{ false }}">
@@ -2204,7 +2336,9 @@
           <div style="flex:1;min-width:0">
             <div style="font-size:26px;font-weight:300;color:#1e1b2e;line-height:1.2;margin-bottom:10px">{{ zam_railName }}</div>
             <div style="display:flex;align-items:center;gap:8px">
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#eceff1;color:#59676d;padding:4px 12px;border-radius:4px;font-size:10px;font-weight:600"><i class="fa-solid fa-user" style="font-size:9px"></i>Zaměstnanec</span>
+              <span style="display:inline-flex;align-items:center;gap:6px;background:#eceff1;color:#59676d;padding:4px 12px;border-radius:4px;font-size:10px;font-weight:600"><i class="fa-solid fa-user" style="font-size:9px"></i>Zaměstnanci</span>
+              <!-- §7.1.7 – badge osoby, JEN v tomto draweru (breadcrumb na konkrétního zaměstnance) -->
+              <span style="display:inline-flex;align-items:center;gap:6px;background:#eceff1;color:#59676d;padding:4px 12px;border-radius:4px;font-size:10px;font-weight:600"><i class="fa-solid fa-user" style="font-size:9px"></i>{{ zam_railName }}</span>
               <span style="border-radius:4px;padding:3px 10px;font-weight:800;font-size:11px;background:#00C853;color:#fff">AKTIVNÍ</span>
             </div>
           </div>
@@ -2374,6 +2508,48 @@
                     </sc-if>
                   </div>
                 </sc-for>
+              </div>
+            </sc-if>
+            <!-- §7.1.6 – záložka Pracovní zařazení, existuje JEN u modulu Zaměstnanec -->
+            <sc-if value="{{ zam_showPracZarazeni }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:20px 28px 28px;display:flex;flex-direction:column;gap:22px">
+                <div>
+                  <div style="font-size:13px;font-weight:700;color:#374151;margin-bottom:8px">Nadřízený</div>
+                  <div class="zam-pz-box">
+                    <span class="userBadge userBadge--standalone"><span class="_avatar"><span class="acronym">{{ zam_pz.nadrizeny.initials }}</span></span><span class="_name">{{ zam_pz.nadrizeny.name }}</span></span>
+                    <span class="tag-remove" title="Odebrat"><i class="fa-solid fa-xmark"></i></span>
+                  </div>
+                </div>
+                <div>
+                  <div style="font-size:13px;font-weight:700;color:#374151;margin-bottom:8px">Podřízení</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:6px 4px">
+                    <sc-for list="{{ zam_pz.podrizeni }}" as="p" hint-placeholder-count="14">
+                      <span class="userBadge userBadge--standalone"><span class="_avatar"><span class="acronym">{{ p.initials }}</span></span><span class="_name">{{ p.name }}</span></span>
+                    </sc-for>
+                  </div>
+                </div>
+                <div>
+                  <div style="font-size:13px;font-weight:700;color:#374151;margin-bottom:8px">Pracuje na pozici</div>
+                  <div class="zam-pz-box">
+                    <span class="styled-tag styled-tag--removable">{{ zam_pz.pozice }}<span class="styled-tag__remove" title="Odebrat"><i class="fa-solid fa-xmark"></i></span></span>
+                  </div>
+                  <div style="margin-top:8px"><span style="display:inline-flex;align-items:center;gap:6px;color:#1572e8;font-size:11px;font-weight:700;letter-spacing:.02em;cursor:pointer"><i class="fa-solid fa-circle-info" style="font-size:12px"></i>UKÁZAT POŽADAVKY PRACOVNÍ POZICE</span></div>
+                </div>
+                <div>
+                  <div style="font-size:13px;font-weight:700;color:#374151;margin-bottom:8px">Organizační jednotka</div>
+                  <div class="zam-pz-box"><span class="zam-pz-empty">Klikněte pro přidání organizační jednotky</span></div>
+                </div>
+                <div>
+                  <div style="font-size:13px;font-weight:700;color:#374151;margin-bottom:8px">Uživatelská skupina</div>
+                  <div class="zam-pz-box">
+                    <sc-for list="{{ zam_pz.uzivGroups }}" as="g" hint-placeholder-count="3">
+                      <span class="styled-tag styled-tag--removable">{{ g }}<span class="styled-tag__remove" title="Odebrat"><i class="fa-solid fa-xmark"></i></span></span>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="display:flex;justify-content:flex-end;padding-top:4px">
+                  <div style="background:#1572e8;color:#fff;font-weight:800;font-size:12.5px;padding:10px 26px;border-radius:999px;cursor:pointer;box-shadow:0 2px 6px rgba(21,114,232,.28)">ULOŽIT</div>
+                </div>
               </div>
             </sc-if>
             <sc-if value="{{ zam_showStub }}" hint-placeholder-val="{{ false }}">
@@ -2721,6 +2897,168 @@
     </div>
   </sc-if>
 
+  <!-- ══════════════════════════════════════════════════════════
+       SEZNAMY PŘÍJEMCŮ — MODAL „VYTVOŘIT" (krok 1: Vyberte zdroj) — §12.2
+       Jediný krok tohoto modalu: výběr typu zdroje (zatím jen „Dokument
+       nebo manuál") + textové pole na konkrétní dokument. POKRAČOVAT
+       vede do editačního modalu (§12.3) se stejnými daty.
+       ══════════════════════════════════════════════════════════ -->
+  <sc-if value="{{ nsmCreateOpen }}" hint-placeholder-val="{{ false }}">
+    <div class="apt-modal-overlay" sc-camel-on-click="{{ nsmCreateClose }}">
+      <div class="apt-modal" style="height:auto;max-height:92vh;width:min(700px,94vw)" sc-camel-on-click="{{ stopClick }}">
+        <div class="apt-modal-head">
+          <div class="apt-modal-title">Vytvořit seznam příjemců</div>
+          <div class="apt-modal-close" sc-camel-on-click="{{ nsmCreateClose }}">✕</div>
+        </div>
+        <div style="padding:22px 26px 26px">
+          <div class="nsm-step-banner"><i class="fa-solid fa-file-lines"></i>Vyberte zdroj</div>
+          <div style="font-size:13px;color:#6b7280;margin-bottom:16px">Vyberte dokument nebo formulář jako zdroj pro tento list příjemců</div>
+          <div class="nsm-card selected" style="margin-bottom:22px">
+            <div class="nsm-card-mark"></div>
+            <div class="nsm-card-title"><i class="fa-solid fa-file-lines"></i>Dokument nebo manuál</div>
+            <div class="nsm-card-desc">Vyberte dokument jako zdroj pro tento list příjemců</div>
+          </div>
+          <div class="apt-f-label">Vyberte zdroj*</div>
+          <!-- Přes „UPRAVIT ZDROJ" z editačního modalu (§12.3) sem uživatel
+               přichází s už vybraným zdrojem — pole to musí zobrazit jako
+               vyplněné (název dokumentu), ne jako prázdný placeholder. -->
+          <sc-if value="{{ nsmStep1HasSource }}" hint-placeholder-val="{{ false }}">
+            <div class="apt-f-input" style="color:#2b2540"><i class="fa-solid fa-file-lines" style="color:#5b6070;margin-right:8px"></i>{{ nsmEdit.zdrojNazev }}</div>
+          </sc-if>
+          <sc-if value="{{ !nsmStep1HasSource }}" hint-placeholder-val="{{ true }}">
+            <div class="apt-f-input" style="color:#9096a6">Klikněte a začněte psát……</div>
+          </sc-if>
+        </div>
+        <div class="apt-modal-foot">
+          <div style="flex:1"></div>
+          <div class="apt-btn-blue nsm-btn-primary" sc-camel-on-click="{{ nsmContinue }}">POKRAČOVAT</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SEZNAMY PŘÍJEMCŮ — MODAL „UPRAVIT" (nastavení seznamu) — §12.3
+       Pořadí sekcí je ZÁVAZNÉ, odpovídá logickému sledu rozhodování:
+         1. Informace o zdroji — co se rozesílá (needitovatelné, jen
+            odkaz UPRAVIT ZDROJ zpět na krok 1)
+         2. Příjemci — KOMU (musí být vybráno dřív než způsob doručení,
+            protože „Pro všechny zaměstnance" typicky nepotřebuje
+            individuální termín stejně jako malá skupina)
+         3. Způsob doručení — JAK (a případně do kdy) se to potvrzuje;
+            záleží na tom, komu se to posílá (viz bod 2)
+         4. Základní informace — název/popis se dopisuje AŽ NAKONEC,
+            protože výchozí název se odvozuje ze zdroje (bod 1) a
+            uživatel ho tu jen případně upřesní.
+       Neměň pořadí sekcí — vychází z reálné produkční aplikace.
+       ══════════════════════════════════════════════════════════ -->
+  <sc-if value="{{ nsmEditOpen }}" hint-placeholder-val="{{ false }}">
+    <div class="apt-modal-overlay" sc-camel-on-click="{{ nsmEditClose }}">
+      <div class="apt-modal" style="height:auto;max-height:92vh;width:min(760px,94vw)" sc-camel-on-click="{{ stopClick }}">
+        <div class="apt-modal-head">
+          <div class="apt-modal-title">Upravit seznam příjemců</div>
+          <div class="apt-modal-close" sc-camel-on-click="{{ nsmEditClose }}">✕</div>
+        </div>
+        <div style="padding:22px 26px 26px;overflow-y:auto">
+          <div class="nsm-step-banner"><i class="fa-solid fa-gear"></i>Nastavení seznamu příjemců</div>
+
+          <!-- 1 · Informace o zdroji -->
+          <div class="nsm-sec">
+            <div class="nsm-sec-head"><i class="fa-solid fa-file-lines"></i><span class="nsm-sec-head-title">Informace o zdroji</span>
+              <div class="apt-btn-blue nsm-btn-primary" style="padding:8px 16px" sc-camel-on-click="{{ nsmEditZdrojUpravit }}"><i class="fa-solid fa-pen" style="font-size:10px"></i>UPRAVIT ZDROJ</div>
+            </div>
+            <div class="nsm-info-box">
+              <div class="nsm-info-row"><div class="lbl">Typ zdroje:</div><div class="val"><i class="fa-solid fa-file-lines" style="color:#5b6070"></i>Dokument nebo manuál</div></div>
+              <div class="nsm-info-row"><div class="lbl">Název:</div><div class="val">{{ nsmEdit.zdrojNazev }}</div></div>
+              <div class="nsm-info-row"><div class="lbl">Soubory:</div><div class="val">
+                <sc-for list="{{ nsm_zdrojSoubory }}" as="f" hint-placeholder-count="2">
+                  <span class="nsm-file-chip"><i class="fa-solid fa-{{ f.icon }}" style="color:{{ f.color }}"></i>{{ f.name }}</span>
+                </sc-for>
+              </div></div>
+            </div>
+          </div>
+
+          <!-- 2 · Příjemci -->
+          <div class="nsm-sec">
+            <div class="nsm-sec-head"><i class="fa-solid fa-users"></i><span class="nsm-sec-head-title">Příjemci</span></div>
+            <div class="nsm-card-grid3">
+              <sc-for list="{{ nsm_prijemci_cards }}" as="c" hint-placeholder-count="3">
+                <div class="nsm-card {{ c.selCls }}" sc-camel-on-click="{{ c.onClick }}">
+                  <div class="nsm-card-mark"></div>
+                  <div class="nsm-card-title"><i class="fa-solid fa-{{ c.icon }}"></i>{{ c.title }}</div>
+                  <div class="nsm-card-desc">{{ c.desc }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <!-- „Konkrétní zaměstnanci a skupiny“ → 2 vyhledávací pole -->
+            <sc-if value="{{ nsmShowKonkretni }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:16px">
+                <div class="apt-f-label">Přidání zaměstnanci</div>
+                <div class="apt-f-input" style="color:#9096a6;margin-bottom:14px">Klikněte a začněte psát……</div>
+                <div class="apt-f-label">Skupiny zaměstnanců</div>
+                <div class="apt-f-input" style="color:#9096a6">Klikněte a začněte psát……</div>
+              </div>
+            </sc-if>
+            <!-- „Pracovní pozice“ → 1 select -->
+            <sc-if value="{{ nsmShowPoziceField }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:16px">
+                <div class="apt-f-label">Pracovní pozice</div>
+                <div class="apt-f-select"><span>--- Vyberte ze seznamu ---</span><i class="fa-solid fa-chevron-down" style="font-size:10px"></i></div>
+              </div>
+            </sc-if>
+          </div>
+
+          <!-- 3 · Způsob doručení -->
+          <div class="nsm-sec">
+            <div class="nsm-sec-head"><i class="fa-regular fa-clock"></i><span class="nsm-sec-head-title">Způsob doručení</span></div>
+            <div class="nsm-card-grid2" style="margin-bottom:16px">
+              <sc-for list="{{ nsm_doruceni_cards }}" as="c" hint-placeholder-count="2">
+                <div class="nsm-card {{ c.selCls }}" sc-camel-on-click="{{ c.onClick }}">
+                  <div class="nsm-card-mark"></div>
+                  <div class="nsm-card-title"><i class="fa-solid fa-{{ c.icon }}"></i>{{ c.title }}</div>
+                  <div class="nsm-card-desc">{{ c.desc }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ nsmShowTermin }}" hint-placeholder-val="{{ true }}">
+              <div class="apt-f-label">Termín potvrzení</div>
+              <div style="display:flex;align-items:center;gap:26px;margin-bottom:14px;flex-wrap:wrap">
+                <sc-for list="{{ nsm_termin_options }}" as="t" hint-placeholder-count="3">
+                  <div class="nsm-radio-inline" sc-camel-on-click="{{ t.onClick }}">
+                    <i class="fa-solid fa-{{ t.radioIcon }}" style="font-size:15px;color:{{ t.accent }}"></i>
+                    <i class="fa-solid fa-{{ t.icon }}" style="font-size:12px;color:#8a90a3"></i>
+                    <span>{{ t.label }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <sc-if value="{{ nsmShowPocetDni }}" hint-placeholder-val="{{ true }}">
+                <div class="apt-f-label">Počet dnů na potvrzení</div>
+                <div class="apt-f-input" style="max-width:120px">{{ nsmEdit.pocetDni }}</div>
+              </sc-if>
+              <sc-if value="{{ nsmShowKonkretniDatum }}" hint-placeholder-val="{{ false }}">
+                <div class="apt-f-label">Konkrétní datum</div>
+                <div class="apt-f-input" style="max-width:180px;justify-content:space-between;color:#9096a6">dd.mm.rrrr<i class="fa-regular fa-calendar" style="font-size:12px;color:#8a90a3"></i></div>
+              </sc-if>
+            </sc-if>
+          </div>
+
+          <!-- 4 · Základní informace -->
+          <div class="nsm-sec" style="margin-bottom:6px">
+            <div class="nsm-sec-head"><i class="fa-solid fa-circle-info"></i><span class="nsm-sec-head-title">Základní informace</span></div>
+            <div class="apt-f-label">Název*</div>
+            <div class="apt-f-input" style="margin-bottom:16px">{{ nsmEdit.nazev }}</div>
+            <div class="apt-f-label">Popis</div>
+            <div class="apt-f-area" style="min-height:70px;color:#9096a6">Zde si můžete napsat bližší popis k listu</div>
+          </div>
+        </div>
+        <div class="apt-modal-foot">
+          <div style="flex:1"></div>
+          <div class="apt-btn-blue nsm-btn-primary" sc-camel-on-click="{{ nsmEditClose }}"><i class="fa-solid fa-floppy-disk" style="font-size:11px"></i>ULOŽIT</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
 </div>
 
 </x-dc>
@@ -2815,7 +3153,13 @@ class Component extends DCLogic {
     // Sbalitelné skupiny v modalu: klíč = `key` skupiny. Chybějící klíč
     // znamená OTEVŘENO (§11.5) — zavírá se až explicitním `false`.
     pozActOpen: {},
-    pozDocOpen: {}
+    pozDocOpen: {},
+    // ── NASTAVENÍ SMĚRNIC → Seznamy příjemců (§12) ──
+    // `nsmEdit` drží rozpracovaná data OBOU modalů (krok 1 „Vytvořit" i
+    // editační „Upravit"), aby přechod POKRAČOVAT → editace nic neztratil.
+    nsmCreateOpen: false,
+    nsmEditOpen: false,
+    nsmEdit: null
   };
 
   // ── NASTAVENÍ ORGANIZACE — data ────────────────
@@ -2907,6 +3251,57 @@ class Component extends DCLogic {
     { subject: 'Juniors',                     boss: 'Alena Kotková',       scope: 'Celá jednotka',  icon: 'sitemap',  user: 'alena' }
   ];
 
+  // ── NASTAVENÍ SMĚRNIC → Seznamy příjemců (§12) ──────────────
+  // Struktura tabulky (sloupce, layout, chování) je zdroj pravdy z reálné
+  // produkční aplikace (screenshoty 27. 8. 2026) — ale KONKRÉTNÍ NÁZVY
+  // řádků NEJSOU 1:1 kopie testovacích dat z produkce (tam byly ad-hoc
+  // testovací záznamy typu „test hal notifikace", „šindel", „tile
+  // komponenta test" apod.). Pro prototyp jako ZÁKLAD budoucí návrhové
+  // práce dává smysl mít místo nich realistické, obecně použitelné
+  // příklady: nejčastější firemní směrnice pro „Pro všechny zaměstnance"
+  // (GDPR, BOZP, PO, kodex chování…) a SOP (Standard Operating Procedure)
+  // vázané na konkrétní pracovní pozici pro „Pro pracovní pozice".
+  //
+  // Řádky „Kodex chování a etika" a „Bezpečnost práce (BOZP) 2026" mají
+  // kompletní zdrojová data, aby po kliknutí přesně odpovídaly editačním
+  // modalům (Pouze zveřejněno / Vyžaduje potvrzení + Počet dnů = 5);
+  // ostatní řádky mají zdroj dopočítaný generickým fallbackem (viz
+  // mkNsmEditFromRow).
+  NSM_GROUPS_DATA = [
+    { key: 'vsichni', title: 'Pro všechny zaměstnance', prijemci: 'vsichni', rows: [
+      { name: 'Kodex chování a etika', action: 'zverejneno', deadline: '---', confirmed: 0, pending: null, pct: 0,
+        zdrojNazev: 'Kodex chování a etika', zdrojSoubory: [{ icon: 'file-pdf', color: '#e53935', name: 'Kodex-chovani-2026.pdf' }] },
+      { name: 'GDPR – Ochrana osobních údajů', action: 'zverejneno', deadline: '---', confirmed: 0, pending: null, pct: 0 },
+      { name: 'Bezpečnost práce (BOZP) 2026', action: 'potvrzeni', deadline: 'Za 5 dní', confirmed: 3, pending: 292, pct: 1,
+        zdrojNazev: 'Bezpečnost práce (BOZP) 2026', zdrojSoubory: [{ icon: 'file-pdf', color: '#e53935', name: 'Smernice-BOZP-2026.pdf' }, { icon: 'image', color: '#9c27b0', name: 'Piktogramy-BOZP.png' }],
+        terminTyp: 'dny', pocetDni: 5 },
+      { name: 'Požární ochrana a evakuační plán', action: 'potvrzeni', deadline: 'Za 10 dní', confirmed: 5, pending: 146, pct: 3 },
+      { name: 'Etický kodex a whistleblowing', action: 'potvrzeni', deadline: 'Bez termínu', confirmed: 1, pending: 437, pct: 0 },
+      { name: 'Home office a práce na dálku', action: 'zverejneno', deadline: '---', confirmed: 0, pending: null, pct: 0 },
+      { name: 'Cestovní náhrady a diety', action: 'potvrzeni', deadline: 'Za 15 dní', confirmed: 7, pending: 577, pct: 1 }
+    ]},
+    { key: 'pozice', title: 'Pro pracovní pozice', prijemci: 'pozice', rows: [
+      { name: 'SOP – Obsluha vysokozdvižného vozíku', action: 'potvrzeni', deadline: 'Bez termínu', confirmed: 4, pending: 15, pct: 21 },
+      { name: 'SOP – Práce ve výškách', action: 'potvrzeni', deadline: 'Za 20 dní', confirmed: 1, pending: 7, pct: 13 },
+      { name: 'SOP – Hygienické standardy ve výrobě', action: 'potvrzeni', deadline: 'Bez termínu', confirmed: 2, pending: 9, pct: 18 }
+    ]},
+    { key: 'konkretni', title: 'Pro konkrétní zaměstnance', prijemci: 'konkretni', rows: [] }
+  ];
+  NSM_PRIJEMCI_OPTIONS = [
+    { key: 'konkretni', icon: 'user-group', title: 'Konkrétní zaměstnanci a skupiny', desc: 'Vyberte konkrétní zaměstnance a skupiny do tohoto listu' },
+    { key: 'pozice',    icon: 'briefcase',  title: 'Pracovní pozice',                 desc: 'Vyberte pracovní pozici pro tento list příjemců' },
+    { key: 'vsichni',   icon: 'globe',      title: 'Pro všechny zaměstnance',         desc: 'Tento list příjemců je platný pro všechny zaměstnance v aplikaci' }
+  ];
+  NSM_DORUCENI_OPTIONS = [
+    { key: 'potvrzeni',  icon: 'circle-check', title: 'Vyžaduje potvrzení', desc: 'Příjemci musí potvrdit, že dokument nebo formulář přečetli' },
+    { key: 'zverejneno', icon: 'circle-info',  title: 'Pouze zveřejněno',   desc: 'Dokument bude sdílen, potvrzení nebude potřeba.' }
+  ];
+  NSM_TERMIN_OPTIONS = [
+    { key: 'datum', icon: 'calendar-days',    label: 'Konkrétní datum' },
+    { key: 'dny',   icon: 'calendar-check',   label: 'Počet dnů na potvrzení' },
+    { key: 'bez',   icon: 'ban',              label: 'Bez termínu potvrzení' }
+  ];
+
   // Sekce „Plánované aktivity" v modalu — převzato z nastavení zaměstnanců
   POZ_ACT_GROUPS = [
     { key: 'skoleni', title: 'Školení a osobní rozvoj', count: 3, items: [
@@ -2954,7 +3349,7 @@ class Component extends DCLogic {
     { label: 'Vydané certifikáty',   c800: '#00695C', icon: 'certificate' }
   ];
 
-  NAV_WORK = [{"id": "domu", "label": "Moje domovská stránka", "icon": "house-chimney", "svg": "house-chimney"}, {"id": "upoz", "label": "Moje upozornění", "icon": "bell", "svg": "bell", "badge": 60, "badgeKind": "alert"}, {"id": "kal", "label": "Můj kalendář", "icon": "calendar-days", "svg": "calendar-days"}, {"id": "ukoly", "label": "Moje úkoly", "icon": "clipboard-check", "svg": "clipboard-check", "badge": 7, "badgeKind": "alert"}, {"id": "konv", "label": "Moje konverzace", "icon": "comments", "svg": "comments", "badge": 5, "badgeKind": "alert"}, {"id": "tym", "label": "Můj tým", "icon": "people-group", "svg": "people-group"}, {"id": "oblib", "label": "Moje oblíbené", "icon": "star", "svg": "star", "badge": 1, "badgeKind": "grey"}, {"id": "zad", "label": "Moje žádanky", "icon": "file-invoice", "svg": "file-invoice"}, {"id": "hlid", "label": "Moje hlídače", "icon": "dog", "svg": "dog"}, {"id": "schval", "label": "Ke schválení", "icon": "circle-check", "svg": "circle-check", "badge": 2, "badgeKind": "alert"}, {"id": "rep", "label": "Reporty", "icon": "file-chart-column", "svg": "file-chart-column"}, {"id": "ome", "label": "O mě", "icon": "user", "svg": "user"}, {"id": "pozn", "label": "Poznámky", "icon": "clipboard", "svg": "clipboard", "badge": 2, "badgeKind": "grey"}, {"id": "smern", "label": "Moje směrnice", "icon": "books", "svg": "books"}, {"id": "cojsem", "label": "Co jsem dělal", "icon": "chart-network", "svg": "chart-network"}];
+  NAV_WORK = [{"id": "domu", "label": "Moje domovská stránka", "icon": "house-chimney", "svg": "house-chimney"}, {"id": "upoz", "label": "Moje upozornění", "icon": "bell", "svg": "bell", "badge": 60, "badgeKind": "alert"}, {"id": "kal", "label": "Můj kalendář", "icon": "calendar-days", "svg": "calendar-days"}, {"id": "ukoly", "label": "Moje úkoly", "icon": "clipboard-check", "svg": "clipboard-check", "badge": 7, "badgeKind": "alert"}, {"id": "konv", "label": "Moje konverzace", "icon": "comments", "svg": "comments", "badge": 5, "badgeKind": "alert"}, {"id": "tym", "label": "Můj tým", "icon": "people-group", "svg": "people-group"}, {"id": "oblib", "label": "Moje oblíbené", "icon": "star", "svg": "star", "badge": 1, "badgeKind": "grey"}, {"id": "zad", "label": "Moje žádanky", "icon": "file-invoice", "svg": "file-invoice"}, {"id": "hlid", "label": "Moje hlídače", "icon": "dog", "svg": "dog"}, {"id": "schval", "label": "Ke schválení", "icon": "circle-check", "svg": "circle-check", "badge": 2, "badgeKind": "alert"}, {"id": "rep", "label": "Reporty", "icon": "file-chart-column", "svg": "file-chart-column"}, {"id": "ome", "label": "O mně", "icon": "user", "svg": "user"}, {"id": "pozn", "label": "Poznámky", "icon": "clipboard", "svg": "clipboard", "badge": 2, "badgeKind": "grey"}, {"id": "smern", "label": "Moje směrnice", "icon": "books", "svg": "books"}, {"id": "cojsem", "label": "Co jsem dělal", "icon": "chart-network", "svg": "chart-network"}];
 
   NAV_COMPANY = [{"id": "nastenka", "label": "Nástěnka", "icon": "grid-horizontal", "svg": "grid-horizontal"}, {"id": "dok", "label": "Směrnice a dokumenty", "icon": "book-open", "svg": "book-open"}, {"id": "kolegove", "label": "Kolegové", "icon": "users", "svg": "users"}, {"id": "skolc", "label": "Katalog školení", "icon": "book-open-reader", "svg": "book-open-reader"}, {"id": "nastsm", "label": "Nastavení směrnic", "icon": "books", "svg": "books"}, {"id": "nastorg", "label": "Nastavení organizace", "icon": "sitemap", "svg": "sitemap"}, {"id": "inventura", "label": "Inventura", "icon": "boxes-stacked", "svg": "boxes-stacked"}];
 
@@ -3542,13 +3937,15 @@ class Component extends DCLogic {
   renderVals() {
     const { activeTab, activeNav, sidebarCollapsed, drawerOpen, drawerModule, drawerStack, selectedIdx, drawerTab,
             confirmedDocs, selectedDokCat, selectedSmernCat, smernConfirmedOpen, tablePageSize, zamItemTab, zamOpenGroups, zakSouvisOpen, zakSouvisGraph, calPeriods,
-            orgTab, nadrRule, pozModalOpen, pozModalSection, pozIdx } = this.state;
+            orgTab, nadrRule, pozModalOpen, pozModalSection, pozIdx,
+            nsmCreateOpen, nsmEditOpen, nsmEdit } = this.state;
     const ACC = '#1572e8';
     const collapsed = sidebarCollapsed;
 
     // ── Module routing ──
-    const navOwnsContent = activeNav === 'smern' || activeNav === 'dok' || activeNav === 'nastorg';
+    const navOwnsContent = activeNav === 'smern' || activeNav === 'dok' || activeNav === 'nastorg' || activeNav === 'nastsm';
     const isNastOrg = activeNav === 'nastorg';
+    const isNastSm  = activeNav === 'nastsm';
     const isKonv       = activeNav === 'konv';
     const isRizika     = activeTab === 8;
     const isOP         = activeTab === 2;
@@ -3595,7 +3992,7 @@ class Component extends DCLogic {
     });
     const navCompany = this.NAV_COMPANY.map(m => {
       const on = activeNav === m.id;
-      const clearTab = m.id === 'dok' || m.id === 'nastorg';
+      const clearTab = m.id === 'dok' || m.id === 'nastorg' || m.id === 'nastsm';
       return { ...m, onClick: () => this.setState({ activeNav: on ? null : m.id, ...(clearTab && !on ? { activeTab: null } : {}) }), style: navItemStyle(on), showFull: !collapsed, iconEl: this.mkNavIcon(m, collapsed, on ? ACC : '#9a93b5') };
     });
 
@@ -3937,8 +4334,40 @@ class Component extends DCLogic {
     // ══ ZAMĚSTNANEC drawer ══
     const ZAM_ITEM_TABS = [
       { key: 'detaily', label: 'Detaily' }, { key: 'plany', label: 'Plány aktivit', badge: 32 }, { key: 'prilohy', label: 'Přílohy' }, { key: 'souvis', label: 'Souvislosti' },
-      { key: 'kalendar', label: 'Kalendář' }, { key: 'zapisy', label: 'Zápisy', badge: 4 }, { key: 'ukoly', label: 'Úkoly' }, { key: 'poznamky', label: 'Poznámky' }, { key: 'konverzace', label: 'Konverzace' }
+      { key: 'kalendar', label: 'Kalendář' },
+      // §7.1.6 – nová záložka, existuje JEN u modulu Zaměstnanec
+      { key: 'prac_zarazeni', label: 'Pracovní zařazení' },
+      { key: 'zapisy', label: 'Zápisy', badge: 4 }, { key: 'ukoly', label: 'Úkoly' }, { key: 'poznamky', label: 'Poznámky' }, { key: 'konverzace', label: 'Konverzace' }
     ];
+    // §7.1.6 – obsah záložky Pracovní zařazení (statická ukázková data FABIÁN Vladimír)
+    // §7.1.6 – Nadřízený/Podřízení jsou App Kit „User Badge" (.userBadge.userBadge--standalone,
+    // viz Aptien-HK-App-Kit#avatar). ⚠ NENÍ to jako u Konverzace (msg.avatarBg
+    // podle osoby) – reálný screenshot (27. 8. 2026) ukazuje VŠECHNY avatary
+    // stejnou neutrální šedou App-Kit fallback barvou (._avatar má default
+    // background:#e2e4e6 + bílé iniciály, viz CSS), NE barevné kolečko podle
+    // člověka. Proto se tu žádné avatarBg nepředává – dědí se výchozí CSS.
+    const zam_pracZarazeni = {
+      nadrizeny: { name: 'Pavel ŠPACEK', initials: 'PS' },
+      podrizeni: [
+        { name: 'PECH Josef', initials: 'PJ' },
+        { name: 'PECH Martin', initials: 'PM' },
+        { name: 'ŠEDIVKOVÁ Nikola', initials: 'ŠN' },
+        { name: 'SLAVÍKOVÁ Martina', initials: 'SM' },
+        { name: 'BROŽKOVÁ Soňa', initials: 'BS' },
+        { name: 'JANSA Vladimír', initials: 'JV' },
+        { name: 'JIŘINCOVÁ Markéta', initials: 'JM' },
+        { name: 'KRIŠŠOVÁ Kamila', initials: 'KK' },
+        { name: 'MACHÁČEK Václav', initials: 'MV' },
+        { name: 'MUSÍLKOVÁ Jana', initials: 'MJ' },
+        { name: 'PRAŽÁKOVÁ Helena', initials: 'PH' },
+        { name: 'FRANCOVÁ Lenka', initials: 'FL' },
+        { name: 'RICHTR Milan', initials: 'RM' },
+        { name: 'HOLEČKOVÁ Hana', initials: 'HH' }
+      ],
+      pozice: 'Vedoucí útvaru hospodářské správy',
+      orgJednotkaEmpty: true,
+      uzivGroups: ['Přímo podřízení řediteli', 'Vedoucí hospodářské správy', 'Všichni zaměstnanci']
+    };
     const zam_zapisyRows = [
       { typ: 'Schůzka',   subject: 'ggggg',          od: '22.01.2026 09:34', do: '22.01.2026 09:49', participant: 'Karolína Fišerová', participantTime: '09:34 | 22.01.2026', creator: 'Karolína Fišerová', creatorTime: '09:34 | 22.01.2026', iconBg: '#7e57c2', iconClass: 'fa-solid fa-people-group' },
       { typ: 'Telefonát', subject: 'Telefonát',      od: '19.02.2023 22:55', do: '19.02.2023 23:10', participant: 'Karolína Fišerová', participantTime: '22:55 | 19.02.2023', creator: 'Karolína Fišerová', creatorTime: '22:55 | 19.02.2023', iconBg: '#43a047', iconClass: 'fa-solid fa-phone' },
@@ -4065,6 +4494,59 @@ class Component extends DCLogic {
     });
     const nadr_rows = this.NADR_ROWS.map(r => ({ ...r, avatarEl: this.mkAvatar(this.POZ_PEOPLE[r.user], 24) }));
 
+    // ── NASTAVENÍ SMĚRNIC → Seznamy příjemců (§12) ──────────────
+    // Barva pruhu Splnění: v reálné appce jsou všechny dosavadní seznamy
+    // nízko rozpracované (0–13 %), proto jednotná teplá barva místo škály.
+    const NSM_BAR_COLOR = '#f2775d';
+    const mkNsmEditFromRow = (row, groupKey) => ({
+      nazev: row.name || 'Nový seznam příjemců',
+      popis: '',
+      zdrojNazev: row.zdrojNazev || row.name || 'Dokument',
+      zdrojSoubory: row.zdrojSoubory || [{ icon: 'file-lines', color: '#6b7280', name: (row.zdrojNazev || row.name || 'dokument') + '.pdf' }],
+      prijemci: groupKey,
+      doruceni: row.action || 'potvrzeni',
+      terminTyp: row.terminTyp || 'dny',
+      pocetDni: row.pocetDni || 5
+    });
+    const nsm_groups = this.NSM_GROUPS_DATA.map(g => ({
+      key: g.key, title: g.title, hasRows: g.rows.length > 0, isEmpty: g.rows.length === 0,
+      rows: g.rows.map(r => ({
+        name: r.name || '—',
+        action: r.action === 'zverejneno' ? 'Pouze zveřejněno' : 'Vyžaduje potvrzení',
+        deadline: r.deadline,
+        confirmed: r.confirmed,
+        pending: r.pending == null ? '---' : r.pending,
+        pctText: r.pct + ' %',
+        barStyle: 'width:' + Math.max(r.pct, 3) + '%;background:' + NSM_BAR_COLOR,
+        onOpen: () => this.setState({ nsmEditOpen: true, nsmEdit: mkNsmEditFromRow(r, g.key) })
+      }))
+    }));
+    const nsmSetEdit = (patch) => this.setState({ nsmEdit: { ...(this.state.nsmEdit || {}), ...patch } });
+    const nsm_prijemci_cards = this.NSM_PRIJEMCI_OPTIONS.map(o => {
+      const on = !!nsmEdit && nsmEdit.prijemci === o.key;
+      return { ...o, selCls: on ? 'selected' : '', onClick: () => nsmSetEdit({ prijemci: o.key }) };
+    });
+    const nsm_doruceni_cards = this.NSM_DORUCENI_OPTIONS.map(o => {
+      const on = !!nsmEdit && nsmEdit.doruceni === o.key;
+      return { ...o, selCls: on ? 'selected' : '', onClick: () => nsmSetEdit({ doruceni: o.key }) };
+    });
+    const nsm_termin_options = this.NSM_TERMIN_OPTIONS.map(o => {
+      const on = !!nsmEdit && nsmEdit.terminTyp === o.key;
+      return { ...o, radioIcon: on ? 'circle-dot' : 'circle', accent: on ? '#1572e8' : '#b0aac8', onClick: () => nsmSetEdit({ terminTyp: o.key }) };
+    });
+    const nsmShowTermin = !!nsmEdit && nsmEdit.doruceni === 'potvrzeni';
+    const nsmShowPocetDni = nsmShowTermin && !!nsmEdit && nsmEdit.terminTyp === 'dny';
+    const nsmShowKonkretniDatum = nsmShowTermin && !!nsmEdit && nsmEdit.terminTyp === 'datum';
+    // Příjemci → doplňkové pole PODLE vybrané karty (vždy jen jedno,
+    // nebo žádné u „Pro všechny zaměstnance“).
+    const nsmShowKonkretni = !!nsmEdit && nsmEdit.prijemci === 'konkretni';
+    const nsmShowPoziceField = !!nsmEdit && nsmEdit.prijemci === 'pozice';
+    const nsm_zdrojSoubory = (nsmEdit && nsmEdit.zdrojSoubory) || [];
+    // Krok 1 („Vytvořit") otevřený přes „UPRAVIT ZDROJ" z editačního modalu
+    // už MÁ vybraný zdroj (nsmEdit.zdrojNazev) → pole se má chovat jako
+    // vyplněné (zobrazit už vložený dokument), ne jako prázdný placeholder.
+    const nsmStep1HasSource = !!nsmEdit && !!nsmEdit.zdrojNazev;
+
     // ── Modal „Upravit pracovní pozici" ──
     const pozSel = this.POZ_ITEMS[pozIdx] || this.POZ_ITEMS[0];
     // Čerstvě založená pozice → prázdný stav obou návazných sekcí (§11.5.2).
@@ -4122,6 +4604,30 @@ class Component extends DCLogic {
       org_showKatalog:    isNastOrg && orgTab === 'katalog',
       org_showNadrizeni:  isNastOrg && orgTab === 'nadrizeni',
       poz_cards, kat_rows, nadr_options, nadr_rows, nadr_exCount: this.NADR_ROWS.length,
+      // Seznamy příjemců (§12)
+      showNastSm: isNastSm,
+      nsm_groups,
+      nsmOpenCreate: () => this.setState({ nsmCreateOpen: true, nsmEdit: { nazev: '', popis: '', zdrojNazev: '', zdrojSoubory: [], prijemci: 'vsichni', doruceni: 'potvrzeni', terminTyp: 'dny', pocetDni: 5 } }),
+      nsmCreateOpen,
+      nsmCreateClose: () => this.setState({ nsmCreateOpen: false }),
+      // Zdroj krok 1 je v prototypu needitovatelné vyhledávací pole (bez
+      // reálného výběru), proto novému seznamu (bez zdroje) krok 2 dostane
+      // vlastní generickou ukázku dokumentu — ať se nezaměňuje s konkrétním
+      // záznamem „IT směrnice". Pokud už zdroj vybraný JE (návrat přes
+      // „UPRAVIT ZDROJ" z editačního modalu, viz nsmEditZdrojUpravit níže),
+      // zůstává zachovaný — POKRAČOVAT ho nesmí přepsat.
+      nsmContinue: () => this.setState({ nsmCreateOpen: false, nsmEditOpen: true, nsmEdit: { ...(nsmEdit || {}), nazev: (nsmEdit && nsmEdit.nazev) || 'Nový seznam příjemců', zdrojNazev: (nsmEdit && nsmEdit.zdrojNazev) || 'Směrnice BOZP 2026', zdrojSoubory: (nsmEdit && nsmEdit.zdrojSoubory && nsmEdit.zdrojSoubory.length) ? nsmEdit.zdrojSoubory : [{ icon: 'file-pdf', color: '#e53935', name: 'Smernice-BOZP-2026.pdf' }] } }),
+      nsmEditOpen,
+      nsmEditClose: () => this.setState({ nsmEditOpen: false }),
+      nsmEdit: nsmEdit || {},
+      nsm_prijemci_cards, nsm_doruceni_cards, nsm_termin_options,
+      nsmShowTermin, nsmShowPocetDni, nsmShowKonkretniDatum, nsmShowKonkretni, nsmShowPoziceField, nsm_zdrojSoubory,
+      nsmStep1HasSource,
+      // „UPRAVIT ZDROJ" v editačním modalu → zpět na krok 1 (výběr zdroje),
+      // ale beze ztráty rozpracovaných dat (nsmEdit se NERESETUJE) — krok 1
+      // jen zobrazí už vložený zdroj místo prázdného placeholderu
+      // (viz nsmStep1HasSource + markup modalu „Vytvořit").
+      nsmEditZdrojUpravit: () => this.setState({ nsmEditOpen: false, nsmCreateOpen: true }),
       // modal pracovní pozice (§11.5)
       pozModalOpen,
       pozModalClose: () => this.setState({ pozModalOpen: false }),
@@ -4267,7 +4773,9 @@ class Component extends DCLogic {
       zam_itemTabs, zam_detailRows, zam_itemActions, zam_planyGroups, zam_listRows, zam_railName,
       zam_showDetaily: zamItemTab === 'detaily', zam_showKonverzace: zamItemTab === 'konverzace', zam_showPlany: zamItemTab === 'plany',
       zam_showZapisy: zamItemTab === 'zapisy', zam_zapisyRows,
-      zam_showStub: zamItemTab !== 'detaily' && zamItemTab !== 'konverzace' && zamItemTab !== 'plany' && zamItemTab !== 'zapisy',
+      // §7.1.6 – záložka Pracovní zařazení, existuje JEN u Zaměstnance
+      zam_showPracZarazeni: zamItemTab === 'prac_zarazeni', zam_pz: zam_pracZarazeni,
+      zam_showStub: zamItemTab !== 'detaily' && zamItemTab !== 'konverzace' && zamItemTab !== 'plany' && zamItemTab !== 'zapisy' && zamItemTab !== 'prac_zarazeni',
       zam_activeItemTabLabel: (ZAM_ITEM_TABS.find(t => t.key === zamItemTab) || {}).label || '',
       konverzaceSrc: this.konverzaceSrc
     };

@@ -1,0 +1,152 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free) + Nunito. Řádky níže je načtou,
+     aby se blok vykreslil i při samostatném otevření souboru. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<!--
+  APTIEN — SEZNAMY PŘÍJEMCŮ, MODAL „UPRAVIT“ (nastavení seznamu)
+  =================================================================
+  Zdroj pravdy: reálná produkční aplikace (screenshoty 27. 8. 2026) +
+  master prototyp (`nsmEditOpen`, §12.3). Konkrétní obsah (název zdroje,
+  soubory) je realistický obecný příklad — „Bezpečnost práce (BOZP)
+  2026“ — NE 1:1 kopie testovacího záznamu z produkce; viz poznámka
+  o obsahu v nastsm-seznamy-prijemcu.html.
+
+  ⚠ POŘADÍ SEKCÍ JE ZÁVAZNÉ — vychází z reálné aplikace a má logiku:
+    1. Informace o zdroji — CO se rozesílá (needitovatelné, jen odkaz
+       UPRAVIT ZDROJ zpět na krok 1 „Vyberte zdroj“)
+    2. Příjemci — KOMU (musí se vybrat dřív než způsob doručení: u
+       „Pro všechny zaměstnance“ dává jiný smysl termín potvrzení
+       než u malé konkrétní skupiny). Každá karta má vlastní doplňkové
+       pole pod mřížkou (nejvýš jedno najednou): „Konkrétní zaměstnanci
+       a skupiny“ → 2 vyhledávací pole (Přidání zaměstnanci / Skupiny
+       zaměstnanců); „Pracovní pozice“ → 1 select; „Pro všechny
+       zaměstnance“ → žádné pole.
+    3. Způsob doručení — JAK (a případně DO KDY) se to potvrzuje;
+       „Termín potvrzení“ (3 možnosti) se zobrazí JEN když je vybráno
+       „Vyžaduje potvrzení“. I Termín potvrzení má vlastní doplňkové
+       pole (nejvýš jedno): „Konkrétní datum“ → datumové pole;
+       „Počet dnů na potvrzení“ → číselné pole (výchozí 5); „Bez
+       termínu potvrzení“ → žádné pole.
+    4. Základní informace — název/popis se řeší AŽ NAKONEC, protože
+       výchozí název se odvozuje ze zdroje (bod 1) a tady se jen
+       případně přejmenuje/popíše.
+  NEMĚŇ pořadí sekcí ani vnořenou podmíněnost (2 → 2a / 3 → 3a).
+
+  Karty (Příjemci / Způsob doručení) i řádek Termín potvrzení jsou
+  skutečné volby s vizuálním stavem vybráno/nevybráno — v tomto
+  statickém partialu je zafixovaný jeden konkrétní stav (odpovídá
+  záznamu „Bezpečnost práce (BOZP) 2026“: Pro všechny zaměstnance ·
+  Vyžaduje potvrzení · Počet dnů na potvrzení = 5). Plně klikací chování se
+  všemi doplňkovými poli je jen v master prototypu
+  (`nsm_prijemci_cards` / `nsm_doruceni_cards` / `nsm_termin_options` /
+  `nsmShowKonkretni` / `nsmShowPoziceField` / `nsmShowKonkretniDatum`).
+
+  Ikona v kartě je zarovnaná NAHORU (`align-items:flex-start`), ne na
+  střed — jinak by se u dvouřádkových názvů („Konkrétní zaměstnanci a
+  skupiny“) posunula níž než u jednořádkových karet.
+-->
+<style>
+  body { font-family:'Nunito',sans-serif; }
+  .apt-modal-overlay { position:fixed; inset:0; background:rgba(20,22,30,.55); display:flex; align-items:center; justify-content:center; }
+  .apt-modal { width:min(760px,94vw); max-height:92vh; background:#fff; border-radius:12px; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,.35); }
+  .apt-modal-head { flex-shrink:0; display:flex; align-items:center; padding:18px 24px 14px; }
+  .apt-modal-title { font-size:19px; font-weight:700; color:#3f4457; flex:1; }
+  .apt-modal-close { font-size:19px; color:#8a90a3; cursor:pointer; line-height:1; }
+  .apt-modal-foot { flex-shrink:0; display:flex; align-items:center; gap:12px; padding:14px 24px; background:#fff; border-top:1px solid #eeeff4; }
+  .apt-f-label { font-size:12.5px; color:#5b6070; margin-bottom:6px; }
+  .apt-f-input { background:#fff; border:1px solid #e2e5ef; border-radius:6px; height:34px; display:flex; align-items:center; padding:0 11px; font-size:13px; color:#2b2540; }
+  .apt-f-area { background:#fff; border:1px solid #e2e5ef; border-radius:6px; min-height:70px; padding:8px 11px; font-size:13px; color:#9096a6; }
+  /* Primární tlačítko = plná barva #1572e8 (pravidla UI, "Primární"), NE světlejší #4a7fe8. */
+  .apt-btn-blue { display:inline-flex; align-items:center; gap:8px; background:#1572e8; color:#fff; font-size:12px; font-weight:700; letter-spacing:.03em; padding:9px 26px; border-radius:999px; cursor:pointer; white-space:nowrap; box-shadow:0 2px 6px rgba(21,114,232,.28); }
+  .apt-btn-blue:hover { background:#0f50a2; }
+  .nsm-step-banner { display:flex; align-items:center; justify-content:center; gap:9px; background:#eef4fe; color:#1572e8; font-size:14px; font-weight:700; padding:13px; border-radius:8px; margin-bottom:20px; }
+  .nsm-card { position:relative; background:#fff; border:1.5px solid #e2e5ef; border-radius:8px; padding:14px 40px 14px 16px; cursor:pointer; }
+  .nsm-card.selected { border-color:#1572e8; background:#f3f8ff; }
+  .nsm-card-title { display:flex; align-items:flex-start; gap:9px; font-size:13.5px; font-weight:700; color:#2b2540; line-height:1.35; }
+  .nsm-card-title i { color:#1572e8; font-size:13px; width:16px; text-align:center; flex-shrink:0; margin-top:1px; }
+  .nsm-card-desc { font-size:12px; color:#8a90a3; margin-top:4px; margin-left:25px; }
+  .nsm-card-mark { position:absolute; top:14px; right:14px; width:18px; height:18px; border-radius:50%; border:1.5px solid #c7cbd8; }
+  .nsm-card.selected .nsm-card-mark { border-color:#1572e8; background:#1572e8; display:flex; align-items:center; justify-content:center; }
+  .nsm-card.selected .nsm-card-mark::after { content:'\2713'; color:#fff; font-size:11px; line-height:1; }
+  .nsm-card-grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+  .nsm-card-grid2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .nsm-sec { margin-bottom:26px; }
+  .nsm-sec-head { display:flex; align-items:center; gap:9px; margin-bottom:12px; }
+  .nsm-sec-head i { color:#5b6070; font-size:13px; width:16px; text-align:center; flex-shrink:0; }
+  .nsm-sec-head-title { font-size:14px; font-weight:700; color:#2b2540; flex:1; }
+  .nsm-info-box { background:#fff; border:1px solid #edeff5; border-radius:8px; padding:14px 16px; }
+  .nsm-info-row { display:flex; gap:14px; padding:6px 0; font-size:13px; }
+  .nsm-info-row .lbl { width:90px; flex-shrink:0; color:#8a90a3; }
+  .nsm-info-row .val { color:#2b2540; font-weight:600; display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
+  .nsm-file-chip { display:inline-flex; align-items:center; gap:7px; font-size:12.5px; color:#4a7fe8; }
+  .nsm-radio-inline { display:flex; align-items:center; gap:8px; font-size:13px; color:#2b2540; cursor:pointer; }
+</style>
+
+<div class="apt-modal-overlay">
+  <div class="apt-modal">
+    <div class="apt-modal-head">
+      <div class="apt-modal-title">Upravit seznam příjemců</div>
+      <div class="apt-modal-close">✕</div>
+    </div>
+    <div style="padding:22px 26px 26px;overflow-y:auto">
+      <div class="nsm-step-banner"><i class="fa-solid fa-gear"></i>Nastavení seznamu příjemců</div>
+
+      <!-- 1 · Informace o zdroji -->
+      <div class="nsm-sec">
+        <div class="nsm-sec-head"><i class="fa-solid fa-file-lines"></i><span class="nsm-sec-head-title">Informace o zdroji</span>
+          <div class="apt-btn-blue" style="padding:8px 16px"><i class="fa-solid fa-pen" style="font-size:10px"></i>UPRAVIT ZDROJ</div>
+        </div>
+        <div class="nsm-info-box">
+          <div class="nsm-info-row"><div class="lbl">Typ zdroje:</div><div class="val"><i class="fa-solid fa-file-lines" style="color:#5b6070"></i>Dokument nebo manuál</div></div>
+          <div class="nsm-info-row"><div class="lbl">Název:</div><div class="val">Bezpečnost práce (BOZP) 2026</div></div>
+          <div class="nsm-info-row"><div class="lbl">Soubory:</div><div class="val">
+            <span class="nsm-file-chip"><i class="fa-solid fa-file-pdf" style="color:#e53935"></i>Smernice-BOZP-2026.pdf</span>
+            <span class="nsm-file-chip"><i class="fa-solid fa-image" style="color:#9c27b0"></i>Piktogramy-BOZP.png</span>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- 2 · Příjemci -->
+      <div class="nsm-sec">
+        <div class="nsm-sec-head"><i class="fa-solid fa-users"></i><span class="nsm-sec-head-title">Příjemci</span></div>
+        <div class="nsm-card-grid3">
+          <div class="nsm-card"><div class="nsm-card-mark"></div><div class="nsm-card-title"><i class="fa-solid fa-user-group"></i>Konkrétní zaměstnanci a skupiny</div><div class="nsm-card-desc">Vyberte konkrétní zaměstnance a skupiny do tohoto listu</div></div>
+          <div class="nsm-card"><div class="nsm-card-mark"></div><div class="nsm-card-title"><i class="fa-solid fa-briefcase"></i>Pracovní pozice</div><div class="nsm-card-desc">Vyberte pracovní pozici pro tento list příjemců</div></div>
+          <div class="nsm-card selected"><div class="nsm-card-mark"></div><div class="nsm-card-title"><i class="fa-solid fa-globe"></i>Pro všechny zaměstnance</div><div class="nsm-card-desc">Tento list příjemců je platný pro všechny zaměstnance v aplikaci</div></div>
+        </div>
+      </div>
+
+      <!-- 3 · Způsob doručení -->
+      <div class="nsm-sec">
+        <div class="nsm-sec-head"><i class="fa-regular fa-clock"></i><span class="nsm-sec-head-title">Způsob doručení</span></div>
+        <div class="nsm-card-grid2" style="margin-bottom:16px">
+          <div class="nsm-card selected"><div class="nsm-card-mark"></div><div class="nsm-card-title"><i class="fa-solid fa-circle-check"></i>Vyžaduje potvrzení</div><div class="nsm-card-desc">Příjemci musí potvrdit, že dokument nebo formulář přečetli</div></div>
+          <div class="nsm-card"><div class="nsm-card-mark"></div><div class="nsm-card-title"><i class="fa-solid fa-circle-info"></i>Pouze zveřejněno</div><div class="nsm-card-desc">Dokument bude sdílen, potvrzení nebude potřeba.</div></div>
+        </div>
+        <!-- Zobrazí se JEN u „Vyžaduje potvrzení“ -->
+        <div class="apt-f-label">Termín potvrzení</div>
+        <div style="display:flex;align-items:center;gap:26px;margin-bottom:14px;flex-wrap:wrap">
+          <div class="nsm-radio-inline"><i class="fa-solid fa-circle" style="font-size:15px;color:#b0aac8"></i><i class="fa-solid fa-calendar-days" style="font-size:12px;color:#8a90a3"></i><span>Konkrétní datum</span></div>
+          <div class="nsm-radio-inline"><i class="fa-solid fa-circle-dot" style="font-size:15px;color:#1572e8"></i><i class="fa-solid fa-calendar-check" style="font-size:12px;color:#8a90a3"></i><span>Počet dnů na potvrzení</span></div>
+          <div class="nsm-radio-inline"><i class="fa-solid fa-circle" style="font-size:15px;color:#b0aac8"></i><i class="fa-solid fa-ban" style="font-size:12px;color:#8a90a3"></i><span>Bez termínu potvrzení</span></div>
+        </div>
+        <!-- Zobrazí se JEN u „Počet dnů na potvrzení“ -->
+        <div class="apt-f-label">Počet dnů na potvrzení</div>
+        <div class="apt-f-input" style="max-width:120px">5</div>
+      </div>
+
+      <!-- 4 · Základní informace -->
+      <div class="nsm-sec" style="margin-bottom:6px">
+        <div class="nsm-sec-head"><i class="fa-solid fa-circle-info"></i><span class="nsm-sec-head-title">Základní informace</span></div>
+        <div class="apt-f-label">Název*</div>
+        <div class="apt-f-input" style="margin-bottom:16px;color:#2b2540">Bezpečnost práce (BOZP) 2026</div>
+        <div class="apt-f-label">Popis</div>
+        <div class="apt-f-area">Zde si můžete napsat bližší popis k listu</div>
+      </div>
+    </div>
+    <div class="apt-modal-foot">
+      <div style="flex:1"></div>
+      <div class="apt-btn-blue"><i class="fa-solid fa-floppy-disk" style="font-size:11px"></i>ULOŽIT</div>
+    </div>
+  </div>
+</div>

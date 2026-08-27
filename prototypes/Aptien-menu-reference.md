@@ -90,7 +90,7 @@ Nic nevynechávej, nepřidávej ani nepřejmenovávej.*
 | 9 | Moje hlídače | `dog.svg` | – |
 | 10 | Ke schválení | `circle-check.svg` | **2** (alert) |
 | 11 | Reporty | `file-chart-column.svg` | – |
-| 12 | O mě | `user.svg` | – |
+| 12 | O mně | `user.svg` | – |
 | 13 | Poznámky | `clipboard.svg` | **2** (grey) |
 | 14 | Moje směrnice | `books.svg` | – |
 | 15 | Co jsem dělal | `chart-network.svg` | – |
@@ -122,6 +122,14 @@ bílé karty, výchozí je první) — viz `Aptien-pravidla-pouziti-UI.md` §11:
 
 > Badge (počty) jsou ukázkové hodnoty; zobrazují se **pořád** u dané
 > položky bez ohledu na to, která je aktivní.
+
+### Nastavení směrnic — obsah
+
+Položka `Nastavení směrnic` (`nastsm`) je také **nav-owned content**
+(ruší aktivní záložku topbaru), ale na rozdíl od `Nastavení organizace`
+nemá podzáložky — otevírá rovnou celou stránku „Seznamy příjemců" (tři
+skupiny tabulek + modal „Vytvořit"/"Upravit seznam příjemců") — viz
+`Aptien-pravidla-pouziti-UI.md` §12.
 
 ---
 

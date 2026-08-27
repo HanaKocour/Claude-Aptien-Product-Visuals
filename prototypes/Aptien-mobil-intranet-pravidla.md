@@ -47,7 +47,7 @@ viditelný zaměstnanci**:
 
 **Osobní / samoobsluha:**
 Moje upozornění · Úkoly · Moje žádanky · Konverzace · Schvalování ·
-O mě · Moje směrnice.
+O mně · Moje směrnice.
 
 **Firemní (publikované):**
 Nástěnka · Směrnice a dokumenty · Kolegové · Katalog školení.
@@ -72,7 +72,7 @@ a co ne. Intranet je publikační a samoobslužná vrstva, ne administrace.
 ### 3.1 Zaměstnanec VIDÍ
 
 1. **Své vlastní věci (self-service):** svá upozornění, úkoly, žádanky,
-   konverzace, položky ke schválení, svůj profil („O mě").
+   konverzace, položky ke schválení, svůj profil („O mně").
 2. **Své směrnice k potvrzení:** dokumenty, které má osobně přečíst a
    potvrdit (stav *k potvrzení / po termínu / splněno*).
 3. **Publikovaný firemní obsah:** oficiální *Směrnice a dokumenty*,

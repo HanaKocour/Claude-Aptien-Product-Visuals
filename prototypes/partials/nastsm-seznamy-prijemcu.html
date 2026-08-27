@@ -1,0 +1,102 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free) + Nunito. Řádky níže je načtou,
+     aby se blok vykreslil i při samostatném otevření souboru. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<!--
+  APTIEN — NASTAVENÍ SMĚRNIC → SEZNAMY PŘÍJEMCŮ (hlavní stránka)
+  ================================================================
+  Zdroj pravdy: reálná produkční aplikace (screenshoty 27. 8. 2026,
+  firma „Nerospec“) + master prototyp (`showNastSm`, sidebar `nastsm`).
+
+  Skladba (pořadí je závazné), viz §12.1:
+    1. Nadpis „Seznamy příjemců“ + tlačítko VYTVOŘIT SEZNAM PŘÍJEMCŮ vpravo
+    2. Toolbar: Zobrazení (dropdown) + vyhledávací pole
+    3. Skupiny tabulek, VŽDY v tomto pořadí:
+       „Pro všechny zaměstnance“ → „Pro pracovní pozice“ →
+       „Pro konkrétní zaměstnance“
+    4. Každá tabulka: Název · Akce zaměstnance · Termín akce ·
+       Potvrzeno dne · Čeká · Splnění (pruh + %) · kebab menu
+
+  Klik na název řádku otevírá editační modal (viz
+  nastsm-upravit-seznam.html, §12.3). Tlačítko VYTVOŘIT otevírá modal
+  „Vyberte zdroj“ (viz nastsm-vytvorit-krok1.html, §12.2).
+
+  Prázdná skupina (zde „Pro konkrétní zaměstnance“) má vlastní prázdný
+  stav — NENÍ to jen tabulka bez řádků, ale samostatný šedý box.
+
+  Barva pruhu Splnění je jednotná teplá (#f2775d) — v reálné appce jsou
+  všechny dosavadní seznamy nízko rozpracované (0–21 %).
+
+  ⚠ NÁZVY ŘÁDKŮ jsou záměrně realistické obecné příklady (nejčastější
+  firemní směrnice — GDPR, BOZP, PO, kodex chování — a SOP vázané na
+  pracovní pozici), NE 1:1 kopie ad-hoc testovacích záznamů z reálné
+  appky (tam byly názvy typu „test hal notifikace“, „šindel“ apod.).
+  Tohle je ZÁKLAD pro budoucí návrhovou práci, proto musí obsahovat
+  smysluplný obsah, ne testovací smetí. Viz master prototyp
+  `NSM_GROUPS_DATA`.
+
+  Primární tlačítko (`UPRAVIT ZDROJ`/`POKRAČOVAT`/`ULOŽIT`/`VYTVOŘIT…`)
+  má plnou barvu `#1572e8` (pravidla UI, „Primární“ tlačítko) — NE
+  světlejší `#4a7fe8`, který je jen výchozí (needitovaný) odstín sdílené
+  třídy `.apt-btn-blue` jinde v appce.
+-->
+<style>
+  body { font-family:'Nunito',sans-serif; }
+  .apt-btn-blue { display:inline-flex; align-items:center; gap:8px; background:#1572e8; color:#fff; font-size:12px; font-weight:700; letter-spacing:.03em; padding:9px 26px; border-radius:999px; cursor:pointer; white-space:nowrap; box-shadow:0 2px 6px rgba(21,114,232,.28); }
+  .apt-btn-blue:hover { background:#0f50a2; }
+  .nsm-toolbar-btn { display:inline-flex; align-items:center; gap:9px; background:#fff; border:1px solid #d9dde8; border-radius:6px; height:36px; padding:0 13px; font-size:13px; color:#4a5163; cursor:pointer; white-space:nowrap; }
+  .nsm-search { display:inline-flex; align-items:center; gap:9px; background:#fff; border:1px solid #d9dde8; border-radius:6px; height:36px; padding:0 13px; font-size:13px; color:#9096a6; flex:1; max-width:320px; }
+  .nsm-section-title { font-size:15px; font-weight:700; color:#2b2540; margin:26px 0 10px; }
+  .nsm-table { background:#fff; border:1px solid #edeff5; border-radius:8px; overflow:hidden; }
+  .nsm-table-row { display:grid; grid-template-columns:1.9fr 1.3fr 1fr .9fr .9fr 1.7fr 24px; gap:10px; align-items:center; padding:11px 14px; border-bottom:1px solid #f4f5f9; font-size:13px; color:#3f4457; }
+  .nsm-table-row:last-child { border-bottom:none; }
+  .nsm-table-head { font-size:11.5px; font-weight:700; color:#8a90a3; background:#fafbfd; border-bottom:1px solid #edeff5; }
+  .nsm-table-row.nsm-row:hover { background:#f7f9fd; }
+  .nsm-link { color:#1572e8; text-decoration:none; cursor:pointer; font-weight:600; }
+  .nsm-link:hover { text-decoration:underline; }
+  .nsm-num { color:#1572e8; text-decoration:underline; text-underline-offset:2px; cursor:pointer; }
+  .nsm-progress-wrap { display:flex; align-items:center; gap:10px; }
+  .nsm-progress-track { width:170px; height:7px; border-radius:4px; background:#e7e9f0; overflow:hidden; flex-shrink:0; }
+  .nsm-progress-fill { height:100%; border-radius:4px; background:#f2775d; }
+  .nsm-progress-pct { font-size:12px; color:#6b7280; width:32px; flex-shrink:0; }
+  .nsm-kebab { color:#9096a6; cursor:pointer; font-size:14px; padding:4px 6px; }
+</style>
+
+<div style="padding:26px 32px 48px;background:#f5f6f7">
+  <div style="display:flex;align-items:center;margin-bottom:20px">
+    <div style="font-size:22px;font-weight:700;color:#2b2540;flex:1">Seznamy příjemců</div>
+    <div class="apt-btn-blue"><i class="fa-solid fa-plus" style="font-size:10px"></i>VYTVOŘIT SEZNAM PŘÍJEMCŮ</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+    <div class="nsm-toolbar-btn"><i class="fa-regular fa-rectangle-list" style="font-size:12px"></i>Zobrazení<i class="fa-solid fa-chevron-down" style="font-size:10px;margin-left:4px"></i></div>
+    <div class="nsm-search"><i class="fa-solid fa-magnifying-glass" style="font-size:12px"></i>Vyhledat seznam příjemců</div>
+  </div>
+
+  <!-- 1 · Pro všechny zaměstnance -->
+  <div class="nsm-section-title">Pro všechny zaměstnance</div>
+  <div class="nsm-table" style="margin-bottom:8px">
+    <div class="nsm-table-row nsm-table-head">
+      <div>Název</div><div>Akce zaměstnance</div><div>Termín akce</div><div>Potvrzeno dne</div><div>Čeká</div><div>Splnění</div><div></div>
+    </div>
+    <div class="nsm-table-row nsm-row"><div><span class="nsm-link">Kodex chování a etika</span></div><div>Pouze zveřejněno</div><div>---</div><div><span class="nsm-num">0</span></div><div>---</div><div class="nsm-progress-wrap"><div class="nsm-progress-track"><div class="nsm-progress-fill" style="width:3%"></div></div><span class="nsm-progress-pct">0 %</span></div><div><i class="fa-solid fa-ellipsis-vertical nsm-kebab"></i></div></div>
+    <div class="nsm-table-row nsm-row"><div><span class="nsm-link">GDPR – Ochrana osobních údajů</span></div><div>Pouze zveřejněno</div><div>---</div><div><span class="nsm-num">0</span></div><div>---</div><div class="nsm-progress-wrap"><div class="nsm-progress-track"><div class="nsm-progress-fill" style="width:3%"></div></div><span class="nsm-progress-pct">0 %</span></div><div><i class="fa-solid fa-ellipsis-vertical nsm-kebab"></i></div></div>
+    <div class="nsm-table-row nsm-row"><div><span class="nsm-link">Bezpečnost práce (BOZP) 2026</span></div><div>Vyžaduje potvrzení</div><div>Za 5 dní</div><div><span class="nsm-num">3</span></div><div><span class="nsm-num">292</span></div><div class="nsm-progress-wrap"><div class="nsm-progress-track"><div class="nsm-progress-fill" style="width:3%"></div></div><span class="nsm-progress-pct">1 %</span></div><div><i class="fa-solid fa-ellipsis-vertical nsm-kebab"></i></div></div>
+    <div class="nsm-table-row nsm-row"><div><span class="nsm-link">Požární ochrana a evakuační plán</span></div><div>Vyžaduje potvrzení</div><div>Za 10 dní</div><div><span class="nsm-num">5</span></div><div><span class="nsm-num">146</span></div><div class="nsm-progress-wrap"><div class="nsm-progress-track"><div class="nsm-progress-fill" style="width:5%"></div></div><span class="nsm-progress-pct">3 %</span></div><div><i class="fa-solid fa-ellipsis-vertical nsm-kebab"></i></div></div>
+    <div class="nsm-table-row nsm-row"><div><span class="nsm-link">Cestovní náhrady a diety</span></div><div>Vyžaduje potvrzení</div><div>Za 15 dní</div><div><span class="nsm-num">7</span></div><div><span class="nsm-num">577</span></div><div class="nsm-progress-wrap"><div class="nsm-progress-track"><div class="nsm-progress-fill" style="width:3%"></div></div><span class="nsm-progress-pct">1 %</span></div><div><i class="fa-solid fa-ellipsis-vertical nsm-kebab"></i></div></div>
+  </div>
+
+  <!-- 2 · Pro pracovní pozice -->
+  <div class="nsm-section-title">Pro pracovní pozice</div>
+  <div class="nsm-table" style="margin-bottom:8px">
+    <div class="nsm-table-row nsm-table-head">
+      <div>Název</div><div>Akce zaměstnance</div><div>Termín akce</div><div>Potvrzeno dne</div><div>Čeká</div><div>Splnění</div><div></div>
+    </div>
+    <div class="nsm-table-row nsm-row"><div><span class="nsm-link">SOP – Obsluha vysokozdvižného vozíku</span></div><div>Vyžaduje potvrzení</div><div>Bez termínu</div><div><span class="nsm-num">4</span></div><div><span class="nsm-num">15</span></div><div class="nsm-progress-wrap"><div class="nsm-progress-track"><div class="nsm-progress-fill" style="width:21%"></div></div><span class="nsm-progress-pct">21 %</span></div><div><i class="fa-solid fa-ellipsis-vertical nsm-kebab"></i></div></div>
+    <div class="nsm-table-row nsm-row"><div><span class="nsm-link">SOP – Práce ve výškách</span></div><div>Vyžaduje potvrzení</div><div>Za 20 dní</div><div><span class="nsm-num">1</span></div><div><span class="nsm-num">7</span></div><div class="nsm-progress-wrap"><div class="nsm-progress-track"><div class="nsm-progress-fill" style="width:13%"></div></div><span class="nsm-progress-pct">13 %</span></div><div><i class="fa-solid fa-ellipsis-vertical nsm-kebab"></i></div></div>
+    <div class="nsm-table-row nsm-row"><div><span class="nsm-link">SOP – Hygienické standardy ve výrobě</span></div><div>Vyžaduje potvrzení</div><div>Bez termínu</div><div><span class="nsm-num">2</span></div><div><span class="nsm-num">9</span></div><div class="nsm-progress-wrap"><div class="nsm-progress-track"><div class="nsm-progress-fill" style="width:18%"></div></div><span class="nsm-progress-pct">18 %</span></div><div><i class="fa-solid fa-ellipsis-vertical nsm-kebab"></i></div></div>
+  </div>
+
+  <!-- 3 · Pro konkrétní zaměstnance — prázdný stav -->
+  <div class="nsm-section-title">Pro konkrétní zaměstnance</div>
+  <div class="nsm-table" style="padding:22px 16px;color:#9096a6;font-size:13px">Zatím žádný seznam příjemců.</div>
+</div>

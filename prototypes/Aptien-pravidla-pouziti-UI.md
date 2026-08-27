@@ -107,7 +107,7 @@ menu automaticky roztáhne o uvolněných ~164 px — nic se nepřepočítává.
 | Moje hlídače | binoculars | – |
 | Ke schválení | circle-check | 2 (alert) |
 | Reporty | chart-column | – |
-| O mě | user | – |
+| O mně | user | – |
 | Poznámky | note-sticky | 2 (grey) |
 | Moje směrnice | book | – |
 | Co jsem dělal | clock-rotate-left | – |
@@ -561,6 +561,22 @@ Seznam zaměstnanců (dashboard placeholder *„bude přidáno v dalším
 kroku"*) + detail zaměstnance (drawer). Detail – pole: Jméno, Příjmení,
 Oddělení, Pracovní pozice, Datum nástupu, Typ úvazku, E-mail, Telefon.
 
+**Zaměstnanec je jediná evidence se skutečně speciálním drawerem** (27. 8.
+2026, podle reálné produkční aplikace) – zbytek draweru (rám, akční
+sloupec, generické záložky) je stejný jako u ostatních modulů, ale navíc
+má:
+
+1. **vlastní záložku „Pracovní zařazení"**, kterou nemá žádná jiná
+   evidence – viz **§7.1.6**;
+2. **badge osoby v hlavičce** (druhý chip vedle kategorie), který se
+   nikde jinde nepoužívá – viz **§7.1.7**.
+
+Záložka **Detaily** má u Zaměstnance jiná pole než u ostatních modulů
+(viz výše), ale **stejné zobrazení/chování vstupů** jako všude (§7.1.5) –
+to není odchylka. Stejně tak záložka **Žádanky** (pokud je u záznamu
+zapnutá) vypadá a chová se **stejně jako u kterékoli jiné evidence** –
+není to specifikum Zaměstnance a nemá vlastní partial.
+
 ### 6.5 Audity a kontroly
 
 Evidence auditů, kontrol a revizí (záložka 14, `c800 #FF8F00`, ikona
@@ -751,7 +767,7 @@ Panel překrývá obsah; zavírá se zpět.
 | Rizika | Detaily · Přílohy · Souvislosti · Úkoly · Konverzace |
 | Ochranné pomůcky | Detaily · Přílohy · Souvislosti (3) · Kalendář · Úkoly · Poznámky · Konverzace |
 | Zakázky | Detaily · Přílohy · Souvislosti (3) · Kalendář · Zápisy · Úkoly · Poznámky · Konverzace |
-| Zaměstnanec | Detaily · Přílohy · Souvislosti · Kalendář · Úkoly · Poznámky · Konverzace |
+| **Zaměstnanec** ⚠ jediný modul se speciálním drawerem, viz §6.4 | Detaily · Plány aktivit · Přílohy · Souvislosti · Kalendář · **Pracovní zařazení** (jen zde, §7.1.6) · Zápisy · Úkoly · Poznámky · Konverzace |
 
 **Akce v detailu:** závazný výčet, pořadí a styly jsou v **§7.2**. Rám
 draweru (backdrop → panel → spine → hlavička → item tabs → tělo + akční
@@ -797,6 +813,7 @@ vlož ho doslovně a do slotu přidej obsah aktivní záložky.
 | Plány aktivit | `partials/drawer-tab-plany.html` | „PŘIDAT AKTIVITU" (**sekundární** lemovaná pilulka) → karty skupin (hlavička `#efeef4` + počet + stavové chipy), **všechny sbalené** |
 | Plány aktivit – **rozbalená skupina** | `partials/drawer-tab-plany-rozbaleno.html` | 3 varianty rozbalené skupiny (splněné aktivity / čekající na akci / hromadné akce) — **jen na výslovné zadání** |
 | Konverzace | `partials/drawer-konverzace.html` | bubliny + composer |
+| **Pracovní zařazení** (jen Zaměstnanec) | `partials/drawer-tab-pracovni-zarazeni.html` | pole pod sebou s tučným popiskem nahoře (ne řádkový layout Detailů): Nadřízený (1 tag v rámečku) → Podřízení (needitovatelný seznam) → Pracuje na pozici (1 tag + odkaz na požadavky) → Organizační jednotka (prázdný stav) → Uživatelská skupina (víc tagů); ULOŽIT vpravo dole, **viz §7.1.6** |
 
 Sady záložek podle modulu jsou v tabulce výše; **záložka bez partialu má
 prázdný stav** (ikona modulu + název záložky), ne vymyšlený obsah.
@@ -948,6 +965,67 @@ ty mají pilulku `border-radius:20px` a **sémantickou barvu podle termínu**
 - Skupina s hromadnými akcemi má první řádek **„Vybrat vše"** s checkboxem.
 - **Výchozí stav: všechny skupiny sbalené** – rozbal jen tu, kterou zadání
   jmenuje (§7.1.0).
+
+#### 7.1.6 Záložka Pracovní zařazení (JEN Zaměstnanec — PEVNÉ pravidlo)
+
+> Zdroj pravdy = reálná produkční aplikace (screenshot 27. 8. 2026,
+> záznam „FABIÁN Vladimír") **+ Aptien App Kit**
+> (`Claude-HK-Aptien-App/aptien-design-system-app.html`, sekce **Tag**
+> `#labels` a **User Badge** `#avatar`). Tahle záložka **nemá partial pro
+> jiné moduly** – na rozdíl od Detailů/Souvislostí/Zápisů/Plánů aktivit ji
+> nekopíruj nikam jinam, i kdyby zadání říkalo „stejně jako u
+> Zaměstnance".
+
+Pole jsou pod sebou, každé má **tučný popisek nahoře** (`13px/700
+#374151`, mezera `8px` k hodnotě) – **ne** řádkový layout Detailů
+(ikona/label vpravo/hodnota z §7.1.5). Pořadí polí (závazné):
+
+| Pole | Vzhled | Chování |
+|---|---|---|
+| **Nadřízený** | rámeček (`border:1px solid #d9dde8;border-radius:4px;padding:8px 10px` — stejná rodina jako `.apt-f-select`) s **jedním** App-Kit **User Badge** standalone (`.userBadge.userBadge--standalone`: kolečkový avatar 27→22px s iniciálami + jméno, bez pill pozadí) + samostatné kolečkové tlačítko „×" (`.tag-remove`) | jednohodnotový odkaz na osobu |
+| **Podřízení** | **bez rámečku**, jen zalomený seznam **User Badge standalone** vedle sebe (`gap:6px 4px`), **bez „×"** | needitovatelné, odvozeno z organizační struktury (kdo má tohoto zaměstnance jako Nadřízeného) |
+| **Pracuje na pozici** | stejný rámeček jako Nadřízený, App-Kit **Tag removable** (`.styled-tag.styled-tag--removable`, defaultní světlá varianta, bez avataru/ikony) | jednohodnotový odkaz na pracovní pozici; pod rámečkem modrý odkaz `12px/700` s ikonou `circle-info`: **„UKÁZAT POŽADAVKY PRACOVNÍ POZICE"** |
+| **Organizační jednotka** | rámeček jako výše, prázdný stav = šedý placeholder text `„Klikněte pro přidání organizační jednotky"` (`color:#aaa`) | bez zvláštní „+ přidat" ikony (na rozdíl od §7.1.5) |
+| **Uživatelská skupina** | stejný rámeček, **víc App-Kit Tagů removable** vedle sebe | mnohohodnotové |
+
+**Komponenty jsou skutečné App-Kit komponenty, ne vymyšlené CSS:**
+
+- **Tag** (`src/components/core/Tag`, App Kit `#labels`) – `.styled-tag`:
+  pozadí `#eceff1`, text `#59676d`, `9px/600 Nunito`, `padding:6px 12px`,
+  `radius:4px`. Removable varianta `.styled-tag--removable` přidává
+  kolečkové tlačítko `.styled-tag__remove` (`16×16px`, `rgba(0,0,0,.08)`,
+  hover `rgba(0,0,0,.18)`) s `fa-xmark`. **Vždy defaultní světlá
+  varianta** – nepoužívej barevné varianty `--blue/--red/--green/--yellow`
+  ani žlutou barvu modulu Zaměstnanci (`#f1c40f`).
+- **User Badge** (Latte makro `{userBadge $user}`, App Kit `#avatar`) –
+  `.userBadge` (pill `#f2f5f7`, radius `30px`) s `._avatar` (kolečko
+  `27px`, fallback `#e2e4e6`, iniciály `#fff`) a `._name` (`12px #333`).
+  V této záložce se používá **vždy varianta `--standalone`** (průhledné
+  pozadí, bez pillu). ⚠ **Na rozdíl od avatarů v Konverzaci**
+  (`msg.avatarBg` podle osoby) mají tyto avatary **vždy jednotnou
+  neutrální fallback barvu App Kitu** (`#e2e4e6` + bílé iniciály) –
+  reálný screenshot (27. 8. 2026) ukazuje všechny osoby stejnou šedou
+  barvou, ne barevné kolečko podle člověka. Nikdy sem nepřidávej
+  per-osobu barvu (`avatarBg`/`p.color`).
+- Toto je **jiná komponenta** než pilulka „Přiřazení zaměstnanci"
+  v modalu pozice (§11.5, `.apt-chip-user`) – tam je pravidlo fotka/obecná
+  ikona `user`, nikdy barevné iniciály. Nepleť si je.
+
+**Tlačítko ULOŽIT** je **uvnitř záložky** vpravo dole (modrá pilulka,
+vždy aktivní), **ne** v pravém akčním sloupci a **nezávisí** na pravidle
+„Uložit změny" z §7.2 – to v pravém sloupci zůstává podle normálních
+pravidel (obvykle neaktivní řádek).
+
+#### 7.1.7 Hlavička draweru Zaměstnanec — badge osoby (JEN tento drawer)
+
+Navíc k jedinému chipu kategorie ze **§7.1** („kategorie jako chip") má
+hlavička draweru Zaměstnanec **druhý chip hned vedle prvního**: stejný
+vzhled (`#eceff1`/`#59676d`, `4px/12px`, `10px/600`), ikona `user`, text
+= **celé jméno zaměstnance** (duplicitně k velkému nadpisu nahoře –
+funguje jako personální identifikační štítek/breadcrumb na konkrétní
+osobu). Stavová pilulka „AKTIVNÍ" (zelená) zůstává třetí v pořadí beze
+změny. **Tenhle druhý chip se nikde jinde v aplikaci nepoužívá** – u
+žádného jiného modulu hlavička druhý chip nemá.
 
 ### 7.2 Pravý sloupec akcí (KOMPLETNÍ VÝČET, pořadí závazné)
 
@@ -1356,6 +1434,159 @@ karty pravidla** vedle sebe (`Podle organizační jednotky` ·
 Pod tím sekce `Výjimky` s počtem a modrým `PŘIDAT VÝJIMKU`, dále tabulka
 **Zaměstnanec / pozice · Nadřízený · Platí pro · akce** — stejný styl
 tabulky jako §11.4.
+
+---
+
+## 12. Nastavení směrnic → Seznamy příjemců (menu `nastsm`)
+
+Zdroj pravdy: reálná produkční aplikace, firma „Nerospec" (screenshoty
+27. 8. 2026). Sidebar položka „Nastavení směrnic" (`nastsm`, skupina
+„Naše firma") dřív nikam nevedla — teď otevírá **celou vlastní
+stránku**, ne podzáložky jako §11 (Nastavení organizace).
+
+### 12.1 Hlavní stránka „Seznamy příjemců"
+
+Skladba (pořadí je závazné):
+
+1. Nadpis `Seznamy příjemců` vlevo, primární modré tlačítko
+   `+ VYTVOŘIT SEZNAM PŘÍJEMCŮ` vpravo (otevírá modal §12.2). **Plná
+   barva `#1572e8`** (viz „Primární" tlačítko výše v tomto dokumentu) —
+   NE světlejší `#4a7fe8`, který je jen výchozí (needitovaný) odstín
+   sdílené třídy `.apt-btn-blue` jinde v appce. Stejné pravidlo platí
+   pro VŠECHNA primární tlačítka v této §12 (`POKRAČOVAT`, `UPRAVIT
+   ZDROJ`, `ULOŽIT`).
+2. Toolbar: šedé tlačítko `Zobrazení` (dropdown vzhled, needitovatelné)
+   + vyhledávací pole `Vyhledat seznam příjemců`.
+3. **Tři skupiny tabulek, VŽDY v tomto pořadí** — pořadí odpovídá
+   šíři zásahu (od nejširšího k nejužšímu): `Pro všechny zaměstnance` →
+   `Pro pracovní pozice` → `Pro konkrétní zaměstnance`.
+4. Každá tabulka má sloupce **Název · Akce zaměstnance · Termín akce ·
+   Potvrzeno dne · Čeká · Splnění**, na konci kebab menu (⋮).
+   - **Název** — modrý odkaz, klik otevírá editační modal (§12.3)
+     předvyplněný daty toho řádku.
+   - **Akce zaměstnance** — `Vyžaduje potvrzení` nebo
+     `Pouze zveřejněno` (odpovídá poli Způsob doručení v §12.3).
+   - **Termín akce** — `Za N dní` / `Bez termínu` / `---` (u
+     `Pouze zveřejněno` termín vždy `---`, protože se nic nepotvrzuje).
+   - **Potvrzeno dne** a **Čeká** — modrá podtržená čísla (odkazy na
+     detail plnění, v prototypu bez cíle).
+   - **Splnění** — pruh (`#e7e9f0` podklad, `#f2775d` výplň) + text
+     `N %`. Barva pruhu je jednotná teplá — v reálné appce jsou
+     všechny dosavadní seznamy nízko rozpracované (0–21 %), škála podle
+     prahů není zavedená.
+   - Prázdná skupina (typicky `Pro konkrétní zaměstnance`) se
+     nezobrazuje jako tabulka bez řádků, ale jako samostatný šedý box
+     s textem `Zatím žádný seznam příjemců.`
+
+**⚠ Obsah řádků (ukázková data) musí být SMYSLUPLNÝ, ne testovací
+smetí.** Tahle stránka je základ pro budoucí návrhovou práci, proto
+`NSM_GROUPS_DATA` obsahuje realistické obecné příklady — pro `Pro
+všechny zaměstnance` nejčastější firemní směrnice (`Kodex chování a
+etika`, `GDPR – Ochrana osobních údajů`, `Bezpečnost práce (BOZP)
+2026`, `Požární ochrana a evakuační plán`, `Etický kodex a
+whistleblowing`, `Home office a práce na dálku`, `Cestovní náhrady a
+diety`), pro `Pro pracovní pozice` konkrétní SOP (Standard Operating
+Procedure) vázané na danou pozici (`SOP – Obsluha vysokozdvižného
+vozíku`, `SOP – Práce ve výškách`, `SOP – Hygienické standardy ve
+výrobě`) — NE 1:1 kopii ad-hoc testovacích záznamů z produkce (názvy
+typu „test hal notifikace", „šindel", „tile komponenta test" apod.
+se do prototypu jako ZÁKLADU nekopírují).
+
+### 12.2 Modal „Vytvořit seznam příjemců" (krok 1 — Vyberte zdroj)
+
+Jednoduchý první krok: banner `📄 Vyberte zdroj` (`#eef4fe` pozadí,
+`#1572e8` text, vycentrovaný) → vysvětlující věta → **jedna karta**
+zdroje `Dokument nebo manuál` (viz §12.4 pro vzhled karet — v tomto
+kroku je vždy rovnou vybraná, protože je jediná možnost) → pole
+`Vyberte zdroj*` → patička s modrým `POKRAČOVAT`, které otevře
+editační modal (§12.3).
+
+Pole `Vyberte zdroj*` má dva stavy:
+- **Prázdný** (needitovatelné vyhledávací pole, placeholder `Klikněte
+  a začněte psát……`) — při zakládání nového seznamu (`+ VYTVOŘIT
+  SEZNAM PŘÍJEMCŮ`).
+- **Vyplněný** (tmavý text, ikona dokumentu + název zdroje) — když se
+  sem přijde přes `✏ UPRAVIT ZDROJ` z editačního modalu (§12.3) a
+  seznam už MÁ vybraný zdroj; pole zobrazí ten už vložený dokument
+  místo prázdného placeholderu (`nsmStep1HasSource`).
+
+### 12.3 Modal „Upravit seznam příjemců" (nastavení seznamu)
+
+Otevírá se jak z `POKRAČOVAT` (§12.2), tak kliknutím na název
+existujícího seznamu (§12.1) — ve druhém případě předvyplněný daty
+toho seznamu. Banner `⚙ Nastavení seznamu příjemců` stejného stylu
+jako v §12.2.
+
+**⚠ Pořadí sekcí je ZÁVAZNÉ** — vychází z reálné aplikace a odpovídá
+logickému sledu rozhodování, NEPŘEHAZOVAT:
+
+1. **Informace o zdroji** — CO se rozesílá. Needitovatelný box: řádky
+   `Typ zdroje:` / `Název:` / `Soubory:` (soubory jako modré ikonky +
+   název, barva ikony podle typu — PDF `#e53935`, obrázek `#9c27b0`).
+   Vpravo od nadpisu sekce modré tlačítko `✏ UPRAVIT ZDROJ` — vrací na
+   §12.2, ale **beze ztráty rozpracovaných dat**: rozeditovaný seznam
+   (`nsmEdit`) se NERESETUJE, krok 1 jen zobrazí zdroj, který už je
+   vložený (pole `Vyberte zdroj*` se chová jako vyplněné, ne jako
+   prázdný placeholder) — uživatel tak vidí, co má nastavené, a může
+   to případně změnit, ne začínat od nuly.
+2. **Příjemci** — KOMU. Tři karty vedle sebe (§12.4): `Konkrétní
+   zaměstnanci a skupiny` · `Pracovní pozice` · `Pro všechny
+   zaměstnance`. Musí být sekce PŘED „Způsob doručení", protože u
+   „Pro všechny zaměstnance" dává smysl jiný přístup k termínu než
+   u malé konkrétní skupiny. **Každá karta má vlastní doplňkové pole
+   pod mřížkou karet** (vždy nejvýš jedno, nikdy víc najednou):
+   - `Konkrétní zaměstnanci a skupiny` → **dvě** pole pod sebou:
+     `Přidání zaměstnanci` a `Skupiny zaměstnanců` (obě needitovatelné
+     vyhledávací pole, placeholder `Klikněte a začněte psát……`, stejný
+     vzhled jako pole zdroje v §12.2).
+   - `Pracovní pozice` → **jedno** pole `Pracovní pozice` (`.apt-f-select`
+     se šipkou dolů, placeholder `--- Vyberte ze seznamu ---`).
+   - `Pro všechny zaměstnance` → žádné doplňkové pole (je to platné
+     pro všechny, není co upřesňovat).
+3. **Způsob doručení** — JAK (a případně DO KDY). Dvě karty vedle sebe
+   (§12.4): `Vyžaduje potvrzení` · `Pouze zveřejněno`.
+   - **JEN** když je vybráno `Vyžaduje potvrzení`, zobrazí se řádek
+     `Termín potvrzení` se 3 inline radio volbami (ikona kruhu
+     `circle-dot`/`circle` + ikona pole + popisek, stejný vzor jako
+     §11.6): `Konkrétní datum` · `Počet dnů na potvrzení` · `Bez
+     termínu potvrzení`. **Vybraná je vždy právě jedna** (jako u §11.6).
+   - Termín potvrzení má i vlastní doplňkové pole (stejné pravidlo jako
+     u Příjemců — nejvýš jedno najednou):
+     - `Konkrétní datum` → pole `Konkrétní datum` (`.apt-f-input` s
+       placeholderem `dd.mm.rrrr` + ikona kalendáře vpravo).
+     - `Počet dnů na potvrzení` → pole `Počet dnů na potvrzení`
+       (číselný `.apt-f-input`, výchozí `5`).
+     - `Bez termínu potvrzení` → žádné doplňkové pole.
+   - U `Pouze zveřejněno` se celý blok Termín potvrzení (i jeho
+     případné doplňkové pole) skrývá.
+4. **Základní informace** — název/popis se řeší AŽ NAKONEC, protože
+   výchozí `Název*` se odvozuje ze zdroje (bod 1) a tady se jen
+   případně přejmenuje/doplní `Popis` (textarea, placeholder `Zde si
+   můžete napsat bližší popis k listu`).
+
+Patička: jen modré `💾 ULOŽIT` vpravo (žádné druhé/šedé tlačítko).
+
+### 12.4 Sdílená komponenta: selectable karta (zdroj / příjemci / doručení)
+
+Karta použitá v §12.2 i §12.3 (zdroj, příjemci, způsob doručení) má
+jednotný vzhled: bílé pozadí, `border:1.5px solid #e2e5ef`,
+`border-radius:8px`, ikona + tučný název, popisek `#8a90a3` pod tím
+odsazený pod text názvu (ne pod ikonu — odsazení `margin-left` přesně
+= šířka ikony + mezera, `16px + 9px = 25px`). Vpravo nahoře kolečkový
+**checkmark indikátor** (ne radio tečka jako u §11.6/Termín potvrzení
+výše) — nevybraný je prázdné kolečko `border:1.5px solid #c7cbd8`,
+vybraný je vyplněný `#1572e8` s bílou fajfkou. Vybraná karta navíc
+dostává `border-color:#1572e8` a pozadí `#f3f8ff`. V každé skupině
+(Příjemci / Způsob doručení) je vybraná právě jedna karta.
+
+**⚠ Ikona je VŽDY zarovnaná nahoru (`align-items:flex-start`), ne na
+střed (`center`).** Delší názvy (např. „Konkrétní zaměstnanci a
+skupiny") se zalamují na 2 řádky — se zarovnáním na střed by se ikona
+u takové karty posunula níž (doprostřed dvouřádkového textu) než u
+karet s jednořádkovým názvem, takže by ikony napříč kartami nebyly na
+stejné výšce. Se `flex-start` je ikona vždy na úrovni prvního řádku
+názvu, tedy vždy „před popisem" a na stejném místě bez ohledu na délku
+názvu.
 
 ---
 

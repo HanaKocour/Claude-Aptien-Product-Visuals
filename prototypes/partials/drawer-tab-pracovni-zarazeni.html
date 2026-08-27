@@ -1,0 +1,132 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free) + Nunito. Řádky níže je načtou,
+     aby se blok vykreslil i při samostatném otevření souboru. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<!--
+  APTIEN — DRAWER, ZÁLOŽKA „PRACOVNÍ ZAŘAZENÍ"
+  =============================================
+  OBSAH ZÁLOŽKY do slotu `item-drawer-shell.html`. Vlož CELÝ, neskládej
+  z hlavy. Zdroj pravdy: reálná produkční aplikace (screenshot 27. 8.
+  2026, záznam „FABIÁN Vladimír") + master prototyp
+  (`zam_showPracZarazeni` / `zam_pz`) + **Aptien App Kit**
+  (`Claude-HK-Aptien-App/aptien-design-system-app.html`, sekce Tag
+  `#labels` a User Badge `#avatar`).
+
+  ⚠ TATO ZÁLOŽKA EXISTUJE JEN U MODULU ZAMĚSTNANEC (§6.4, §7.1.6).
+     Nekopíruj ji do jiných evidencí, i kdyby zadání říkalo „stejně jako
+     u Zaměstnance" — u ostatních modulů záložka neexistuje vůbec.
+
+  Skladba (pořadí je závazné), viz §7.1.6:
+    1. Nadřízený          – App-Kit USER BADGE standalone (avatar+jméno,
+                             BEZ pill pozadí) + samostatné kolečkové „×"
+    2. Podřízení           – needitovatelný seznam User Badge standalone
+                             (BEZ „×", BEZ rámečku kolem celého seznamu)
+    3. Pracuje na pozici   – App-Kit TAG removable (defaultní světlá
+                             varianta, bez avataru) + odkaz
+                             „UKÁZAT POŽADAVKY PRACOVNÍ POZICE"
+    4. Organizační jednotka – rámeček, prázdný stav (šedý placeholder text)
+    5. Uživatelská skupina  – víc App-Kit Tagů removable v rámečku
+    6. ULOŽIT — modrá pilulka vpravo dole, UVNITŘ záložky (ne v pravém
+       akčním sloupci), vždy aktivní.
+
+  Popisek pole je VŽDY tučný nahoře (13px/700 #374151) — NE řádkový
+  layout Detailů (ikona/label vpravo/hodnota, §7.1.5).
+
+  Rámeček pole (input container) je neutrální box `1px solid #d9dde8`
+  (stejná rodina jako `.apt-f-select`) — obsah UVNITŘ je vždy skutečná
+  App-Kit komponenta, nikdy vlastní vymyšlené CSS.
+
+  Tag (App Kit): pozadí #eceff1, text #59676d, 9px/600 Nunito,
+  padding 6×12px, radius 4px. Removable přidává kolečkové „×" (16×16px,
+  rgba(0,0,0,.08), hover rgba(0,0,0,.18)). VŽDY defaultní světlá
+  varianta — ne žlutá barva modulu Zaměstnanci, ne modré/červené/zelené
+  varianty Tagu.
+
+  User Badge (App Kit, Latte {userBadge $user}): pill #f2f5f7 radius 30px
+  s ._avatar (kolečko 27px, fallback #e2e4e6, iniciály bílé) a ._name
+  (12px #333). Tady VŽDY varianta --standalone (průhledné pozadí, bez
+  pillu) — přesně jako avatary v Konverzaci. Barva avataru je PODLE
+  OSOBY (stejná logika jako u Konverzace), App Kit demo jen ukazuje
+  neutrální výchozí barvu.
+
+  ⚠ Nepleť s pilulkou „Přiřazení zaměstnanci" z modalu pozice (§11.5,
+  `.apt-chip-user`) — to je jiná komponenta s jiným pravidlem (fotka/
+  obecná ikona user, nikdy barevné iniciály).
+
+  Měň JEN data: jména, pozici, skupiny. Struktura, barvy a rozměry
+  zůstávají.
+-->
+<style>
+  .pz-box { border:1px solid #d9dde8; border-radius:4px; padding:8px 10px; min-height:40px; display:flex; align-items:center; flex-wrap:wrap; gap:8px; background:#fff; }
+  .pz-empty { color:#aaa; font-size:13px; cursor:pointer; }
+  /* App Kit — User Badge (#avatar) */
+  .userBadge { display:inline-block; background:#f2f5f7; border-radius:30px; vertical-align:middle; }
+  .userBadge--standalone { background:transparent; margin:0; }
+  .userBadge ._avatar { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:#e2e4e6; color:#fff; font-family:'Nunito',sans-serif; font-weight:700; vertical-align:middle; }
+  .userBadge ._avatar .acronym { font-size:9px; line-height:1; }
+  .userBadge ._name { display:inline-block; margin:0 15px 0 8px; font-size:13px; font-weight:600; color:#1a1a2e; vertical-align:middle; }
+  /* App Kit — Tag (#labels), src/components/core/Tag */
+  .styled-tag { display:inline-flex; align-items:center; background:#eceff1; color:#59676d; padding:6px 12px; border-radius:4px; font-family:'Nunito',sans-serif; font-size:9px; font-weight:600; line-height:1; width:max-content; }
+  .styled-tag--removable { padding-right:6px; gap:6px; }
+  .styled-tag--removable .styled-tag__remove { display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; background:rgba(0,0,0,.08); color:inherit; cursor:pointer; margin-left:4px; font-size:9px; line-height:1; }
+  .styled-tag--removable .styled-tag__remove:hover { background:rgba(0,0,0,.18); }
+  /* stejný „remove" knoflík, samostatně vedle User Badge */
+  .tag-remove { display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; background:rgba(0,0,0,.08); color:#59676d; cursor:pointer; font-size:9px; line-height:1; flex-shrink:0; }
+  .tag-remove:hover { background:rgba(0,0,0,.18); }
+</style>
+
+<div style="padding:20px 28px 28px;display:flex;flex-direction:column;gap:22px;font-family:'Nunito',sans-serif">
+
+  <!-- 1 · Nadřízený -->
+  <div>
+    <div style="font-size:13px;font-weight:700;color:#374151;margin-bottom:8px">Nadřízený</div>
+    <div class="pz-box">
+      <span class="userBadge userBadge--standalone"><span class="_avatar"><span class="acronym">PS</span></span><span class="_name">Pavel ŠPACEK</span></span>
+      <span class="tag-remove" title="Odebrat"><i class="fa-solid fa-xmark"></i></span>
+    </div>
+  </div>
+
+  <!-- 2 · Podřízení (needitovatelné, odvozené z organizační struktury) -->
+  <div>
+    <div style="font-size:13px;font-weight:700;color:#374151;margin-bottom:8px">Podřízení</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px 4px">
+      <span class="userBadge userBadge--standalone"><span class="_avatar"><span class="acronym">PJ</span></span><span class="_name">PECH Josef</span></span>
+      <span class="userBadge userBadge--standalone"><span class="_avatar"><span class="acronym">PM</span></span><span class="_name">PECH Martin</span></span>
+      <span class="userBadge userBadge--standalone"><span class="_avatar"><span class="acronym">ŠN</span></span><span class="_name">ŠEDIVKOVÁ Nikola</span></span>
+      <span class="userBadge userBadge--standalone"><span class="_avatar"><span class="acronym">SM</span></span><span class="_name">SLAVÍKOVÁ Martina</span></span>
+      <span class="userBadge userBadge--standalone"><span class="_avatar"><span class="acronym">BS</span></span><span class="_name">BROŽKOVÁ Soňa</span></span>
+      <span class="userBadge userBadge--standalone"><span class="_avatar"><span class="acronym">JV</span></span><span class="_name">JANSA Vladimír</span></span>
+    </div>
+  </div>
+
+  <!-- 3 · Pracuje na pozici -->
+  <div>
+    <div style="font-size:13px;font-weight:700;color:#374151;margin-bottom:8px">Pracuje na pozici</div>
+    <div class="pz-box">
+      <span class="styled-tag styled-tag--removable">Vedoucí útvaru hospodářské správy<span class="styled-tag__remove" title="Odebrat"><i class="fa-solid fa-xmark"></i></span></span>
+    </div>
+    <div style="margin-top:8px"><span style="display:inline-flex;align-items:center;gap:6px;color:#1572e8;font-size:11px;font-weight:700;letter-spacing:.02em;cursor:pointer"><i class="fa-solid fa-circle-info" style="font-size:12px"></i>UKÁZAT POŽADAVKY PRACOVNÍ POZICE</span></div>
+  </div>
+
+  <!-- 4 · Organizační jednotka (prázdný stav) -->
+  <div>
+    <div style="font-size:13px;font-weight:700;color:#374151;margin-bottom:8px">Organizační jednotka</div>
+    <div class="pz-box"><span class="pz-empty">Klikněte pro přidání organizační jednotky</span></div>
+  </div>
+
+  <!-- 5 · Uživatelská skupina -->
+  <div>
+    <div style="font-size:13px;font-weight:700;color:#374151;margin-bottom:8px">Uživatelská skupina</div>
+    <div class="pz-box">
+      <span class="styled-tag styled-tag--removable">Přímo podřízení řediteli<span class="styled-tag__remove" title="Odebrat"><i class="fa-solid fa-xmark"></i></span></span>
+      <span class="styled-tag styled-tag--removable">Vedoucí hospodářské správy<span class="styled-tag__remove" title="Odebrat"><i class="fa-solid fa-xmark"></i></span></span>
+      <span class="styled-tag styled-tag--removable">Všichni zaměstnanci<span class="styled-tag__remove" title="Odebrat"><i class="fa-solid fa-xmark"></i></span></span>
+    </div>
+  </div>
+
+  <!-- 6 · ULOŽIT — uvnitř záložky, ne v pravém akčním sloupci; vždy aktivní -->
+  <div style="display:flex;justify-content:flex-end;padding-top:4px">
+    <div style="background:#1572e8;color:#fff;font-weight:800;font-size:12.5px;padding:10px 26px;border-radius:999px;cursor:pointer;box-shadow:0 2px 6px rgba(21,114,232,.28)">ULOŽIT</div>
+  </div>
+
+</div>
