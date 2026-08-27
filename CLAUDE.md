@@ -44,7 +44,8 @@ zeptej, než abys cokoli domýšlel.
 
 > ✅ **Hotové bloky k DOSLOVNÉMU vložení (nerekonstruovat!)** v
 > `prototypes/partials/`:
-> - `sidebar-menu.html` – celé levé menu (15 + 7 položek, inline SVG ikony, aktivní stav, badge)
+> - `sidebar-menu-collapsed.html` – **výchozí stav sidebaru** (56 px, jen ikony, bez badge, bez posuvníku) – použij vždy, pokud zadání výslovně nežádá otevřené menu
+> - `sidebar-menu.html` – otevřené menu (220 px, celé levé menu 15 + 7 položek, inline SVG ikony, aktivní stav, badge) – generuj JEN na výslovné zadání („otevřené menu“, „rozbalený sidebar“, „menu s texty“)
 > - `evidence-toolbar.html` – **toolbar** (ikona+název, PŘIDAT v barvě modulu, hledání, view switcher – všech 5, aktivní modrá)
 > - `evidence-dashboard.html` – pohled **Dashboard** (hero banner „pruh" + mřížka bílých karet)
 > - `evidence-table.html` – pohled **Tabulka** (horní lišta, sticky sloupec, hlavička + filtry, řádky)
@@ -67,6 +68,7 @@ zeptej, než abys cokoli domýšlel.
 > - `drawer-tab-zapisy.html` – obsah **záložky Zápisy** (filtry + hlavička sloupců + časová osa)
 > - `drawer-tab-plany.html` – obsah **záložky Plány aktivit** (PŘIDAT AKTIVITU + karty skupin se stavovými chipy, **vše sbalené**)
 > - `drawer-tab-plany-rozbaleno.html` – rozbalené skupiny Plánů aktivit (3 varianty) – jen na výslovné zadání
+> - `drawer-tab-pracovni-zarazeni.html` – obsah **záložky Pracovní zařazení** (JEN modul Zaměstnanec, §7.1.6) – Nadřízený / Podřízení / Pracuje na pozici / Organizační jednotka / Uživatelská skupina, App-Kit User Badge + Tag komponenty. Avatary jsou VŽDY jednotná neutrální App-Kit fallback barva, NE osobní/per-person barvy.
 > - `drawer-konverzace.html` – obsah **tabu Konverzace v draweru** (bubliny + composer)
 >
 > Celá obrazovka evidence = `evidence-toolbar` + jeden z pohledů
@@ -96,7 +98,7 @@ Postup pro každou obrazovku:
 
 | Obrazovka / požadavek | Partialy (v tomto pořadí) |
 |---|---|
-| Rám aplikace (shell) | top bar + tab strip z `Aptien-aplikace-offline.html` + `sidebar-menu.html` |
+| Rám aplikace (shell) | top bar + tab strip z `Aptien-aplikace-offline.html` + `sidebar-menu-collapsed.html` (výchozí sbalený stav; `sidebar-menu.html` jen na výslovné zadání otevřeného menu) |
 | Evidence – dashboard | `evidence-toolbar.html` + `evidence-dashboard.html` |
 | Evidence – tabulka | `evidence-toolbar.html` + `evidence-table.html` |
 | Evidence – seznam | `evidence-toolbar.html` + `evidence-list.html` |
@@ -111,6 +113,9 @@ Postup pro každou obrazovku:
 | Drawer, záložka **Zápisy** | `item-drawer-shell.html`, do slotu `drawer-tab-zapisy.html` |
 | Drawer, záložka **Plány aktivit** | `item-drawer-shell.html`, do slotu `drawer-tab-plany.html` |
 | Drawer, tab Konverzace | `item-drawer-shell.html`, do slotu `drawer-konverzace.html` |
+| Drawer, záložka **Pracovní zařazení** (jen modul Zaměstnanec) | `item-drawer-shell.html`, do slotu `drawer-tab-pracovni-zarazeni.html` |
+| Nastavení organizace (podzáložky Organizace / Pracovní pozice / Katalog požadavků / Nastavení nadřízených) | `nastorg-organizace.html` / `nastorg-pracovni-pozice.html` + `nastorg-pozice-*.html` (detail pozice) / `nastorg-katalog-pozadavku.html` / `nastorg-nastaveni-nadrizenych.html` – viz `Aptien-pravidla-pouziti-UI.md` §11 |
+| Nastavení směrnic → Seznamy příjemců | `nastsm-seznamy-prijemcu.html` (hlavní stránka) + `nastsm-vytvorit-krok1.html` / `nastsm-upravit-seznam.html` (modaly) – viz `Aptien-pravidla-pouziti-UI.md` §12 |
 | Moje konverzace – seznam | `konverzace-list.html` |
 | Moje konverzace – chat | `konverzace-chat.html` |
 
@@ -386,6 +391,8 @@ tab strip + sidebar):
 | Moje směrnice | blok `showSmernMain` (menu `smern` / tab 4) – viz routing níže |
 | Směrnice a dokumenty | blok `showDokTilesView` (menu `dok`) – viz routing níže |
 | Moje konverzace | blok `isKonv` (menu `konv`) |
+| Nastavení organizace | blok `showNastOrg` (menu `nastorg`) – vlastní stránka se 4 podzáložkami (Organizace / Pracovní pozice / Katalog požadavků / Nastavení nadřízených), viz §11 a `Aptien-menu-reference.md` |
+| Nastavení směrnic → Seznamy příjemců | blok `showNastSm` (menu `nastsm`) – vlastní stránka BEZ podzáložek (na rozdíl od Nastavení organizace), viz §12 a `Aptien-menu-reference.md` |
 | Pravidla a chování UI (referenční spec) | `prototypes/Aptien-pravidla-pouziti-UI.md` |
 
 > **Obrazovky z menu nejsou komponenty – jsou to bloky `<sc-if>` v master
@@ -453,8 +460,12 @@ tab strip + sidebar):
   - `Aptien-menu-reference.md` – kompletní levé menu k doslovnému zkopírování + pravidla aktivního stavu
   - `Aptien-mobil-intranet-pravidla.md` – spec + podmínky viditelnosti pro zaměstnance (mobil)
   - `Aptien-pravidla-screenshotu.md` – **formát výstupu vizuálů** (1920 × 1080, návrh na 1536 × 864 se zvětšením 1,25×), rozpočet obsahu a checklist
+  - `Aptien-pravidla-anotovanych-vizualu.md` – pravidla pro anotační vrstvu nad vizuálem (viz `partials/anotace-vrstva.html`)
+  - `Aptien-pravidla-kombinovanych-vizualu.md` – pravidla pro kombinované vizuály víc obrazovek najednou (viz `partials/combo-scena.html`)
+  - `prompt-sablona-aptien.md` – šablona promptu pro zadání nového vizuálu
   - `partials/` – **hotové statické bloky k doslovnému vložení** (nerekonstruovat):
-    `sidebar-menu.html` (levé menu s inline SVG ikonami),
+    `sidebar-menu-collapsed.html` (výchozí sbalené menu, jen ikony) /
+    `sidebar-menu.html` (otevřené menu, jen na výslovné zadání),
     `evidence-toolbar.html` (toolbar), `evidence-dashboard.html` (Dashboard),
     `evidence-table.html` (Tabulka), `evidence-list.html` (Seznam),
     `evidence-kanban.html` (Kanban),
@@ -463,9 +474,26 @@ tab strip + sidebar):
     `item-drawer-shell.html` (rám draweru + akční sloupec),
     `item-drawer-stacked.html` (vrstvený drawer se stohem spine),
     `evidence-drawer.html` (pole záznamu do záložky Detaily),
+    `drawer-tab-detaily.html` / `-souvislosti.html` / `-souvislosti-graf.html` /
+    `-zapisy.html` / `-plany.html` / `-plany-rozbaleno.html` (obsah dalších
+    záložek draweru),
+    `drawer-tab-pracovni-zarazeni.html` (záložka Pracovní zařazení, jen
+    modul Zaměstnanec, §7.1.6),
     `konverzace-list.html` (Moje konverzace – seznam),
     `konverzace-chat.html` (Moje konverzace – otevřený chat),
-    `drawer-konverzace.html` (tab Konverzace v draweru)
+    `drawer-konverzace.html` (tab Konverzace v draweru),
+    `smernice-moje.html` / `-nepotvrzeno.html` / `-potvrzeno-rozbaleno.html` /
+    `-splneno.html` (Moje směrnice – jednotlivé stavy),
+    `nastorg-organizace.html`, `nastorg-pracovni-pozice.html`,
+    `nastorg-pozice-*.html` (detail pracovní pozice – záložky + modal),
+    `nastorg-katalog-pozadavku.html`, `nastorg-nastaveni-nadrizenych.html`
+    (Nastavení organizace, §11),
+    `nastsm-seznamy-prijemcu.html`, `nastsm-vytvorit-krok1.html`,
+    `nastsm-upravit-seznam.html` (Nastavení směrnic → Seznamy příjemců, §12),
+    `anotace-vrstva.html` (anotační vrstva nad vizuálem, viz
+    `Aptien-pravidla-anotovanych-vizualu.md`),
+    `combo-scena.html` (kombinovaný vizuál víc obrazovek najednou, viz
+    `Aptien-pravidla-kombinovanych-vizualu.md`)
   - `_archive/` – původní bundled prototypy (jen historická reference)
 - `profile-images/` – profilové obrázky person do avatarů (viz README uvnitř)
 - `files/` – zdrojové podklady, šablony rámečků
