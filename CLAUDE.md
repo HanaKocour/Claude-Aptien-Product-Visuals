@@ -393,6 +393,7 @@ tab strip + sidebar):
 | Moje konverzace | blok `isKonv` (menu `konv`) |
 | Nastavení organizace | blok `showNastOrg` (menu `nastorg`) – vlastní stránka se 4 podzáložkami (Organizace / Pracovní pozice / Katalog požadavků / Nastavení nadřízených), viz §11 a `Aptien-menu-reference.md` |
 | Nastavení směrnic → Seznamy příjemců | blok `showNastSm` (menu `nastsm`) – vlastní stránka BEZ podzáložek (na rozdíl od Nastavení organizace), viz §12 a `Aptien-menu-reference.md` |
+| Editace evidence („Nastavení evidence") | modal `evEditOpen` – GENERICKÝ pro libovolnou evidenci, otevírá se z tužky vedle názvu evidence v toolbaru (zapojeno u Zaměstnanci / Rizika / Ochranné pomůcky). Levé menu záložek stejné pro všechny evidence, výjimka „Onboarding checklist" jen u Zaměstnanci. Viz §13 |
 | Pravidla a chování UI (referenční spec) | `prototypes/Aptien-pravidla-pouziti-UI.md` |
 
 > **Obrazovky z menu nejsou komponenty – jsou to bloky `<sc-if>` v master
@@ -493,7 +494,9 @@ tab strip + sidebar):
     `anotace-vrstva.html` (anotační vrstva nad vizuálem, viz
     `Aptien-pravidla-anotovanych-vizualu.md`),
     `combo-scena.html` (kombinovaný vizuál víc obrazovek najednou, viz
-    `Aptien-pravidla-kombinovanych-vizualu.md`)
+    `Aptien-pravidla-kombinovanych-vizualu.md`),
+    `evx-editace-evidence.html` (generický modal „Editace evidence" –
+    záložka Základní nastavení, evidence Zaměstnanci; viz §13)
   - `_archive/` – původní bundled prototypy (jen historická reference)
 - `profile-images/` – profilové obrázky person do avatarů (viz README uvnitř)
 - `files/` – zdrojové podklady, šablony rámečků

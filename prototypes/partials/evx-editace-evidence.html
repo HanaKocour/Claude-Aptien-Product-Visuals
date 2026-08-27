@@ -1,0 +1,152 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free) + Nunito. Řádky níže je načtou,
+     aby se blok vykreslil i při samostatném otevření souboru. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<!--
+  APTIEN — EDITACE EVIDENCE („Nastavení evidence"), záložka Základní nastavení
+  ===============================================================================
+  Zdroj pravdy: reálná produkční aplikace (screenshoty 27. 8. 2026,
+  evidence „Zaměstnanci") + master prototyp (`evEditOpen`, §13).
+
+  ⚠ GENERICKÝ modal SDÍLENÝ všemi evidencemi — otevírá se z tužky vedle
+  názvu evidence v toolbaru (zapojeno zatím u Zaměstnanci / Rizika /
+  Ochranné pomůcky, viz §13.1). Levé menu záložek je STEJNÉ pro každou
+  evidenci; jediná výjimka je „Onboarding checklist" hned za „Základní
+  nastavení" — ta se vkládá JEN u evidence Zaměstnanci (obsahově
+  specifické pro nástup zaměstnance, u jiné evidence nedává smysl).
+
+  Tento statický soubor zachycuje stav pro evidenci ZAMĚSTNANCI:
+    - Název evidence ZAMČENÝ (systémová evidence) — pole se zámkem +
+      text „U této evidence nelze měnit název" pod polem.
+    - Ikona/Barva evidence dle Zaměstnanci (žlutá `#f1c40f`, ikona
+      `users`) — POZOR: čtvercový chip „Ikona" má FIXNÍ modré pozadí
+      `#4a7fe8`, není tónovaný barvou evidence (to je záměr, odpovídá
+      realitě) — barvu evidence ukazuje AŽ vedlejší kolečko „Barva
+      evidence".
+    - Výchozí zobrazení = „Tabulka".
+
+  U evidence BEZ zamčeného názvu (Rizika, Ochranné pomůcky…) je pole
+  Název evidence obyčejné editovatelné (bez zámku, bez upozornění) —
+  viz master prototyp, `evModule.locked`.
+
+  V prototypu je vypracovaná obsahově jen tahle záložka. Ostatních 16
+  (+ Onboarding checklist u Zaměstnanci) má needitovatelný prázdný stav
+  — viz §13.
+
+  ⚠ Aktivní záložka v levém menu má PEVNOU indigovou `#4b64f5` — JINOU
+  barvu než `#4a7fe8` u aktivní položky v modalu „Upravit pracovní
+  pozici" (§11.5). Obě existují v reálné appce vedle sebe, nesluč je.
+-->
+<style>
+  body { font-family:'Nunito',sans-serif; }
+  .apt-modal-overlay { position:fixed; inset:0; background:rgba(20,22,30,.55); display:flex; align-items:center; justify-content:center; }
+  .apt-modal { width:min(1180px,94vw); height:min(920px,92vh); background:#fff; border-radius:12px; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,.35); }
+  .apt-modal-head { flex-shrink:0; display:flex; align-items:center; padding:18px 24px 14px; }
+  .apt-modal-title { font-size:19px; font-weight:700; color:#3f4457; flex:1; }
+  .apt-modal-close { font-size:19px; color:#8a90a3; cursor:pointer; line-height:1; }
+  .apt-modal-body { flex:1; min-height:0; display:flex; }
+  .apt-modal-nav { width:246px; flex-shrink:0; background:#fff; padding:0 14px 18px; overflow-y:auto; }
+  .apt-modal-nav-item { display:flex; align-items:center; gap:11px; padding:9px 12px; border-radius:8px; font-size:13.5px; cursor:pointer; margin-bottom:2px; }
+  .apt-modal-content { flex:1; min-width:0; background:#f7f8fc; padding:26px 30px 30px; overflow-y:auto; display:flex; flex-direction:column; }
+  .apt-modal-h2 { font-size:19px; font-weight:600; color:#5b6070; margin:0 0 22px; }
+  .apt-modal-foot { flex-shrink:0; display:flex; align-items:center; gap:12px; padding:14px 24px; background:#fff; border-top:1px solid #eeeff4; }
+  .apt-f-label { font-size:12.5px; color:#5b6070; margin-bottom:6px; }
+  .apt-f-input { background:#fff; border:1px solid #e2e5ef; border-radius:6px; height:34px; display:flex; align-items:center; padding:0 11px; font-size:13px; color:#2b2540; }
+  .apt-f-select { background:#fff; border:1px solid #e2e5ef; border-radius:6px; height:34px; display:flex; align-items:center; justify-content:space-between; padding:0 11px; font-size:13px; color:#2b2540; }
+  .apt-f-area { background:#fff; border:1px solid #e2e5ef; border-radius:6px; min-height:70px; padding:8px 11px; font-size:13px; color:#2b2540; }
+  .apt-btn-blue { display:inline-flex; align-items:center; gap:8px; background:#1572e8; color:#fff; font-size:12px; font-weight:700; letter-spacing:.03em; padding:9px 26px; border-radius:999px; cursor:pointer; white-space:nowrap; box-shadow:0 2px 6px rgba(21,114,232,.28); }
+  .evx-card { background:#fff; border:1px solid #ecedf4; border-radius:14px; padding:32px 34px 34px; box-shadow:0 1px 3px rgba(20,22,40,.05); flex:1; min-height:0; }
+  .evx-lang-wrap { display:inline-flex; background:#eef0f5; border:1px solid #e4e6ee; border-radius:8px; padding:3px; gap:2px; }
+  .evx-lang-btn { padding:8px 22px; border-radius:6px; font-size:13px; font-weight:700; color:#5b6070; }
+  .evx-icon-swatch { width:52px; height:52px; border-radius:10px; background:#4a7fe8; display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; }
+  .evx-color-swatch { width:26px; height:26px; border-radius:50%; border:2px solid #fff; box-shadow:0 0 0 1px #e2e5ef; }
+  .evx-upload-btn { display:inline-flex; align-items:center; gap:8px; background:#fff; border:1px solid #c7cdf5; color:#4b64f5; font-size:12.5px; font-weight:700; padding:9px 18px; border-radius:8px; cursor:pointer; white-space:nowrap; }
+  .evx-savefile-link { display:inline-flex; align-items:center; gap:7px; color:#1572e8; font-size:12.5px; font-weight:600; cursor:pointer; }
+</style>
+
+<div class="apt-modal-overlay">
+  <div class="apt-modal">
+    <div class="apt-modal-head">
+      <div class="apt-modal-title">Editace evidence</div>
+      <div class="apt-modal-close">✕</div>
+    </div>
+    <div class="apt-modal-body">
+      <div class="apt-modal-nav">
+        <div class="apt-modal-nav-item" style="background:#4b64f5;color:#fff;font-weight:700">Základní nastavení</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Onboarding checklist</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Kategorie</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Stavy položek</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Detaily</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Přílohy</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Plány aktivit</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Vydávání</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Náklady a spotřeba</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Zápisy</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Dashboard evidence</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Založení položky</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Pohledy na položky</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Rychlé akce</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Nastavení extranetu</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Upozornění</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">PDF formuláře</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Online formuláře</div>
+      </div>
+      <div class="apt-modal-content">
+       <!-- Bílá karta — v reálné appce obsah záložky NENÍ položený přímo
+            na šedé pozadí `.apt-modal-content`, ale sedí v samostatné
+            bílé kartě s jemným okrajem a stínem. Bez ní přepínač jazyka
+            i zamčené pole Název evidence vizuálně splývají s pozadím,
+            protože mají podobný odstín šedé. -->
+       <div class="evx-card">
+        <div class="apt-modal-h2">Základní nastavení evidence</div>
+
+        <div class="evx-lang-wrap" style="margin-bottom:24px">
+          <div class="evx-lang-btn" style="background:#f1c40f;color:#fff">Čeština</div>
+          <div class="evx-lang-btn">Angličtina</div>
+        </div>
+
+        <div style="max-width:500px">
+          <div class="apt-f-label">Název evidence</div>
+          <!-- Pozadí #f4f4f5 vzorkováno z reálného screenshotu (27.8.2026) —
+               proti bílé kartě čitelně působí jako zamčené/neaktivní pole. -->
+          <div class="apt-f-input" style="background:#f4f4f5;border-color:#e3e3e8;color:#9096a6;justify-content:space-between">
+            <span>Zaměstnanci</span><i class="fa-solid fa-lock" style="font-size:12px;color:#b0aac8"></i>
+          </div>
+          <div style="font-size:11.5px;color:#9096a6;margin-top:6px">U této evidence nelze měnit název</div>
+        </div>
+
+        <div style="max-width:500px;margin-top:22px">
+          <div class="apt-f-label">Výchozí zobrazení</div>
+          <div class="apt-f-select"><span>Tabulka</span><i class="fa-solid fa-chevron-down" style="font-size:10px"></i></div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:48px;margin-top:26px">
+          <div>
+            <div class="apt-f-label">Ikona</div>
+            <div class="evx-icon-swatch"><i class="fa-solid fa-users"></i></div>
+          </div>
+          <div>
+            <div class="apt-f-label">Barva evidence</div>
+            <div class="evx-color-swatch" style="background:#f1c40f"></div>
+          </div>
+          <div>
+            <div class="apt-f-label">Obrázek</div>
+            <div class="evx-upload-btn"><i class="fa-solid fa-upload" style="font-size:11px"></i>NAHRÁT OBRÁZEK</div>
+          </div>
+        </div>
+
+        <div style="max-width:640px;margin-top:24px">
+          <div class="apt-f-label">Základní informace o evidenci</div>
+          <div class="apt-f-area" style="min-height:76px">Zde je seznam všech zaměstnanců a externích pracovníků v naší organizaci.</div>
+        </div>
+
+        <div class="evx-savefile-link" style="margin-top:18px"><i class="fa-solid fa-download" style="font-size:12px"></i>Uložit nastavení evidence do souboru</div>
+       </div>
+      </div>
+    </div>
+    <div class="apt-modal-foot">
+      <div style="flex:1"></div>
+      <div class="apt-btn-blue">ULOŽIT</div>
+    </div>
+  </div>
+</div>

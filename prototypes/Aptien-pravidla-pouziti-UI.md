@@ -1590,6 +1590,109 @@ názvu.
 
 ---
 
+## 13. Editace evidence („Nastavení evidence") — generický modal
+
+Zdroj pravdy: reálná produkční aplikace (screenshoty 27. 8. 2026,
+evidence „Zaměstnanci"). Otevírá se z **tužky vedle názvu evidence**
+v toolbaru (`<i class="fa-solid fa-pen">` — stejná ikona, kterou toolbar
+evidence už měl/mít měl, jen dřív nikam nevedla). Zapojeno zatím u
+evidencí **Zaměstnanci, Rizika, Ochranné pomůcky** — u ostatních
+evidencí tužka v toolbaru zatím nic nedělá (nebyly předmětem zadání),
+zapojení dalších evidencí je mechanické opakování stejného vzoru
+(`evOpen<Modul>` handler, viz §13.1).
+
+**⚠ Tohle je GENERICKÝ modal sdílený VŠEMI evidencemi — ne jen
+Zaměstnanci.** Levé menu záložek je pro každou evidenci STEJNÉ:
+
+1. Základní nastavení
+2. Kategorie
+3. Stavy položek
+4. Detaily
+5. Přílohy
+6. Plány aktivit
+7. Vydávání
+8. Náklady a spotřeba
+9. Zápisy
+10. Dashboard evidence
+11. Založení položky
+12. Pohledy na položky
+13. Rychlé akce
+14. Nastavení extranetu
+15. Upozornění
+16. PDF formuláře
+17. Online formuláře
+
+**Jediná výjimka: „Onboarding checklist".** Vkládá se do menu hned ZA
+„Základní nastavení", ale **JEN u evidence Zaměstnanci** — je to
+obsahově specifické pro nástup nového zaměstnance a u jiné evidence
+nedává smysl. Nekopíruj ho k jiným evidencím, i kdyby zadání říkalo
+„stejně jako u Zaměstnanci" — je to výslovná výjimka ze sdíleného
+seznamu, ne vzor k replikaci.
+
+V prototypu je zatím vypracovaná obsahově jen záložka **„Základní
+nastavení"** (§13.2). Zbylých 16 (+ Onboarding checklist) záložek
+zobrazuje needitovatelný prázdný stav — šedý rámeček s ikonou kladiva a
+textem „Obsah této záložky zatím není v prototypu definován." Až bude
+zadání konkrétní záložky rozšiřovat, nahraď JEN její prázdný stav
+skutečným obsahem — zbytek modalu (nav, ostatní záložky) nech beze
+změny.
+
+### 13.1 Zapojení tužky u další evidence (postup)
+
+Modal je generický, ale šablonovací engine v `<sc-camel-on-click>`
+neumí předat argument (`openEvEdit('Rizika')` nefunguje) — proto má
+každá zapojená evidence VLASTNÍ handler v `renderVals()`:
+
+```js
+evOpenRizika: () => this.setState({ evEditOpen: true, evEditTab: 'zakladni', evEditModuleKey: 'Rizika' }),
+```
+
+`evEditModuleKey` musí přesně odpovídat `label` v `TABS` (odtud se
+dopočítá ikona a barva evidence). Doplňkové údaje (výchozí zobrazení,
+popisný text, jestli je název zamčený, jestli má „Onboarding checklist")
+se přidají do `EV_MODULE_META[label]` — bez záznamu v `EV_MODULE_META`
+modal spadne na prázdné výchozí hodnoty. Nakonec při tužce dané evidence
+přidej `sc-camel-on-click="{{ evOpen<Modul> }}"` na `<i class="fa-solid
+fa-pen">` v jejím `TOOLBAR:` bloku.
+
+### 13.2 Záložka „Základní nastavení evidence"
+
+Skladba (pořadí je závazné):
+
+1. Jazykový přepínač **Čeština / Angličtina** — pilulky vedle sebe,
+   aktivní = **barva evidence** (`evModule.c800`, ne fixní modrá — každá
+   evidence má svou barvu i tady), neaktivní šedý text bez pozadí.
+2. **Název evidence** — u **zamčených** evidencí (`evModule.locked`,
+   např. Zaměstnanci — jsou to systémové evidence) needitovatelné šedé
+   pole se zámkem vpravo + text „U této evidence nelze měnit název" pod
+   polem. U ostatních (Rizika, Ochranné pomůcky) obyčejné editovatelné
+   pole, bez zámku a bez upozornění.
+3. **Výchozí zobrazení** — select, hodnota = `evModule.defaultView`
+   (Zaměstnanci „Tabulka", Rizika „Dashboard" — odpovídá tomu, jaký
+   pohled evidence v prototypu skutečně otevírá jako první).
+4. Řádek **Ikona / Barva evidence / Obrázek**:
+   - **Ikona** — čtvercový chip **`border-radius:10px`, fixní modré
+     pozadí `#4a7fe8`** (NENÍ tónovaný barvou evidence — to je záměr,
+     odpovídá reálné appce) s bílou ikonou evidence (`evModule.icon`).
+   - **Barva evidence** — malé kolečko `26px`, barva = přesně
+     `evModule.c800` (na rozdíl od ikony TADY barva evidence je vidět).
+   - **Obrázek** — bílé obrysové tlačítko „⬆ NAHRÁT OBRÁZEK" (needitovatelné).
+5. **Základní informace o evidenci** — textarea, předvyplněná popisným
+   textem evidence (`evModule.desc`).
+6. Odkaz **„⬇ Uložit nastavení evidence do souboru"** — modrý text
+   `#1572e8`, bez rámečku.
+
+Patička modalu: jen `ULOŽIT` (modré `.apt-btn-blue`) vpravo — žádné
+druhé/šedé tlačítko, stejně jako u §12.3.
+
+**⚠ Aktivní záložka v levém menu má PEVNOU indigovou `#4b64f5`** — je to
+JINÁ barva než `#4a7fe8` u aktivní položky v modalu „Upravit pracovní
+pozici" (§11.5). Obě existují v reálné appce vedle sebe (různé části UI,
+různé stáří) — nesluč je do jedné a neměň jednu podle druhé, drž se
+přesně toho, co ukazuje zdrojový screenshot pro daný modal.
+
+---
+
 ## 10. Shrnutí klíčových pravidel
 
 1. Rámec aplikace (top bar `#424242` → tab strip `#424242` → separator →
