@@ -1305,6 +1305,145 @@
         </div>
       </sc-if>
 
+      <!-- ══ ŠKOLENÍ — MOJE ŠKOLENÍ (osobní pohled) ══ -->
+      <!-- Staví 1:1 na vzoru Moje směrnice (viz showSmernMain výše) — jen
+           „potvrdit dokument" je nahrazeno „vyplnit školení". Bez vlastní
+           c800 barvy (na výslovné přání zadání), používá defaultní modrou. -->
+      <sc-if value="{{ showSkolMain }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;overflow-y:auto;padding:28px 32px 48px">
+          <div style="width:100%">
+            <div style="text-align:center;font-size:21.6px;font-weight:800;color:#2b2540;margin-bottom:4px">Moje školení</div>
+            <div style="text-align:center;color:#9aa2b0;font-size:12px;margin-bottom:22px">Projděte a vyplňte svá přiřazená školení.</div>
+            <div style="background:#fff;border-radius:30px;padding:11px 22px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 10px rgba(0,0,0,.05);max-width:520px;margin:0 auto 28px;border:1px solid #ededf2;color:#9a93b5">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <span style="font-size:14px;color:#b0aac8">Vyhledejte školení nebo kategorii</span>
+            </div>
+            <div style="background:#fff;border-radius:14px;padding:22px 26px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 15px rgba(0,0,0,.04);margin-bottom:30px;border:1px solid #ededf2;gap:20px;flex-wrap:wrap">
+              <div style="flex:1">
+                <sc-if value="{{ skolAllDone }}" hint-placeholder-val="{{ false }}">
+                  <div style="font-size:18px;font-weight:800;color:#12946b;margin-bottom:4px">Máte splněno!</div>
+                  <div style="color:#5a7a60;font-size:12px">{{ skolSubtitle }}</div>
+                </sc-if>
+                <sc-if value="{{ skolHasPending }}" hint-placeholder-val="{{ true }}">
+                  <div style="font-size:18px;font-weight:800;color:#2b2540;margin-bottom:4px">Zbývá vám vyplnit <span style="color:#1572e8">{{ skolPendingNum }}</span> školení</div>
+                  <div style="color:#9aa2b0;font-size:12px">{{ skolSubtitle }}</div>
+                </sc-if>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:5px;min-width:150px">
+                <span style="font-size:30px;font-weight:800;color:#1572e8">{{ skolPct }}</span>
+                <span style="font-size:10px;text-transform:uppercase;color:#9aa2b0;font-weight:700;letter-spacing:.08em">SPLNĚNO</span>
+                <div style="width:150px;height:6px;background:#ededf2;border-radius:3px;overflow:hidden;margin:5px 0">
+                  <div style="{{ skolBarStyle }}"></div>
+                </div>
+                <span style="font-size:11.5px;color:#9aa2b0">{{ skolCountText }}</span>
+              </div>
+            </div>
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9aa2b0;font-weight:800;margin-bottom:14px">
+              Školení<span style="display:block;font-size:18px;text-transform:none;color:#2b2540;letter-spacing:0;margin-top:2px;font-weight:800">K vyplnění</span>
+            </div>
+            <sc-if value="{{ skolHasPending }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;gap:1px;background:#ededf2;border-radius:14px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,.04);margin-bottom:36px">
+                <sc-for list="{{ skolPendingRows }}" as="t" hint-placeholder-count="3">
+                  <div style="background:#fff;padding:16px 22px;display:flex;align-items:center;gap:16px">
+                    <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">{{ t.title }}</div><div style="font-size:12px;color:#9aa2b0">{{ t.catTitle }}</div></div>
+                    <div style="width:150px;flex-shrink:0"><span style="{{ t.pillStyle }}">{{ t.pillLabel }}</span></div>
+                    <div sc-camel-on-click="{{ t.onStart }}" style="background:#1572e8;color:#fff;padding:9px 20px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0" style-hover="background:#1054c0;color:#fff;padding:9px 20px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0">{{ t.btnLabel }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ skolHasPending }}" hint-placeholder-val="{{ true }}">
+              <div style="border-radius:14px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,.04);margin-bottom:36px">
+                <div sc-camel-on-click="{{ toggleSkolConfirmed }}" style="background:#fff;padding:15px 22px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none">
+                  <i class="fa-solid fa-circle-check" style="color:#00C853;font-size:15px;flex-shrink:0"></i>
+                  <span style="font-size:14px;font-weight:800;color:#2b2540">Splněno</span>
+                  <span style="background:#e8f8ed;color:#2E7D32;font-size:10px;font-weight:700;padding:2px 6px;border-radius:3px;white-space:nowrap">{{ skolConfirmedNum }}</span>
+                  <div style="flex:1"></div>
+                  <i class="{{ skolConfirmedChevron }}" style="color:#9aa2b0;font-size:13px;flex-shrink:0"></i>
+                </div>
+                <sc-if value="{{ skolConfirmedOpen }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:1px;background:#ededf2;border-top:1px solid #ededf2">
+                    <sc-for list="{{ skolDoneRows }}" as="t" hint-placeholder-count="3">
+                      <div style="background:#fff;padding:14px 22px;display:flex;align-items:center;gap:16px">
+                        <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">{{ t.title }}</div><div style="font-size:12px;color:#9aa2b0">{{ t.catTitle }}</div></div>
+                        <div style="width:170px;flex-shrink:0"><div style="font-size:10px;color:#9aa2b0;font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px">Splněno</div><div style="font-size:13px;font-weight:700;color:#2b2540">{{ t.doneAt }}</div></div>
+                        <div style="font-size:12px;font-weight:700;color:#1572e8;cursor:pointer;flex-shrink:0;border:1.5px solid #d8d6e0;border-radius:999px;padding:6px 16px">OTEVŘÍT</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+            <sc-if value="{{ skolAllDone }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:1px;background:#ededf2;border-radius:14px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,.04);margin-bottom:36px">
+                <sc-for list="{{ skolDoneRows }}" as="t" hint-placeholder-count="5">
+                  <div style="background:#fff;padding:14px 22px;display:flex;align-items:center;gap:16px">
+                    <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">{{ t.title }}</div><div style="font-size:12px;color:#9aa2b0">{{ t.catTitle }}</div></div>
+                    <div style="width:170px;flex-shrink:0"><div style="font-size:10px;color:#9aa2b0;font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px">Splněno</div><div style="font-size:13px;font-weight:700;color:#2b2540">{{ t.doneAt }}</div></div>
+                    <div style="font-size:12px;font-weight:700;color:#1572e8;cursor:pointer;flex-shrink:0;border:1.5px solid #d8d6e0;border-radius:999px;padding:6px 16px">OTEVŘÍT</div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9aa2b0;font-weight:800;margin-top:8px;margin-bottom:14px">
+              Procházet<span style="display:block;font-size:18px;text-transform:none;color:#2b2540;letter-spacing:0;margin-top:2px;font-weight:800">Všechny kategorie</span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px">
+              <sc-for list="{{ skolCats }}" as="cat" hint-placeholder-count="3">
+                <div sc-camel-on-click="{{ cat.onClick }}" style="{{ cat.cardStyle }}" style-hover="{{ cat.cardHover }}">
+                  <div style="width:60px;height:60px;background:rgba(255,255,255,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:22px;flex-shrink:0">
+                    <i class="fa-solid fa-{{ cat.icon }}" style="color:{{ cat.iconColor }}"></i>
+                  </div>
+                  <div style="font-size:13px;font-weight:700;color:#2b2540;margin-bottom:5px;line-height:1.35;text-align:center">{{ cat.title }}</div>
+                  <div style="font-size:11.5px;text-align:center;color:#7a7595"><span style="color:#1572e8;font-weight:700">{{ cat.countNumBlue }}</span>{{ cat.countGray }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ══ ŠKOLENÍ — MOJE ŠKOLENÍ DETAIL ══ -->
+      <sc-if value="{{ showSkolDetail }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;overflow-y:auto;padding:28px 32px 48px">
+          <div style="width:100%">
+            <div style="text-align:center;font-size:21.6px;font-weight:800;color:#2b2540;margin-bottom:4px">Moje školení</div>
+            <div style="text-align:center;color:#9aa2b0;font-size:12px;margin-bottom:22px">Projděte a vyplňte svá přiřazená školení.</div>
+            <div sc-camel-on-click="{{ backToSkolTiles }}" style="display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:999px;border:1px solid #e0dded;background:#fff;font-size:12px;font-weight:600;color:#4a4660;cursor:pointer;margin-bottom:20px" style-hover="display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:999px;border:1px solid #d0c8e0;background:#f5f4fa;font-size:12px;font-weight:600;color:#4a4660;cursor:pointer;margin-bottom:20px">
+              <i class="fa-solid fa-arrow-left" style="font-size:12px"></i>Zpět na kategorie
+            </div>
+            <div style="background:#fff;border-radius:14px;overflow:hidden;border:1px solid #ededf2;box-shadow:0 2px 10px rgba(0,0,0,.04)">
+              <div style="padding:18px 24px;display:flex;align-items:center;gap:16px;border-bottom:1px solid #f0eff5">
+                <div style="width:48px;height:48px;background:{{ selectedSkolBg }};border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px">
+                  <i class="fa-solid fa-{{ selectedSkolIcon }}" style="color:{{ selectedSkolIconColor }}"></i>
+                </div>
+                <div>
+                  <div style="font-size:14px;font-weight:800;color:#2b2540;margin-bottom:2px">{{ selectedSkolTitle }}</div>
+                  <div style="font-size:12px;color:#9aa2b0"><sc-if value="{{ skolDetailHasPending }}" hint-placeholder-val="{{ false }}"><span style="color:#1572e8;font-weight:700">{{ skolDetailPendingCount }} čeká na vyplnění</span></sc-if></div>
+                </div>
+              </div>
+              <sc-for list="{{ skolDetailRows }}" as="t" hint-placeholder-count="3">
+                <sc-if value="{{ t.isPending }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;align-items:center;padding:14px 24px;border-bottom:1px solid #f5f4fa;gap:16px">
+                    <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">{{ t.title }}</div></div>
+                    <div style="width:150px;flex-shrink:0"><span style="{{ t.pillStyle }}">{{ t.pillLabel }}</span></div>
+                    <div sc-camel-on-click="{{ t.onStart }}" style="background:#1572e8;color:#fff;padding:8px 18px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;flex-shrink:0;white-space:nowrap" style-hover="background:#1054c0;color:#fff;padding:8px 18px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;flex-shrink:0;white-space:nowrap">{{ t.btnLabel }}</div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ t.isDone }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex;align-items:center;padding:14px 24px;border-bottom:1px solid #f5f4fa;gap:16px">
+                    <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">{{ t.title }}</div></div>
+                    <div style="width:160px;flex-shrink:0"><div style="font-size:10px;color:#9aa2b0;font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px">Splněno</div><div style="font-size:13px;font-weight:700;color:#2b2540">{{ t.doneAt }}</div></div>
+                    <div style="width:170px;flex-shrink:0"><span style="background:#f0f0f5;color:#9aa2b0;padding:4px 12px;border-radius:999px;font-size:10px">Splněno</span></div>
+                    <div style="font-size:12px;font-weight:700;color:#1572e8;cursor:pointer;flex-shrink:0;border:1.5px solid #d8d6e0;border-radius:999px;padding:7px 16px;white-space:nowrap">OTEVŘÍT</div>
+                  </div>
+                </sc-if>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
       <!-- ══ SMĚRNICE A DOKUMENTY — TILES ══ -->
       <sc-if value="{{ showDokTilesView }}" hint-placeholder-val="{{ false }}">
         <div style="flex:1;overflow-y:auto;padding:32px 32px 48px">
@@ -1590,6 +1729,46 @@
               <div class="nsm-table" style="padding:22px 16px;color:#9096a6;font-size:13px;margin-bottom:8px">Zatím žádný seznam příjemců.</div>
             </sc-if>
           </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- ══ ŠKOLENÍ — KATALOG ŠKOLENÍ (administrace) ══ -->
+      <!-- Staví 1:1 na vzoru Nastavení směrnic → Seznamy příjemců
+           (showNastSm výše): stejná `.nsm-table`/`.apt-btn-blue` sada tříd,
+           jen řádek otevírá item-drawer místo modalu (klik = pushDrawer). -->
+      <sc-if value="{{ showSkolAdmin }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;overflow-y:auto;padding:26px 32px 48px">
+          <div style="display:flex;align-items:center;margin-bottom:20px">
+            <div style="font-size:22px;font-weight:700;color:#2b2540;flex:1">Katalog školení</div>
+            <div class="apt-btn-blue nsm-btn-primary" sc-camel-on-click="{{ skolOpenAdd }}"><i class="fa-solid fa-plus" style="font-size:10px"></i>PŘIDAT ŠKOLENÍ</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+            <sc-for list="{{ skol_listFilters }}" as="f" hint-placeholder-count="4">
+              <div sc-camel-on-click="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }}</div>
+            </sc-for>
+            <div style="flex:1"></div>
+            <div class="nsm-search"><i class="fa-solid fa-magnifying-glass" style="font-size:12px"></i>Vyhledat školení</div>
+          </div>
+
+          <div class="nsm-table" style="margin-bottom:8px">
+            <div class="nsm-table-row nsm-table-head">
+              <div>Název</div><div>Kategorie</div><div>Stav</div><div>Splnilo</div><div>Čeká</div><div>Splnění</div><div></div>
+            </div>
+            <sc-for list="{{ skol_adminRows }}" as="r" hint-placeholder-count="6">
+              <div class="nsm-table-row nsm-row">
+                <div><span class="nsm-link" sc-camel-on-click="{{ r.onOpen }}">{{ r.name }}</span></div>
+                <div>{{ r.category }}</div>
+                <div><span style="{{ r.lifecycleStyle }}">{{ r.lifecycleLabel }}</span></div>
+                <div><span class="nsm-num">{{ r.confirmed }}</span></div>
+                <div><span class="nsm-num">{{ r.pending }}</span></div>
+                <div class="nsm-progress-wrap">
+                  <div class="nsm-progress-track"><div class="nsm-progress-fill" style="{{ r.barStyle }}"></div></div>
+                  <span class="nsm-progress-pct">{{ r.pctText }}</span>
+                </div>
+                <div><i class="fa-solid fa-ellipsis-vertical nsm-kebab"></i></div>
+              </div>
+            </sc-for>
+          </div>
         </div>
       </sc-if>
 
@@ -2607,6 +2786,147 @@
     </div>
   </sc-if>
 
+  <!-- ══ ŠKOLENÍ — ITEM-DRAWER „KATALOG ŠKOLENÍ" ══ -->
+  <!-- Kostra 1:1 podle draweru Zaměstnanec (drawerZamOpen výše): stejný
+       spine/header/taby/akční sloupec (item-drawer-shell.html), jen 5
+       vlastních záložek a znovupoužitá generická akční sada z Zaměstnance
+       (ZAM_ACTIONS → tady SKOL_ACTIONS, stejný vizuál). „Formulář" je
+       záměrně READ-ONLY náhled otázek — plný návrhář formuláře je mimo
+       rozsah tohoto kroku (viz poznámka u modalu Přidat/Editovat školení). -->
+  <sc-if value="{{ drawerSkolOpen }}" hint-placeholder-val="{{ false }}">
+    <div sc-camel-on-click="{{ closeAllDrawers }}" style="position:fixed;inset:0;background:rgba(0,0,0,.15);z-index:50;animation:fadeIn .2s ease forwards"></div>
+    <div style="position:fixed;top:0;right:0;bottom:0;width:80%;min-width:920px;background:#fff;z-index:51;display:flex;flex-direction:row;box-shadow:-8px 0 32px rgba(0,0,0,.18);animation:drawerIn .26s ease">
+      <sc-for list="{{ stackRailFrames }}" as="sf" hint-placeholder-count="0">
+        <div sc-camel-on-click="{{ sf.onClick }}" style="width:38px;flex-shrink:0;background:#fff;border-right:1px solid #e8e6f0;display:flex;flex-direction:column;align-items:center;padding-top:14px;gap:14px;overflow:hidden;cursor:pointer">
+          <i class="{{ sf.iconClass }}" style="{{ sf.iconStyle }}"></i>
+          <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-weight:700;font-size:12px;color:#5a5478;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-height:260px">{{ sf.label }}</div>
+        </div>
+      </sc-for>
+      <div style="width:38px;flex-shrink:0;background:#fff;border-right:1px solid #e8e6f0;display:flex;flex-direction:column;align-items:center;padding-top:14px;gap:14px;overflow:hidden">
+        <i class="fa-solid fa-graduation-cap" style="color:#1572e8;font-size:15px"></i>
+        <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-weight:700;font-size:12px;color:#5a5478;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-height:260px">{{ skol_railName }}</div>
+      </div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden">
+        <div style="flex-shrink:0;padding:24px 32px 0;display:flex;align-items:flex-start;gap:16px">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:26px;font-weight:300;color:#1e1b2e;line-height:1.2;margin-bottom:10px">{{ skol_railName }}</div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="display:inline-flex;align-items:center;gap:6px;background:#eceff1;color:#59676d;padding:4px 12px;border-radius:4px;font-size:10px;font-weight:600"><i class="fa-solid fa-graduation-cap" style="font-size:9px"></i>Katalog školení</span>
+              <span style="{{ skolSelLifecycleStyle }}">{{ skolSelLifecycleLabel }}</span>
+            </div>
+          </div>
+          <div style="width:110px;height:110px;border:2px dashed #d8d6e2;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="fa-solid fa-graduation-cap" style="font-size:28px;color:#cdd0d8"></i>
+          </div>
+          <i sc-camel-on-click="{{ closeSkolDrawer }}" class="fa-solid fa-xmark" style="color:#9a93b5;font-size:22px;cursor:pointer;flex-shrink:0;margin-top:4px" style-hover="color:#1572e8;font-size:22px;cursor:pointer;flex-shrink:0;margin-top:4px"></i>
+        </div>
+        <div style="flex-shrink:0;display:flex;align-items:flex-end;padding:16px 32px 0;background:#fff">
+          <sc-for list="{{ skol_itemTabs }}" as="t" hint-placeholder-count="5">
+            <div sc-camel-on-click="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</div>
+          </sc-for>
+        </div>
+        <div style="flex:1;min-height:0;display:flex;overflow:hidden">
+          <div style="flex:1;min-width:0;overflow-y:auto;background:#fff">
+            <!-- Zaměstnanci — přiřazení lidé a stav vyplnění (znovupoužívá
+                 ZAM_EMPLOYEES jako zdroj avatarů, viz skol_empRows). -->
+            <sc-if value="{{ skol_showZamestnanci }}" hint-placeholder-val="{{ true }}">
+              <div style="padding:16px 20px">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+                  <sc-for list="{{ skol_empFilters }}" as="f" hint-placeholder-count="2">
+                    <div sc-camel-on-click="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }}</div>
+                  </sc-for>
+                </div>
+                <sc-for list="{{ skol_empRows }}" as="e" hint-placeholder-count="8">
+                  <div style="display:flex;align-items:center;gap:14px;padding:12px 4px;border-bottom:1px solid #f2f1f7">
+                    {{ e.avatarEl }}
+                    <span sc-camel-on-click="{{ e.onOpen }}" style="flex:1;min-width:0;font-size:13.5px;color:#1e1b2e;cursor:pointer;text-decoration:underline;text-underline-offset:3px">{{ e.name }}</span>
+                    <span style="{{ e.statusStyle }}">{{ e.statusLabel }}</span>
+                    <span style="width:150px;flex-shrink:0;text-align:right;font-size:11.5px;color:#9a95ad">{{ e.doneAt }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <!-- Formulář — READ-ONLY náhled otázek (bez editace/Návrháře,
+                 viz poznámka výše). -->
+            <sc-if value="{{ skol_showFormular }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:16px 20px">
+                <div style="display:flex;align-items:center;gap:8px;background:#fff8e6;color:#8a6d1a;border:1px solid #f0e0b0;border-radius:8px;padding:10px 14px;font-size:12px;margin-bottom:18px">
+                  <i class="fa-solid fa-circle-info"></i>Náhled otázek. Úprava formuláře (Návrhář) není v tomto kroku k dispozici.
+                </div>
+                <sc-for list="{{ skol_formularQuestions }}" as="q" hint-placeholder-count="3">
+                  <div style="border:1px solid #ececf3;border-radius:10px;padding:14px 18px;margin-bottom:10px">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                      <span style="width:22px;height:22px;border-radius:50%;background:#eceff1;color:#5a5478;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ q.n }}</span>
+                      <span style="font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:#9a95ad;font-weight:700">{{ q.typeLabel }}</span>
+                    </div>
+                    <div style="font-size:13.5px;color:#2b2942;margin-bottom:6px">{{ q.text }}</div>
+                    <sc-for list="{{ q.options }}" as="o" hint-placeholder-count="0">
+                      <div style="font-size:12px;color:#7a7595;padding-left:30px">○ {{ o }}</div>
+                    </sc-for>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <!-- Detaily — stejný field-row vzor jako Zaměstnanec (viz
+                 drawer-tab-detaily.html): 32px help / 210px label+tužka /
+                 flexibilní hodnota. -->
+            <sc-if value="{{ skol_showDetaily }}" hint-placeholder-val="{{ false }}">
+              <sc-for list="{{ skol_detailRows }}" as="r" hint-placeholder-count="7">
+                <div style="display:flex;align-items:center;min-height:48px;border-bottom:1px solid #f3f2f7;padding:0 16px 0 8px">
+                  <div style="width:28px;flex-shrink:0;display:flex;align-items:center;justify-content:center">
+                    <i class="fa-regular fa-circle-question" style="font-size:12px;color:#c8c5d5"></i>
+                  </div>
+                  <div style="width:190px;flex-shrink:0;text-align:right;padding:13px 10px 13px 0;font-size:12px;color:#6c757d;font-weight:600;display:flex;align-items:center;justify-content:flex-end;gap:5px">
+                    {{ r.label }}<i class="fa-solid fa-pen" style="font-size:10px;color:#d6d2e2"></i>
+                  </div>
+                  <div style="flex:1;padding:12px 12px 12px 0;font-size:12px;min-width:0">
+                    <input type="text" sc-camel-default-value="{{ r.value }}" style="border:1px solid #e5e5e5;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;background:#fff;outline:none;width:100%">
+                  </div>
+                </div>
+              </sc-for>
+            </sc-if>
+            <!-- Souvislosti — zatím bez napojených záznamů (prázdný stav,
+                 stejně jako u ostatních modulů bez dat pro tuto záložku). -->
+            <sc-if value="{{ skol_showSouvis }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;height:220px;color:#aaa4bf">
+                <i class="fa-solid fa-diagram-project" style="font-size:28px;color:#d6d2e2"></i>
+                <div style="font-size:14px;font-weight:700;color:#7a7595">Zatím žádné souvislosti</div>
+              </div>
+            </sc-if>
+            <!-- Publikováno — historie verzí (statická ukázka). -->
+            <sc-if value="{{ skol_showPublikovano }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:20px 24px">
+                <div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f2f1f7">
+                  <i class="fa-solid fa-circle-check" style="color:#00C853;font-size:16px;flex-shrink:0"></i>
+                  <div style="flex:1"><div style="font-size:13.5px;font-weight:700;color:#1e1b2e">Aktuální verze zveřejněna</div><div style="font-size:11.5px;color:#9a95ad">14. 07. 2026 · Karolína Fišerová</div></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f2f1f7">
+                  <i class="fa-solid fa-pen" style="color:#9a95ad;font-size:14px;flex-shrink:0"></i>
+                  <div style="flex:1"><div style="font-size:13.5px;color:#5a5478">Upraveny otázky a termín splnění</div><div style="font-size:11.5px;color:#9a95ad">02. 06. 2026 · Karolína Fišerová</div></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:14px;padding:14px 0">
+                  <i class="fa-solid fa-plus" style="color:#9a95ad;font-size:14px;flex-shrink:0"></i>
+                  <div style="flex:1"><div style="font-size:13.5px;color:#5a5478">Školení vytvořeno</div><div style="font-size:11.5px;color:#9a95ad">18. 03. 2026 · Karolína Fišerová</div></div>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+          <div style="width:210px;flex-shrink:0;border-left:1px solid #eeecf5;padding:12px 0;display:flex;flex-direction:column;overflow-y:auto">
+            <sc-for list="{{ skol_itemActions }}" as="ac" hint-placeholder-count="7">
+              <div style="{{ ac.style }}" style-hover="{{ ac.hover }}">{{ ac.iconEl }}<span>{{ ac.label }}</span></div>
+            </sc-for>
+            <div style="margin-top:16px;padding:16px 16px 0;border-top:1px solid #eef0f3">
+              <div style="font-size:11px;color:#9a95ad;margin-bottom:4px">ID: <b style="color:#5a5478">{{ skol_railName }}</b></div>
+              <div style="font-size:11px;color:#9a95ad;margin-bottom:4px">Vytvořeno: <b style="color:#5a5478">18. 03. 2026</b></div>
+              <div style="font-size:11px;color:#9a95ad;margin-bottom:4px">Vytvořil: <b style="color:#5a5478">Karolína Fišerová</b></div>
+              <div style="font-size:11px;color:#9a95ad">Poslední úprava: <b style="color:#5a5478">14. 07. 2026</b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
   <!-- ══════════════════════════════════════════════════════════
        MODÁLNÍ FORMULÁŘOVÉ OKNO — UPRAVIT PRACOVNÍ POZICI (§11.5)
        Otevírá se kliknutím na kartu v podzáložce „Pracovní pozice".
@@ -3205,6 +3525,130 @@
     </div>
   </sc-if>
 
+  <!-- ══ ŠKOLENÍ — MODAL „PŘIDAT / EDITOVAT ŠKOLENÍ" ══ -->
+  <!-- Struktura 1:1 podle modalu Upravit seznam příjemců (nsmEditOpen výše):
+       stejné .apt-modal / .nsm-sec / .nsm-card sekce, jen obsah polí jiný.
+       Tvorbu vlastních otázek (Návrhář formuláře) prototyp řeší jen jako
+       READ-ONLY náhled v draweru (záložka „Formulář") — zde v modalu se
+       otázky needitují, aby zadání zůstalo v rozsahu tohoto kroku. -->
+  <sc-if value="{{ skolFormOpen }}" hint-placeholder-val="{{ false }}">
+    <div class="apt-modal-overlay" sc-camel-on-click="{{ skolCloseForm }}">
+      <div class="apt-modal" style="height:auto;max-height:92vh;width:min(680px,94vw)" sc-camel-on-click="{{ stopClick }}">
+        <div class="apt-modal-head">
+          <div class="apt-modal-title">{{ skolFormTitle }}</div>
+          <div class="apt-modal-close" sc-camel-on-click="{{ skolCloseForm }}">✕</div>
+        </div>
+        <div style="padding:22px 26px 26px;overflow-y:auto">
+          <div class="nsm-sec">
+            <div class="nsm-sec-head"><i class="fa-solid fa-circle-info"></i><span class="nsm-sec-head-title">Základní informace</span></div>
+            <div class="apt-f-label">Název*</div>
+            <input type="text" sc-camel-default-value="{{ skolForm.title }}" sc-camel-on-change="{{ skolFormSetTitle }}" class="apt-f-input" style="margin-bottom:16px;width:100%;border:none;outline:none;font:inherit;color:inherit;background:transparent">
+          </div>
+          <div class="nsm-sec">
+            <div class="nsm-sec-head"><i class="fa-solid fa-shapes"></i><span class="nsm-sec-head-title">Kategorie</span></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <sc-for list="{{ skol_formCatOptions }}" as="c" hint-placeholder-count="3">
+                <div class="nsm-radio-inline" sc-camel-on-click="{{ c.onClick }}">
+                  <i class="fa-solid fa-{{ c.radioIcon }}" style="font-size:15px;color:{{ c.accent }}"></i>
+                  <span>{{ c.label }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div class="nsm-sec">
+            <div class="nsm-sec-head"><i class="fa-solid fa-tags"></i><span class="nsm-sec-head-title">Štítky</span></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <sc-for list="{{ skol_formTagCards }}" as="t" hint-placeholder-count="8">
+                <div sc-camel-on-click="{{ t.onClick }}" style="{{ t.chipStyle }}">{{ t.label }}</div>
+              </sc-for>
+            </div>
+          </div>
+          <div class="nsm-sec">
+            <div class="nsm-sec-head"><i class="fa-solid fa-users"></i><span class="nsm-sec-head-title">Příjemci</span></div>
+            <div class="nsm-card-grid3">
+              <sc-for list="{{ skol_formPrijemciCards }}" as="c" hint-placeholder-count="3">
+                <div class="nsm-card {{ c.selCls }}" sc-camel-on-click="{{ c.onClick }}">
+                  <div class="nsm-card-mark"></div>
+                  <div class="nsm-card-title"><i class="fa-solid fa-{{ c.icon }}"></i>{{ c.title }}</div>
+                  <div class="nsm-card-desc">{{ c.desc }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div class="nsm-sec" style="margin-bottom:6px">
+            <div class="nsm-sec-head"><i class="fa-regular fa-clock"></i><span class="nsm-sec-head-title">Termín splnění</span></div>
+            <div class="apt-f-label">Počet dnů od přiřazení</div>
+            <input type="text" sc-camel-default-value="{{ skolForm.deadlineDny }}" sc-camel-on-change="{{ skolFormSetDeadline }}" class="apt-f-input" style="max-width:120px;border:none;outline:none;font:inherit;color:inherit;background:transparent">
+          </div>
+        </div>
+        <div class="apt-modal-foot">
+          <div style="flex:1"></div>
+          <div class="apt-btn-blue nsm-btn-primary" sc-camel-on-click="{{ skolSaveForm }}"><i class="fa-solid fa-floppy-disk" style="font-size:11px"></i>ULOŽIT</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ══ ŠKOLENÍ — MODAL „VYPLNIT ŠKOLENÍ" (osobní běh) ══ -->
+  <sc-if value="{{ skolRunOpen }}" hint-placeholder-val="{{ false }}">
+    <div class="apt-modal-overlay" sc-camel-on-click="{{ backToSkolList }}">
+      <div class="apt-modal" style="height:auto;max-height:88vh;width:min(560px,94vw)" sc-camel-on-click="{{ stopClick }}">
+        <div class="apt-modal-head">
+          <div class="apt-modal-title">{{ skolRunTitle }}</div>
+          <div class="apt-modal-close" sc-camel-on-click="{{ backToSkolList }}">✕</div>
+        </div>
+        <div style="padding:22px 26px 8px">
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#9aa2b0;font-weight:700;margin-bottom:6px">
+            <span>OTÁZKA {{ skolRunQNum }} Z {{ skolRunTotal }}</span><span>{{ skolRunProgress }}</span>
+          </div>
+          <div style="width:100%;height:6px;background:#ededf2;border-radius:3px;overflow:hidden;margin-bottom:22px">
+            <div style="{{ skolRunProgressStyle }}"></div>
+          </div>
+        </div>
+        <div style="padding:0 26px 26px;overflow-y:auto">
+          <div style="font-size:15px;font-weight:700;color:#2b2540;margin-bottom:18px">{{ skolRunQText }}</div>
+          <sc-if value="{{ skolRunIsChoice }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <sc-for list="{{ skolRunOptions }}" as="o" hint-placeholder-count="3">
+                <div class="nsm-radio-inline" style="border:1.5px solid #e4e2ed;border-radius:10px;padding:12px 16px" sc-camel-on-click="{{ o.onClick }}">
+                  <i class="fa-solid fa-{{ o.radioIcon }}" style="font-size:15px;color:{{ o.accent }}"></i>
+                  <span>{{ o.label }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ skolRunIsText }}" hint-placeholder-val="{{ true }}">
+            <textarea sc-camel-default-value="{{ skolRunAnswerText }}" sc-camel-on-change="{{ skolOnAnswerText }}" placeholder="Napište odpověď…" class="apt-f-area" style="min-height:100px;width:100%;border:1.5px solid #e4e2ed;border-radius:10px;padding:12px 14px;font:inherit;outline:none"></textarea>
+          </sc-if>
+        </div>
+        <div class="apt-modal-foot">
+          <sc-if value="{{ !skolRunIsFirst }}" hint-placeholder-val="{{ false }}">
+            <div style="border:1.5px solid #d8d6e0;color:#4a4660;padding:9px 20px;border-radius:999px;font-weight:700;font-size:12px;cursor:pointer" sc-camel-on-click="{{ skolPrevQ }}">ZPĚT</div>
+          </sc-if>
+          <div style="flex:1"></div>
+          <sc-if value="{{ !skolRunIsLast }}" hint-placeholder-val="{{ true }}">
+            <div class="apt-btn-blue nsm-btn-primary" sc-camel-on-click="{{ skolNextQ }}">DALŠÍ<i class="fa-solid fa-arrow-right" style="font-size:10px"></i></div>
+          </sc-if>
+          <sc-if value="{{ skolRunIsLast }}" hint-placeholder-val="{{ false }}">
+            <div class="apt-btn-blue nsm-btn-primary" sc-camel-on-click="{{ skolSaveAndClose }}"><i class="fa-solid fa-check" style="font-size:11px"></i>DOKONČIT</div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ══ ŠKOLENÍ — POTVRZENÍ DOKONČENÍ (krátká karta) ══ -->
+  <sc-if value="{{ skolJustDoneOpen }}" hint-placeholder-val="{{ false }}">
+    <div class="apt-modal-overlay" sc-camel-on-click="{{ skolCloseJustDone }}">
+      <div class="apt-modal" style="height:auto;width:min(400px,94vw);padding:36px 30px;text-align:center" sc-camel-on-click="{{ stopClick }}">
+        <i class="fa-solid fa-circle-check" style="font-size:44px;color:#00C853;margin-bottom:16px"></i>
+        <div style="font-size:17px;font-weight:800;color:#2b2540;margin-bottom:6px">Školení splněno</div>
+        <div style="font-size:13px;color:#9aa2b0;margin-bottom:24px">{{ skolJustDoneTitle }}</div>
+        <div class="apt-btn-blue nsm-btn-primary" style="display:inline-flex" sc-camel-on-click="{{ skolCloseJustDone }}">ZAVŘÍT</div>
+      </div>
+    </div>
+  </sc-if>
+
 </div>
 
 </x-dc>
@@ -3216,7 +3660,8 @@ class Component extends DCLogic {
       rizika: { iconClass: 'fa-solid fa-triangle-exclamation', color: '#E91E63' },
       op: { iconClass: 'fa-solid fa-helmet-safety', color: '#D84315' },
       zakazky: { iconClass: 'fa-solid fa-briefcase', color: '#1572e8' },
-      zamestnanec: { iconClass: 'fa-solid fa-user-tie', color: '#1572e8' }
+      zamestnanec: { iconClass: 'fa-solid fa-user-tie', color: '#1572e8' },
+      skoleni: { iconClass: 'fa-solid fa-graduation-cap', color: '#1572e8' }
     }[module] || {};
   }
   currentFrameLabel(s) {
@@ -3225,17 +3670,18 @@ class Component extends DCLogic {
       case 'op': return (this.OP_ITEMS[s.selectedIdx] || {}).name || 'Pomůcka';
       case 'zakazky': return (this.ZAK_ITEMS[s.selectedIdx] || {}).name || 'Zakázka';
       case 'zamestnanec': return (this.ZAM_EMPLOYEES[s.selectedIdx] || {}).name || 'Zaměstnanec';
+      case 'skoleni': return (this.SKOL_TRAININGS[s.selectedIdx] || {}).title || 'Školení';
       default: return '';
     }
   }
   pushDrawer(module, idx) {
     this.setState(s => {
       if (!s.drawerOpen) {
-        return { drawerOpen: true, drawerModule: module, selectedIdx: idx || 0, drawerStack: [], drawerTab: 'detaily', zamItemTab: 'detaily' };
+        return { drawerOpen: true, drawerModule: module, selectedIdx: idx || 0, drawerStack: [], drawerTab: 'detaily', zamItemTab: 'detaily', skolItemTab: 'zamestnanci' };
       }
       let stack = [...s.drawerStack, { module: s.drawerModule, label: this.currentFrameLabel(s), selectedIdx: s.selectedIdx }];
       if (stack.length > 4) stack = stack.slice(stack.length - 4);
-      return { drawerOpen: true, drawerModule: module, selectedIdx: idx || 0, drawerStack: stack, drawerTab: 'detaily', zamItemTab: 'detaily' };
+      return { drawerOpen: true, drawerModule: module, selectedIdx: idx || 0, drawerStack: stack, drawerTab: 'detaily', zamItemTab: 'detaily', skolItemTab: 'zamestnanci' };
     });
   }
   popToFrame(i) {
@@ -3306,6 +3752,32 @@ class Component extends DCLogic {
     nsmCreateOpen: false,
     nsmEditOpen: false,
     nsmEdit: null,
+    // ── ŠKOLENÍ (Moje školení + Katalog školení) ──
+    // Osobní pohled („Moje školení“): drilldown do zařazení (tagu), stejný
+    // vzor jako Moje směrnice (`selectedSmernCat`).
+    selectedSkolCat: null,
+    skolConfirmedOpen: false,
+    // Průběh vyplňování konkrétního školení zaměstnancem.
+    skolRunId: null, skolRunQ: 0, skolMyAnswers: {}, skolMySaved: {}, skolMyDone: [], skolDoneId: null,
+    // Administrace („Katalog školení“): filtr seznamu, filtr zaměstnanců
+    // v draweru, stav modalu Přidat/Editovat a jeho rozpracovaná data.
+    skolListFilter: 'aktivni',
+    skolEmpFilter: 'aktivni',
+    skolFormOpen: false,
+    skolFormMode: 'add',   // 'add' | 'edit'
+    skolFormId: null,
+    skolForm: null,
+    skolItemTab: 'zamestnanci',
+    // Přepisy (edity) nad výchozími daty SKOL_TRAININGS + nově založená školení.
+    skolOverrides: {},
+    skolCustom: [],
+    skolArchived: [],
+    skolShared: {},
+    // Nastavení školení → kategorie a zařazení (spravováno stejně jako
+    // u Moje směrnice/Nastavení organizace — přidávání a mazání beze zámku
+    // u nepoužitých položek).
+    skolSettingsOpen: false,
+    skolNewCat: '', skolNewCatCi: 0, skolNewTag: '', skolNewTagCi: 0,
     // ── EDITACE EVIDENCE (§13) ──
     // Generický modal „Nastavení evidence" — otevírá se z tužky vedle
     // názvu KTERÉKOLIV evidence v toolbaru (zatím zapojeno u Zaměstnanci,
@@ -3460,6 +3932,139 @@ class Component extends DCLogic {
     { key: 'bez',   icon: 'ban',              label: 'Bez termínu potvrzení' }
   ];
 
+  // ══════════════════════════════════════════════════════════════════════
+  //  ŠKOLENÍ (Moje školení + Katalog školení) — sjednocený datový zdroj.
+  //  SKOL_TRAININGS slouží OBĚMA pohledům: osobní „Moje školení" ukazuje
+  //  jen školení, kde je přihlášený uživatel (Karolína Fišerová) mezi
+  //  `assignees`; administrace „Katalog školení" vidí všechna. Průběh
+  //  KAŽDÉHO zaměstnance je uložen přímo v `assignees[].status`, takže
+  //  nikde nevzniká druhý, nekonzistentní zdroj pravdy.
+  // ══════════════════════════════════════════════════════════════════════
+  SKOL_CATEGORIES = [
+    { key: 'povinne',    title: 'Povinná školení',       icon: 'shield-halved', bg: '#e0c0c0', iconColor: '#802828' },
+    { key: 'onsite',     title: 'Školení na pracovišti', icon: 'helmet-safety', bg: '#b8d4b8', iconColor: '#285828' },
+    { key: 'onboarding', title: 'Onboarding',            icon: 'door-open',     bg: '#a8c4ec', iconColor: '#2d5080' }
+  ];
+
+  SKOL_TAGS = [
+    { key: 'bozp',    label: 'BOZP' },
+    { key: 'pozarni', label: 'Požární ochrana' },
+    { key: 'gdpr',    label: 'GDPR' },
+    { key: 'it',      label: 'IT bezpečnost' },
+    { key: 'compl',   label: 'Compliance' },
+    { key: 'onb',     label: 'Onboarding' },
+    { key: 'pomucky', label: 'Pomůcky' },
+    { key: 'dodav',   label: 'Dodavatelé' }
+  ];
+
+  // status (celé školení): 'koncept' | 'aktivni' | 'archivovano'
+  // assignees[].status (za zaměstnance): 'nerozeslano' | 'odeslano' | 'rozpracovano' | 'hotovo'
+  SKOL_TRAININGS = [
+    { id: 1, title: 'Vstupní školení BOZP', category: 'povinne', tags: ['bozp'],
+      status: 'aktivni', deadlineDny: 7, prijemci: 'vsichni',
+      questions: [
+        { q: 'Kde najdete nejbližší hasicí přístroj na svém pracovišti?', type: 'text' },
+        { q: 'Jak často probíhá pravidelné školení BOZP?', type: 'choice', options: ['Jednou ročně', 'Jednou za dva roky', 'Pouze při nástupu'] },
+        { q: 'Co uděláte v případě pracovního úrazu?', type: 'text' }
+      ],
+      assignees: [
+        { name: 'Jan Novák', status: 'hotovo', doneAt: '12.07.2026 09:14' },
+        { name: 'Karolína Fišerová', status: 'hotovo', doneAt: '12.07.2026 10:02' },
+        { name: 'Tomáš Novák', status: 'rozpracovano' },
+        { name: 'Petra Malá', status: 'odeslano' },
+        { name: 'Martin Dvořák', status: 'odeslano' },
+        { name: 'Lucie Horáková', status: 'hotovo', doneAt: '13.07.2026 08:40' },
+        { name: 'Pavel Král', status: 'nerozeslano' },
+        { name: 'Eva Sedláková', status: 'hotovo', doneAt: '13.07.2026 15:21' }
+      ] },
+    { id: 2, title: 'Požární ochrana a evakuační plán', category: 'onsite', tags: ['pozarni'],
+      status: 'aktivni', deadlineDny: 10, prijemci: 'vsichni',
+      questions: [
+        { q: 'Kde je na vašem pracovišti evakuační trasa vyvěšena?', type: 'text' },
+        { q: 'Co znamená signál celkového požárního poplachu?', type: 'choice', options: ['Přerušovaný tón sirény', 'Nepřetržitý tón sirény', 'Dvě krátká zapískání'] }
+      ],
+      assignees: [
+        { name: 'Jan Novák', status: 'odeslano' },
+        { name: 'Karolína Fišerová', status: 'rozpracovano' },
+        { name: 'Tomáš Novák', status: 'nerozeslano' },
+        { name: 'Petra Malá', status: 'hotovo', doneAt: '05.07.2026 11:20' },
+        { name: 'Martin Dvořák', status: 'nerozeslano' },
+        { name: 'Lucie Horáková', status: 'odeslano' },
+        { name: 'Pavel Král', status: 'nerozeslano' },
+        { name: 'Eva Sedláková', status: 'hotovo', doneAt: '06.07.2026 09:05' }
+      ] },
+    { id: 3, title: 'GDPR a ochrana osobních údajů', category: 'povinne', tags: ['gdpr', 'compl'],
+      status: 'aktivni', deadlineDny: 14, prijemci: 'vsichni',
+      questions: [
+        { q: 'Co uděláte, pokud omylem odešlete osobní údaje nesprávnému příjemci?', type: 'text' },
+        { q: 'Jak dlouho smí firma standardně uchovávat životopisy neúspěšných uchazečů?', type: 'choice', options: ['Bez omezení', '6 měsíců', '3 roky'] },
+        { q: 'Kdo je ve firmě pověřencem pro ochranu osobních údajů?', type: 'text' }
+      ],
+      assignees: [
+        { name: 'Jan Novák', status: 'hotovo', doneAt: '02.07.2026 14:10' },
+        { name: 'Karolína Fišerová', status: 'hotovo', doneAt: '02.07.2026 15:33' },
+        { name: 'Tomáš Novák', status: 'hotovo', doneAt: '03.07.2026 08:12' },
+        { name: 'Petra Malá', status: 'odeslano' },
+        { name: 'Martin Dvořák', status: 'odeslano' },
+        { name: 'Lucie Horáková', status: 'rozpracovano' },
+        { name: 'Pavel Král', status: 'odeslano' },
+        { name: 'Eva Sedláková', status: 'hotovo', doneAt: '03.07.2026 16:44' }
+      ] },
+    { id: 4, title: 'IT bezpečnost a práce s hesly', category: 'povinne', tags: ['it', 'compl'],
+      status: 'aktivni', deadlineDny: 5, prijemci: 'vsichni',
+      questions: [
+        { q: 'Jak poznáte podezřelý phishingový e-mail?', type: 'text' },
+        { q: 'Jak často je potřeba měnit firemní heslo do interních systémů?', type: 'choice', options: ['Jednou za měsíc', 'Jednou za 90 dní', 'Nikdy, pokud je dost silné'] }
+      ],
+      assignees: [
+        { name: 'Jan Novák', status: 'hotovo', doneAt: '20.07.2026 10:00' },
+        { name: 'Karolína Fišerová', status: 'nerozeslano' },
+        { name: 'Tomáš Novák', status: 'odeslano' },
+        { name: 'Petra Malá', status: 'nerozeslano' },
+        { name: 'Martin Dvořák', status: 'hotovo', doneAt: '21.07.2026 09:18' },
+        { name: 'Lucie Horáková', status: 'nerozeslano' },
+        { name: 'Pavel Král', status: 'odeslano' },
+        { name: 'Eva Sedláková', status: 'odeslano' }
+      ] },
+    { id: 5, title: 'Onboarding – Vítejte v Aptien', category: 'onboarding', tags: ['onb'],
+      status: 'aktivni', deadlineDny: 3, prijemci: 'konkretni',
+      questions: [
+        { q: 'Kde najdete organizační strukturu firmy?', type: 'text' },
+        { q: 'Na koho se obrátíte v prvním týdnu s technickým problémem?', type: 'text' }
+      ],
+      assignees: [
+        { name: 'Pavel Král', status: 'odeslano' },
+        { name: 'Eva Sedláková', status: 'rozpracovano' }
+      ] },
+    { id: 6, title: 'Práce s ochrannými pomůckami', category: 'onsite', tags: ['pomucky', 'bozp'],
+      status: 'koncept', deadlineDny: 10, prijemci: 'pozice',
+      questions: [
+        { q: 'Které ochranné pomůcky jsou na vašem pracovišti povinné?', type: 'text' }
+      ],
+      assignees: [] },
+    { id: 7, title: 'Bezpečnost práce s dodavateli', category: 'onsite', tags: ['dodav', 'bozp'],
+      status: 'archivovano', deadlineDny: 14, prijemci: 'pozice',
+      questions: [
+        { q: 'Kdo zodpovídá za proškolení externího dodavatele před vstupem do areálu?', type: 'text' }
+      ],
+      assignees: [
+        { name: 'Tomáš Novák', status: 'hotovo', doneAt: '11.02.2026 09:00' },
+        { name: 'Pavel Král', status: 'hotovo', doneAt: '11.02.2026 09:30' }
+      ] }
+  ];
+
+  SKOL_STATUS_META = {
+    nerozeslano:  { label: 'Nerozesláno',  color: '#8a8a8a' },
+    odeslano:     { label: 'Odesláno',     color: '#1572e8' },
+    rozpracovano: { label: 'Rozpracováno', color: '#EF6C00' },
+    hotovo:       { label: 'Hotovo',       color: '#2E7D32' }
+  };
+  SKOL_LIFECYCLE_META = {
+    koncept:     { label: 'Koncept',     color: '#8a8a8a' },
+    aktivni:     { label: 'Aktivní',     color: '#2E7D32' },
+    archivovano: { label: 'Archivováno', color: '#8a8a8a' }
+  };
+
   // Sekce „Plánované aktivity" v modalu — převzato z nastavení zaměstnanců
   POZ_ACT_GROUPS = [
     { key: 'skoleni', title: 'Školení a osobní rozvoj', count: 3, items: [
@@ -3557,7 +4162,7 @@ class Component extends DCLogic {
     }
   };
 
-  NAV_WORK = [{"id": "domu", "label": "Moje domovská stránka", "icon": "house-chimney", "svg": "house-chimney"}, {"id": "upoz", "label": "Moje upozornění", "icon": "bell", "svg": "bell", "badge": 60, "badgeKind": "alert"}, {"id": "kal", "label": "Můj kalendář", "icon": "calendar-days", "svg": "calendar-days"}, {"id": "ukoly", "label": "Moje úkoly", "icon": "clipboard-check", "svg": "clipboard-check", "badge": 7, "badgeKind": "alert"}, {"id": "konv", "label": "Moje konverzace", "icon": "comments", "svg": "comments", "badge": 5, "badgeKind": "alert"}, {"id": "tym", "label": "Můj tým", "icon": "people-group", "svg": "people-group"}, {"id": "oblib", "label": "Moje oblíbené", "icon": "star", "svg": "star", "badge": 1, "badgeKind": "grey"}, {"id": "zad", "label": "Moje žádanky", "icon": "file-invoice", "svg": "file-invoice"}, {"id": "hlid", "label": "Moje hlídače", "icon": "dog", "svg": "dog"}, {"id": "schval", "label": "Ke schválení", "icon": "circle-check", "svg": "circle-check", "badge": 2, "badgeKind": "alert"}, {"id": "rep", "label": "Reporty", "icon": "file-chart-column", "svg": "file-chart-column"}, {"id": "ome", "label": "O mně", "icon": "user", "svg": "user"}, {"id": "pozn", "label": "Poznámky", "icon": "clipboard", "svg": "clipboard", "badge": 2, "badgeKind": "grey"}, {"id": "smern", "label": "Moje směrnice", "icon": "books", "svg": "books"}, {"id": "cojsem", "label": "Co jsem dělal", "icon": "chart-network", "svg": "chart-network"}];
+  NAV_WORK = [{"id": "domu", "label": "Moje domovská stránka", "icon": "house-chimney", "svg": "house-chimney"}, {"id": "upoz", "label": "Moje upozornění", "icon": "bell", "svg": "bell", "badge": 60, "badgeKind": "alert"}, {"id": "kal", "label": "Můj kalendář", "icon": "calendar-days", "svg": "calendar-days"}, {"id": "ukoly", "label": "Moje úkoly", "icon": "clipboard-check", "svg": "clipboard-check", "badge": 7, "badgeKind": "alert"}, {"id": "konv", "label": "Moje konverzace", "icon": "comments", "svg": "comments", "badge": 5, "badgeKind": "alert"}, {"id": "tym", "label": "Můj tým", "icon": "people-group", "svg": "people-group"}, {"id": "oblib", "label": "Moje oblíbené", "icon": "star", "svg": "star", "badge": 1, "badgeKind": "grey"}, {"id": "zad", "label": "Moje žádanky", "icon": "file-invoice", "svg": "file-invoice"}, {"id": "hlid", "label": "Moje hlídače", "icon": "dog", "svg": "dog"}, {"id": "schval", "label": "Ke schválení", "icon": "circle-check", "svg": "circle-check", "badge": 2, "badgeKind": "alert"}, {"id": "rep", "label": "Reporty", "icon": "file-chart-column", "svg": "file-chart-column"}, {"id": "ome", "label": "O mně", "icon": "user", "svg": "user"}, {"id": "pozn", "label": "Poznámky", "icon": "clipboard", "svg": "clipboard", "badge": 2, "badgeKind": "grey"}, {"id": "smern", "label": "Moje směrnice", "icon": "books", "svg": "books"}, {"id": "skol", "label": "Moje školení", "icon": "graduation-cap", "svg": "graduation-cap"}, {"id": "cojsem", "label": "Co jsem dělal", "icon": "chart-network", "svg": "chart-network"}];
 
   NAV_COMPANY = [{"id": "nastenka", "label": "Nástěnka", "icon": "grid-horizontal", "svg": "grid-horizontal"}, {"id": "dok", "label": "Směrnice a dokumenty", "icon": "book-open", "svg": "book-open"}, {"id": "kolegove", "label": "Kolegové", "icon": "users", "svg": "users"}, {"id": "skolc", "label": "Katalog školení", "icon": "book-open-reader", "svg": "book-open-reader"}, {"id": "nastsm", "label": "Nastavení směrnic", "icon": "books", "svg": "books"}, {"id": "nastorg", "label": "Nastavení organizace", "icon": "sitemap", "svg": "sitemap"}, {"id": "inventura", "label": "Inventura", "icon": "boxes-stacked", "svg": "boxes-stacked"}];
 
@@ -3578,7 +4183,7 @@ class Component extends DCLogic {
     { name: 'Martin Blažek',     initials: 'MB', color: '#283593', usePhoto: false }
   ];
 
-  SVG_ICONS = {"bell": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 448 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 384c0 4.4 .9 8.9 2.8 13.1C8 408.6 19.4 416 32 416l384 0c12.6 0 24-7.4 29.2-18.9c1.9-4.2 2.8-8.7 2.8-13.1c0-7.7-2.8-15.3-8.1-21.3l-7.4-8.3C401.3 319.2 384 273.9 384 226.8l0-18.8c0-77.4-55-142-128-156.8L256 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 19.2C119 66 64 130.6 64 208l0 18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3C2.8 368.7 0 376.3 0 384z\"/><path class=\"fa-primary\" d=\"M288 448c0 17-6.7 33.3-18.7 45.3s-28.3 18.7-45.3 18.7s-33.3-6.7-45.3-18.7s-18.7-28.3-18.7-45.3l64 0h64z\"/></svg>", "book-open": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 576 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M288 72c16-16 80-40 144-40c50.5 0 97.7 13.3 125.9 24.1C569.2 60.5 576 71.7 576 83.8l0 370.3c0 11.9-12.8 20.2-24.1 16.5C520.4 460.1 470.5 448 432 448c-51.2 0-144 32-144 32l0-408z\"/><path class=\"fa-primary\" d=\"M288 72V480s-92.8-32-144-32c-38.5 0-88.4 12.1-119.9 22.6C12.8 474.3 0 466 0 454.1V83.8C0 71.7 6.8 60.5 18.1 56.1C46.3 45.3 93.5 32 144 32c64 0 128 24 144 40z\"/></svg>", "book-open-reader": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M160 96a96 96 0 1 0 192 0A96 96 0 1 0 160 96z\"/><path class=\"fa-primary\" d=\"M240 512l0-264c-52.1-36.4-114.1-56-177.7-56L32 192c-17.7 0-32 14.3-32 32L0 427c0 16.4 12.5 30.2 28.8 31.8l96 9.6c23.2 2.3 45.9 8.9 66.8 19.3L240 512zm32 0l48.4-24.2c20.9-10.4 43.5-17 66.8-19.3l96-9.6c16.4-1.6 28.8-15.4 28.8-31.8l0-203c0-17.7-14.3-32-32-32l-30.3 0c-63.6 0-125.6 19.6-177.7 56l0 264z\"/></svg>", "books": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 32C0 14.3 14.3 0 32 0L96 0c17.7 0 32 14.3 32 32l0 64L0 96 0 32zm0 96l128 0 0 256L0 384 0 128zM0 416l128 0 0 64c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32-14.3-32-32l0-64zM160 32c0-17.7 14.3-32 32-32l64 0c17.7 0 32 14.3 32 32l0 64L160 96l0-64zm0 96l128 0 0 256-128 0 0-256zm0 288l128 0 0 64c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32-14.3-32-32l0-64zM289.4 117.8c40.9-11 81.8-21.9 122.8-32.9l8.2 30.9L297.6 148.8l-8.2-30.9zm74.2 278.3c40.9-11 81.8-21.9 122.8-32.9l8.2 30.9L371.8 427c-2.7-10.3-5.5-20.6-8.2-30.9z\"/><path class=\"fa-primary\" d=\"M288 112.6l1.4 5.2L412.2 85 395.8 23.7c-4.5-17-22-27.1-38.9-22.6L295.5 17.6c-2.7 .7-5.2 1.8-7.5 3.1L288 96 160 96l0 32 128 0 0-15.4zm132.4 3.2L297.6 148.8l66 247.4 122.8-32.9-66-247.4zM388.2 488.3c4.5 17 22 27.1 38.9 22.6l61.4-16.5c16.9-4.6 27-22.1 22.5-39.1l-16.3-61.1L371.8 427l16.3 61.3zM0 96l0 32 128 0 0-32L0 96zM128 384L0 384l0 32 128 0 0-32zm160 0l-128 0 0 32 128 0 0-32z\"/></svg>", "boxes-stacked": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 576 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M104 256l80 0 0 80c0 8.8-7.2 16-16 16l-48 0c-8.8 0-16-7.2-16-16l0-80zM248 16c0-8.8 7.2-16 16-16l48 0c8.8 0 16 7.2 16 16l0 64c0 8.8-7.2 16-16 16l-48 0c-8.8 0-16-7.2-16-16l0-64zM392 256l80 0 0 80c0 8.8-7.2 16-16 16l-48 0c-8.8 0-16-7.2-16-16l0-80z\"/><path class=\"fa-primary\" d=\"M248 0L208 0c-26.5 0-48 21.5-48 48l0 112c0 35.3 28.7 64 64 64l128 0c35.3 0 64-28.7 64-64l0-112c0-26.5-21.5-48-48-48L328 0l0 80c0 8.8-7.2 16-16 16l-48 0c-8.8 0-16-7.2-16-16l0-80zM64 256c-35.3 0-64 28.7-64 64L0 448c0 35.3 28.7 64 64 64l160 0c35.3 0 64-28.7 64-64l0-128c0-35.3-28.7-64-64-64l-40 0 0 80c0 8.8-7.2 16-16 16l-48 0c-8.8 0-16-7.2-16-16l0-80-40 0zM352 512l160 0c35.3 0 64-28.7 64-64l0-128c0-35.3-28.7-64-64-64l-40 0 0 80c0 8.8-7.2 16-16 16l-48 0c-8.8 0-16-7.2-16-16l0-80-40 0c-15 0-28.8 5.1-39.7 13.8c4.9 10.4 7.7 22 7.7 34.2l0 160c0 12.2-2.8 23.8-7.7 34.2C323.2 506.9 337 512 352 512z\"/></svg>", "calendar-days": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 448 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 192l448 0 0 272c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 192zm64 80l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm0 128l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zM192 272l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm0 128l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zM320 272l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm0 128l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16z\"/><path class=\"fa-primary\" d=\"M160 32c0-17.7-14.3-32-32-32S96 14.3 96 32l0 32L48 64C21.5 64 0 85.5 0 112l0 80 448 0 0-80c0-26.5-21.5-48-48-48l-48 0 0-32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 32L160 64l0-32z\"/></svg>", "chart-network": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M119.4 272c5.4 9.4 8.6 20.3 8.6 32c0 .7 0 1.5 0 2.2s-.1 1.4-.1 2.2c-.1 1.4-.2 2.9-.4 4.3c-.4 2.8-.9 5.6-1.7 8.2c-1.5 5.4-3.6 10.5-6.3 15.2l76.1 0c14.6 64.1 71.9 112 140.4 112c40.8 0 77.7-17 103.9-44.3L512 446.9c.4-23.6 13.6-44.1 32.9-54.9l-72-43.2c4.6-14.1 7.1-29.2 7.1-44.8c0-20.3-4.2-39.7-11.8-57.2l82-60.2c-20.5-9-35.3-28.5-37.8-51.6l-82.1 60.2C405 173.3 372.1 160 336 160c-10.4 0-20.6 1.1-30.4 3.2l-29.2-62.5C264.9 117.2 245.7 128 224 128c-.9 0-1.9 0-2.8-.1c-.9 0-1.9-.1-2.8-.2l29.2 62.5C221.8 210.4 203 239 195.6 272l-76.1 0zM384 304a48 48 0 1 1 -96 0 48 48 0 1 1 96 0z\"/><path class=\"fa-primary\" d=\"M224 128A64 64 0 1 0 224 0a64 64 0 1 0 0 128zm352 64a64 64 0 1 0 0-128 64 64 0 1 0 0 128zm64 256a64 64 0 1 0 -128 0 64 64 0 1 0 128 0zM64 368a64 64 0 1 0 0-128 64 64 0 1 0 0 128z\"/></svg>", "circle-check": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zm136 0c0-6.1 2.3-12.3 7-17c9.4-9.4 24.6-9.4 33.9 0l47 47c37-37 74-74 111-111c4.7-4.7 10.8-7 17-7s12.3 2.3 17 7c2.3 2.3 4.1 5 5.3 7.9c.6 1.5 1 2.9 1.3 4.4c.2 1.1 .3 2.2 .3 2.2c.1 1.2 .1 1.2 .1 2.5c-.1 1.5-.1 1.9-.1 2.3c-.1 .7-.2 1.5-.3 2.2c-.3 1.5-.7 3-1.3 4.4c-1.2 2.9-2.9 5.6-5.3 7.9c-42.7 42.7-85.3 85.3-128 128c-4.7 4.7-10.8 7-17 7s-12.3-2.3-17-7c-21.3-21.3-42.7-42.7-64-64c-4.7-4.7-7-10.8-7-17z\"/><path class=\"fa-primary\" d=\"M369 175c9.4 9.4 9.4 24.6 0 33.9L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0z\"/></svg>", "clipboard": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 128L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64l-49.6 0c.2 .8 .3 1.6 .4 2.3C290.1 72.6 304 90.7 304 112l0 24c0 13.3-10.7 24-24 24l-88 0-88 0c-13.3 0-24-10.7-24-24l0-24c0-21.3 13.9-39.4 33.2-45.7c.1-.8 .3-1.6 .4-2.3L64 64C28.7 64 0 92.7 0 128z\"/><path class=\"fa-primary\" d=\"M192 0c-39.5 0-72.4 28.7-78.8 66.3C93.9 72.6 80 90.7 80 112l0 24c0 13.3 10.7 24 24 24l88 0 88 0c13.3 0 24-10.7 24-24l0-24c0-21.3-13.9-39.4-33.2-45.7C264.4 28.7 231.5 0 192 0zm0 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z\"/></svg>", "clipboard-check": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 128L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64l-49.6 0c.2 .8 .3 1.6 .4 2.3C290.1 72.6 304 90.7 304 112l0 24c0 13.3-10.7 24-24 24l-88 0-88 0c-13.3 0-24-10.7-24-24l0-24c0-21.3 13.9-39.4 33.2-45.7c.1-.8 .3-1.6 .4-2.3L64 64C28.7 64 0 92.7 0 128zM72 320c0-6.1 2.3-12.3 7-17c9.4-9.4 24.6-9.4 33.9 0l47 47L271 239c9.4-9.4 24.6-9.4 33.9 0c4.7 4.7 7 10.8 7 17s-2.3 12.3-7 17L177 401c-4.7 4.7-10.8 7-17 7s-12.3-2.3-17-7L79 337c-4.7-4.7-7-10.8-7-17z\"/><path class=\"fa-primary\" d=\"M113.2 66.3C93.9 72.6 80 90.7 80 112l0 24c0 13.3 10.7 24 24 24l88 0 88 0c13.3 0 24-10.7 24-24l0-24c0-21.3-13.9-39.4-33.2-45.7C264.4 28.7 231.5 0 192 0s-72.4 28.7-78.8 66.3zM168 80a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zM305 273c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L305 273z\"/></svg>", "comments": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M231.5 383C348.9 372.9 448 288.3 448 176c0-5.2-.2-10.4-.6-15.5C555.1 167.1 640 243.2 640 336c0 38.6-14.7 74.3-39.6 103.4c3.5 9.4 8.7 17.7 14.2 24.7c4.8 6.2 9.7 11 13.3 14.3c1.8 1.6 3.3 2.9 4.3 3.7c.5 .4 .9 .7 1.3 1c5.6 4.1 7.9 11.3 5.8 17.9c-2.1 6.6-8.3 11.1-15.2 11.1c-21.8 0-43.8-5.6-62.1-12.5c-9.2-3.5-17.8-7.4-25.3-11.4C505.9 503.3 470.2 512 432 512c-95.6 0-176.2-54.6-200.5-129z\"/><path class=\"fa-primary\" d=\"M416 176c0 97.2-93.1 176-208 176c-38.2 0-73.9-8.7-104.7-23.9c-7.5 4-16 7.9-25.2 11.4C59.8 346.4 37.8 352 16 352c-6.9 0-13.1-4.5-15.2-11.1s.2-13.8 5.8-17.9c0 0 0 0 0 0s0 0 0 0l.2-.2c.2-.2 .6-.4 1.1-.8c1-.8 2.5-2 4.3-3.7c3.6-3.3 8.5-8.1 13.3-14.3c5.5-7 10.7-15.4 14.2-24.7C14.7 250.3 0 214.6 0 176C0 78.8 93.1 0 208 0S416 78.8 416 176z\"/></svg>", "dog": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 576 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M303.9 192c37.3 21.4 74.7 42.8 112.1 64.1c1.9-11.3 3.7-22.5 5.6-33.7c-37.3-21.3-74.7-42.7-112-64c-1.9 11.2-3.7 22.3-5.7 33.5z\"/><path class=\"fa-primary\" d=\"M309.6 158.5L332.7 19.8C334.6 8.4 344.5 0 356.1 0c7.5 0 14.5 3.5 19 9.5L392 32l52.1 0c12.7 0 24.9 5.1 33.9 14.1L496 64l56 0c13.3 0 24 10.7 24 24l0 24c0 44.2-35.8 80-80 80l-32 0-16 0-21.3 0-5.1 30.5-112-64zM416 256.1L416 480c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32l0-115.2c-24 12.3-51.2 19.2-80 19.2s-56-6.9-80-19.2L160 480c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32l0-230.2c-28.8-10.9-51.4-35.3-59.2-66.5L1 167.8c-4.3-17.1 6.1-34.5 23.3-38.8s34.5 6.1 38.8 23.3l3.9 15.5C70.5 182 83.3 192 98 192l30 0 16 0 159.8 0L416 256.1zM464 80a16 16 0 1 0 -32 0 16 16 0 1 0 32 0z\"/></svg>", "file-chart-column": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 288c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64zM80 376l0 48c0 13.3 10.7 24 24 24s24-10.7 24-24l0-48c0-13.3-10.7-24-24-24s-24 10.7-24 24zm88-128l0 176c0 13.3 10.7 24 24 24s24-10.7 24-24l0-176c0-13.3-10.7-24-24-24s-24 10.7-24 24zm88 64l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24s-24 10.7-24 24z\"/><path class=\"fa-primary\" d=\"M384 160L224 0l0 128c0 17.7 14.3 32 32 32l128 0zM216 248c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 176c0 13.3 10.7 24 24 24s24-10.7 24-24l0-176zm88 64c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112zM128 376c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 48c0 13.3 10.7 24 24 24s24-10.7 24-24l0-48z\"/></svg>", "file-invoice": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-288-128 0c-17.7 0-32-14.3-32-32L224 0 64 0C28.7 0 0 28.7 0 64zM64 80c0-8.8 7.2-16 16-16l64 0c8.8 0 16 7.2 16 16s-7.2 16-16 16L80 96c-8.8 0-16-7.2-16-16zm0 64c0-8.8 7.2-16 16-16l64 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-64 0c-8.8 0-16-7.2-16-16zm0 112c0-17.7 14.3-32 32-32l192 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32L96 352c-17.7 0-32-14.3-32-32l0-64zM224 432c0-8.8 7.2-16 16-16l64 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-64 0c-8.8 0-16-7.2-16-16z\"/><path class=\"fa-primary\" d=\"M384 160L224 0l0 128c0 17.7 14.3 32 32 32l128 0zM96 224c-17.7 0-32 14.3-32 32l0 64c0 17.7 14.3 32 32 32l192 0c17.7 0 32-14.3 32-32l0-64c0-17.7-14.3-32-32-32L96 224zm0 32l192 0 0 64L96 320l0-64zM240 416c-8.8 0-16 7.2-16 16s7.2 16 16 16l64 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-64 0z\"/></svg>", "grid-horizontal": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 448 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 328c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48zM160 168c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48zM320 328c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48z\"/><path class=\"fa-primary\" d=\"M0 168c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48zM160 328c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48zM448 168l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40z\"/></svg>", "house-chimney": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 576 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M64 270.5c74.7-65.3 149.3-130.7 224-196L512.1 270.6l.4 201.3c0 22.1-17.9 40.1-40 40.1L392 512c-22.1 0-40-17.9-40-40l0-88.3c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32 14.3-32 32l0 88.3c0 22.1-17.9 40-40 40l-79.9 0c-22.1 0-40-17.9-40-40L64 270.5z\"/><path class=\"fa-primary\" d=\"M309.1 7.9C297-2.6 279-2.6 266.9 7.9l-256 224c-13.3 11.6-14.6 31.9-3 45.2s31.9 14.6 45.2 3L288 74.5 522.9 280.1c13.3 11.6 33.5 10.3 45.2-3s10.3-33.5-3-45.2L512 185.5 512 64c0-17.7-14.3-32-32-32l-32 0c-17.7 0-32 14.3-32 32l0 37.5L309.1 7.9z\"/></svg>", "people-group": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 304c0 44.7 26.2 83.2 64 101.2L64 448c0 17.7 14.3 32 32 32l64 0c17.7 0 32-14.3 32-32l0-42.8 0-10.7c-20-24.7-32-56.2-32-90.5c0-37.8 14.6-72.2 38.4-97.9c-16.1-9-34.7-14.1-54.4-14.1l-32 0C50.1 192 0 242.1 0 304zm48 0c0-16.2 6-31.1 16-42.3l0 84.7C54 335 48 320.2 48 304zM64 96a64 64 0 1 0 128 0A64 64 0 1 0 64 96zM441.6 206.1C465.4 231.8 480 266.2 480 304c0 34.3-12 65.8-32 90.5l0 10.7 0 42.8c0 17.7 14.3 32 32 32l64 0c17.7 0 32-14.3 32-32l0-42.8c37.8-18 64-56.5 64-101.2c0-61.9-50.1-112-112-112l-32 0c-19.7 0-38.3 5.1-54.4 14.1zM448 96a64 64 0 1 0 128 0A64 64 0 1 0 448 96zM576 261.7c10 11.3 16 26.1 16 42.3s-6 31-16 42.3l0-84.7z\"/><path class=\"fa-primary\" d=\"M384 96A64 64 0 1 0 256 96a64 64 0 1 0 128 0zM256 261.7l0 84.7c-10-11.3-16-26.1-16-42.3s6-31.1 16-42.3zm128 84.7l0-84.7c10 11.3 16 26.1 16 42.3s-6 31-16 42.3zm0 58.9c37.8-18 64-56.5 64-101.2c0-61.9-50.1-112-112-112l-32 0c-61.9 0-112 50.1-112 112c0 44.7 26.2 83.2 64 101.2l0 42.8c0 17.7 14.3 32 32 32l64 0c17.7 0 32-14.3 32-32l0-42.8z\"/></svg>", "sitemap": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 576 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M56 288l0 32 48 0 0-32c0-4.4 3.6-8 8-8l152 0 0 40 48 0 0-40 152 0c4.4 0 8 3.6 8 8l0 32 48 0 0-32c0-30.9-25.1-56-56-56l-152 0 0-40-48 0 0 40-152 0c-30.9 0-56 25.1-56 56z\"/><path class=\"fa-primary\" d=\"M208 80c0-26.5 21.5-48 48-48l64 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-64 0c-26.5 0-48-21.5-48-48l0-64zM48 320l64 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-64 0c-26.5 0-48-21.5-48-48l0-64c0-26.5 21.5-48 48-48zm208 0l64 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-64 0c-26.5 0-48-21.5-48-48l0-64c0-26.5 21.5-48 48-48zm208 0l64 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-64 0c-26.5 0-48-21.5-48-48l0-64c0-26.5 21.5-48 48-48z\"/></svg>", "star": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 576 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z\"/><path class=\"fa-primary\" d=\"\"/></svg>", "user": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 448 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M96 128a128 128 0 1 0 256 0A128 128 0 1 0 96 128z\"/><path class=\"fa-primary\" d=\"M0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z\"/></svg>", "users": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 298.7C0 310.4 9.6 320 21.3 320l213.3 0c.2 0 .4 0 .7 0c-26.6-23.5-43.3-57.8-43.3-96c0-7.6 .7-15 1.9-22.3c-13.6-6.3-28.7-9.7-44.6-9.7l-42.7 0C47.8 192 0 239.8 0 298.7zM64 80a80 80 0 1 0 160 0A80 80 0 1 0 64 80zM404.7 320c.2 0 .4 0 .7 0l213.3 0c11.8 0 21.3-9.6 21.3-21.3C640 239.8 592.2 192 533.3 192l-42.7 0c-15.9 0-31 3.5-44.6 9.7c1.3 7.2 1.9 14.7 1.9 22.3c0 38.2-16.8 72.5-43.3 96zM432 80a80 80 0 1 0 160 0A80 80 0 1 0 432 80z\"/><path class=\"fa-primary\" d=\"M320 320a96 96 0 1 0 0-192 96 96 0 1 0 0 192zm-58.7 32C187.7 352 128 411.7 128 485.3c0 14.7 11.9 26.7 26.7 26.7l330.7 0c14.7 0 26.7-11.9 26.7-26.7C512 411.7 452.3 352 378.7 352l-117.3 0z\"/></svg>"};
+  SVG_ICONS = {"graduation-cap": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M.9 453.4c1.8 5 6 8.9 11.2 10.2l64 16c1.3 .3 2.6 .5 3.9 .5c3 0 6-.8 8.6-2.5c3.7-2.3 6.3-6.1 7.1-10.4c8.6-42.8 4.3-81.2-2.1-108.7c-3.2-14-7.5-28.3-13.4-41.5c1.9-37 19.2-70.9 46.7-94.2c11.5-9.7 24.7-17.6 39.3-23.1c53.1-19.9 106.3-39.9 159.4-59.8c8.3-3.1 12.5-12.3 9.4-20.6s-12.3-12.5-20.6-9.4c-53.2 19.9-106.3 39.9-159.4 59.8c-23.9 9-44.9 23.1-61.7 40.9c-27.2 28.7-43.7 66.7-45.1 107.7c-.1 .6-.1 1.2-.1 1.8c0 28.4-10.8 57.8-22.3 80.8c-6.5 13-13.9 25.8-22.5 37.6C0 442.7-.9 448.3 .9 453.4z\"/><path class=\"fa-primary\" d=\"M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l77.4 27.9c16.8-17.8 37.8-31.9 61.7-40.9l159.4-59.8c8.3-3.1 17.5 1.1 20.6 9.4s-1.1 17.5-9.4 20.6L166.2 199.6c-14.6 5.5-27.8 13.4-39.3 23.1l169.5 61.2c7.6 2.7 15.6 4.1 23.7 4.1s16.1-1.4 23.7-4.1L624.2 182.6c9.5-3.4 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 408c0 35.3 86 72 192 72s192-36.7 192-72L496.7 262.6 354.5 314c-11.1 4-22.8 6-34.5 6s-23.5-2-34.5-6L143.3 262.6 128 408z\"/></svg>", "bell": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 448 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 384c0 4.4 .9 8.9 2.8 13.1C8 408.6 19.4 416 32 416l384 0c12.6 0 24-7.4 29.2-18.9c1.9-4.2 2.8-8.7 2.8-13.1c0-7.7-2.8-15.3-8.1-21.3l-7.4-8.3C401.3 319.2 384 273.9 384 226.8l0-18.8c0-77.4-55-142-128-156.8L256 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 19.2C119 66 64 130.6 64 208l0 18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3C2.8 368.7 0 376.3 0 384z\"/><path class=\"fa-primary\" d=\"M288 448c0 17-6.7 33.3-18.7 45.3s-28.3 18.7-45.3 18.7s-33.3-6.7-45.3-18.7s-18.7-28.3-18.7-45.3l64 0h64z\"/></svg>", "book-open": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 576 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M288 72c16-16 80-40 144-40c50.5 0 97.7 13.3 125.9 24.1C569.2 60.5 576 71.7 576 83.8l0 370.3c0 11.9-12.8 20.2-24.1 16.5C520.4 460.1 470.5 448 432 448c-51.2 0-144 32-144 32l0-408z\"/><path class=\"fa-primary\" d=\"M288 72V480s-92.8-32-144-32c-38.5 0-88.4 12.1-119.9 22.6C12.8 474.3 0 466 0 454.1V83.8C0 71.7 6.8 60.5 18.1 56.1C46.3 45.3 93.5 32 144 32c64 0 128 24 144 40z\"/></svg>", "book-open-reader": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M160 96a96 96 0 1 0 192 0A96 96 0 1 0 160 96z\"/><path class=\"fa-primary\" d=\"M240 512l0-264c-52.1-36.4-114.1-56-177.7-56L32 192c-17.7 0-32 14.3-32 32L0 427c0 16.4 12.5 30.2 28.8 31.8l96 9.6c23.2 2.3 45.9 8.9 66.8 19.3L240 512zm32 0l48.4-24.2c20.9-10.4 43.5-17 66.8-19.3l96-9.6c16.4-1.6 28.8-15.4 28.8-31.8l0-203c0-17.7-14.3-32-32-32l-30.3 0c-63.6 0-125.6 19.6-177.7 56l0 264z\"/></svg>", "books": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 32C0 14.3 14.3 0 32 0L96 0c17.7 0 32 14.3 32 32l0 64L0 96 0 32zm0 96l128 0 0 256L0 384 0 128zM0 416l128 0 0 64c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32-14.3-32-32l0-64zM160 32c0-17.7 14.3-32 32-32l64 0c17.7 0 32 14.3 32 32l0 64L160 96l0-64zm0 96l128 0 0 256-128 0 0-256zm0 288l128 0 0 64c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32-14.3-32-32l0-64zM289.4 117.8c40.9-11 81.8-21.9 122.8-32.9l8.2 30.9L297.6 148.8l-8.2-30.9zm74.2 278.3c40.9-11 81.8-21.9 122.8-32.9l8.2 30.9L371.8 427c-2.7-10.3-5.5-20.6-8.2-30.9z\"/><path class=\"fa-primary\" d=\"M288 112.6l1.4 5.2L412.2 85 395.8 23.7c-4.5-17-22-27.1-38.9-22.6L295.5 17.6c-2.7 .7-5.2 1.8-7.5 3.1L288 96 160 96l0 32 128 0 0-15.4zm132.4 3.2L297.6 148.8l66 247.4 122.8-32.9-66-247.4zM388.2 488.3c4.5 17 22 27.1 38.9 22.6l61.4-16.5c16.9-4.6 27-22.1 22.5-39.1l-16.3-61.1L371.8 427l16.3 61.3zM0 96l0 32 128 0 0-32L0 96zM128 384L0 384l0 32 128 0 0-32zm160 0l-128 0 0 32 128 0 0-32z\"/></svg>", "boxes-stacked": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 576 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M104 256l80 0 0 80c0 8.8-7.2 16-16 16l-48 0c-8.8 0-16-7.2-16-16l0-80zM248 16c0-8.8 7.2-16 16-16l48 0c8.8 0 16 7.2 16 16l0 64c0 8.8-7.2 16-16 16l-48 0c-8.8 0-16-7.2-16-16l0-64zM392 256l80 0 0 80c0 8.8-7.2 16-16 16l-48 0c-8.8 0-16-7.2-16-16l0-80z\"/><path class=\"fa-primary\" d=\"M248 0L208 0c-26.5 0-48 21.5-48 48l0 112c0 35.3 28.7 64 64 64l128 0c35.3 0 64-28.7 64-64l0-112c0-26.5-21.5-48-48-48L328 0l0 80c0 8.8-7.2 16-16 16l-48 0c-8.8 0-16-7.2-16-16l0-80zM64 256c-35.3 0-64 28.7-64 64L0 448c0 35.3 28.7 64 64 64l160 0c35.3 0 64-28.7 64-64l0-128c0-35.3-28.7-64-64-64l-40 0 0 80c0 8.8-7.2 16-16 16l-48 0c-8.8 0-16-7.2-16-16l0-80-40 0zM352 512l160 0c35.3 0 64-28.7 64-64l0-128c0-35.3-28.7-64-64-64l-40 0 0 80c0 8.8-7.2 16-16 16l-48 0c-8.8 0-16-7.2-16-16l0-80-40 0c-15 0-28.8 5.1-39.7 13.8c4.9 10.4 7.7 22 7.7 34.2l0 160c0 12.2-2.8 23.8-7.7 34.2C323.2 506.9 337 512 352 512z\"/></svg>", "calendar-days": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 448 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 192l448 0 0 272c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 192zm64 80l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm0 128l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zM192 272l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm0 128l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zM320 272l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm0 128l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16z\"/><path class=\"fa-primary\" d=\"M160 32c0-17.7-14.3-32-32-32S96 14.3 96 32l0 32L48 64C21.5 64 0 85.5 0 112l0 80 448 0 0-80c0-26.5-21.5-48-48-48l-48 0 0-32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 32L160 64l0-32z\"/></svg>", "chart-network": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M119.4 272c5.4 9.4 8.6 20.3 8.6 32c0 .7 0 1.5 0 2.2s-.1 1.4-.1 2.2c-.1 1.4-.2 2.9-.4 4.3c-.4 2.8-.9 5.6-1.7 8.2c-1.5 5.4-3.6 10.5-6.3 15.2l76.1 0c14.6 64.1 71.9 112 140.4 112c40.8 0 77.7-17 103.9-44.3L512 446.9c.4-23.6 13.6-44.1 32.9-54.9l-72-43.2c4.6-14.1 7.1-29.2 7.1-44.8c0-20.3-4.2-39.7-11.8-57.2l82-60.2c-20.5-9-35.3-28.5-37.8-51.6l-82.1 60.2C405 173.3 372.1 160 336 160c-10.4 0-20.6 1.1-30.4 3.2l-29.2-62.5C264.9 117.2 245.7 128 224 128c-.9 0-1.9 0-2.8-.1c-.9 0-1.9-.1-2.8-.2l29.2 62.5C221.8 210.4 203 239 195.6 272l-76.1 0zM384 304a48 48 0 1 1 -96 0 48 48 0 1 1 96 0z\"/><path class=\"fa-primary\" d=\"M224 128A64 64 0 1 0 224 0a64 64 0 1 0 0 128zm352 64a64 64 0 1 0 0-128 64 64 0 1 0 0 128zm64 256a64 64 0 1 0 -128 0 64 64 0 1 0 128 0zM64 368a64 64 0 1 0 0-128 64 64 0 1 0 0 128z\"/></svg>", "circle-check": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zm136 0c0-6.1 2.3-12.3 7-17c9.4-9.4 24.6-9.4 33.9 0l47 47c37-37 74-74 111-111c4.7-4.7 10.8-7 17-7s12.3 2.3 17 7c2.3 2.3 4.1 5 5.3 7.9c.6 1.5 1 2.9 1.3 4.4c.2 1.1 .3 2.2 .3 2.2c.1 1.2 .1 1.2 .1 2.5c-.1 1.5-.1 1.9-.1 2.3c-.1 .7-.2 1.5-.3 2.2c-.3 1.5-.7 3-1.3 4.4c-1.2 2.9-2.9 5.6-5.3 7.9c-42.7 42.7-85.3 85.3-128 128c-4.7 4.7-10.8 7-17 7s-12.3-2.3-17-7c-21.3-21.3-42.7-42.7-64-64c-4.7-4.7-7-10.8-7-17z\"/><path class=\"fa-primary\" d=\"M369 175c9.4 9.4 9.4 24.6 0 33.9L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0z\"/></svg>", "clipboard": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 128L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64l-49.6 0c.2 .8 .3 1.6 .4 2.3C290.1 72.6 304 90.7 304 112l0 24c0 13.3-10.7 24-24 24l-88 0-88 0c-13.3 0-24-10.7-24-24l0-24c0-21.3 13.9-39.4 33.2-45.7c.1-.8 .3-1.6 .4-2.3L64 64C28.7 64 0 92.7 0 128z\"/><path class=\"fa-primary\" d=\"M192 0c-39.5 0-72.4 28.7-78.8 66.3C93.9 72.6 80 90.7 80 112l0 24c0 13.3 10.7 24 24 24l88 0 88 0c13.3 0 24-10.7 24-24l0-24c0-21.3-13.9-39.4-33.2-45.7C264.4 28.7 231.5 0 192 0zm0 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z\"/></svg>", "clipboard-check": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 128L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64l-49.6 0c.2 .8 .3 1.6 .4 2.3C290.1 72.6 304 90.7 304 112l0 24c0 13.3-10.7 24-24 24l-88 0-88 0c-13.3 0-24-10.7-24-24l0-24c0-21.3 13.9-39.4 33.2-45.7c.1-.8 .3-1.6 .4-2.3L64 64C28.7 64 0 92.7 0 128zM72 320c0-6.1 2.3-12.3 7-17c9.4-9.4 24.6-9.4 33.9 0l47 47L271 239c9.4-9.4 24.6-9.4 33.9 0c4.7 4.7 7 10.8 7 17s-2.3 12.3-7 17L177 401c-4.7 4.7-10.8 7-17 7s-12.3-2.3-17-7L79 337c-4.7-4.7-7-10.8-7-17z\"/><path class=\"fa-primary\" d=\"M113.2 66.3C93.9 72.6 80 90.7 80 112l0 24c0 13.3 10.7 24 24 24l88 0 88 0c13.3 0 24-10.7 24-24l0-24c0-21.3-13.9-39.4-33.2-45.7C264.4 28.7 231.5 0 192 0s-72.4 28.7-78.8 66.3zM168 80a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zM305 273c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L305 273z\"/></svg>", "comments": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M231.5 383C348.9 372.9 448 288.3 448 176c0-5.2-.2-10.4-.6-15.5C555.1 167.1 640 243.2 640 336c0 38.6-14.7 74.3-39.6 103.4c3.5 9.4 8.7 17.7 14.2 24.7c4.8 6.2 9.7 11 13.3 14.3c1.8 1.6 3.3 2.9 4.3 3.7c.5 .4 .9 .7 1.3 1c5.6 4.1 7.9 11.3 5.8 17.9c-2.1 6.6-8.3 11.1-15.2 11.1c-21.8 0-43.8-5.6-62.1-12.5c-9.2-3.5-17.8-7.4-25.3-11.4C505.9 503.3 470.2 512 432 512c-95.6 0-176.2-54.6-200.5-129z\"/><path class=\"fa-primary\" d=\"M416 176c0 97.2-93.1 176-208 176c-38.2 0-73.9-8.7-104.7-23.9c-7.5 4-16 7.9-25.2 11.4C59.8 346.4 37.8 352 16 352c-6.9 0-13.1-4.5-15.2-11.1s.2-13.8 5.8-17.9c0 0 0 0 0 0s0 0 0 0l.2-.2c.2-.2 .6-.4 1.1-.8c1-.8 2.5-2 4.3-3.7c3.6-3.3 8.5-8.1 13.3-14.3c5.5-7 10.7-15.4 14.2-24.7C14.7 250.3 0 214.6 0 176C0 78.8 93.1 0 208 0S416 78.8 416 176z\"/></svg>", "dog": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 576 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M303.9 192c37.3 21.4 74.7 42.8 112.1 64.1c1.9-11.3 3.7-22.5 5.6-33.7c-37.3-21.3-74.7-42.7-112-64c-1.9 11.2-3.7 22.3-5.7 33.5z\"/><path class=\"fa-primary\" d=\"M309.6 158.5L332.7 19.8C334.6 8.4 344.5 0 356.1 0c7.5 0 14.5 3.5 19 9.5L392 32l52.1 0c12.7 0 24.9 5.1 33.9 14.1L496 64l56 0c13.3 0 24 10.7 24 24l0 24c0 44.2-35.8 80-80 80l-32 0-16 0-21.3 0-5.1 30.5-112-64zM416 256.1L416 480c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32l0-115.2c-24 12.3-51.2 19.2-80 19.2s-56-6.9-80-19.2L160 480c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32l0-230.2c-28.8-10.9-51.4-35.3-59.2-66.5L1 167.8c-4.3-17.1 6.1-34.5 23.3-38.8s34.5 6.1 38.8 23.3l3.9 15.5C70.5 182 83.3 192 98 192l30 0 16 0 159.8 0L416 256.1zM464 80a16 16 0 1 0 -32 0 16 16 0 1 0 32 0z\"/></svg>", "file-chart-column": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 288c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64zM80 376l0 48c0 13.3 10.7 24 24 24s24-10.7 24-24l0-48c0-13.3-10.7-24-24-24s-24 10.7-24 24zm88-128l0 176c0 13.3 10.7 24 24 24s24-10.7 24-24l0-176c0-13.3-10.7-24-24-24s-24 10.7-24 24zm88 64l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24s-24 10.7-24 24z\"/><path class=\"fa-primary\" d=\"M384 160L224 0l0 128c0 17.7 14.3 32 32 32l128 0zM216 248c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 176c0 13.3 10.7 24 24 24s24-10.7 24-24l0-176zm88 64c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112zM128 376c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 48c0 13.3 10.7 24 24 24s24-10.7 24-24l0-48z\"/></svg>", "file-invoice": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-288-128 0c-17.7 0-32-14.3-32-32L224 0 64 0C28.7 0 0 28.7 0 64zM64 80c0-8.8 7.2-16 16-16l64 0c8.8 0 16 7.2 16 16s-7.2 16-16 16L80 96c-8.8 0-16-7.2-16-16zm0 64c0-8.8 7.2-16 16-16l64 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-64 0c-8.8 0-16-7.2-16-16zm0 112c0-17.7 14.3-32 32-32l192 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32L96 352c-17.7 0-32-14.3-32-32l0-64zM224 432c0-8.8 7.2-16 16-16l64 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-64 0c-8.8 0-16-7.2-16-16z\"/><path class=\"fa-primary\" d=\"M384 160L224 0l0 128c0 17.7 14.3 32 32 32l128 0zM96 224c-17.7 0-32 14.3-32 32l0 64c0 17.7 14.3 32 32 32l192 0c17.7 0 32-14.3 32-32l0-64c0-17.7-14.3-32-32-32L96 224zm0 32l192 0 0 64L96 320l0-64zM240 416c-8.8 0-16 7.2-16 16s7.2 16 16 16l64 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-64 0z\"/></svg>", "grid-horizontal": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 448 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 328c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48zM160 168c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48zM320 328c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48z\"/><path class=\"fa-primary\" d=\"M0 168c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48zM160 328c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48zM448 168l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40z\"/></svg>", "house-chimney": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 576 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M64 270.5c74.7-65.3 149.3-130.7 224-196L512.1 270.6l.4 201.3c0 22.1-17.9 40.1-40 40.1L392 512c-22.1 0-40-17.9-40-40l0-88.3c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32 14.3-32 32l0 88.3c0 22.1-17.9 40-40 40l-79.9 0c-22.1 0-40-17.9-40-40L64 270.5z\"/><path class=\"fa-primary\" d=\"M309.1 7.9C297-2.6 279-2.6 266.9 7.9l-256 224c-13.3 11.6-14.6 31.9-3 45.2s31.9 14.6 45.2 3L288 74.5 522.9 280.1c13.3 11.6 33.5 10.3 45.2-3s10.3-33.5-3-45.2L512 185.5 512 64c0-17.7-14.3-32-32-32l-32 0c-17.7 0-32 14.3-32 32l0 37.5L309.1 7.9z\"/></svg>", "people-group": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 304c0 44.7 26.2 83.2 64 101.2L64 448c0 17.7 14.3 32 32 32l64 0c17.7 0 32-14.3 32-32l0-42.8 0-10.7c-20-24.7-32-56.2-32-90.5c0-37.8 14.6-72.2 38.4-97.9c-16.1-9-34.7-14.1-54.4-14.1l-32 0C50.1 192 0 242.1 0 304zm48 0c0-16.2 6-31.1 16-42.3l0 84.7C54 335 48 320.2 48 304zM64 96a64 64 0 1 0 128 0A64 64 0 1 0 64 96zM441.6 206.1C465.4 231.8 480 266.2 480 304c0 34.3-12 65.8-32 90.5l0 10.7 0 42.8c0 17.7 14.3 32 32 32l64 0c17.7 0 32-14.3 32-32l0-42.8c37.8-18 64-56.5 64-101.2c0-61.9-50.1-112-112-112l-32 0c-19.7 0-38.3 5.1-54.4 14.1zM448 96a64 64 0 1 0 128 0A64 64 0 1 0 448 96zM576 261.7c10 11.3 16 26.1 16 42.3s-6 31-16 42.3l0-84.7z\"/><path class=\"fa-primary\" d=\"M384 96A64 64 0 1 0 256 96a64 64 0 1 0 128 0zM256 261.7l0 84.7c-10-11.3-16-26.1-16-42.3s6-31.1 16-42.3zm128 84.7l0-84.7c10 11.3 16 26.1 16 42.3s-6 31-16 42.3zm0 58.9c37.8-18 64-56.5 64-101.2c0-61.9-50.1-112-112-112l-32 0c-61.9 0-112 50.1-112 112c0 44.7 26.2 83.2 64 101.2l0 42.8c0 17.7 14.3 32 32 32l64 0c17.7 0 32-14.3 32-32l0-42.8z\"/></svg>", "sitemap": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 576 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M56 288l0 32 48 0 0-32c0-4.4 3.6-8 8-8l152 0 0 40 48 0 0-40 152 0c4.4 0 8 3.6 8 8l0 32 48 0 0-32c0-30.9-25.1-56-56-56l-152 0 0-40-48 0 0 40-152 0c-30.9 0-56 25.1-56 56z\"/><path class=\"fa-primary\" d=\"M208 80c0-26.5 21.5-48 48-48l64 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-64 0c-26.5 0-48-21.5-48-48l0-64zM48 320l64 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-64 0c-26.5 0-48-21.5-48-48l0-64c0-26.5 21.5-48 48-48zm208 0l64 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-64 0c-26.5 0-48-21.5-48-48l0-64c0-26.5 21.5-48 48-48zm208 0l64 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-64 0c-26.5 0-48-21.5-48-48l0-64c0-26.5 21.5-48 48-48z\"/></svg>", "star": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 576 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z\"/><path class=\"fa-primary\" d=\"\"/></svg>", "user": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 448 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M96 128a128 128 0 1 0 256 0A128 128 0 1 0 96 128z\"/><path class=\"fa-primary\" d=\"M0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z\"/></svg>", "users": "<svg fill=\"currentColor\" width=\"16\" height=\"16\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 512\"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class=\"fa-secondary\" d=\"M0 298.7C0 310.4 9.6 320 21.3 320l213.3 0c.2 0 .4 0 .7 0c-26.6-23.5-43.3-57.8-43.3-96c0-7.6 .7-15 1.9-22.3c-13.6-6.3-28.7-9.7-44.6-9.7l-42.7 0C47.8 192 0 239.8 0 298.7zM64 80a80 80 0 1 0 160 0A80 80 0 1 0 64 80zM404.7 320c.2 0 .4 0 .7 0l213.3 0c11.8 0 21.3-9.6 21.3-21.3C640 239.8 592.2 192 533.3 192l-42.7 0c-15.9 0-31 3.5-44.6 9.7c1.3 7.2 1.9 14.7 1.9 22.3c0 38.2-16.8 72.5-43.3 96zM432 80a80 80 0 1 0 160 0A80 80 0 1 0 432 80z\"/><path class=\"fa-primary\" d=\"M320 320a96 96 0 1 0 0-192 96 96 0 1 0 0 192zm-58.7 32C187.7 352 128 411.7 128 485.3c0 14.7 11.9 26.7 26.7 26.7l330.7 0c14.7 0 26.7-11.9 26.7-26.7C512 411.7 452.3 352 378.7 352l-117.3 0z\"/></svg>"};
 
   // ── RIZIKA DATA ──────────────────────────
   RISKS = [
@@ -4122,6 +4727,79 @@ class Component extends DCLogic {
     if (!this.state.confirmedDocs.includes(id)) this.setState(s => ({ confirmedDocs: [...s.confirmedDocs, id] }));
   }
 
+  // ── ŠKOLENÍ — osobní pohled („Moje školení") ──────────────────────────
+  // Kategorie funguje stejně jako `selectedSmernCat` u Moje směrnice:
+  // dlaždice → detail seznamu → zpět. Konkrétní školení se navíc dá
+  // „spustit" (vyplnit otázky) → skolRunId řídí, které školení běží.
+  skolAllTrainings() {
+    // Sloučí výchozí data s uživatelskými přepisy (skolOverrides) a nově
+    // založenými školeními (skolCustom) — stejný princip jako u ostatních
+    // administrací v prototypu (default data + runtime overlay).
+    const base = this.SKOL_TRAININGS.map(t => this.state.skolOverrides[t.id] ? { ...t, ...this.state.skolOverrides[t.id] } : t);
+    return [...base, ...this.state.skolCustom].filter(t => !this.state.skolArchived.includes(t.id) || t.status === 'archivovano');
+  }
+  skolMyTrainings() {
+    const me = 'Karolína Fišerová';
+    return this.skolAllTrainings().filter(t => t.status !== 'koncept' && (t.assignees || []).some(a => a.name === me));
+  }
+  skolMyStatusFor(t) {
+    if (this.state.skolMyDone.includes(t.id)) return 'hotovo';
+    const me = 'Karolína Fišerová';
+    const a = (t.assignees || []).find(x => x.name === me);
+    return a ? a.status : 'nerozeslano';
+  }
+  openSkolCat(key) { this.setState({ selectedSkolCat: key }); }
+  backToSkolTiles() { this.setState({ selectedSkolCat: null }); }
+  toggleSkolConfirmed() { this.setState(s => ({ skolConfirmedOpen: !s.skolConfirmedOpen })); }
+  openSkolRun(id) { this.setState({ skolRunId: id, skolRunQ: 0, skolMyAnswers: {} }); }
+  backToSkolList() { this.setState({ skolRunId: null, skolRunQ: 0 }); }
+  skolPickAnswer(qIdx, val) { this.setState(s => ({ skolMyAnswers: { ...s.skolMyAnswers, [qIdx]: val } })); }
+  skolPrevQ() { this.setState(s => ({ skolRunQ: Math.max(0, s.skolRunQ - 1) })); }
+  skolNextQ() {
+    this.setState(s => {
+      const t = this.skolAllTrainings().find(x => x.id === s.skolRunId);
+      const max = t ? t.questions.length - 1 : 0;
+      return { skolRunQ: Math.min(max, s.skolRunQ + 1) };
+    });
+  }
+  skolSaveAndClose() {
+    this.setState(s => ({
+      skolMyDone: s.skolMyDone.includes(s.skolRunId) ? s.skolMyDone : [...s.skolMyDone, s.skolRunId],
+      skolDoneId: s.skolRunId, skolRunId: null, skolRunQ: 0
+    }));
+  }
+
+  // ── ŠKOLENÍ — administrace („Katalog školení") ────────────────────────
+  setSkolListFilter(key) { this.setState({ skolListFilter: key }); }
+  setSkolEmpFilter(key) { this.setState({ skolEmpFilter: key }); }
+  setSkolItemTab(key) { this.setState({ skolItemTab: key }); }
+  openSkolForm(mode, row) {
+    const empty = { id: null, title: '', category: 'povinne', tags: [], deadlineDny: 7, prijemci: 'vsichni', doruceni: 'potvrzeni', questions: [] };
+    this.setState({ skolFormOpen: true, skolFormMode: mode, skolFormId: row ? row.id : null, skolForm: row ? { ...empty, ...row } : empty });
+  }
+  closeSkolForm() { this.setState({ skolFormOpen: false, skolForm: null }); }
+  setSkolFormField(key, val) { this.setState(s => ({ skolForm: { ...s.skolForm, [key]: val } })); }
+  toggleSkolFormTag(tagKey) {
+    this.setState(s => {
+      const has = s.skolForm.tags.includes(tagKey);
+      return { skolForm: { ...s.skolForm, tags: has ? s.skolForm.tags.filter(t => t !== tagKey) : [...s.skolForm.tags, tagKey] } };
+    });
+  }
+  saveSkolForm() {
+    this.setState(s => {
+      if (s.skolFormMode === 'edit' && s.skolFormId != null) {
+        return { skolFormOpen: false, skolForm: null, skolOverrides: { ...s.skolOverrides, [s.skolFormId]: { ...s.skolForm } } };
+      }
+      const newId = 1000 + s.skolCustom.length;
+      return { skolFormOpen: false, skolForm: null, skolCustom: [...s.skolCustom, { ...s.skolForm, id: newId, status: 'koncept', assignees: [] }] };
+    });
+  }
+  toggleSkolArchive(id) {
+    this.setState(s => ({ skolArchived: s.skolArchived.includes(id) ? s.skolArchived.filter(x => x !== id) : [...s.skolArchived, id] }));
+  }
+  toggleSkolShare(id) { this.setState(s => ({ skolShared: { ...s.skolShared, [id]: !s.skolShared[id] } })); }
+  toggleSkolSettings() { this.setState(s => ({ skolSettingsOpen: !s.skolSettingsOpen })); }
+
   toggleSidebar() { this.setState(s => ({ sidebarCollapsed: !s.sidebarCollapsed })); }
 
   mkNavIcon(m, collapsed, color) {
@@ -4147,12 +4825,14 @@ class Component extends DCLogic {
             confirmedDocs, selectedDokCat, selectedSmernCat, smernConfirmedOpen, tablePageSize, zamItemTab, zamOpenGroups, zakSouvisOpen, zakSouvisGraph, calPeriods,
             orgTab, nadrRule, pozModalOpen, pozModalSection, pozIdx,
             nsmCreateOpen, nsmEditOpen, nsmEdit,
-            evEditOpen, evEditTab, evEditModuleKey, evLang } = this.state;
+            evEditOpen, evEditTab, evEditModuleKey, evLang,
+            selectedSkolCat, skolConfirmedOpen, skolRunId, skolRunQ, skolMyAnswers, skolMyDone, skolDoneId,
+            skolListFilter, skolEmpFilter, skolFormOpen, skolFormMode, skolForm, skolItemTab, skolArchived, skolShared, skolSettingsOpen } = this.state;
     const ACC = '#1572e8';
     const collapsed = sidebarCollapsed;
 
     // ── Module routing ──
-    const navOwnsContent = activeNav === 'smern' || activeNav === 'dok' || activeNav === 'nastorg' || activeNav === 'nastsm';
+    const navOwnsContent = activeNav === 'smern' || activeNav === 'skol' || activeNav === 'dok' || activeNav === 'nastorg' || activeNav === 'nastsm' || activeNav === 'skolc';
     const isNastOrg = activeNav === 'nastorg';
     const isNastSm  = activeNav === 'nastsm';
     const isKonv       = activeNav === 'konv';
@@ -4196,12 +4876,12 @@ class Component extends DCLogic {
     };
     const navWork = this.NAV_WORK.map(m => {
       const on = activeNav === m.id;
-      const clearTab = m.id === 'smern' || m.id === 'dok' || m.id === 'konv';
+      const clearTab = m.id === 'smern' || m.id === 'skol' || m.id === 'dok' || m.id === 'konv';
       return { ...m, onClick: () => this.setState({ activeNav: on ? null : m.id, ...(clearTab && !on ? { activeTab: null } : {}) }), style: navItemStyle(on), showFull: !collapsed, showBadge: !!(m.badge), badgeStyle: badgeStyle(m.badgeKind), iconEl: this.mkNavIcon(m, collapsed, on ? ACC : '#9a93b5') };
     });
     const navCompany = this.NAV_COMPANY.map(m => {
       const on = activeNav === m.id;
-      const clearTab = m.id === 'dok' || m.id === 'nastorg' || m.id === 'nastsm';
+      const clearTab = m.id === 'dok' || m.id === 'nastorg' || m.id === 'nastsm' || m.id === 'skolc';
       return { ...m, onClick: () => this.setState({ activeNav: on ? null : m.id, ...(clearTab && !on ? { activeTab: null } : {}) }), style: navItemStyle(on), showFull: !collapsed, iconEl: this.mkNavIcon(m, collapsed, on ? ACC : '#9a93b5') };
     });
 
@@ -4239,6 +4919,12 @@ class Component extends DCLogic {
     const showSmernDetail = (activeTab === 4 || activeNav === 'smern') && !!selectedSmernCat;
     const showDokTilesView  = activeNav === 'dok' && !selectedDokCat;
     const showDokDetailView = activeNav === 'dok' && !!selectedDokCat;
+    // „Moje školení" — stejný vzor jako Moje směrnice: dlaždice kategorií →
+    // detail seznamu → (volitelně) běžící vyplňování konkrétního školení.
+    const showSkolMain   = activeNav === 'skol' && !selectedSkolCat;
+    const showSkolDetail = activeNav === 'skol' && !!selectedSkolCat;
+    // „Katalog školení" — admin, nav-owned content (stejně jako Nastavení směrnic).
+    const showSkolAdmin  = activeNav === 'skolc';
     const showZamestnanec = isZamestnanec && activeView === 'seznam';
     const showZamPlaceholder = isZamestnanec && activeView !== 'seznam' && activeView !== 'kalendar';
     const showAudPlaceholder = isAudity && activeView !== 'kalendar';
@@ -4820,6 +5506,161 @@ class Component extends DCLogic {
       files: d.files.map(f => ({ name: f.name, icon: (DOC_FILE_ICONS[f.kind] || DOC_FILE_ICONS.img).icon, color: (DOC_FILE_ICONS[f.kind] || DOC_FILE_ICONS.img).color }))
     }));
 
+    // ══════════════════════════════════════════════════════════════════════
+    //  ŠKOLENÍ — renderVals. Osobní pohled staví na STEJNÉM vzoru jako
+    //  Moje směrnice (dlaždice kategorií → detail seznamu → potvrzení),
+    //  jen „potvrzení dokumentu" je tu nahrazeno „vyplněním školení"
+    //  (krátký běh otázek, viz skolRunId). Administrace staví na vzoru
+    //  Nastavení směrnic (tabulka .nsm-table) + item-drawer (jako Zaměstnanec).
+    // ══════════════════════════════════════════════════════════════════════
+    const skolMine = this.skolMyTrainings();
+    const skolPending = skolMine.filter(t => this.skolMyStatusFor(t) !== 'hotovo');
+    const skolDoneList = skolMine.filter(t => this.skolMyStatusFor(t) === 'hotovo');
+    const skolAllDone = skolMine.length > 0 && skolPending.length === 0;
+    const skolHasPending = !skolAllDone;
+    const skolPct = skolMine.length ? Math.round((skolDoneList.length / skolMine.length) * 100) : 0;
+
+    const SKOL_CAT_BASE = ';border-radius:14px;padding:22px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;box-shadow:0 3px 10px rgba(0,0,0,.03);cursor:pointer;transition:transform .15s';
+    const skolCats = this.SKOL_CATEGORIES.map(c => {
+      const inCat = skolMine.filter(t => t.category === c.key);
+      const pendingInCat = inCat.filter(t => this.skolMyStatusFor(t) !== 'hotovo').length;
+      const isPending = pendingInCat > 0;
+      return { ...c, cardStyle: 'background:' + c.bg + SKOL_CAT_BASE, cardHover: 'background:' + c.bg + SKOL_CAT_BASE + ';transform:translateY(-2px)', onClick: () => this.openSkolCat(c.key), countNumBlue: isPending ? String(pendingInCat) : '', countGray: isPending ? ' k vyplnění' : (this.plCount(inCat.length).replace('dokument', 'školení')) };
+    });
+
+    const skolStatusPill = (status) => {
+      const m = this.SKOL_STATUS_META[status] || this.SKOL_STATUS_META.nerozeslano;
+      return { label: m.label, style: 'background:' + m.color + '1a;color:' + m.color + ';padding:4px 12px;border-radius:999px;font-size:10px;font-weight:700;white-space:nowrap' };
+    };
+    const mkSkolRow = (t) => {
+      const status = this.skolMyStatusFor(t);
+      const pill = skolStatusPill(status);
+      const catMeta = this.SKOL_CATEGORIES.find(c => c.key === t.category) || {};
+      const meAssign = (t.assignees || []).find(a => a.name === 'Karolína Fišerová') || {};
+      return {
+        ...t, status, pillLabel: pill.label, pillStyle: pill.style,
+        catTitle: catMeta.title || '',
+        isPending: status !== 'hotovo', isDone: status === 'hotovo',
+        btnLabel: status === 'rozpracovano' ? 'POKRAČOVAT' : 'ZAHÁJIT',
+        onStart: () => this.openSkolRun(t.id),
+        doneAt: meAssign.doneAt || ''
+      };
+    };
+    const skolPendingRows = skolPending.map(mkSkolRow);
+    const skolDoneRows = skolDoneList.map(mkSkolRow);
+
+    const selectedSkolCatData = selectedSkolCat ? this.SKOL_CATEGORIES.find(c => c.key === selectedSkolCat) : null;
+    const skolCatTrainings = selectedSkolCat ? skolMine.filter(t => t.category === selectedSkolCat) : [];
+    const skolDetailRows = skolCatTrainings.map(mkSkolRow);
+    const skolDetailPendingCount = skolDetailRows.filter(r => r.isPending).length;
+
+    // ── běžící vyplňování konkrétního školení (skolRunId řídí, které) ──
+    const skolRunTraining = skolRunId ? this.skolAllTrainings().find(t => t.id === skolRunId) : null;
+    const skolRunQs = skolRunTraining ? skolRunTraining.questions : [];
+    const skolRunTotal = skolRunQs.length;
+    const skolRunCurQ = skolRunQs[skolRunQ] || null;
+    const skolRunIsLast = skolRunQ >= skolRunTotal - 1;
+    const skolRunProgress = skolRunTotal ? Math.round(((skolRunQ + 1) / skolRunTotal) * 100) : 0;
+    const skolRunOptions = (skolRunCurQ && skolRunCurQ.options) ? skolRunCurQ.options.map(o => {
+      const on = skolMyAnswers[skolRunQ] === o;
+      return { label: o, onClick: () => this.skolPickAnswer(skolRunQ, o), radioIcon: on ? 'circle-dot' : 'circle', accent: on ? '#1572e8' : '#b0aac8' };
+    }) : [];
+    const skolRunIsChoice = !!(skolRunCurQ && skolRunCurQ.type === 'choice');
+    const skolRunIsText = !!(skolRunCurQ && skolRunCurQ.type !== 'choice');
+    const skolRunAnswerText = skolMyAnswers[skolRunQ] || '';
+    const skolDoneTraining = skolDoneId ? this.skolAllTrainings().find(t => t.id === skolDoneId) : null;
+
+    // ══ ŠKOLENÍ — administrace („Katalog školení") ══
+    const SKOL_LIST_FILTERS = [
+      { key: 'aktivni', label: 'Aktivní' }, { key: 'koncept', label: 'Koncept' }, { key: 'archivovano', label: 'Archivováno' }, { key: 'vse', label: 'Vše' }
+    ];
+    const skol_listFilters = SKOL_LIST_FILTERS.map(f => ({ ...f, on: skolListFilter === f.key, style: 'padding:6px 14px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid ' + (skolListFilter === f.key ? '#1572e8;background:#e8f0fd;color:#1572e8' : '#c8c4d8;background:#fff;color:#3d3a52'), onClick: () => this.setSkolListFilter(f.key) }));
+    const skol_allAdmin = this.skolAllTrainings();
+    const skol_adminList = skol_allAdmin.filter(t => skolListFilter === 'vse' ? true : t.status === skolListFilter);
+    const mkSkolAdminRow = (t) => {
+      const lc = this.SKOL_LIFECYCLE_META[t.status] || this.SKOL_LIFECYCLE_META.koncept;
+      const doneCount = (t.assignees || []).filter(a => a.status === 'hotovo').length;
+      const totalCount = (t.assignees || []).length;
+      const pct = totalCount ? Math.round((doneCount / totalCount) * 100) : 0;
+      const catMeta = this.SKOL_CATEGORIES.find(c => c.key === t.category) || {};
+      return {
+        id: t.id, name: t.title, category: catMeta.title || '',
+        lifecycleLabel: lc.label, lifecycleStyle: 'background:' + lc.color + '1a;color:' + lc.color + ';padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700',
+        confirmed: doneCount, pending: totalCount ? (totalCount - doneCount) : '---',
+        pctText: pct + ' %', barStyle: 'width:' + Math.max(pct, 3) + '%;background:#f2775d',
+        onOpen: () => this.pushDrawer('skoleni', skol_allAdmin.findIndex(x => x.id === t.id))
+      };
+    };
+    const skol_adminRows = skol_adminList.map(mkSkolAdminRow);
+
+    // ── modal „Přidat/Editovat školení" (mirrors nsmEditOpen) ──
+    const skolForm2 = skolForm || {};
+    const skol_formTagCards = this.SKOL_TAGS.map(tg => {
+      const on = (skolForm2.tags || []).includes(tg.key);
+      return { key: tg.key, label: tg.label, onClick: () => this.toggleSkolFormTag(tg.key), chipStyle: 'display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid ' + (on ? '#1572e8;background:#e8f0fd;color:#1572e8' : '#e0dded;background:#fff;color:#4a4660') };
+    });
+    const skol_formCatOptions = this.SKOL_CATEGORIES.map(c => {
+      const on = skolForm2.category === c.key;
+      return { key: c.key, label: c.title, on, onClick: () => this.setSkolFormField('category', c.key), radioIcon: on ? 'circle-dot' : 'circle', accent: on ? '#1572e8' : '#b0aac8' };
+    });
+    const skol_formPrijemciCards = this.NSM_PRIJEMCI_OPTIONS.map(o => {
+      const on = skolForm2.prijemci === o.key;
+      return { ...o, selCls: on ? 'nsm-card-sel' : '', onClick: () => this.setSkolFormField('prijemci', o.key) };
+    });
+
+    // ── item-drawer „Katalog školení" (mirrors drawerZamOpen) ──
+    const SKOL_ITEM_TABS = [
+      { key: 'zamestnanci', label: 'Zaměstnanci' }, { key: 'formular', label: 'Formulář' }, { key: 'detaily', label: 'Detaily' },
+      { key: 'souvis', label: 'Souvislosti' }, { key: 'publikovano', label: 'Publikováno' }
+    ];
+    const skolSel = skol_allAdmin[selectedIdx] || skol_allAdmin[0] || { id: 0, title: 'Školení', questions: [], assignees: [], category: 'povinne', status: 'aktivni', tags: [] };
+    const skolSelLc = this.SKOL_LIFECYCLE_META[skolSel.status] || this.SKOL_LIFECYCLE_META.koncept;
+    const skol_itemTabs = SKOL_ITEM_TABS.map(t => {
+      const on = skolItemTab === t.key;
+      return { ...t, onClick: () => this.setSkolItemTab(t.key), style: this.drawerTabStyle(on) };
+    });
+    const SKOL_EMP_FILTERS = [{ key: 'aktivni', label: 'Aktivní' }, { key: 'vse', label: 'Vše' }];
+    const skol_empFilters = SKOL_EMP_FILTERS.map(f => {
+      const on = skolEmpFilter === f.key;
+      return { ...f, on, onClick: () => this.setSkolEmpFilter(f.key), style: 'padding:6px 14px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid ' + (on ? '#1572e8;background:#e8f0fd;color:#1572e8' : '#c8c4d8;background:#fff;color:#3d3a52') };
+    });
+    const skol_empRows = (skolSel.assignees || []).map(a => {
+      const meta = this.SKOL_STATUS_META[a.status] || this.SKOL_STATUS_META.nerozeslano;
+      const emp = this.ZAM_EMPLOYEES.find(e => e.name === a.name);
+      return {
+        name: a.name, statusLabel: meta.label,
+        statusStyle: 'background:' + meta.color + '1a;color:' + meta.color + ';padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700',
+        doneAt: a.doneAt || '—',
+        avatarEl: emp ? this.mkAvatar(emp, 28) : null,
+        onOpen: emp ? () => this.pushDrawer('zamestnanec', this.ZAM_EMPLOYEES.indexOf(emp)) : null
+      };
+    });
+    const skol_detailRows = [
+      { label: 'Název školení', type: 'plain', value: skolSel.title },
+      { label: 'Kategorie', type: 'plain', value: (this.SKOL_CATEGORIES.find(c => c.key === skolSel.category) || {}).title || '' },
+      { label: 'Štítky', type: 'plain', value: (skolSel.tags || []).map(tk => (this.SKOL_TAGS.find(x => x.key === tk) || {}).label).filter(Boolean).join(', ') || '—' },
+      { label: 'Příjemci', type: 'plain', value: skolSel.prijemci === 'vsichni' ? 'Všichni zaměstnanci' : (skolSel.prijemci === 'pozice' ? 'Pracovní pozice' : 'Konkrétní zaměstnanci') },
+      { label: 'Termín splnění', type: 'plain', value: skolSel.deadlineDny + ' dní od přiřazení' },
+      { label: 'Počet otázek', type: 'plain', value: String((skolSel.questions || []).length) },
+      { label: 'Stav', type: 'plain', value: skolSelLc.label }
+    ].map(r => ({ ...r, isPlain: true, isDate: false, isLink: false }));
+    const skolIsArchived = this.state.skolArchived.includes(skolSel.id);
+    const skolIsShared = !!this.state.skolShared[skolSel.id];
+    const SKOL_ACTIONS = [
+      { label: 'Oblíbená', icon: 'star' },
+      { label: skolIsShared ? 'Sdíleno' : 'Sdílet', icon: 'share-nodes', onClick: () => this.toggleSkolShare(skolSel.id) },
+      { label: 'Náhled', icon: 'eye' }, { label: 'Oprávnění', icon: 'user-shield' },
+      { label: 'Historie změn', icon: 'clock-rotate-left' },
+      { label: skolIsArchived ? 'Aktivovat' : 'Archivovat', icon: skolIsArchived ? 'box-open' : 'box-archive', onClick: () => this.toggleSkolArchive(skolSel.id) },
+      { label: 'Uložit změny', icon: 'floppy-disk', disabled: true }
+    ];
+    const skol_itemActions = SKOL_ACTIONS.map(ac => ({
+      ...ac,
+      iconEl: React.createElement('i', { className: 'fa-solid fa-' + ac.icon, style: { width: '18px', textAlign: 'center', fontSize: '13px', color: ac.disabled ? '#ccc' : '#9a95ad', flexShrink: 0 } }),
+      style: 'display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:' + (ac.disabled ? '#bbb' : '#374151') + ';cursor:pointer',
+      hover: ac.disabled ? 'display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#bbb;cursor:not-allowed' : 'display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#1572e8;cursor:pointer;background:rgba(21,114,232,.05)'
+    }));
+
     const cal = this.calVals(activeTab, (calPeriods || {})[activeTab] || 'rok');
 
     return {
@@ -5035,6 +5876,62 @@ class Component extends DCLogic {
       zam_showPracZarazeni: zamItemTab === 'prac_zarazeni', zam_pz: zam_pracZarazeni,
       zam_showStub: zamItemTab !== 'detaily' && zamItemTab !== 'konverzace' && zamItemTab !== 'plany' && zamItemTab !== 'zapisy' && zamItemTab !== 'prac_zarazeni',
       zam_activeItemTabLabel: (ZAM_ITEM_TABS.find(t => t.key === zamItemTab) || {}).label || '',
+      // ── ŠKOLENÍ — Moje školení (osobní pohled) ──
+      showSkolMain, showSkolDetail,
+      skolAllDone, skolHasPending, skolCats,
+      skolPct: skolPct + ' %', skolPendingNum: skolPending.length,
+      skolCountText: skolDoneList.length + ' z ' + skolMine.length + ' splněno',
+      skolBarStyle: 'height:100%;background:#1572e8;width:' + skolPct + '%;border-radius:3px;transition:width .3s',
+      skolSubtitle: skolAllDone ? 'Všechna přiřazená školení máte splněná.' : 'Začněte těmi nejnaléhavějšími nahoře.',
+      skolPendingRows, skolDoneRows,
+      skolConfirmedOpen, skolConfirmedNum: skolDoneList.length,
+      skolConfirmedChevron: skolConfirmedOpen ? 'fa-solid fa-chevron-up' : 'fa-solid fa-chevron-down',
+      toggleSkolConfirmed: () => this.toggleSkolConfirmed(),
+      backToSkolTiles: () => this.backToSkolTiles(),
+      selectedSkolTitle: selectedSkolCatData ? selectedSkolCatData.title : '',
+      selectedSkolBg: selectedSkolCatData ? selectedSkolCatData.bg : '',
+      selectedSkolIcon: selectedSkolCatData ? selectedSkolCatData.icon : '',
+      selectedSkolIconColor: selectedSkolCatData ? selectedSkolCatData.iconColor : '',
+      skolDetailRows, skolDetailPendingCount, skolDetailHasPending: skolDetailPendingCount > 0,
+      // ── běžící vyplňování školení (modal) ──
+      skolRunOpen: !!skolRunId, skolRunTitle: skolRunTraining ? skolRunTraining.title : '',
+      skolRunQNum: skolRunQ + 1, skolRunTotal, skolRunProgress: skolRunProgress + ' %',
+      skolRunProgressStyle: 'height:100%;background:#1572e8;width:' + skolRunProgress + '%;border-radius:3px;transition:width .3s',
+      skolRunQText: skolRunCurQ ? skolRunCurQ.q : '',
+      skolRunIsChoice, skolRunIsText, skolRunOptions, skolRunAnswerText,
+      skolRunIsFirst: skolRunQ === 0, skolRunIsLast,
+      skolPrevQ: () => this.skolPrevQ(), skolNextQ: () => this.skolNextQ(),
+      skolSaveAndClose: () => this.skolSaveAndClose(), backToSkolList: () => this.backToSkolList(),
+      skolOnAnswerText: (e) => this.skolPickAnswer(skolRunQ, e.target.value),
+      // Krátká „hotovo" karta po dokončení (skolDoneId zůstane nastavené,
+      // dokud uživatel neklikne pryč / nezahájí jiné školení — obdoba
+      // toastu, ale bez časovače, ať to jde v prototypu klidně prohlédnout).
+      skolJustDoneOpen: !!skolDoneId && !skolRunId,
+      skolJustDoneTitle: skolDoneTraining ? skolDoneTraining.title : '',
+      skolCloseJustDone: () => this.setState({ skolDoneId: null }),
+      // ── ŠKOLENÍ — Katalog školení (administrace) ──
+      showSkolAdmin, skol_listFilters, skol_adminRows,
+      skolOpenAdd: () => this.openSkolForm('add'),
+      skolSettingsOpen, toggleSkolSettings: () => this.toggleSkolSettings(),
+      skol_categories: this.SKOL_CATEGORIES, skol_tags: this.SKOL_TAGS,
+      // modal Přidat/Editovat školení
+      skolFormOpen, skolFormMode,
+      skolFormTitle: skolFormMode === 'edit' ? 'Upravit školení' : 'Přidat školení',
+      skolForm: skolForm2, skol_formTagCards, skol_formCatOptions, skol_formPrijemciCards,
+      skolFormSetTitle: (e) => this.setSkolFormField('title', e.target.value),
+      skolFormSetDeadline: (e) => this.setSkolFormField('deadlineDny', parseInt(e.target.value) || 0),
+      skolCloseForm: () => this.closeSkolForm(),
+      skolSaveForm: () => this.saveSkolForm(),
+      // item-drawer „Katalog školení"
+      drawerSkolOpen: drawerOpen && drawerModule === 'skoleni',
+      closeSkolDrawer: () => this.closeTopDrawer(),
+      skol_railName: skolSel.title, skol_itemTabs, skol_itemActions,
+      skolSelLifecycleLabel: skolSelLc.label,
+      skolSelLifecycleStyle: 'border-radius:4px;padding:3px 10px;font-weight:800;font-size:11px;background:' + skolSelLc.color + ';color:#fff',
+      skol_empFilters, skol_empRows, skol_detailRows,
+      skol_showZamestnanci: skolItemTab === 'zamestnanci', skol_showFormular: skolItemTab === 'formular',
+      skol_showDetaily: skolItemTab === 'detaily', skol_showSouvis: skolItemTab === 'souvis', skol_showPublikovano: skolItemTab === 'publikovano',
+      skol_formularQuestions: (skolSel.questions || []).map((q, i) => ({ n: i + 1, text: q.q, typeLabel: q.type === 'choice' ? 'Výběr z možností' : 'Volný text', options: q.options || [] })),
       konverzaceSrc: this.konverzaceSrc
     };
   }

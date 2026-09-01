@@ -1,0 +1,255 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free). Řádek níže načte FA, aby se
+     vykreslily i při samostatném otevření souboru. V master prototypu se FA
+     načítá z jeho assetů, takže tam je tento <link> nadbytečný (neškodí). -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!--
+  APTIEN — MOBILNÍ INTRANET / CHAT (DETAIL KONVERZACE) · STATICKÝ BLOK K DOSLOVNÉMU VLOŽENÍ
+  =============================================================================================
+  1:1 výřez obrazovky `chat` (`state.screen === 'chat'`, konverzace 0 —
+  „2022 Elizabeth Bathory s Divokou krví") z master prototypu
+  `prototypes/Aptien-mobil-intranet.html`. Žádný `<script>`/state — jen
+  zmrazený snímek pro skládání kombinovaných vizuálů. Viz
+  Aptien-mobil-intranet-pravidla.md §2.3.
+
+  CSS bublin (.comments-ListItems / .commentItem / .userBadge / .chat-date-sep)
+  je zkopírované 1:1 z <helmet><style> master prototypu — NEMĚŇ ho, ať zprávy
+  vypadají stejně jako v appce. Vlastní = modrá bublina vpravo s avatarem
+  „KH"; cizí = šedá bublina vlevo s avatarem HK/AS (barva podle osoby —
+  na rozdíl od avatarů v záložce „Pracovní zařazení" na desktopu, kde je
+  avatar vždy jednotný neutrální fallback, viz claude/zamestnanci-specialni-drawer.md).
+
+  Rám: 390×844 px, bez bezelu telefonu. Skladba: hlavička (zpět + název
+  konverzace) → řádek „Konverzace" + AI souhrn + „⋮" → vlákno zpráv →
+  vstupní pole. Toto je přesně ta obrazovka, kterou `mobil-v-ruce.html`
+  ručně kopíroval verbatim, než tenhle partial existoval — příště stačí
+  Read tohoto souboru.
+
+  Sourozenecké obrazovky: mobil-home.html, mobil-konverzace.html, mobil-o-mne.html.
+-->
+<style>
+  .comments-ListItems{display:block;padding:0 8px;}
+  .comments-ListItems .row-CommentWrapper{display:flex;justify-content:flex-start;margin-top:16px;}
+  .comments-ListItems .row-CommentWrapper::after{display:none;}
+  .commentItem{position:relative;width:78%;}
+  .commentItem .comment-wrapper{display:inline-flex;flex-direction:row-reverse;width:100%;}
+  .commentItem .comment-Box{text-align:left;flex:1;}
+  .commentItem .comment-Bubble{display:block;border-radius:15px;background:#9ba5ac;padding:9px 13px;position:relative;margin-bottom:10px;margin-left:16px;}
+  .commentItem .comment-Bubble .bubble-point{position:absolute;bottom:14px;left:-13px;width:30px;height:20px;background-color:inherit;border-radius:14px;}
+  .commentItem .comment-Bubble .bubble-point::after{content:" ";background:#fff;padding:14px 11px;position:absolute;left:-9px;bottom:-12px;border-radius:15px 9px;}
+  .commentItem .item-Content .comment{word-break:break-word;line-height:1.3;font-size:13px;color:#fff;}
+  .commentItem .item-Content .comment-info{margin:0;padding:4px 0 0;font-size:10px;color:rgba(255,255,255,.8);}
+  .commentItem .item-Content .comment-info .published-user{font-weight:700;}
+  .commentItem .item-Avatar{display:flex;margin:5px 5px 10px 0;}
+  .commentItem .item-Avatar .userBadge{margin:auto 0 10px 0;}
+  .commentItem.toRight{margin-left:auto;}
+  .row-CommentWrapper:has(.toRight){justify-content:flex-end;}
+  .commentItem.toRight .comment-wrapper{flex-direction:row;}
+  .commentItem.toRight .comment-Box{text-align:right;}
+  .commentItem.toRight .comment-Bubble{background:#2962FF;margin-right:14px;margin-left:0;}
+  .commentItem.toRight .comment-Bubble .bubble-point{right:-15px;left:auto;}
+  .commentItem.toRight .comment-Bubble .bubble-point::after{right:-3px;left:auto;bottom:-7px;padding:12px 9px;}
+  .commentItem.toRight .item-Content .comment{text-align:left;color:#fff;}
+  .commentItem.toRight .item-Content .comment-info{text-align:right;}
+  .commentItem.toRight .item-Avatar{margin:5px 0 10px 5px;}
+  .userBadge{display:inline-block;background:transparent;border-radius:30px;vertical-align:middle;}
+  .userBadge ._avatar{display:inline-flex;align-items:center;justify-content:center;width:27px;height:27px;border-radius:50%;background:#e2e4e6;color:#fff;font-family:'Nunito',sans-serif;font-weight:700;}
+  .userBadge ._avatar .acronym{font-size:11px;line-height:1;}
+  .userBadge.hiddenName ._name{display:none;}
+  .chat-date-sep{clear:both;text-align:center;padding:14px 0 2px;font-size:10px;font-weight:700;color:#B1B2B3;letter-spacing:.07em;text-transform:uppercase;}
+</style>
+
+<div style="width:390px; flex:1; display:flex; flex-direction:column; background:white; height:844px; font-family:'Nunito',sans-serif">
+
+  <div style="background:white; height:60px; display:flex; align-items:center; gap:12px; padding:0 14px; border-bottom:1px solid #f0f0f0; flex-shrink:0">
+    <div style="background:rgba(0,0,0,.06); width:36px; height:36px; border-radius:4px; display:flex; align-items:center; justify-content:center; flex-shrink:0">
+      <i class="fa-solid fa-arrow-left" style="font-size:13px; color:#333"></i>
+    </div>
+    <div style="flex:1; font-size:15px; font-weight:700; color:#1a1a1a; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-wrap:pretty">2022 Elizabeth Bathory s Divokou krví</div>
+  </div>
+
+  <div style="background:white; height:50px; display:flex; align-items:center; gap:10px; padding:0 14px; border-bottom:1px solid #f0f0f0; flex-shrink:0">
+    <span style="font-size:14px; font-weight:600; color:#1a1a1a; flex:1">Konverzace</span>
+    <i class="fa-solid fa-magnifying-glass" style="color:#777; font-size:15px; cursor:pointer; padding:4px"></i>
+    <div style="background:#6200EA; border:none; color:white; border-radius:4px; padding:7px 13px; font-size:12px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:6px; white-space:nowrap">
+      <i class="fa-solid fa-wand-magic-sparkles" style="font-size:11px"></i>
+      AI souhrn
+    </div>
+    <i class="fa-solid fa-ellipsis-vertical" style="color:#777; font-size:16px; cursor:pointer; padding:4px 6px"></i>
+  </div>
+
+  <div style="flex:1; overflow-y:auto; background:white; padding-bottom:8px">
+    <div class="comments-ListItems">
+
+      <div class="chat-date-sep">08.07.2026</div>
+
+      <div class="row-CommentWrapper">
+        <div class="commentItem toRight">
+          <div class="comment-wrapper">
+            <div class="comment-Box">
+              <div class="comment-Bubble">
+                <div class="item-Content">
+                  <div class="comment">tady je nová konverzace</div>
+                  <div class="comment-info"><span class="published-date">13:03</span> <span class="published-user">Kocourková Hal</span></div>
+                </div>
+                <div class="bubble-point"></div>
+              </div>
+            </div>
+            <div class="item-Avatar">
+              <div class="userBadge hiddenName">
+                <div class="_avatar" style="background:conic-gradient(#ff6b6b 0deg,#ffd93d 90deg,#6bcb77 180deg,#4d96ff 270deg,#ff6b6b 360deg)">
+                  <span class="acronym">KH</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-CommentWrapper">
+        <div class="commentItem">
+          <div class="comment-wrapper">
+            <div class="comment-Box">
+              <div class="comment-Bubble">
+                <div class="item-Content">
+                  <div class="comment">OK</div>
+                  <div class="comment-info"><span class="published-date">13:03</span> <span class="published-user">Hana Kocour</span></div>
+                </div>
+                <div class="bubble-point"></div>
+              </div>
+            </div>
+            <div class="item-Avatar">
+              <div class="userBadge hiddenName">
+                <div class="_avatar" style="background:#00BFA5"><span class="acronym">HK</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-CommentWrapper">
+        <div class="commentItem">
+          <div class="comment-wrapper">
+            <div class="comment-Box">
+              <div class="comment-Bubble">
+                <div class="item-Content">
+                  <div class="comment">ok</div>
+                  <div class="comment-info"><span class="published-date">13:04</span> <span class="published-user">Hana Kocour</span></div>
+                </div>
+                <div class="bubble-point"></div>
+              </div>
+            </div>
+            <div class="item-Avatar">
+              <div class="userBadge hiddenName">
+                <div class="_avatar" style="background:#00BFA5"><span class="acronym">HK</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-CommentWrapper">
+        <div class="commentItem toRight">
+          <div class="comment-wrapper">
+            <div class="comment-Box">
+              <div class="comment-Bubble">
+                <div class="item-Content">
+                  <div class="comment">tady to není vidět</div>
+                  <div class="comment-info"><span class="published-date">13:05</span> <span class="published-user">Kocourková Hal</span></div>
+                </div>
+                <div class="bubble-point"></div>
+              </div>
+            </div>
+            <div class="item-Avatar">
+              <div class="userBadge hiddenName">
+                <div class="_avatar" style="background:conic-gradient(#ff6b6b 0deg,#ffd93d 90deg,#6bcb77 180deg,#4d96ff 270deg,#ff6b6b 360deg)">
+                  <span class="acronym">KH</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-CommentWrapper">
+        <div class="commentItem">
+          <div class="comment-wrapper">
+            <div class="comment-Box">
+              <div class="comment-Bubble">
+                <div class="item-Content">
+                  <div class="comment">ok tak ted jestli ty vidíš červenou</div>
+                  <div class="comment-info"><span class="published-date">13:06</span> <span class="published-user">Hana Kocour</span></div>
+                </div>
+                <div class="bubble-point"></div>
+              </div>
+            </div>
+            <div class="item-Avatar">
+              <div class="userBadge hiddenName">
+                <div class="_avatar" style="background:#00BFA5"><span class="acronym">HK</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-date-sep">09.07.2026</div>
+
+      <div class="row-CommentWrapper">
+        <div class="commentItem toRight">
+          <div class="comment-wrapper">
+            <div class="comment-Box">
+              <div class="comment-Bubble">
+                <div class="item-Content">
+                  <div class="comment">tak posílám zprávu abych mohla otevřítu pozornění</div>
+                  <div class="comment-info"><span class="published-date">11:43</span> <span class="published-user">Kocourková Hal</span></div>
+                </div>
+                <div class="bubble-point"></div>
+              </div>
+            </div>
+            <div class="item-Avatar">
+              <div class="userBadge hiddenName">
+                <div class="_avatar" style="background:conic-gradient(#ff6b6b 0deg,#ffd93d 90deg,#6bcb77 180deg,#4d96ff 270deg,#ff6b6b 360deg)">
+                  <span class="acronym">KH</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-date-sep">13.07.2026</div>
+
+      <div class="row-CommentWrapper">
+        <div class="commentItem">
+          <div class="comment-wrapper">
+            <div class="comment-Box">
+              <div class="comment-Bubble">
+                <div class="item-Content">
+                  <div class="comment">posílám zprávu do testu kvůli notifikaci a otevření z emailu</div>
+                  <div class="comment-info"><span class="published-date">13:28</span> <span class="published-user">Adéla Sládková</span></div>
+                </div>
+                <div class="bubble-point"></div>
+              </div>
+            </div>
+            <div class="item-Avatar">
+              <div class="userBadge hiddenName">
+                <div class="_avatar" style="background:#878787"><span class="acronym">AS</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="background:white; padding:10px 12px; display:flex; align-items:center; gap:10px; border-top:1px solid #eee; flex-shrink:0">
+    <div style="width:40px; height:40px; background:#F6F6F6; border:1px solid #ECECEC; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0">
+      <i class="fa-solid fa-paperclip" style="font-size:15px; color:#666"></i>
+    </div>
+    <input type="text" placeholder="Napište zprávu..." style="flex:1; border:1px solid #ECECEC; border-radius:4px; padding:10px 16px; font-size:13px; outline:none; background:#F6F6F6; color:#1a1a1a; font-family:'Nunito',sans-serif">
+    <div style="width:44px; height:44px; background:#1572e8; border:none; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0">
+      <i class="fa-solid fa-paper-plane" style="font-size:15px; color:white; margin-left:2px"></i>
+    </div>
+  </div>
+
+</div>

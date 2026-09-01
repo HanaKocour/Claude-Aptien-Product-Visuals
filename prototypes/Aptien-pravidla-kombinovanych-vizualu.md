@@ -110,7 +110,7 @@ aby bylo poznat, že jde o Aptien. Pod ní následuje obsah výřezu:
 | vznikl / změnil se záznam | `item-drawer-shell` + `drawer-tab-detaily` (hlavička + pole) |
 | přehled a termíny | `evidence-toolbar` + `evidence-list` / `evidence-table` |
 | práce se rozdělila | výřez „Moje úkoly" / „Ke schválení" |
-| zaměstnanec na telefonu | rám telefonu + obrazovka z `Aptien-mobil-intranet.html` |
+| zaměstnanec na telefonu | rám telefonu + obrazovka z `partials/mobil-home.html` / `mobil-konverzace.html` / `mobil-chat.html` / `mobil-o-mne.html` (zavedeno 1. 9. 2026 — dřív se ručně kopírovalo z `Aptien-mobil-intranet.html`, viz `mobil-v-ruce.html`) |
 
 **Výřez, ne zmenšenina.** Panel je 520–984 px široký, takže se do něj celá
 obrazovka nevejde – **uřízni ji** (vynech sidebar, vynech tab strip, ukaž jen

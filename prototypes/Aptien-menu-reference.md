@@ -7,7 +7,7 @@ Nic nevynechávej, nepřidávej ani nepřejmenovávej.*
 > ✅ **Nejjednodušší a nejspolehlivější cesta: vlož hotový statický blok
 > `partials/sidebar-menu-collapsed.html` CELÝ** — nebo
 > `partials/sidebar-menu.html`, když zadání žádá otevřené menu (oba
-> obsahují všech 15 + 7 položek,
+> obsahují všech 16 + 7 položek,
 > inline SVG ikony, správné barvy, aktivní stav i badge). Neskládej menu
 > z hlavy – jen přesuň aktivní stav na položku dle otevřené obrazovky a
 > uprav personu. Tabulka níže je referenční přehled obsahu toho bloku.
@@ -41,6 +41,7 @@ Nic nevynechávej, nepřidávej ani nepřejmenovávej.*
 > | Položka | `svg` klíč | Pozn. |
 > |---|---|---|
 > | Moje směrnice, Nastavení směrnic | `books` | Pro (Free má jen `book`) |
+> | Moje školení | `graduation-cap` | Pro (má vlastní SVG v `SVG_ICONS`) |
 > | Co jsem dělal | `chart-network` | Pro |
 > | Nástěnka | `grid-horizontal` | Pro |
 > | Reporty | `file-chart-column` | Pro |
@@ -54,7 +55,7 @@ Nic nevynechávej, nepřidávej ani nepřejmenovávej.*
 > `grid-horizontal`→`table-cells` apod.) – ale první volba je prototyp.
 
 > **Nejčastější chyby, kterých se vyvaruj:**
-> 1. Vynechání položek (menu musí mít **všech 15 + 7** položek).
+> 1. Vynechání položek (menu musí mít **všech 16 + 7** položek).
 > 2. Označení špatné nebo více položek jako aktivní.
 > 3. Záměna **badge** (počet) za **aktivní stav** (zvýraznění).
 
@@ -64,7 +65,7 @@ Nic nevynechávej, nepřidávej ani nepřejmenovávej.*
 
 1. **Hlavička profilu** – avatar + jméno + role + název pracovního prostoru
    (persona se mění dle zadání, ale skladba zůstává).
-2. **Skupina „MŮJ PRACOVNÍ PROSTOR"** – 15 osobních položek (viz níže).
+2. **Skupina „MŮJ PRACOVNÍ PROSTOR"** – 16 osobních položek (viz níže).
 3. **Skupina „NAŠE FIRMA"** – 7 firemních položek (viz níže).
 4. Menu je **sbalitelné** (jen ikony, přes šipku nahoře) a **rolovatelné**.
    **Sbalený stav je VÝCHOZÍ** (56px, jen ikony, bez badge, bez nadpisů
@@ -75,7 +76,7 @@ Nic nevynechávej, nepřidávej ani nepřejmenovávej.*
 
 ---
 
-## Skupina 1 — MŮJ PRACOVNÍ PROSTOR (15 položek)
+## Skupina 1 — MŮJ PRACOVNÍ PROSTOR (16 položek)
 
 | # | Text položky | Ikona (soubor) | Badge |
 |---|---|---|---|
@@ -93,7 +94,8 @@ Nic nevynechávej, nepřidávej ani nepřejmenovávej.*
 | 12 | O mně | `user.svg` | – |
 | 13 | Poznámky | `clipboard.svg` | **2** (grey) |
 | 14 | Moje směrnice | `books.svg` | – |
-| 15 | Co jsem dělal | `chart-network.svg` | – |
+| 15 | Moje školení | `graduation-cap.svg` | – |
+| 16 | Co jsem dělal | `chart-network.svg` | – |
 
 ## Skupina 2 — NAŠE FIRMA (7 položek)
 
@@ -170,14 +172,16 @@ jednotlivých záložek viz `Aptien-pravidla-pouziti-UI.md`, sekce *Tab strip*.
 
 - `activeNav` – `id` aktivní položky menu (viz `id` v `NAV_WORK` / `NAV_COMPANY`).
 - `activeTab` – index otevřené horní záložky (`TABS`), nebo `null`.
-- `navOwnsContent` – když `activeNav` je `smern` nebo `dok`, položka menu
-  „vlastní" celou content area (překryje modul).
+- `navOwnsContent` – když `activeNav` je `smern`, `skol`, `dok`, `nastorg`,
+  `nastsm` nebo `skolc`, položka menu „vlastní" celou content area (překryje modul).
 
 **Které obrazovky jsou v prototypu HOTOVÉ (a jejich flag → blok):**
 
 | Položka menu (`id`) | Flag | Datový zdroj |
 |---|---|---|
 | Moje směrnice (`smern`) | `showSmernMain` / `showSmernDetail` | `DOCS`, `CONFIRMED_DOCS_LIST`, `SMERNICE_CATEGORIES`, `SMERNICE_CAT_DOCS` |
+| Moje školení (`skol`) | `showSkolMain` / `showSkolDetail` | `SKOL_TRAININGS`, `SKOL_CATEGORIES`, `SKOL_TAGS` |
+| Katalog školení (`skolc`) | `showSkolAdmin` (+ item-drawer `drawerSkolOpen`) | `SKOL_TRAININGS` (stejný zdroj jako osobní pohled) |
 | Směrnice a dokumenty (`dok`) | `showDokTilesView` / `showDokDetailView` | `DOK_CATEGORIES` |
 | Moje konverzace (`konv`) | `isKonv` (`konvShowList`/`konvShowDetail`) | `KONV_LIST`, `KONV_THREADS` |
 | Rizika / Ochranné pomůcky / Zakázky / Zaměstnanec | přes `activeTab` (8 / 2 / 12 / 0) | modulová data |

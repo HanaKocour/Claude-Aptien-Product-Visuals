@@ -25,7 +25,7 @@ nevynechávej položky menu ani žádnou sekci. Když si nejsi jistý, radši se
 zeptej, než abys cokoli domýšlel.
 
 > **Menu vždy celé a se správným aktivním stavem.** Kompletní levé menu
-> (všech 15 osobních + 7 firemních položek) k doslovnému zkopírování je v
+> (všech 16 osobních + 7 firemních položek) k doslovnému zkopírování je v
 > **`prototypes/Aptien-menu-reference.md`**. Vždy vlož všechny položky,
 > označ jako aktivní **jen jednu** (dle otevřené obrazovky, jinak „Moje
 > domovská stránka") a nezaměňuj badge (počty) za zvýraznění.
@@ -45,7 +45,7 @@ zeptej, než abys cokoli domýšlel.
 > ✅ **Hotové bloky k DOSLOVNÉMU vložení (nerekonstruovat!)** v
 > `prototypes/partials/`:
 > - `sidebar-menu-collapsed.html` – **výchozí stav sidebaru** (56 px, jen ikony, bez badge, bez posuvníku) – použij vždy, pokud zadání výslovně nežádá otevřené menu
-> - `sidebar-menu.html` – otevřené menu (220 px, celé levé menu 15 + 7 položek, inline SVG ikony, aktivní stav, badge) – generuj JEN na výslovné zadání („otevřené menu“, „rozbalený sidebar“, „menu s texty“)
+> - `sidebar-menu.html` – otevřené menu (220 px, celé levé menu 16 + 7 položek, inline SVG ikony, aktivní stav, badge) – generuj JEN na výslovné zadání („otevřené menu“, „rozbalený sidebar“, „menu s texty“)
 > - `evidence-toolbar.html` – **toolbar** (ikona+název, PŘIDAT v barvě modulu, hledání, view switcher – všech 5, aktivní modrá)
 > - `evidence-dashboard.html` – pohled **Dashboard** (hero banner „pruh" + mřížka bílých karet)
 > - `evidence-table.html` – pohled **Tabulka** (horní lišta, sticky sloupec, hlavička + filtry, řádky)
@@ -389,6 +389,8 @@ tab strip + sidebar):
 | Pohled **Kalendář** (Zaměstnanci / Zakázky / Audity a kontroly) | generický blok `showCalendar`; období řídí `calPeriods[tab]` + `calVals()` – viz §5.5 |
 | Audity a kontroly | modul *Audity a kontroly* (tab 14, `c800 #FF8F00`) – zatím jen pohled Kalendář |
 | Moje směrnice | blok `showSmernMain` (menu `smern` / tab 4) – viz routing níže |
+| Moje školení | blok `showSkolMain` (menu `skol`) – staví na vzoru Moje směrnice, BEZ vlastní `c800` (defaultní modrá) – viz routing níže |
+| Katalog školení | blok `showSkolAdmin` (menu `skolc`) – staví na vzoru Nastavení směrnic; položka v draweru otevírá item-drawer `drawerSkolOpen` (vzor Zaměstnanec) |
 | Směrnice a dokumenty | blok `showDokTilesView` (menu `dok`) – viz routing níže |
 | Moje konverzace | blok `isKonv` (menu `konv`) |
 | Nastavení organizace | blok `showNastOrg` (menu `nastorg`) – vlastní stránka se 4 podzáložkami (Organizace / Pracovní pozice / Katalog požadavků / Nastavení nadřízených), viz §11 a `Aptien-menu-reference.md` |
