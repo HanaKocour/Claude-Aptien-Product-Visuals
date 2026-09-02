@@ -1346,8 +1346,13 @@
                 <sc-for list="{{ skolPendingRows }}" as="t" hint-placeholder-count="3">
                   <div style="background:#fff;padding:16px 22px;display:flex;align-items:center;gap:16px">
                     <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">{{ t.title }}</div><div style="font-size:12px;color:#9aa2b0">{{ t.catTitle }}</div></div>
-                    <div style="width:150px;flex-shrink:0"><span style="{{ t.pillStyle }}">{{ t.pillLabel }}</span></div>
-                    <div sc-camel-on-click="{{ t.onStart }}" style="background:#1572e8;color:#fff;padding:9px 20px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0" style-hover="background:#1054c0;color:#fff;padding:9px 20px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0">{{ t.btnLabel }}</div>
+                    <div style="width:150px;flex-shrink:0"><span style="{{ t.dueStyle }}">{{ t.dueLabel }}</span></div>
+                    <div style="text-align:right;flex-shrink:0">
+                      <div sc-camel-on-click="{{ t.onStart }}" style="{{ t.btnStyle }}">{{ t.btnLabel }}</div>
+                      <sc-if value="{{ t.hasSubLabel }}" hint-placeholder-val="{{ false }}">
+                        <div style="font-size:10px;color:#9aa2b0;margin-top:4px">{{ t.btnSubLabel }}</div>
+                      </sc-if>
+                    </div>
                   </div>
                 </sc-for>
               </div>
@@ -1426,8 +1431,13 @@
                 <sc-if value="{{ t.isPending }}" hint-placeholder-val="{{ false }}">
                   <div style="display:flex;align-items:center;padding:14px 24px;border-bottom:1px solid #f5f4fa;gap:16px">
                     <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">{{ t.title }}</div></div>
-                    <div style="width:150px;flex-shrink:0"><span style="{{ t.pillStyle }}">{{ t.pillLabel }}</span></div>
-                    <div sc-camel-on-click="{{ t.onStart }}" style="background:#1572e8;color:#fff;padding:8px 18px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;flex-shrink:0;white-space:nowrap" style-hover="background:#1054c0;color:#fff;padding:8px 18px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;flex-shrink:0;white-space:nowrap">{{ t.btnLabel }}</div>
+                    <div style="width:150px;flex-shrink:0"><span style="{{ t.dueStyle }}">{{ t.dueLabel }}</span></div>
+                    <div style="text-align:right;flex-shrink:0">
+                      <div sc-camel-on-click="{{ t.onStart }}" style="{{ t.btnStyle }}">{{ t.btnLabel }}</div>
+                      <sc-if value="{{ t.hasSubLabel }}" hint-placeholder-val="{{ false }}">
+                        <div style="font-size:10px;color:#9aa2b0;margin-top:4px">{{ t.btnSubLabel }}</div>
+                      </sc-if>
+                    </div>
                   </div>
                 </sc-if>
                 <sc-if value="{{ t.isDone }}" hint-placeholder-val="{{ true }}">
@@ -1738,34 +1748,56 @@
            jen řádek otevírá item-drawer místo modalu (klik = pushDrawer). -->
       <sc-if value="{{ showSkolAdmin }}" hint-placeholder-val="{{ false }}">
         <div style="flex:1;overflow-y:auto;padding:26px 32px 48px">
-          <div style="display:flex;align-items:center;margin-bottom:20px">
-            <div style="font-size:22px;font-weight:700;color:#2b2540;flex:1">Katalog školení</div>
+          <div style="display:flex;align-items:center;margin-bottom:20px;gap:10px">
+            <div style="font-size:22px;font-weight:700;color:#2b2540;flex:1">Správa školení</div>
+            <i class="fa-solid fa-gear" style="color:#9a95ad;font-size:15px;cursor:pointer" title="Nastavení školení" sc-camel-on-click="{{ toggleSkolSettings }}"></i>
             <div class="apt-btn-blue nsm-btn-primary" sc-camel-on-click="{{ skolOpenAdd }}"><i class="fa-solid fa-plus" style="font-size:10px"></i>PŘIDAT ŠKOLENÍ</div>
           </div>
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
-            <sc-for list="{{ skol_listFilters }}" as="f" hint-placeholder-count="4">
-              <div sc-camel-on-click="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }}</div>
-            </sc-for>
+          <!-- Dashboard/Tabulka přepínač, řádek filtrů, oko/tři tečky, počet
+               záznamů na stránku a řazení sloupců jsou v ORIGINÁLNÍM prototypu
+               jen nakreslené (bez funkce) — §3.1, ponecháno jako statický
+               dekor 1:1 podle podkladu, skutečně funkční je jen filtr níže. -->
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+            <div style="display:inline-flex;background:#f0eff5;border-radius:999px;padding:3px">
+              <div style="padding:5px 14px;border-radius:999px;font-size:11.5px;font-weight:700;background:#fff;color:#2b2540;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer">Dashboard</div>
+              <div style="padding:5px 14px;border-radius:999px;font-size:11.5px;font-weight:700;color:#8a86a0;cursor:pointer">Tabulka</div>
+            </div>
             <div style="flex:1"></div>
-            <div class="nsm-search"><i class="fa-solid fa-magnifying-glass" style="font-size:12px"></i>Vyhledat školení</div>
+            <div class="nsm-search"><i class="fa-solid fa-magnifying-glass" style="font-size:12px"></i>Hledat, filtrovat…</div>
+            <i class="fa-solid fa-calendar-days" style="color:#b0aac8;font-size:14px;cursor:pointer"></i>
+            <i class="fa-solid fa-eye" style="color:#b0aac8;font-size:14px;cursor:pointer"></i>
+            <i class="fa-solid fa-ellipsis-vertical" style="color:#b0aac8;font-size:14px;cursor:pointer"></i>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+            <sc-for list="{{ skol_listFilters }}" as="f" hint-placeholder-count="2">
+              <div sc-camel-on-click="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }} <span style="opacity:.7">({{ f.count }})</span></div>
+            </sc-for>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;background:#eef4ff;color:#1a4d8f;border:1px solid #d2e2fb;border-radius:8px;padding:9px 14px;font-size:12px;margin-bottom:16px">
+            <i class="fa-solid fa-circle-info"></i><span>{{ skol_listHint }}</span>
           </div>
 
           <div class="nsm-table" style="margin-bottom:8px">
-            <div class="nsm-table-row nsm-table-head">
-              <div>Název</div><div>Kategorie</div><div>Stav</div><div>Splnilo</div><div>Čeká</div><div>Splnění</div><div></div>
+            <div class="nsm-table-row nsm-table-head" style="grid-template-columns:1.9fr 1fr 1.3fr .9fr 1fr .8fr .6fr .7fr">
+              <div>Název školení</div><div>Kategorie</div><div>Zařazení</div><div>Opakování</div><div>Termín</div><div>Stav</div><div>Přiřazeno</div><div>Dokončeno</div>
             </div>
             <sc-for list="{{ skol_adminRows }}" as="r" hint-placeholder-count="6">
-              <div class="nsm-table-row nsm-row">
+              <div class="nsm-table-row nsm-row" style="grid-template-columns:1.9fr 1fr 1.3fr .9fr 1fr .8fr .6fr .7fr">
                 <div><span class="nsm-link" sc-camel-on-click="{{ r.onOpen }}">{{ r.name }}</span></div>
                 <div>{{ r.category }}</div>
-                <div><span style="{{ r.lifecycleStyle }}">{{ r.lifecycleLabel }}</span></div>
-                <div><span class="nsm-num">{{ r.confirmed }}</span></div>
-                <div><span class="nsm-num">{{ r.pending }}</span></div>
-                <div class="nsm-progress-wrap">
-                  <div class="nsm-progress-track"><div class="nsm-progress-fill" style="{{ r.barStyle }}"></div></div>
-                  <span class="nsm-progress-pct">{{ r.pctText }}</span>
+                <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+                  <sc-for list="{{ r.tagsShown }}" as="tg" hint-placeholder-count="2">
+                    <span style="{{ tg.style }}">{{ tg.label }}</span>
+                  </sc-for>
+                  <sc-if value="{{ r.hasMoreTags }}" hint-placeholder-val="{{ false }}">
+                    <span title="{{ r.moreTagsTitle }}" style="display:inline-flex;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;background:#eceff1;color:#59676d">{{ r.moreTagsLabel }}</span>
+                  </sc-if>
                 </div>
-                <div><i class="fa-solid fa-ellipsis-vertical nsm-kebab"></i></div>
+                <div style="font-size:12px;color:#4a4660">{{ r.opakovaniText }}</div>
+                <div style="font-size:12px;color:#4a4660">{{ r.terminText }}</div>
+                <div><span style="{{ r.lifecycleStyle }}">{{ r.lifecycleLabel }}</span></div>
+                <div><span class="nsm-num">{{ r.prirazeno }}</span></div>
+                <div><span class="nsm-num">{{ r.dokonceno }}</span></div>
               </div>
             </sc-for>
           </div>
@@ -2811,7 +2843,7 @@
           <div style="flex:1;min-width:0">
             <div style="font-size:26px;font-weight:300;color:#1e1b2e;line-height:1.2;margin-bottom:10px">{{ skol_railName }}</div>
             <div style="display:flex;align-items:center;gap:8px">
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#eceff1;color:#59676d;padding:4px 12px;border-radius:4px;font-size:10px;font-weight:600"><i class="fa-solid fa-graduation-cap" style="font-size:9px"></i>Katalog školení</span>
+              <span style="display:inline-flex;align-items:center;gap:6px;background:#eceff1;color:#59676d;padding:4px 12px;border-radius:4px;font-size:10px;font-weight:600"><i class="fa-solid fa-graduation-cap" style="font-size:9px"></i>Správa školení</span>
               <span style="{{ skolSelLifecycleStyle }}">{{ skolSelLifecycleLabel }}</span>
             </div>
           </div>
@@ -2827,31 +2859,58 @@
         </div>
         <div style="flex:1;min-height:0;display:flex;overflow:hidden">
           <div style="flex:1;min-width:0;overflow-y:auto;background:#fff">
-            <!-- Zaměstnanci — přiřazení lidé a stav vyplnění (znovupoužívá
-                 ZAM_EMPLOYEES jako zdroj avatarů, viz skol_empRows). -->
+            <!-- Zaměstnanci — souhrnné dlaždice + Aktivní/Neaktivní filtr +
+                 přiřazení lidé se stavem, výsledkem a certifikátem (§3.3.1). -->
             <sc-if value="{{ skol_showZamestnanci }}" hint-placeholder-val="{{ true }}">
               <div style="padding:16px 20px">
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px">
+                  <sc-for list="{{ skol_summaryTiles }}" as="s" hint-placeholder-count="4">
+                    <div style="background:#f7f8fc;border-radius:10px;padding:12px 14px;text-align:center">
+                      <div style="font-size:19px;font-weight:800;color:{{ s.color }}">{{ s.value }}</div>
+                      <div style="font-size:10.5px;color:#9a95ad;font-weight:700;text-transform:uppercase;letter-spacing:.03em;margin-top:2px">{{ s.label }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
                   <sc-for list="{{ skol_empFilters }}" as="f" hint-placeholder-count="2">
                     <div sc-camel-on-click="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }}</div>
                   </sc-for>
+                </div>
+                <sc-if value="{{ skol_empShowInactiveNote }}" hint-placeholder-val="{{ false }}">
+                  <div style="font-size:11px;color:#9a95ad;margin-bottom:10px"><i class="fa-solid fa-circle-info" style="margin-right:5px"></i>Bývalí zaměstnanci — historie plnění zůstává viditelná, ale nepočítá se do souhrnu nahoře.</div>
+                </sc-if>
+                <div style="display:flex;align-items:center;gap:14px;padding:8px 4px;font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;color:#9a95ad;font-weight:700;border-bottom:1px solid #f2f1f7">
+                  <div style="width:28px"></div><div style="flex:1">Zaměstnanec</div><div style="width:110px">Stav</div>
+                  <div style="width:90px">Odesláno</div><div style="width:90px">Dokončeno</div><div style="width:120px">Výsledek</div><div style="width:70px">Certifikát</div>
                 </div>
                 <sc-for list="{{ skol_empRows }}" as="e" hint-placeholder-count="8">
                   <div style="display:flex;align-items:center;gap:14px;padding:12px 4px;border-bottom:1px solid #f2f1f7">
                     {{ e.avatarEl }}
                     <span sc-camel-on-click="{{ e.onOpen }}" style="flex:1;min-width:0;font-size:13.5px;color:#1e1b2e;cursor:pointer;text-decoration:underline;text-underline-offset:3px">{{ e.name }}</span>
-                    <span style="{{ e.statusStyle }}">{{ e.statusLabel }}</span>
-                    <span style="width:150px;flex-shrink:0;text-align:right;font-size:11.5px;color:#9a95ad">{{ e.doneAt }}</span>
+                    <span style="width:110px;flex-shrink:0"><span style="{{ e.statusStyle }}">{{ e.statusLabel }}</span></span>
+                    <span style="width:90px;flex-shrink:0;font-size:11px;color:#9a95ad">{{ e.odeslanoAt }}</span>
+                    <span style="width:90px;flex-shrink:0;font-size:11px;color:#9a95ad">{{ e.doneAt }}</span>
+                    <span style="width:120px;flex-shrink:0;display:flex;align-items:center;gap:6px">
+                      <span style="width:44px;height:5px;border-radius:3px;background:#eee;overflow:hidden;flex-shrink:0"><span style="display:block;height:100%;border-radius:3px;{{ e.scoreBarStyle }}"></span></span>
+                      <span style="font-size:11px;color:#5a5478;font-weight:700">{{ e.scoreText }}</span>
+                    </span>
+                    <span style="width:70px;flex-shrink:0">
+                      <sc-if value="{{ e.hasCert }}" hint-placeholder-val="{{ false }}">
+                        <span style="display:inline-flex;padding:2px 8px;border-radius:999px;font-size:9.5px;font-weight:700;background:#e8f5e9;color:#2E7D32">Vydán</span>
+                      </sc-if>
+                    </span>
                   </div>
                 </sc-for>
               </div>
             </sc-if>
-            <!-- Formulář — READ-ONLY náhled otázek (bez editace/Návrháře,
-                 viz poznámka výše). -->
+            <!-- Formulář — náhled aktuální verze (koncept, pokud existuje
+                 nepublikovaná změna, jinak publikovaná verze), §3.3.1. -->
             <sc-if value="{{ skol_showFormular }}" hint-placeholder-val="{{ false }}">
               <div style="padding:16px 20px">
-                <div style="display:flex;align-items:center;gap:8px;background:#fff8e6;color:#8a6d1a;border:1px solid #f0e0b0;border-radius:8px;padding:10px 14px;font-size:12px;margin-bottom:18px">
-                  <i class="fa-solid fa-circle-info"></i>Náhled otázek. Úprava formuláře (Návrhář) není v tomto kroku k dispozici.
+                <div style="{{ skol_formStatusStyle }}">
+                  <i class="fa-solid fa-circle-info"></i><span>{{ skol_formStatusLabel }}</span>
+                  <div style="flex:1"></div>
+                  <span sc-camel-on-click="{{ skolOpenDesignFromFormular }}" style="color:#1572e8;font-weight:700;cursor:pointer;white-space:nowrap">Editovat formulář</span>
                 </div>
                 <sc-for list="{{ skol_formularQuestions }}" as="q" hint-placeholder-count="3">
                   <div style="border:1px solid #ececf3;border-radius:10px;padding:14px 18px;margin-bottom:10px">
@@ -2867,54 +2926,110 @@
                 </sc-for>
               </div>
             </sc-if>
-            <!-- Detaily — stejný field-row vzor jako Zaměstnanec (viz
-                 drawer-tab-detaily.html): 32px help / 210px label+tužka /
-                 flexibilní hodnota. -->
-            <sc-if value="{{ skol_showDetaily }}" hint-placeholder-val="{{ false }}">
-              <sc-for list="{{ skol_detailRows }}" as="r" hint-placeholder-count="7">
-                <div style="display:flex;align-items:center;min-height:48px;border-bottom:1px solid #f3f2f7;padding:0 16px 0 8px">
-                  <div style="width:28px;flex-shrink:0;display:flex;align-items:center;justify-content:center">
-                    <i class="fa-regular fa-circle-question" style="font-size:12px;color:#c8c5d5"></i>
-                  </div>
-                  <div style="width:190px;flex-shrink:0;text-align:right;padding:13px 10px 13px 0;font-size:12px;color:#6c757d;font-weight:600;display:flex;align-items:center;justify-content:flex-end;gap:5px">
-                    {{ r.label }}<i class="fa-solid fa-pen" style="font-size:10px;color:#d6d2e2"></i>
-                  </div>
-                  <div style="flex:1;padding:12px 12px 12px 0;font-size:12px;min-width:0">
-                    <input type="text" sc-camel-default-value="{{ r.value }}" style="border:1px solid #e5e5e5;border-radius:4px;padding:6px 10px;font-size:13px;font-family:'Nunito',sans-serif;color:#1a1a2e;background:#fff;outline:none;width:100%">
-                  </div>
+            <!-- Detaily — čtecí režim (plain text) / editační režim (přepne
+                 tlačítko „Editovat detaily" v hlavičce, §3.3.1). -->
+            <sc-if value="{{ skol_showDetailyRead }}" hint-placeholder-val="{{ false }}">
+              <sc-for list="{{ skol_detailRows }}" as="r" hint-placeholder-count="9">
+                <div style="display:flex;align-items:center;min-height:44px;border-bottom:1px solid #f3f2f7;padding:0 20px">
+                  <div style="width:190px;flex-shrink:0;font-size:12px;color:#6c757d;font-weight:600">{{ r.label }}</div>
+                  <div style="flex:1;font-size:13px;color:#1e1b2e;min-width:0">{{ r.value }}</div>
                 </div>
               </sc-for>
             </sc-if>
-            <!-- Souvislosti — zatím bez napojených záznamů (prázdný stav,
-                 stejně jako u ostatních modulů bez dat pro tuto záložku). -->
-            <sc-if value="{{ skol_showSouvis }}" hint-placeholder-val="{{ false }}">
-              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;height:220px;color:#aaa4bf">
-                <i class="fa-solid fa-diagram-project" style="font-size:28px;color:#d6d2e2"></i>
-                <div style="font-size:14px;font-weight:700;color:#7a7595">Zatím žádné souvislosti</div>
+            <sc-if value="{{ skol_showDetailyEdit }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:16px 20px">
+                <div style="display:flex;align-items:center;gap:8px;background:#eef4ff;color:#1a4d8f;border:1px solid #d2e2fb;border-radius:8px;padding:10px 14px;font-size:12px;margin-bottom:18px">
+                  <i class="fa-solid fa-circle-info"></i>Nastavení školení. Změny se projeví u nově rozesílaných zadání.
+                </div>
+                <div class="apt-f-label">Název*</div>
+                <input type="text" sc-camel-default-value="{{ skolForm.title }}" sc-camel-on-change="{{ skolFormSetTitle }}" class="apt-f-input" style="margin-bottom:14px;width:100%;border:1px solid #e0dded;border-radius:6px;padding:8px 10px;font:inherit;background:#fff">
+                <div class="apt-f-label">Popis</div>
+                <textarea sc-camel-default-value="{{ skolForm.popis }}" sc-camel-on-change="{{ skolFormSetPopis }}" class="apt-f-area" style="min-height:56px;width:100%;margin-bottom:14px"></textarea>
+                <div class="apt-f-label">Kategorie</div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+                  <sc-for list="{{ skol_formCatOptions }}" as="c" hint-placeholder-count="3">
+                    <div class="nsm-radio-inline" sc-camel-on-click="{{ c.onClick }}">
+                      <i class="fa-solid fa-{{ c.radioIcon }}" style="font-size:15px;color:{{ c.accent }}"></i><span>{{ c.label }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+                <div class="apt-f-label">Zařazení</div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+                  <sc-for list="{{ skol_formTagCards }}" as="t" hint-placeholder-count="8">
+                    <div sc-camel-on-click="{{ t.onClick }}" style="{{ t.chipStyle }}">{{ t.label }}</div>
+                  </sc-for>
+                </div>
+                <div class="apt-f-label">Opakování</div>
+                <div class="nsm-card-grid3" style="grid-template-columns:1fr 1fr;margin-bottom:10px">
+                  <sc-for list="{{ skol_formOpakCards }}" as="c" hint-placeholder-count="2">
+                    <div class="nsm-card {{ c.selCls }}" sc-camel-on-click="{{ c.onClick }}">
+                      <div class="nsm-card-mark"></div>
+                      <div class="nsm-card-title"><i class="fa-solid fa-{{ c.icon }}"></i>{{ c.title }}</div>
+                      <div class="nsm-card-desc">{{ c.desc }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ skol_formOpakIsOpakovane }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;align-items:flex-end;gap:10px;margin-bottom:14px">
+                    <input type="text" sc-camel-default-value="{{ skolForm.opakovani.perioda }}" sc-camel-on-change="{{ skolFormSetPerioda }}" class="apt-f-input" style="width:80px;border:1px solid #e0dded;border-radius:6px;padding:8px 10px;font:inherit;background:#fff">
+                    <sc-for list="{{ skol_formJednotkaOptions }}" as="j" hint-placeholder-count="3">
+                      <div sc-camel-on-click="{{ j.onClick }}" style="{{ j.style }}">{{ j.label }}</div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+                <div class="apt-f-label">Termín splnění</div>
+                <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:6px">
+                  <sc-for list="{{ skol_formTerminOptions }}" as="o" hint-placeholder-count="3">
+                    <div sc-camel-on-click="{{ o.onClick }}" style="{{ o.style }}">
+                      <i class="fa-solid fa-{{ o.icon }}" style="font-size:14px;color:#7a7595;width:16px;text-align:center"></i>
+                      <span style="font-weight:600;font-size:13px;color:#2b2540">{{ o.label }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ skol_formShowDatum }}" hint-placeholder-val="{{ false }}">
+                  <input type="text" sc-camel-default-value="{{ skolForm.konkretniDatum }}" sc-camel-on-change="{{ skolFormSetKonkretniDatum }}" class="apt-f-input" placeholder="DD.MM.RRRR" style="max-width:160px;border:1px solid #e0dded;border-radius:6px;padding:8px 10px;font:inherit;background:#fff;margin-bottom:14px">
+                </sc-if>
+                <sc-if value="{{ skol_formShowDny }}" hint-placeholder-val="{{ true }}">
+                  <input type="text" sc-camel-default-value="{{ skolForm.pocetDni }}" sc-camel-on-change="{{ skolFormSetPocetDni }}" class="apt-f-input" style="max-width:120px;border:1px solid #e0dded;border-radius:6px;padding:8px 10px;font:inherit;background:#fff;margin-bottom:14px">
+                </sc-if>
+                <div style="display:flex;justify-content:flex-end;gap:10px;padding-top:8px;border-top:1px solid #f0eff5">
+                  <div style="border:1.5px solid #d8d6e0;color:#4a4660;padding:8px 18px;border-radius:999px;font-weight:700;font-size:12px;cursor:pointer" sc-camel-on-click="{{ skolCancelDetailEdit }}">ZRUŠIT</div>
+                  <div class="apt-btn-blue nsm-btn-primary" sc-camel-on-click="{{ skolSaveDetailEdit }}"><i class="fa-solid fa-floppy-disk" style="font-size:11px"></i>ULOŽIT</div>
+                </div>
               </div>
             </sc-if>
-            <!-- Publikováno — historie verzí (statická ukázka). -->
+            <!-- Souvislosti — zatím bez napojených záznamů (§3.3.1, doslovný text). -->
+            <sc-if value="{{ skol_showSouvis }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;height:220px;color:#aaa4bf;padding:0 40px;text-align:center">
+                <i class="fa-solid fa-diagram-project" style="font-size:28px;color:#d6d2e2"></i>
+                <div style="font-size:14px;font-weight:700;color:#7a7595">Zatím žádné propojené záznamy – sem se zobrazí vazby na směrnice, zakázky a další evidence.</div>
+              </div>
+            </sc-if>
+            <!-- Publikováno — historie verzí formuláře, aktuální navrchu (§3.3.1). -->
             <sc-if value="{{ skol_showPublikovano }}" hint-placeholder-val="{{ false }}">
               <div style="padding:20px 24px">
-                <div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f2f1f7">
-                  <i class="fa-solid fa-circle-check" style="color:#00C853;font-size:16px;flex-shrink:0"></i>
-                  <div style="flex:1"><div style="font-size:13.5px;font-weight:700;color:#1e1b2e">Aktuální verze zveřejněna</div><div style="font-size:11.5px;color:#9a95ad">14. 07. 2026 · Karolína Fišerová</div></div>
-                </div>
-                <div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f2f1f7">
-                  <i class="fa-solid fa-pen" style="color:#9a95ad;font-size:14px;flex-shrink:0"></i>
-                  <div style="flex:1"><div style="font-size:13.5px;color:#5a5478">Upraveny otázky a termín splnění</div><div style="font-size:11.5px;color:#9a95ad">02. 06. 2026 · Karolína Fišerová</div></div>
-                </div>
-                <div style="display:flex;align-items:center;gap:14px;padding:14px 0">
-                  <i class="fa-solid fa-plus" style="color:#9a95ad;font-size:14px;flex-shrink:0"></i>
-                  <div style="flex:1"><div style="font-size:13.5px;color:#5a5478">Školení vytvořeno</div><div style="font-size:11.5px;color:#9a95ad">18. 03. 2026 · Karolína Fišerová</div></div>
-                </div>
+                <sc-if value="{{ skol_publishedEmpty }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;height:180px;color:#aaa4bf">
+                    <i class="fa-solid fa-clock-rotate-left" style="font-size:26px;color:#d6d2e2"></i>
+                    <div style="font-size:13.5px;font-weight:700;color:#7a7595">Formulář zatím nebyl publikován</div>
+                  </div>
+                </sc-if>
+                <sc-for list="{{ skol_publishedVersions }}" as="v" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f2f1f7">
+                    <i class="fa-solid fa-{{ v.icon }}" style="color:{{ v.iconColor }};font-size:15px;flex-shrink:0"></i>
+                    <div style="flex:1"><div style="font-size:13.5px;font-weight:700;color:#1e1b2e">{{ v.titleText }}</div><div style="font-size:11.5px;color:#9a95ad">{{ v.datum }} · {{ v.autor }}</div></div>
+                  </div>
+                </sc-for>
               </div>
             </sc-if>
           </div>
           <div style="width:210px;flex-shrink:0;border-left:1px solid #eeecf5;padding:12px 0;display:flex;flex-direction:column;overflow-y:auto">
-            <sc-for list="{{ skol_itemActions }}" as="ac" hint-placeholder-count="7">
-              <div style="{{ ac.style }}" style-hover="{{ ac.hover }}">{{ ac.iconEl }}<span>{{ ac.label }}</span></div>
+            <sc-for list="{{ skol_itemActions }}" as="ac" hint-placeholder-count="5">
+              <div sc-camel-on-click="{{ ac.onClick }}" style="{{ ac.style }}" style-hover="{{ ac.hover }}">{{ ac.iconEl }}<span>{{ ac.label }}</span></div>
             </sc-for>
+            <sc-if value="{{ skol_shareNoteVisible }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:4px 16px 8px;font-size:10.5px;color:#9a95ad;line-height:1.4">{{ skol_shareNoteText }}</div>
+            </sc-if>
             <div style="margin-top:16px;padding:16px 16px 0;border-top:1px solid #eef0f3">
               <div style="font-size:11px;color:#9a95ad;margin-bottom:4px">ID: <b style="color:#5a5478">{{ skol_railName }}</b></div>
               <div style="font-size:11px;color:#9a95ad;margin-bottom:4px">Vytvořeno: <b style="color:#5a5478">18. 03. 2026</b></div>
@@ -3533,20 +3648,25 @@
        otázky needitují, aby zadání zůstalo v rozsahu tohoto kroku. -->
   <sc-if value="{{ skolFormOpen }}" hint-placeholder-val="{{ false }}">
     <div class="apt-modal-overlay" sc-camel-on-click="{{ skolCloseForm }}">
-      <div class="apt-modal" style="height:auto;max-height:92vh;width:min(680px,94vw)" sc-camel-on-click="{{ stopClick }}">
+      <div class="apt-modal" style="height:auto;max-height:92vh;width:min(720px,94vw)" sc-camel-on-click="{{ stopClick }}">
         <div class="apt-modal-head">
           <div class="apt-modal-title">{{ skolFormTitle }}</div>
           <div class="apt-modal-close" sc-camel-on-click="{{ skolCloseForm }}">✕</div>
         </div>
         <div style="padding:22px 26px 26px;overflow-y:auto">
+          <!-- Základní údaje -->
           <div class="nsm-sec">
-            <div class="nsm-sec-head"><i class="fa-solid fa-circle-info"></i><span class="nsm-sec-head-title">Základní informace</span></div>
+            <div class="nsm-sec-head"><i class="fa-solid fa-circle-info"></i><span class="nsm-sec-head-title">Základní údaje</span></div>
             <div class="apt-f-label">Název*</div>
-            <input type="text" sc-camel-default-value="{{ skolForm.title }}" sc-camel-on-change="{{ skolFormSetTitle }}" class="apt-f-input" style="margin-bottom:16px;width:100%;border:none;outline:none;font:inherit;color:inherit;background:transparent">
+            <input type="text" sc-camel-default-value="{{ skolForm.title }}" sc-camel-on-change="{{ skolFormSetTitle }}" class="apt-f-input" placeholder="Např. Vstupní školení BOZP" style="margin-bottom:16px;width:100%;border:none;outline:none;font:inherit;color:inherit;background:transparent">
+            <div class="apt-f-label">Popis</div>
+            <textarea sc-camel-default-value="{{ skolForm.popis }}" sc-camel-on-change="{{ skolFormSetPopis }}" class="apt-f-area" style="min-height:64px;width:100%"></textarea>
           </div>
+          <!-- Kategorie a zařazení -->
           <div class="nsm-sec">
-            <div class="nsm-sec-head"><i class="fa-solid fa-shapes"></i><span class="nsm-sec-head-title">Kategorie</span></div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <div class="nsm-sec-head"><i class="fa-solid fa-shapes"></i><span class="nsm-sec-head-title">Kategorie a zařazení</span></div>
+            <div class="apt-f-label">Kategorie</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
               <sc-for list="{{ skol_formCatOptions }}" as="c" hint-placeholder-count="3">
                 <div class="nsm-radio-inline" sc-camel-on-click="{{ c.onClick }}">
                   <i class="fa-solid fa-{{ c.radioIcon }}" style="font-size:15px;color:{{ c.accent }}"></i>
@@ -3554,15 +3674,50 @@
                 </div>
               </sc-for>
             </div>
-          </div>
-          <div class="nsm-sec">
-            <div class="nsm-sec-head"><i class="fa-solid fa-tags"></i><span class="nsm-sec-head-title">Štítky</span></div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <div class="apt-f-label">Zařazení</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
               <sc-for list="{{ skol_formTagCards }}" as="t" hint-placeholder-count="8">
                 <div sc-camel-on-click="{{ t.onClick }}" style="{{ t.chipStyle }}">{{ t.label }}</div>
               </sc-for>
             </div>
+            <div style="font-size:11.5px;color:#9a95ad;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <span>{{ skol_formTagsSummary }}</span>
+              <span sc-camel-on-click="{{ toggleSkolSettings }}" style="color:#1572e8;font-weight:700;cursor:pointer">Spravovat v nastavení</span>
+            </div>
           </div>
+          <!-- Opakování -->
+          <div class="nsm-sec">
+            <div class="nsm-sec-head"><i class="fa-solid fa-rotate"></i><span class="nsm-sec-head-title">Opakování</span></div>
+            <div class="nsm-card-grid3" style="grid-template-columns:1fr 1fr">
+              <sc-for list="{{ skol_formOpakCards }}" as="c" hint-placeholder-count="2">
+                <div class="nsm-card {{ c.selCls }}" sc-camel-on-click="{{ c.onClick }}">
+                  <div class="nsm-card-mark"></div>
+                  <div class="nsm-card-title"><i class="fa-solid fa-{{ c.icon }}"></i>{{ c.title }}</div>
+                  <div class="nsm-card-desc">{{ c.desc }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ skol_formOpakIsOpakovane }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:flex-end;gap:10px;margin-top:14px">
+                <div>
+                  <div class="apt-f-label">Perioda</div>
+                  <input type="text" sc-camel-default-value="{{ skolForm.opakovani.perioda }}" sc-camel-on-change="{{ skolFormSetPerioda }}" class="apt-f-input" style="width:90px;border:1px solid #e0dded;border-radius:6px;padding:8px 10px;font:inherit;background:#fff">
+                </div>
+                <div style="display:flex;gap:6px">
+                  <sc-for list="{{ skol_formJednotkaOptions }}" as="j" hint-placeholder-count="3">
+                    <div sc-camel-on-click="{{ j.onClick }}" style="{{ j.style }}">{{ j.label }}</div>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="margin-top:10px;font-size:12.5px;color:#4a4660"><i class="fa-solid fa-circle-check" style="color:#1572e8;margin-right:6px"></i><b>{{ skol_formOpakSentence }}</b></div>
+            </sc-if>
+            <sc-if value="{{ !skol_formOpakIsOpakovane }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;align-items:center;gap:8px;background:#eef4ff;color:#1a4d8f;border:1px solid #d2e2fb;border-radius:8px;padding:10px 14px;font-size:12px;margin-top:12px">
+                <i class="fa-solid fa-circle-info"></i>Jiné možnosti opakování nejsou povolené – školení je buď jednorázové, nebo má pevnou periodu ve dnech, měsících či letech.
+              </div>
+            </sc-if>
+          </div>
+          <!-- Příjemci -->
           <div class="nsm-sec">
             <div class="nsm-sec-head"><i class="fa-solid fa-users"></i><span class="nsm-sec-head-title">Příjemci</span></div>
             <div class="nsm-card-grid3">
@@ -3574,16 +3729,65 @@
                 </div>
               </sc-for>
             </div>
+            <sc-if value="{{ skol_formPrijemciKonkretni }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px">
+                <div>
+                  <div class="apt-f-label">Přidaní zaměstnanci</div>
+                  <input type="text" sc-camel-default-value="{{ skolForm.prijemciText }}" sc-camel-on-change="{{ skolFormSetPrijemciText }}" class="apt-f-input" style="width:100%;border:1px solid #e0dded;border-radius:6px;padding:8px 10px;font:inherit;background:#fff">
+                </div>
+                <div>
+                  <div class="apt-f-label">Skupiny zaměstnanců</div>
+                  <input type="text" sc-camel-default-value="{{ skolForm.prijemciSkupiny }}" sc-camel-on-change="{{ skolFormSetPrijemciSkupiny }}" class="apt-f-input" style="width:100%;border:1px solid #e0dded;border-radius:6px;padding:8px 10px;font:inherit;background:#fff">
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ skol_formPrijemciPozice }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:14px">
+                <div class="apt-f-label">Pracovní pozice</div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                  <sc-for list="{{ skol_formPozOptions }}" as="p" hint-placeholder-count="6">
+                    <div sc-camel-on-click="{{ p.onClick }}" style="{{ p.style }}">{{ p.label }}</div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
           </div>
+          <!-- Způsob doručení -->
           <div class="nsm-sec" style="margin-bottom:6px">
-            <div class="nsm-sec-head"><i class="fa-regular fa-clock"></i><span class="nsm-sec-head-title">Termín splnění</span></div>
-            <div class="apt-f-label">Počet dnů od přiřazení</div>
-            <input type="text" sc-camel-default-value="{{ skolForm.deadlineDny }}" sc-camel-on-change="{{ skolFormSetDeadline }}" class="apt-f-input" style="max-width:120px;border:none;outline:none;font:inherit;color:inherit;background:transparent">
+            <div class="nsm-sec-head"><i class="fa-regular fa-clock"></i><span class="nsm-sec-head-title">Způsob doručení</span></div>
+            <div style="display:flex;align-items:flex-start;gap:10px;background:#eef4ff;color:#1a4d8f;border:1px solid #d2e2fb;border-radius:10px;padding:12px 16px;font-size:12.5px;margin-bottom:16px">
+              <i class="fa-solid fa-circle-check" style="margin-top:2px"></i>
+              <div><b>Vyžaduje potvrzení</b><br>Zaměstnanec musí potvrdit absolvování a vyplnit formulář. U školení to platí vždy – bez potvrzení nelze absolvování doložit.</div>
+            </div>
+            <div class="apt-f-label">Termín splnění (počítáno od doručení)</div>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px">
+              <sc-for list="{{ skol_formTerminOptions }}" as="o" hint-placeholder-count="3">
+                <div sc-camel-on-click="{{ o.onClick }}" style="{{ o.style }}">
+                  <i class="fa-solid fa-{{ o.icon }}" style="font-size:14px;color:#7a7595;width:16px;text-align:center"></i>
+                  <span style="font-weight:600;font-size:13px;color:#2b2540">{{ o.label }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ skol_formOpakIsOpakovane }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:center;gap:8px;color:#7a7595;font-size:11.5px;margin-bottom:10px"><i class="fa-solid fa-circle-info"></i>U opakovaného školení nelze zadat konkrétní datum – termín se počítá od každého doručení znovu.</div>
+            </sc-if>
+            <sc-if value="{{ skol_formShowDatum }}" hint-placeholder-val="{{ false }}">
+              <input type="text" sc-camel-default-value="{{ skolForm.konkretniDatum }}" sc-camel-on-change="{{ skolFormSetKonkretniDatum }}" class="apt-f-input" placeholder="DD.MM.RRRR" style="max-width:160px;border:1px solid #e0dded;border-radius:6px;padding:8px 10px;font:inherit;background:#fff">
+            </sc-if>
+            <sc-if value="{{ skol_formShowDny }}" hint-placeholder-val="{{ true }}">
+              <input type="text" sc-camel-default-value="{{ skolForm.pocetDni }}" sc-camel-on-change="{{ skolFormSetPocetDni }}" class="apt-f-input" style="max-width:120px;border:1px solid #e0dded;border-radius:6px;padding:8px 10px;font:inherit;background:#fff">
+            </sc-if>
+            <sc-if value="{{ skol_formShowBezWarn }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:flex-start;gap:8px;background:#fff8e6;color:#8a6d1a;border:1px solid #f0e0b0;border-radius:8px;padding:10px 14px;font-size:12px">
+                <i class="fa-solid fa-triangle-exclamation" style="margin-top:2px"></i><span>{{ skol_formBezWarnText }}</span>
+              </div>
+            </sc-if>
           </div>
         </div>
         <div class="apt-modal-foot">
+          <div style="border:1.5px solid #d8d6e0;color:#4a4660;padding:9px 20px;border-radius:999px;font-weight:700;font-size:12px;cursor:pointer" sc-camel-on-click="{{ skolCloseForm }}">ZRUŠIT</div>
           <div style="flex:1"></div>
-          <div class="apt-btn-blue nsm-btn-primary" sc-camel-on-click="{{ skolSaveForm }}"><i class="fa-solid fa-floppy-disk" style="font-size:11px"></i>ULOŽIT</div>
+          <div class="apt-btn-blue nsm-btn-primary" sc-camel-on-click="{{ skolSaveForm }}"><i class="fa-solid fa-floppy-disk" style="font-size:11px"></i>ULOŽIT JAKO KONCEPT</div>
         </div>
       </div>
     </div>
@@ -3626,25 +3830,202 @@
             <div style="border:1.5px solid #d8d6e0;color:#4a4660;padding:9px 20px;border-radius:999px;font-weight:700;font-size:12px;cursor:pointer" sc-camel-on-click="{{ skolPrevQ }}">ZPĚT</div>
           </sc-if>
           <div style="flex:1"></div>
-          <sc-if value="{{ !skolRunIsLast }}" hint-placeholder-val="{{ true }}">
-            <div class="apt-btn-blue nsm-btn-primary" sc-camel-on-click="{{ skolNextQ }}">DALŠÍ<i class="fa-solid fa-arrow-right" style="font-size:10px"></i></div>
-          </sc-if>
-          <sc-if value="{{ skolRunIsLast }}" hint-placeholder-val="{{ false }}">
-            <div class="apt-btn-blue nsm-btn-primary" sc-camel-on-click="{{ skolSaveAndClose }}"><i class="fa-solid fa-check" style="font-size:11px"></i>DOKONČIT</div>
-          </sc-if>
+          <!-- „Uložit a zavřít" ukládá rozpracovanou pozici — nezávisle na
+               tom, jestli je aktuální otázka zodpovězená (§3.6). -->
+          <div style="border:1.5px solid #d8d6e0;color:#4a4660;padding:9px 20px;border-radius:999px;font-weight:700;font-size:12px;cursor:pointer;white-space:nowrap" sc-camel-on-click="{{ skolSaveAndClose }}"><i class="fa-solid fa-floppy-disk" style="font-size:11px"></i> ULOŽIT A ZAVŘÍT</div>
+          <!-- „Další otázka" / „Dokončit školení" — jen opticky ztlumené
+               (ne skutečně zablokované) dokud není vybraná odpověď. -->
+          <div style="{{ skolRunNextStyle }}" sc-camel-on-click="{{ skolRunNextAction }}">{{ skolRunNextLabel }}<i class="fa-solid fa-arrow-right" style="font-size:10px"></i></div>
         </div>
       </div>
     </div>
   </sc-if>
 
-  <!-- ══ ŠKOLENÍ — POTVRZENÍ DOKONČENÍ (krátká karta) ══ -->
+  <!-- ══ ŠKOLENÍ — „ŠKOLENÍ DOKONČENO" (krátká karta) ══ -->
   <sc-if value="{{ skolJustDoneOpen }}" hint-placeholder-val="{{ false }}">
     <div class="apt-modal-overlay" sc-camel-on-click="{{ skolCloseJustDone }}">
-      <div class="apt-modal" style="height:auto;width:min(400px,94vw);padding:36px 30px;text-align:center" sc-camel-on-click="{{ stopClick }}">
+      <div class="apt-modal" style="height:auto;width:min(420px,94vw);padding:36px 30px;text-align:center" sc-camel-on-click="{{ stopClick }}">
         <i class="fa-solid fa-circle-check" style="font-size:44px;color:#00C853;margin-bottom:16px"></i>
-        <div style="font-size:17px;font-weight:800;color:#2b2540;margin-bottom:6px">Školení splněno</div>
+        <div style="font-size:17px;font-weight:800;color:#2b2540;margin-bottom:6px">Školení dokončeno</div>
         <div style="font-size:13px;color:#9aa2b0;margin-bottom:24px">{{ skolJustDoneTitle }}</div>
-        <div class="apt-btn-blue nsm-btn-primary" style="display:inline-flex" sc-camel-on-click="{{ skolCloseJustDone }}">ZAVŘÍT</div>
+        <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
+          <div style="border:1.5px solid #d8d6e0;color:#4a4660;padding:9px 20px;border-radius:999px;font-weight:700;font-size:12px;cursor:pointer;white-space:nowrap">Zobrazit odpovědi</div>
+          <div class="apt-btn-blue nsm-btn-primary" style="display:inline-flex" sc-camel-on-click="{{ skolCloseJustDone }}">ZPĚT NA PŘEHLED</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ══ ŠKOLENÍ — NÁVRHÁŘ (editor formuláře, celoobrazovková vrstva, §3.4) ══ -->
+  <sc-if value="{{ skolDesignOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;background:#fff;z-index:60;display:flex;flex-direction:column">
+      <div style="flex-shrink:0;padding:18px 28px;display:flex;align-items:center;gap:16px;border-bottom:1px solid #ececf3">
+        <i class="fa-solid fa-pen-to-square" style="color:#1572e8;font-size:18px"></i>
+        <div style="font-size:17px;font-weight:800;color:#1e1b2e;flex:1">Návrhář — {{ skolDesignTitle }}</div>
+        <div style="border:1.5px solid #d8d6e0;color:#4a4660;padding:8px 18px;border-radius:999px;font-weight:700;font-size:12px;cursor:pointer" sc-camel-on-click="{{ skolCancelDesign }}">ZRUŠIT</div>
+        <div class="apt-btn-blue nsm-btn-primary" sc-camel-on-click="{{ skolSaveDesign }}"><i class="fa-solid fa-floppy-disk" style="font-size:11px"></i>ULOŽIT</div>
+      </div>
+      <div style="flex-shrink:0;display:flex;align-items:flex-end;padding:14px 28px 0;background:#fff;border-bottom:1px solid #ececf3">
+        <sc-for list="{{ skol_designTabs }}" as="t" hint-placeholder-count="5">
+          <div sc-camel-on-click="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</div>
+        </sc-for>
+      </div>
+      <div style="flex:1;min-height:0;overflow:hidden;display:flex">
+        <!-- Návrhář: paleta (18 položek → 10 typů) / seznam otázek / vlastnosti -->
+        <sc-if value="{{ skol_design_showNavrhar }}" hint-placeholder-val="{{ true }}">
+          <div style="width:230px;flex-shrink:0;border-right:1px solid #ececf3;overflow-y:auto;padding:14px">
+            <div style="font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#9a95ad;font-weight:700;margin-bottom:10px">Přidat otázku</div>
+            <sc-for list="{{ skol_designPalette }}" as="p" hint-placeholder-count="18">
+              <div sc-camel-on-click="{{ p.onClick }}" style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:12.5px;color:#3d3a52;margin-bottom:2px" style-hover="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:12.5px;color:#1572e8;background:#f2f6fd;margin-bottom:2px">
+                <i class="fa-solid fa-{{ p.icon }}" style="width:16px;text-align:center;color:#9a95ad"></i>{{ p.label }}
+              </div>
+            </sc-for>
+          </div>
+          <div style="flex:1;min-width:0;overflow-y:auto;padding:18px 22px;background:#fafbfd">
+            <sc-if value="{{ !skol_designHasQuestions }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;height:220px;color:#aaa4bf">
+                <i class="fa-solid fa-list-check" style="font-size:26px;color:#d6d2e2"></i>
+                <div style="font-size:13px;font-weight:700;color:#7a7595">Vyberte typ otázky vlevo a přidejte první otázku</div>
+              </div>
+            </sc-if>
+            <sc-for list="{{ skol_designQuestions }}" as="q" hint-placeholder-count="3">
+              <div style="{{ q.rowStyle }}" sc-camel-on-click="{{ q.onSelect }}">
+                <span style="width:22px;height:22px;border-radius:50%;background:#eceff1;color:#5a5478;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ q.n }}</span>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:13px;color:#2b2942;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ q.text }}</div>
+                  <div style="font-size:10px;color:#9a95ad;text-transform:uppercase;letter-spacing:.04em;font-weight:700">{{ q.typeLabel }}</div>
+                </div>
+                <i class="fa-solid fa-chevron-up" style="{{ q.upStyle }}" sc-camel-on-click="{{ q.onUp }}"></i>
+                <i class="fa-solid fa-chevron-down" style="{{ q.downStyle }}" sc-camel-on-click="{{ q.onDown }}"></i>
+                <i class="fa-solid fa-copy" style="font-size:12px;color:#9a95ad;cursor:pointer" sc-camel-on-click="{{ q.onDup }}"></i>
+                <i class="fa-solid fa-trash" style="font-size:12px;color:#9a95ad;cursor:pointer" sc-camel-on-click="{{ q.onDelete }}"></i>
+              </div>
+            </sc-for>
+          </div>
+          <div style="width:280px;flex-shrink:0;border-left:1px solid #ececf3;overflow-y:auto;padding:16px">
+            <sc-if value="{{ skol_designHasSel }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#9a95ad;font-weight:700;margin-bottom:10px">Vlastnosti otázky</div>
+              <div class="apt-f-label">Text otázky</div>
+              <textarea sc-camel-default-value="{{ skol_designSelText }}" sc-camel-on-change="{{ skolDesignSetText }}" class="apt-f-area" style="min-height:56px;width:100%;margin-bottom:14px"></textarea>
+              <div class="apt-f-label">Typ</div>
+              <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:14px;max-height:220px;overflow-y:auto">
+                <sc-for list="{{ skol_designTypeOptions }}" as="ty" hint-placeholder-count="10">
+                  <div class="nsm-radio-inline" sc-camel-on-click="{{ ty.onClick }}">
+                    <i class="fa-solid fa-{{ ty.radioIcon }}" style="font-size:13px;color:{{ ty.accent }}"></i><span style="font-size:12px">{{ ty.label }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div class="nsm-radio-inline" sc-camel-on-click="{{ skolDesignToggleRequired }}" style="margin-bottom:14px">
+                <i class="fa-solid fa-{{ skol_designRequiredIcon }}" style="font-size:15px;color:{{ skol_designRequiredAccent }}"></i><span>Povinná otázka</span>
+              </div>
+              <sc-if value="{{ skol_designHasOptions }}" hint-placeholder-val="{{ false }}">
+                <div class="apt-f-label">Možnosti</div>
+                <sc-for list="{{ skol_designOptions }}" as="o" hint-placeholder-count="2">
+                  <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+                    <input type="text" sc-camel-default-value="{{ o.value }}" sc-camel-on-change="{{ o.onChange }}" style="flex:1;border:1px solid #e0dded;border-radius:6px;padding:6px 8px;font-size:12px;font:inherit;background:#fff">
+                    <i class="fa-solid fa-xmark" style="color:#b0aac8;font-size:13px;cursor:pointer" sc-camel-on-click="{{ o.onDelete }}"></i>
+                  </div>
+                </sc-for>
+                <div sc-camel-on-click="{{ skolDesignAddOptionBtn }}" style="font-size:11.5px;color:#1572e8;font-weight:700;cursor:pointer;margin-top:4px">+ přidat možnost</div>
+              </sc-if>
+            </sc-if>
+            <sc-if value="{{ !skol_designHasSel }}" hint-placeholder-val="{{ true }}">
+              <div style="color:#aaa4bf;font-size:12.5px;text-align:center;margin-top:40px">Vyberte otázku vlevo</div>
+            </sc-if>
+          </div>
+        </sc-if>
+        <!-- Vyzkoušet: náhled formuláře jak ho uvidí zaměstnanec (1 stránka) -->
+        <sc-if value="{{ skol_design_showVyzkouset }}" hint-placeholder-val="{{ false }}">
+          <div style="flex:1;overflow-y:auto;padding:28px;max-width:640px;margin:0 auto">
+            <sc-for list="{{ skol_designPreview }}" as="q" hint-placeholder-count="3">
+              <div style="border:1px solid #ececf3;border-radius:10px;padding:16px 20px;margin-bottom:14px">
+                <div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:10px">{{ q.n }}. {{ q.text }}</div>
+                <sc-if value="{{ q.isChoice }}" hint-placeholder-val="{{ false }}">
+                  <sc-for list="{{ q.options }}" as="o" hint-placeholder-count="3">
+                    <div class="nsm-radio-inline" style="border:1.5px solid #e4e2ed;border-radius:8px;padding:9px 14px;margin-bottom:6px">
+                      <i class="fa-regular fa-circle" style="font-size:13px;color:#b0aac8"></i><span>{{ o }}</span>
+                    </div>
+                  </sc-for>
+                </sc-if>
+                <sc-if value="{{ !q.isChoice }}" hint-placeholder-val="{{ true }}">
+                  <div class="apt-f-area" style="min-height:60px"></div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <!-- Vzhled, Logika a podmínky — v prototypu jen prázdné záložky (§3.4) -->
+        <sc-if value="{{ skol_design_showVzhled }}" hint-placeholder-val="{{ false }}">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#aaa4bf">
+            <i class="fa-solid fa-palette" style="font-size:28px;color:#d6d2e2"></i>
+            <div style="font-size:14px;font-weight:700;color:#7a7595">Vzhled</div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ skol_design_showLogika }}" hint-placeholder-val="{{ false }}">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#aaa4bf">
+            <i class="fa-solid fa-diagram-project" style="font-size:28px;color:#d6d2e2"></i>
+            <div style="font-size:14px;font-weight:700;color:#7a7595">Logika a podmínky</div>
+          </div>
+        </sc-if>
+        <!-- JSON: živě generované schéma ve stylu SurveyJS -->
+        <sc-if value="{{ skol_design_showJson }}" hint-placeholder-val="{{ false }}">
+          <div style="flex:1;overflow-y:auto;padding:20px 28px">
+            <pre style="background:#1e1b2e;color:#d6d2e2;border-radius:10px;padding:18px 20px;font-size:12px;line-height:1.6;white-space:pre-wrap;word-break:break-word">{{ skol_designJson }}</pre>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ══ ŠKOLENÍ — NASTAVENÍ ŠKOLENÍ (Kategorie / Zařazení, §3.5) ══ -->
+  <sc-if value="{{ skolSettingsOpen }}" hint-placeholder-val="{{ false }}">
+    <div class="apt-modal-overlay" sc-camel-on-click="{{ toggleSkolSettings }}">
+      <div class="apt-modal" style="height:auto;max-height:88vh;width:min(640px,94vw)" sc-camel-on-click="{{ stopClick }}">
+        <div class="apt-modal-head">
+          <div class="apt-modal-title">Nastavení školení</div>
+          <div class="apt-modal-close" sc-camel-on-click="{{ toggleSkolSettings }}">✕</div>
+        </div>
+        <div style="padding:18px 26px 26px;overflow-y:auto">
+          <div style="font-size:11.5px;color:#9a95ad;margin-bottom:18px"><i class="fa-solid fa-circle-info" style="margin-right:6px"></i>Změny se ukládají průběžně.</div>
+          <div class="nsm-sec">
+            <div class="nsm-sec-head"><i class="fa-solid fa-shapes"></i><span class="nsm-sec-head-title">Kategorie</span></div>
+            <sc-for list="{{ skol_settingsCatRows }}" as="c" hint-placeholder-count="3">
+              <div class="apt-list-row">
+                <span style="{{ c.swatchStyle }};display:inline-block;margin-right:8px"></span>
+                <span style="flex:1;color:#1e1b2e">{{ c.title }}</span>
+                <span style="font-size:11px;color:#9a95ad;margin-right:10px">{{ c.usageText }}</span>
+                <sc-if value="{{ c.locked }}" hint-placeholder-val="{{ false }}"><i class="fa-solid fa-lock" style="color:#c8c5d5;font-size:12px"></i></sc-if>
+                <sc-if value="{{ !c.locked }}" hint-placeholder-val="{{ true }}"><i class="fa-solid fa-trash" sc-camel-on-click="{{ c.onDelete }}"></i></sc-if>
+              </div>
+            </sc-for>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:12px">
+              <input type="text" sc-camel-default-value="{{ skolNewCatName }}" sc-camel-on-change="{{ skolFormSetNewCatName }}" placeholder="Nová kategorie…" class="apt-f-input" style="flex:1;border:1px solid #e0dded;border-radius:6px;padding:7px 10px;font:inherit;background:#fff">
+              <sc-for list="{{ skol_catSwatches }}" as="sw" hint-placeholder-count="8">
+                <div sc-camel-on-click="{{ sw.onClick }}" style="{{ sw.style }}"></div>
+              </sc-for>
+              <div class="apt-btn-blue" style="padding:8px 16px;white-space:nowrap" sc-camel-on-click="{{ skolAddCategory }}">PŘIDAT</div>
+            </div>
+          </div>
+          <div class="nsm-sec">
+            <div class="nsm-sec-head"><i class="fa-solid fa-tags"></i><span class="nsm-sec-head-title">Zařazení</span></div>
+            <sc-for list="{{ skol_settingsTagRows }}" as="t" hint-placeholder-count="8">
+              <div class="apt-list-row">
+                <span style="{{ t.swatchStyle }};display:inline-block;margin-right:8px"></span>
+                <span style="flex:1;color:#1e1b2e">{{ t.title }}</span>
+                <span style="font-size:11px;color:#9a95ad;margin-right:10px">{{ t.usageText }}</span>
+                <sc-if value="{{ t.locked }}" hint-placeholder-val="{{ false }}"><i class="fa-solid fa-lock" style="color:#c8c5d5;font-size:12px"></i></sc-if>
+                <sc-if value="{{ !t.locked }}" hint-placeholder-val="{{ true }}"><i class="fa-solid fa-trash" sc-camel-on-click="{{ t.onDelete }}"></i></sc-if>
+              </div>
+            </sc-for>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:12px">
+              <input type="text" sc-camel-default-value="{{ skolNewTagName }}" sc-camel-on-change="{{ skolFormSetNewTagName }}" placeholder="Nové zařazení…" class="apt-f-input" style="flex:1;border:1px solid #e0dded;border-radius:6px;padding:7px 10px;font:inherit;background:#fff">
+              <sc-for list="{{ skol_tagSwatches }}" as="sw" hint-placeholder-count="8">
+                <div sc-camel-on-click="{{ sw.onClick }}" style="{{ sw.style }}"></div>
+              </sc-for>
+              <div class="apt-btn-blue" style="padding:8px 16px;white-space:nowrap" sc-camel-on-click="{{ skolAddTag }}">PŘIDAT</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </sc-if>
@@ -3752,32 +4133,52 @@ class Component extends DCLogic {
     nsmCreateOpen: false,
     nsmEditOpen: false,
     nsmEdit: null,
-    // ── ŠKOLENÍ (Moje školení + Katalog školení) ──
+    // ── ŠKOLENÍ (Moje školení + Správa školení) ──
     // Osobní pohled („Moje školení“): drilldown do zařazení (tagu), stejný
     // vzor jako Moje směrnice (`selectedSmernCat`).
     selectedSkolCat: null,
     skolConfirmedOpen: false,
-    // Průběh vyplňování konkrétního školení zaměstnancem.
+    // Průběh vyplňování konkrétního školení zaměstnancem. `skolMySaved`
+    // drží ROZPRACOVANOU pozici (index otázky) po „Uložit a zavřít" —
+    // odděleně od `skolMyDone` (skutečné dokončení, jen po „Dokončit
+    // školení" na poslední otázce), viz §3.6.
     skolRunId: null, skolRunQ: 0, skolMyAnswers: {}, skolMySaved: {}, skolMyDone: [], skolDoneId: null,
-    // Administrace („Katalog školení“): filtr seznamu, filtr zaměstnanců
-    // v draweru, stav modalu Přidat/Editovat a jeho rozpracovaná data.
-    skolListFilter: 'aktivni',
+    // Administrace („Správa školení"): filtr seznamu („aktivni_koncept" |
+    // „archiv"), filtr zaměstnanců v draweru, stav modalu „Přidat školení"
+    // a jeho rozpracovaná data, aktivní záložka item-draweru.
+    skolListFilter: 'aktivni_koncept',
     skolEmpFilter: 'aktivni',
     skolFormOpen: false,
     skolFormMode: 'add',   // 'add' | 'edit'
     skolFormId: null,
     skolForm: null,
     skolItemTab: 'zamestnanci',
+    // Detail → „Editovat detaily" přepíná blok Detaily do editačního režimu
+    // IN PLACE (ne modal) — sdílí stejný tvar dat jako `skolForm` (§3.3.1).
+    skolDetailEditOpen: false,
     // Přepisy (edity) nad výchozími daty SKOL_TRAININGS + nově založená školení.
+    // Archivace/obnovení i sdílení jde přes stejný overlay (`status`/`shared`
+    // v přepisu), žádný samostatný „skrývací" seznam — položka tak nikdy
+    // nezmizí ze seznamu jen proto, že byla archivovaná/obnovená.
     skolOverrides: {},
     skolCustom: [],
-    skolArchived: [],
-    skolShared: {},
-    // Nastavení školení → kategorie a zařazení (spravováno stejně jako
+    // Návrhář (editor formuláře) — samostatná celoobrazovková vrstva nad
+    // item-drawerem, otevíraná akcí „Editovat formulář" (§3.4).
+    skolDesignOpen: false,
+    skolDesignId: null,
+    skolDesignQuestions: [],
+    skolDesignSelQ: 0,
+    skolDesignTab: 'navrhar',   // 'navrhar' | 'vyzkouset' | 'vzhled' | 'logika' | 'json'
+    // Nastavení školení → Kategorie a Zařazení (spravováno stejně jako
     // u Moje směrnice/Nastavení organizace — přidávání a mazání beze zámku
-    // u nepoužitých položek).
+    // u nepoužitých položek; jen u Zařazení navíc kontrola duplicity podle
+    // názvu bez ohledu na velikost písmen — u Kategorií schválně chybí,
+    // stejná nekonzistence jako v originálním prototypu, viz §3.5).
     skolSettingsOpen: false,
-    skolNewCat: '', skolNewCatCi: 0, skolNewTag: '', skolNewTagCi: 0,
+    skolCatsExtra: [], skolTagsExtra: [],
+    skolCatsDeleted: [], skolTagsDeleted: [],
+    skolNewCatName: '', skolNewCatColorIdx: 0,
+    skolNewTagName: '', skolNewTagColorIdx: 0,
     // ── EDITACE EVIDENCE (§13) ──
     // Generický modal „Nastavení evidence" — otevírá se z tužky vedle
     // názvu KTERÉKOLIV evidence v toolbaru (zatím zapojeno u Zaměstnanci,
@@ -3957,99 +4358,204 @@ class Component extends DCLogic {
     { key: 'dodav',   label: 'Dodavatelé' }
   ];
 
+  // Nastavení školení (§3.5) — 8 předdefinovaných barevných dvojic (pozadí/text)
+  // nabízených při zakládání nové kategorie/zařazení. Stejný vizuální vzor
+  // jako existující barevné štítky v souboru (světlé pozadí + sytý text ve
+  // stejném odstínu, viz SKOL_CATEGORIES / KAT_CATEGORIES výš) — jen rozšířený
+  // na 8 dvojic, žádná nová barva UI-role.
+  SKOL_COLOR_SWATCHES = [
+    { bg: '#e0c0c0', color: '#802828' },
+    { bg: '#a8c4ec', color: '#2d5080' },
+    { bg: '#b8d4b8', color: '#285828' },
+    { bg: '#f0d8a8', color: '#8a5a10' },
+    { bg: '#d8c0ec', color: '#5a2d8a' },
+    { bg: '#b8e0dc', color: '#146058' },
+    { bg: '#f0c0d0', color: '#a01850' },
+    { bg: '#d0d0d0', color: '#4a4a4a' }
+  ];
+
+  // Pracovní pozice — pevný ukázkový seznam pro příjemce „Pracovní pozice" (§3.2).
+  SKOL_POSITIONS = ['Účetní', 'Skladník', 'Technik', 'Vedoucí provozu', 'Administrativa', 'Dodavatelé – montáže'];
+
+  // Návrhář (§3.4) — 18 položek palety otázek, které se mapují jen na 10
+  // skutečných datových typů (viz SKOL_TYPE_META) — několik položek palety
+  // je tedy jen alternativní název/ikona pro stejné chování.
+  SKOL_PALETTE = [
+    { label: 'Krátká odpověď',                     type: 'text',      icon: 'font' },
+    { label: 'Komentář',                           type: 'comment',   icon: 'align-left' },
+    { label: 'Dlouhá odpověď',                     type: 'comment',   icon: 'align-left' },
+    { label: 'Výběr z možností',                   type: 'choice',    icon: 'list-ul' },
+    { label: 'Rozbalovací seznam',                 type: 'choice',    icon: 'caret-down' },
+    { label: 'Mřížka (jedna volba)',                type: 'choice',    icon: 'table-cells' },
+    { label: 'Zaškrtávací pole',                   type: 'checkbox',  icon: 'square-check' },
+    { label: 'Vícenásobný výběr',                  type: 'checkbox',  icon: 'list-check' },
+    { label: 'Mřížka výběru z více možností',       type: 'checkbox',  icon: 'table-cells-large' },
+    { label: 'Ano / ne',                           type: 'yesno',     icon: 'toggle-on' },
+    { label: 'Hodnocení',                          type: 'rating',    icon: 'star' },
+    { label: 'Škála (posuvník)',                   type: 'rating',    icon: 'sliders' },
+    { label: 'Vložit soubor nebo obrázek',          type: 'file',      icon: 'paperclip' },
+    { label: 'Nahrání souboru',                    type: 'file',      icon: 'file-arrow-up' },
+    { label: 'Podpis',                             type: 'signature', icon: 'signature' },
+    { label: 'Podpisové pole',                     type: 'signature', icon: 'signature' },
+    { label: 'Video',                              type: 'video',     icon: 'video' },
+    { label: 'Obrázek',                            type: 'image',     icon: 'image' }
+  ];
+
+  // Cílové datové typy otázky — interní typ → popisek ve vlastnostech otázky,
+  // SurveyJS typ pro záložku JSON, zda má editovatelné možnosti (§3.4).
+  SKOL_TYPE_META = {
+    text:      { label: 'Krátká odpověď',             svType: 'text',         hasOptions: false },
+    comment:   { label: 'Komentář / dlouhá odpověď',  svType: 'comment',      hasOptions: false },
+    choice:    { label: 'Výběr z možností',           svType: 'radiogroup',   hasOptions: true },
+    checkbox:  { label: 'Zaškrtávací pole',           svType: 'checkbox',     hasOptions: true },
+    yesno:     { label: 'Ano / ne',                   svType: 'boolean',      hasOptions: false },
+    rating:    { label: 'Hodnocení',                  svType: 'rating',       hasOptions: false },
+    file:      { label: 'Soubor',                     svType: 'file',         hasOptions: false },
+    signature: { label: 'Podpis',                     svType: 'signaturepad', hasOptions: false },
+    video:     { label: 'Video',                      svType: 'html',         hasOptions: false },
+    image:     { label: 'Obrázek',                    svType: 'image',        hasOptions: false }
+  };
+  SKOL_TYPE_ORDER = ['text', 'comment', 'choice', 'checkbox', 'yesno', 'rating', 'file', 'signature', 'video', 'image'];
+
   // status (celé školení): 'koncept' | 'aktivni' | 'archivovano'
-  // assignees[].status (za zaměstnance): 'nerozeslano' | 'odeslano' | 'rozpracovano' | 'hotovo'
+  // opakovani.mode: 'jednorazove' | 'opakovane' (+ perioda/jednotka u opakovaného)
+  // terminTyp: 'datum' | 'dny' | 'bez' — u opakovaného je vždy 'dny' nebo 'bez' (§3.2, §4)
+  // assignees[].status: 'nerozeslano' | 'odeslano' | 'rozpracovano' | 'hotovo'
+  // assignees[].aktivni: false = bývalý zaměstnanec (historie zůstává vidět, viz §2.2)
   SKOL_TRAININGS = [
-    { id: 1, title: 'Vstupní školení BOZP', category: 'povinne', tags: ['bozp'],
-      status: 'aktivni', deadlineDny: 7, prijemci: 'vsichni',
+    { id: 1, title: 'Vstupní školení BOZP',
+      popis: 'Základní bezpečnostní instruktáž pro každého nově nastupujícího zaměstnance.',
+      category: 'povinne', tags: ['bozp'],
+      status: 'aktivni', shared: true,
+      opakovani: { mode: 'jednorazove', perioda: 1, jednotka: 'roky' },
+      terminTyp: 'dny', pocetDni: 7, konkretniDatum: '',
+      deadlineDny: 7, prijemci: 'vsichni',
+      formVersions: [{ verze: 2, datum: '15.06.2026', autor: 'Karolína Fišerová' }, { verze: 1, datum: '02.01.2026', autor: 'Karolína Fišerová' }],
       questions: [
-        { q: 'Kde najdete nejbližší hasicí přístroj na svém pracovišti?', type: 'text' },
-        { q: 'Jak často probíhá pravidelné školení BOZP?', type: 'choice', options: ['Jednou ročně', 'Jednou za dva roky', 'Pouze při nástupu'] },
-        { q: 'Co uděláte v případě pracovního úrazu?', type: 'text' }
+        { id: 'q1', type: 'text', text: 'Kde najdete nejbližší hasicí přístroj na svém pracovišti?', required: true },
+        { id: 'q2', type: 'choice', text: 'Jak často probíhá pravidelné školení BOZP?', required: true, options: ['Jednou ročně', 'Jednou za dva roky', 'Pouze při nástupu'] },
+        { id: 'q3', type: 'text', text: 'Co uděláte v případě pracovního úrazu?', required: true }
       ],
       assignees: [
-        { name: 'Jan Novák', status: 'hotovo', doneAt: '12.07.2026 09:14' },
-        { name: 'Karolína Fišerová', status: 'hotovo', doneAt: '12.07.2026 10:02' },
-        { name: 'Tomáš Novák', status: 'rozpracovano' },
-        { name: 'Petra Malá', status: 'odeslano' },
-        { name: 'Martin Dvořák', status: 'odeslano' },
-        { name: 'Lucie Horáková', status: 'hotovo', doneAt: '13.07.2026 08:40' },
-        { name: 'Pavel Král', status: 'nerozeslano' },
-        { name: 'Eva Sedláková', status: 'hotovo', doneAt: '13.07.2026 15:21' }
+        { name: 'Jan Novák', status: 'hotovo', aktivni: true, odeslanoAt: '05.07.2026', doneAt: '12.07.2026 09:14', score: 92, certifikat: true },
+        { name: 'Karolína Fišerová', status: 'hotovo', aktivni: true, odeslanoAt: '05.07.2026', doneAt: '12.07.2026 10:02', score: 100, certifikat: true },
+        { name: 'Tomáš Novák', status: 'rozpracovano', aktivni: true, odeslanoAt: '05.07.2026' },
+        { name: 'Petra Malá', status: 'odeslano', aktivni: true, odeslanoAt: '05.07.2026' },
+        { name: 'Martin Dvořák', status: 'odeslano', aktivni: true, odeslanoAt: '05.07.2026' },
+        { name: 'Lucie Horáková', status: 'hotovo', aktivni: true, odeslanoAt: '05.07.2026', doneAt: '13.07.2026 08:40', score: 85, certifikat: true },
+        { name: 'Pavel Král', status: 'nerozeslano', aktivni: true },
+        { name: 'Eva Sedláková', status: 'hotovo', aktivni: true, odeslanoAt: '05.07.2026', doneAt: '13.07.2026 15:21', score: 78, certifikat: true },
+        { name: 'Zdeněk Novotný (ukončeno)', status: 'hotovo', aktivni: false, odeslanoAt: '02.02.2026', doneAt: '09.02.2026 11:05', score: 88, certifikat: true }
       ] },
-    { id: 2, title: 'Požární ochrana a evakuační plán', category: 'onsite', tags: ['pozarni'],
-      status: 'aktivni', deadlineDny: 10, prijemci: 'vsichni',
+    { id: 2, title: 'Požární ochrana a evakuační plán',
+      popis: 'Postup při požárním poplachu, evakuační trasy a použití hasicích přístrojů.',
+      category: 'onsite', tags: ['pozarni'],
+      status: 'aktivni', shared: true,
+      opakovani: { mode: 'jednorazove', perioda: 1, jednotka: 'roky' },
+      terminTyp: 'dny', pocetDni: 10, konkretniDatum: '',
+      deadlineDny: 10, prijemci: 'vsichni',
+      formVersions: [{ verze: 1, datum: '20.03.2026', autor: 'Karolína Fišerová' }],
       questions: [
-        { q: 'Kde je na vašem pracovišti evakuační trasa vyvěšena?', type: 'text' },
-        { q: 'Co znamená signál celkového požárního poplachu?', type: 'choice', options: ['Přerušovaný tón sirény', 'Nepřetržitý tón sirény', 'Dvě krátká zapískání'] }
+        { id: 'q1', type: 'text', text: 'Kde je na vašem pracovišti evakuační trasa vyvěšena?', required: true },
+        { id: 'q2', type: 'choice', text: 'Co znamená signál celkového požárního poplachu?', required: true, options: ['Přerušovaný tón sirény', 'Nepřetržitý tón sirény', 'Dvě krátká zapískání'] }
       ],
       assignees: [
-        { name: 'Jan Novák', status: 'odeslano' },
-        { name: 'Karolína Fišerová', status: 'rozpracovano' },
-        { name: 'Tomáš Novák', status: 'nerozeslano' },
-        { name: 'Petra Malá', status: 'hotovo', doneAt: '05.07.2026 11:20' },
-        { name: 'Martin Dvořák', status: 'nerozeslano' },
-        { name: 'Lucie Horáková', status: 'odeslano' },
-        { name: 'Pavel Král', status: 'nerozeslano' },
-        { name: 'Eva Sedláková', status: 'hotovo', doneAt: '06.07.2026 09:05' }
+        { name: 'Jan Novák', status: 'odeslano', aktivni: true, odeslanoAt: '01.07.2026' },
+        { name: 'Karolína Fišerová', status: 'rozpracovano', aktivni: true, odeslanoAt: '01.07.2026' },
+        { name: 'Tomáš Novák', status: 'nerozeslano', aktivni: true },
+        { name: 'Petra Malá', status: 'hotovo', aktivni: true, odeslanoAt: '01.07.2026', doneAt: '05.07.2026 11:20', score: 100, certifikat: true },
+        { name: 'Martin Dvořák', status: 'nerozeslano', aktivni: true },
+        { name: 'Lucie Horáková', status: 'odeslano', aktivni: true, odeslanoAt: '01.07.2026' },
+        { name: 'Pavel Král', status: 'nerozeslano', aktivni: true },
+        { name: 'Eva Sedláková', status: 'hotovo', aktivni: true, odeslanoAt: '01.07.2026', doneAt: '06.07.2026 09:05', score: 90, certifikat: true }
       ] },
-    { id: 3, title: 'GDPR a ochrana osobních údajů', category: 'povinne', tags: ['gdpr', 'compl'],
-      status: 'aktivni', deadlineDny: 14, prijemci: 'vsichni',
+    { id: 3, title: 'GDPR a ochrana osobních údajů',
+      popis: 'Zásady ochrany osobních údajů zákazníků, uchazečů a kolegů v každodenní praxi.',
+      category: 'povinne', tags: ['gdpr', 'compl'],
+      status: 'aktivni', shared: true,
+      opakovani: { mode: 'opakovane', perioda: 1, jednotka: 'roky' },
+      terminTyp: 'dny', pocetDni: 14, konkretniDatum: '',
+      deadlineDny: 14, prijemci: 'vsichni',
+      formVersions: [{ verze: 3, datum: '10.07.2026', autor: 'Karolína Fišerová' }, { verze: 2, datum: '01.03.2026', autor: 'Karolína Fišerová' }, { verze: 1, datum: '15.01.2026', autor: 'Karolína Fišerová' }],
       questions: [
-        { q: 'Co uděláte, pokud omylem odešlete osobní údaje nesprávnému příjemci?', type: 'text' },
-        { q: 'Jak dlouho smí firma standardně uchovávat životopisy neúspěšných uchazečů?', type: 'choice', options: ['Bez omezení', '6 měsíců', '3 roky'] },
-        { q: 'Kdo je ve firmě pověřencem pro ochranu osobních údajů?', type: 'text' }
+        { id: 'q1', type: 'text', text: 'Co uděláte, pokud omylem odešlete osobní údaje nesprávnému příjemci?', required: true },
+        { id: 'q2', type: 'choice', text: 'Jak dlouho smí firma standardně uchovávat životopisy neúspěšných uchazečů?', required: true, options: ['Bez omezení', '6 měsíců', '3 roky'] },
+        { id: 'q3', type: 'text', text: 'Kdo je ve firmě pověřencem pro ochranu osobních údajů?', required: false }
       ],
       assignees: [
-        { name: 'Jan Novák', status: 'hotovo', doneAt: '02.07.2026 14:10' },
-        { name: 'Karolína Fišerová', status: 'hotovo', doneAt: '02.07.2026 15:33' },
-        { name: 'Tomáš Novák', status: 'hotovo', doneAt: '03.07.2026 08:12' },
-        { name: 'Petra Malá', status: 'odeslano' },
-        { name: 'Martin Dvořák', status: 'odeslano' },
-        { name: 'Lucie Horáková', status: 'rozpracovano' },
-        { name: 'Pavel Král', status: 'odeslano' },
-        { name: 'Eva Sedláková', status: 'hotovo', doneAt: '03.07.2026 16:44' }
+        { name: 'Jan Novák', status: 'hotovo', aktivni: true, odeslanoAt: '01.07.2026', doneAt: '02.07.2026 14:10', score: 95, certifikat: true },
+        { name: 'Karolína Fišerová', status: 'hotovo', aktivni: true, odeslanoAt: '01.07.2026', doneAt: '02.07.2026 15:33', score: 100, certifikat: true },
+        { name: 'Tomáš Novák', status: 'hotovo', aktivni: true, odeslanoAt: '01.07.2026', doneAt: '03.07.2026 08:12', score: 70, certifikat: true },
+        { name: 'Petra Malá', status: 'odeslano', aktivni: true, odeslanoAt: '01.07.2026' },
+        { name: 'Martin Dvořák', status: 'odeslano', aktivni: true, odeslanoAt: '01.07.2026' },
+        { name: 'Lucie Horáková', status: 'rozpracovano', aktivni: true, odeslanoAt: '01.07.2026' },
+        { name: 'Pavel Král', status: 'odeslano', aktivni: true, odeslanoAt: '01.07.2026' },
+        { name: 'Eva Sedláková', status: 'hotovo', aktivni: true, odeslanoAt: '01.07.2026', doneAt: '03.07.2026 16:44', score: 82, certifikat: true }
       ] },
-    { id: 4, title: 'IT bezpečnost a práce s hesly', category: 'povinne', tags: ['it', 'compl'],
-      status: 'aktivni', deadlineDny: 5, prijemci: 'vsichni',
+    { id: 4, title: 'IT bezpečnost a práce s hesly',
+      popis: 'Rozpoznání phishingu, zásady tvorby hesel a bezpečná práce s firemními systémy.',
+      category: 'povinne', tags: ['it', 'compl'],
+      status: 'aktivni', shared: true,
+      opakovani: { mode: 'opakovane', perioda: 2, jednotka: 'roky' },
+      terminTyp: 'dny', pocetDni: 5, konkretniDatum: '',
+      deadlineDny: 5, prijemci: 'vsichni',
+      formVersions: [{ verze: 1, datum: '18.07.2026', autor: 'Karolína Fišerová' }],
       questions: [
-        { q: 'Jak poznáte podezřelý phishingový e-mail?', type: 'text' },
-        { q: 'Jak často je potřeba měnit firemní heslo do interních systémů?', type: 'choice', options: ['Jednou za měsíc', 'Jednou za 90 dní', 'Nikdy, pokud je dost silné'] }
+        { id: 'q1', type: 'text', text: 'Jak poznáte podezřelý phishingový e-mail?', required: true },
+        { id: 'q2', type: 'choice', text: 'Jak často je potřeba měnit firemní heslo do interních systémů?', required: true, options: ['Jednou za měsíc', 'Jednou za 90 dní', 'Nikdy, pokud je dost silné'] }
       ],
       assignees: [
-        { name: 'Jan Novák', status: 'hotovo', doneAt: '20.07.2026 10:00' },
-        { name: 'Karolína Fišerová', status: 'nerozeslano' },
-        { name: 'Tomáš Novák', status: 'odeslano' },
-        { name: 'Petra Malá', status: 'nerozeslano' },
-        { name: 'Martin Dvořák', status: 'hotovo', doneAt: '21.07.2026 09:18' },
-        { name: 'Lucie Horáková', status: 'nerozeslano' },
-        { name: 'Pavel Král', status: 'odeslano' },
-        { name: 'Eva Sedláková', status: 'odeslano' }
+        { name: 'Jan Novák', status: 'hotovo', aktivni: true, odeslanoAt: '19.07.2026', doneAt: '20.07.2026 10:00', score: 89, certifikat: true },
+        { name: 'Karolína Fišerová', status: 'nerozeslano', aktivni: true },
+        { name: 'Tomáš Novák', status: 'odeslano', aktivni: true, odeslanoAt: '19.07.2026' },
+        { name: 'Petra Malá', status: 'nerozeslano', aktivni: true },
+        { name: 'Martin Dvořák', status: 'hotovo', aktivni: true, odeslanoAt: '19.07.2026', doneAt: '21.07.2026 09:18', score: 76, certifikat: true },
+        { name: 'Lucie Horáková', status: 'nerozeslano', aktivni: true },
+        { name: 'Pavel Král', status: 'odeslano', aktivni: true, odeslanoAt: '19.07.2026' },
+        { name: 'Eva Sedláková', status: 'odeslano', aktivni: true, odeslanoAt: '19.07.2026' }
       ] },
-    { id: 5, title: 'Onboarding – Vítejte v Aptien', category: 'onboarding', tags: ['onb'],
-      status: 'aktivni', deadlineDny: 3, prijemci: 'konkretni',
+    { id: 5, title: 'Onboarding – Vítejte v Aptien',
+      popis: 'Úvodní orientace pro nové kolegy – kde co najít a na koho se obrátit.',
+      category: 'onboarding', tags: ['onb'],
+      status: 'aktivni', shared: true,
+      opakovani: { mode: 'jednorazove', perioda: 1, jednotka: 'roky' },
+      terminTyp: 'datum', pocetDni: 3, konkretniDatum: '15.09.2026',
+      deadlineDny: 3, prijemci: 'konkretni',
+      formVersions: [{ verze: 1, datum: '01.06.2026', autor: 'Karolína Fišerová' }],
       questions: [
-        { q: 'Kde najdete organizační strukturu firmy?', type: 'text' },
-        { q: 'Na koho se obrátíte v prvním týdnu s technickým problémem?', type: 'text' }
+        { id: 'q1', type: 'text', text: 'Kde najdete organizační strukturu firmy?', required: true },
+        { id: 'q2', type: 'text', text: 'Na koho se obrátíte v prvním týdnu s technickým problémem?', required: false }
       ],
       assignees: [
-        { name: 'Pavel Král', status: 'odeslano' },
-        { name: 'Eva Sedláková', status: 'rozpracovano' }
+        { name: 'Pavel Král', status: 'odeslano', aktivni: true, odeslanoAt: '10.08.2026' },
+        { name: 'Eva Sedláková', status: 'rozpracovano', aktivni: true, odeslanoAt: '10.08.2026' }
       ] },
-    { id: 6, title: 'Práce s ochrannými pomůckami', category: 'onsite', tags: ['pomucky', 'bozp'],
-      status: 'koncept', deadlineDny: 10, prijemci: 'pozice',
+    { id: 6, title: 'Práce s ochrannými pomůckami',
+      popis: 'Které osobní ochranné pomůcky jsou na jednotlivých pracovištích povinné a jak s nimi zacházet.',
+      category: 'onsite', tags: ['pomucky', 'bozp'],
+      status: 'koncept', shared: false,
+      opakovani: { mode: 'jednorazove', perioda: 1, jednotka: 'roky' },
+      terminTyp: 'bez', pocetDni: 10, konkretniDatum: '',
+      deadlineDny: 10, prijemci: 'pozice',
+      formVersions: [],
       questions: [
-        { q: 'Které ochranné pomůcky jsou na vašem pracovišti povinné?', type: 'text' }
+        { id: 'q1', type: 'text', text: 'Které ochranné pomůcky jsou na vašem pracovišti povinné?', required: true }
       ],
       assignees: [] },
-    { id: 7, title: 'Bezpečnost práce s dodavateli', category: 'onsite', tags: ['dodav', 'bozp'],
-      status: 'archivovano', deadlineDny: 14, prijemci: 'pozice',
+    { id: 7, title: 'Bezpečnost práce s dodavateli',
+      popis: 'Pravidla pro vstup a pohyb externích dodavatelů a montážních firem v areálu.',
+      category: 'onsite', tags: ['dodav', 'bozp'],
+      status: 'archivovano', shared: true,
+      opakovani: { mode: 'jednorazove', perioda: 1, jednotka: 'roky' },
+      terminTyp: 'dny', pocetDni: 14, konkretniDatum: '',
+      deadlineDny: 14, prijemci: 'pozice',
+      formVersions: [{ verze: 1, datum: '05.01.2026', autor: 'Karolína Fišerová' }],
       questions: [
-        { q: 'Kdo zodpovídá za proškolení externího dodavatele před vstupem do areálu?', type: 'text' }
+        { id: 'q1', type: 'text', text: 'Kdo zodpovídá za proškolení externího dodavatele před vstupem do areálu?', required: true }
       ],
       assignees: [
-        { name: 'Tomáš Novák', status: 'hotovo', doneAt: '11.02.2026 09:00' },
-        { name: 'Pavel Král', status: 'hotovo', doneAt: '11.02.2026 09:30' }
+        { name: 'Tomáš Novák', status: 'hotovo', aktivni: true, odeslanoAt: '08.02.2026', doneAt: '11.02.2026 09:00', score: 100, certifikat: true },
+        { name: 'Pavel Král', status: 'hotovo', aktivni: true, odeslanoAt: '08.02.2026', doneAt: '11.02.2026 09:30', score: 94, certifikat: true }
       ] }
   ];
 
@@ -4164,7 +4670,7 @@ class Component extends DCLogic {
 
   NAV_WORK = [{"id": "domu", "label": "Moje domovská stránka", "icon": "house-chimney", "svg": "house-chimney"}, {"id": "upoz", "label": "Moje upozornění", "icon": "bell", "svg": "bell", "badge": 60, "badgeKind": "alert"}, {"id": "kal", "label": "Můj kalendář", "icon": "calendar-days", "svg": "calendar-days"}, {"id": "ukoly", "label": "Moje úkoly", "icon": "clipboard-check", "svg": "clipboard-check", "badge": 7, "badgeKind": "alert"}, {"id": "konv", "label": "Moje konverzace", "icon": "comments", "svg": "comments", "badge": 5, "badgeKind": "alert"}, {"id": "tym", "label": "Můj tým", "icon": "people-group", "svg": "people-group"}, {"id": "oblib", "label": "Moje oblíbené", "icon": "star", "svg": "star", "badge": 1, "badgeKind": "grey"}, {"id": "zad", "label": "Moje žádanky", "icon": "file-invoice", "svg": "file-invoice"}, {"id": "hlid", "label": "Moje hlídače", "icon": "dog", "svg": "dog"}, {"id": "schval", "label": "Ke schválení", "icon": "circle-check", "svg": "circle-check", "badge": 2, "badgeKind": "alert"}, {"id": "rep", "label": "Reporty", "icon": "file-chart-column", "svg": "file-chart-column"}, {"id": "ome", "label": "O mně", "icon": "user", "svg": "user"}, {"id": "pozn", "label": "Poznámky", "icon": "clipboard", "svg": "clipboard", "badge": 2, "badgeKind": "grey"}, {"id": "smern", "label": "Moje směrnice", "icon": "books", "svg": "books"}, {"id": "skol", "label": "Moje školení", "icon": "graduation-cap", "svg": "graduation-cap"}, {"id": "cojsem", "label": "Co jsem dělal", "icon": "chart-network", "svg": "chart-network"}];
 
-  NAV_COMPANY = [{"id": "nastenka", "label": "Nástěnka", "icon": "grid-horizontal", "svg": "grid-horizontal"}, {"id": "dok", "label": "Směrnice a dokumenty", "icon": "book-open", "svg": "book-open"}, {"id": "kolegove", "label": "Kolegové", "icon": "users", "svg": "users"}, {"id": "skolc", "label": "Katalog školení", "icon": "book-open-reader", "svg": "book-open-reader"}, {"id": "nastsm", "label": "Nastavení směrnic", "icon": "books", "svg": "books"}, {"id": "nastorg", "label": "Nastavení organizace", "icon": "sitemap", "svg": "sitemap"}, {"id": "inventura", "label": "Inventura", "icon": "boxes-stacked", "svg": "boxes-stacked"}];
+  NAV_COMPANY = [{"id": "nastenka", "label": "Nástěnka", "icon": "grid-horizontal", "svg": "grid-horizontal"}, {"id": "dok", "label": "Směrnice a dokumenty", "icon": "book-open", "svg": "book-open"}, {"id": "kolegove", "label": "Kolegové", "icon": "users", "svg": "users"}, {"id": "skolc", "label": "Katalog školení", "icon": "book-open-reader", "svg": "book-open-reader"}, {"id": "skolsprava", "label": "Správa školení", "icon": "graduation-cap", "svg": "graduation-cap"}, {"id": "nastsm", "label": "Nastavení směrnic", "icon": "books", "svg": "books"}, {"id": "nastorg", "label": "Nastavení organizace", "icon": "sitemap", "svg": "sitemap"}, {"id": "inventura", "label": "Inventura", "icon": "boxes-stacked", "svg": "boxes-stacked"}];
 
   VIEWS = [
     { key: 'dashboard', label: 'Dashboard', icon: 'fa-solid fa-table-cells-large' },
@@ -4731,12 +5237,64 @@ class Component extends DCLogic {
   // Kategorie funguje stejně jako `selectedSmernCat` u Moje směrnice:
   // dlaždice → detail seznamu → zpět. Konkrétní školení se navíc dá
   // „spustit" (vyplnit otázky) → skolRunId řídí, které školení běží.
+  // ── ŠKOLENÍ — pomocné funkce (datum, sklonění) ──────────────────────────
+  // Pevné „dnes" pro DEMO výpočet termínů — vázané na data uvnitř
+  // SKOL_TRAININGS/assignees, ne na reálné datum prohlížeče (stejný princip
+  // jako statické „Za 5 dní" texty u Nastavení směrnic — jinak by demo se
+  // stárnutím reálného data postupně vypadalo „všechno po termínu").
+  SKOL_TODAY_STR = '25.08.2026';
+  parseCzDate(str) {
+    const m = str && /^(\d{1,2})\.(\d{1,2})\.(\d{4})/.exec(str);
+    return m ? new Date(parseInt(m[3]), parseInt(m[2]) - 1, parseInt(m[1])) : null;
+  }
+  sklonDny(n) { return n === 1 ? 'den' : (n >= 2 && n <= 4 ? 'dny' : 'dní'); }
+  sklonOsob(n) { return n === 1 ? 'osoba' : (n >= 2 && n <= 4 ? 'osoby' : 'osob'); }
+  skolOpakovaniText(op) {
+    if (!op || op.mode !== 'opakovane') return 'Jednorázově';
+    const n = op.perioda || 1, jedn = op.jednotka || 'roky';
+    const F = {
+      dny:    { 1: 'Každý den',   few: 'Každé ' + n + ' dny',    many: 'Každých ' + n + ' dnů' },
+      mesice: { 1: 'Každý měsíc', few: 'Každé ' + n + ' měsíce', many: 'Každých ' + n + ' měsíců' },
+      roky:   { 1: 'Každý rok',   few: 'Každé ' + n + ' roky',   many: 'Každých ' + n + ' let' }
+    }[jedn] || {};
+    if (n === 1) return F[1];
+    return n <= 4 ? F.few : F.many;
+  }
+  // Termín (due) k zobrazení v seznamu — priorita dle §4: bez termínu →
+  // „Bez termínu"; opakované → vždy „N dní od doručení" (i kdyby bylo dřív
+  // nastavené konkrétní datum); jinak dle volby (datum, nebo počet dnů).
+  skolTerminText(t) {
+    if (t.terminTyp === 'bez') return 'Bez termínu';
+    if (t.opakovani && t.opakovani.mode === 'opakovane') return (t.pocetDni || 0) + ' ' + this.sklonDny(t.pocetDni || 0) + ' od doručení';
+    if (t.terminTyp === 'datum') return t.konkretniDatum || '—';
+    return (t.pocetDni || 0) + ' ' + this.sklonDny(t.pocetDni || 0) + ' od doručení';
+  }
+  // 3-stavový termínový štítek („Moje školení") pro konkrétního zaměstnance.
+  skolDueBadge(t, meAssign) {
+    if (t.terminTyp === 'bez') return { label: '∞ Bez termínu', kind: 'none' };
+    const sentBase = this.parseCzDate((meAssign || {}).odeslanoAt) || this.parseCzDate(this.SKOL_TODAY_STR);
+    let due = null;
+    if (t.terminTyp === 'datum' && !(t.opakovani && t.opakovani.mode === 'opakovane')) {
+      due = this.parseCzDate(t.konkretniDatum);
+    } else {
+      due = new Date(sentBase.getTime()); due.setDate(due.getDate() + (t.pocetDni || 0));
+    }
+    if (!due) return { label: '∞ Bez termínu', kind: 'none' };
+    const today = this.parseCzDate(this.SKOL_TODAY_STR);
+    const diffDays = Math.round((due - today) / 86400000);
+    if (diffDays < 0) return { label: Math.abs(diffDays) + ' ' + this.sklonDny(Math.abs(diffDays)) + ' po termínu', kind: 'overdue' };
+    return { label: 'za ' + diffDays + ' ' + this.sklonDny(diffDays), kind: diffDays <= 5 ? 'soon' : 'ok' };
+  }
+
+  // ── ŠKOLENÍ — osobní pohled („Moje školení") ────────────────────────────
   skolAllTrainings() {
     // Sloučí výchozí data s uživatelskými přepisy (skolOverrides) a nově
     // založenými školeními (skolCustom) — stejný princip jako u ostatních
-    // administrací v prototypu (default data + runtime overlay).
+    // administrací v prototypu (default data + runtime overlay). Archivace
+    // i sdílení jdou přes STEJNÝ overlay (status/shared v přepisu) — položka
+    // proto nikdy „nezmizí", jen změní stav.
     const base = this.SKOL_TRAININGS.map(t => this.state.skolOverrides[t.id] ? { ...t, ...this.state.skolOverrides[t.id] } : t);
-    return [...base, ...this.state.skolCustom].filter(t => !this.state.skolArchived.includes(t.id) || t.status === 'archivovano');
+    return [...base, ...this.state.skolCustom];
   }
   skolMyTrainings() {
     const me = 'Karolína Fišerová';
@@ -4751,9 +5309,22 @@ class Component extends DCLogic {
   openSkolCat(key) { this.setState({ selectedSkolCat: key }); }
   backToSkolTiles() { this.setState({ selectedSkolCat: null }); }
   toggleSkolConfirmed() { this.setState(s => ({ skolConfirmedOpen: !s.skolConfirmedOpen })); }
-  openSkolRun(id) { this.setState({ skolRunId: id, skolRunQ: 0, skolMyAnswers: {} }); }
+  // Zahájení/pokračování běhu: pokud existuje uložená rozpracovaná pozice
+  // (`skolMySaved`), naváže se na ni i s dřívějšími odpověďmi; jinak start
+  // od nuly. Odpovědi jsou vedené PER ŠKOLENÍ (`skolMyAnswers[id][qIdx]`),
+  // aby se nepřepisovaly mezi různými školeními (§3.6).
+  openSkolRun(id) {
+    this.setState(s => {
+      const savedQ = s.skolMySaved[id];
+      return { skolRunId: id, skolRunQ: typeof savedQ === 'number' ? savedQ : 0 };
+    });
+  }
   backToSkolList() { this.setState({ skolRunId: null, skolRunQ: 0 }); }
-  skolPickAnswer(qIdx, val) { this.setState(s => ({ skolMyAnswers: { ...s.skolMyAnswers, [qIdx]: val } })); }
+  skolPickAnswer(val) {
+    this.setState(s => ({
+      skolMyAnswers: { ...s.skolMyAnswers, [s.skolRunId]: { ...(s.skolMyAnswers[s.skolRunId] || {}), [s.skolRunQ]: val } }
+    }));
+  }
   skolPrevQ() { this.setState(s => ({ skolRunQ: Math.max(0, s.skolRunQ - 1) })); }
   skolNextQ() {
     this.setState(s => {
@@ -4762,43 +5333,266 @@ class Component extends DCLogic {
       return { skolRunQ: Math.min(max, s.skolRunQ + 1) };
     });
   }
+  // „Uložit a zavřít" — uloží ROZPRACOVANOU pozici (index otázky), NEZNAMENÁ
+  // dokončení; příště pokračuje odtud. Odděleno od skolFinishRun() (§3.6).
   skolSaveAndClose() {
     this.setState(s => ({
-      skolMyDone: s.skolMyDone.includes(s.skolRunId) ? s.skolMyDone : [...s.skolMyDone, s.skolRunId],
-      skolDoneId: s.skolRunId, skolRunId: null, skolRunQ: 0
+      skolMySaved: { ...s.skolMySaved, [s.skolRunId]: s.skolRunQ },
+      skolRunId: null, skolRunQ: 0
     }));
   }
+  // „Dokončit školení" — jen na poslední otázce; přesune školení do „hotovo",
+  // zruší uloženou rozpracovanou pozici a zobrazí obrazovku „Školení dokončeno".
+  skolFinishRun() {
+    this.setState(s => {
+      const saved = { ...s.skolMySaved };
+      delete saved[s.skolRunId];
+      return {
+        skolMyDone: s.skolMyDone.includes(s.skolRunId) ? s.skolMyDone : [...s.skolMyDone, s.skolRunId],
+        skolMySaved: saved,
+        skolDoneId: s.skolRunId, skolRunId: null, skolRunQ: 0
+      };
+    });
+  }
 
-  // ── ŠKOLENÍ — administrace („Katalog školení") ────────────────────────
+  // ── ŠKOLENÍ — administrace („Správa školení") ───────────────────────────
   setSkolListFilter(key) { this.setState({ skolListFilter: key }); }
   setSkolEmpFilter(key) { this.setState({ skolEmpFilter: key }); }
   setSkolItemTab(key) { this.setState({ skolItemTab: key }); }
-  openSkolForm(mode, row) {
-    const empty = { id: null, title: '', category: 'povinne', tags: [], deadlineDny: 7, prijemci: 'vsichni', doruceni: 'potvrzeni', questions: [] };
-    this.setState({ skolFormOpen: true, skolFormMode: mode, skolFormId: row ? row.id : null, skolForm: row ? { ...empty, ...row } : empty });
+  skolEmptyForm() {
+    return {
+      id: null, title: '', popis: '', category: 'povinne', tags: [],
+      opakovani: { mode: 'jednorazove', perioda: 1, jednotka: 'roky' },
+      prijemci: 'vsichni', prijemciText: '', prijemciSkupiny: '', prijemciPozice: this.SKOL_POSITIONS[0],
+      terminTyp: 'dny', pocetDni: 5, konkretniDatum: ''
+    };
+  }
+  openSkolForm() {
+    this.setState({ skolFormOpen: true, skolFormMode: 'add', skolFormId: null, skolForm: this.skolEmptyForm() });
   }
   closeSkolForm() { this.setState({ skolFormOpen: false, skolForm: null }); }
   setSkolFormField(key, val) { this.setState(s => ({ skolForm: { ...s.skolForm, [key]: val } })); }
+  // Konkrétní datum dává smysl jen u jednorázových školení — při přepnutí
+  // na „Opakovaně" se proto případně zvolené 'datum' přehodí na 'dny' (§3.2).
+  setSkolFormOpakovaniField(key, val) {
+    this.setState(s => {
+      const opakovani = { ...s.skolForm.opakovani, [key]: val };
+      const switchingToOpak = key === 'mode' && val === 'opakovane' && s.skolForm.terminTyp === 'datum';
+      return { skolForm: { ...s.skolForm, opakovani, terminTyp: switchingToOpak ? 'dny' : s.skolForm.terminTyp } };
+    });
+  }
   toggleSkolFormTag(tagKey) {
     this.setState(s => {
       const has = s.skolForm.tags.includes(tagKey);
       return { skolForm: { ...s.skolForm, tags: has ? s.skolForm.tags.filter(t => t !== tagKey) : [...s.skolForm.tags, tagKey] } };
     });
   }
+  // Nové školení se VŽDY uloží jako koncept (nikdy rovnou nesdílené) a po
+  // uložení se otevře jeho detail na záložce Detaily (§3.2).
   saveSkolForm() {
     this.setState(s => {
-      if (s.skolFormMode === 'edit' && s.skolFormId != null) {
-        return { skolFormOpen: false, skolForm: null, skolOverrides: { ...s.skolOverrides, [s.skolFormId]: { ...s.skolForm } } };
-      }
       const newId = 1000 + s.skolCustom.length;
-      return { skolFormOpen: false, skolForm: null, skolCustom: [...s.skolCustom, { ...s.skolForm, id: newId, status: 'koncept', assignees: [] }] };
+      const newIdx = this.SKOL_TRAININGS.length + s.skolCustom.length;
+      const newCustom = [...s.skolCustom, {
+        ...s.skolForm, id: newId, status: 'koncept', shared: false,
+        deadlineDny: s.skolForm.pocetDni, formVersions: [], questions: [], assignees: []
+      }];
+      const stack = s.drawerOpen ? [...s.drawerStack, { module: s.drawerModule, label: this.currentFrameLabel(s), selectedIdx: s.selectedIdx }] : [];
+      return {
+        skolFormOpen: false, skolForm: null, skolCustom: newCustom,
+        drawerOpen: true, drawerModule: 'skoleni', selectedIdx: newIdx, drawerStack: stack,
+        drawerTab: 'detaily', skolItemTab: 'detaily'
+      };
     });
   }
+  // Archivace má přednost před ostatními stavy (i koncept lze archivovat);
+  // „Obnovit" vrací do stavu podle `shared` (§2.1) — vše přes stejný overlay.
   toggleSkolArchive(id) {
-    this.setState(s => ({ skolArchived: s.skolArchived.includes(id) ? s.skolArchived.filter(x => x !== id) : [...s.skolArchived, id] }));
+    this.setState(s => {
+      const t = this.skolAllTrainingsWith(s).find(x => x.id === id);
+      if (!t) return {};
+      const nextStatus = t.status === 'archivovano' ? (t.shared ? 'aktivni' : 'koncept') : 'archivovano';
+      return { skolOverrides: { ...s.skolOverrides, [id]: { ...(s.skolOverrides[id] || {}), status: nextStatus } } };
+    });
   }
-  toggleSkolShare(id) { this.setState(s => ({ skolShared: { ...s.skolShared, [id]: !s.skolShared[id] } })); }
+  skolAllTrainingsWith(s) {
+    const base = this.SKOL_TRAININGS.map(t => s.skolOverrides[t.id] ? { ...t, ...s.skolOverrides[t.id] } : t);
+    return [...base, ...s.skolCustom];
+  }
+  // „Sdílet zaměstnancům" — v originálním prototypu bez napojené funkce
+  // (jen vizuální stav, viz §3.3); tady je doplněná o rozumné minimum, aby
+  // šla vyzkoušet: nasdílí a přepne koncept → aktivní. Tlačítko je stejně
+  // dostupné, jen dokud školení není sdílené a není archivované.
+  toggleSkolShare(id) {
+    this.setState(s => ({ skolOverrides: { ...s.skolOverrides, [id]: { ...(s.skolOverrides[id] || {}), shared: true, status: 'aktivni' } } }));
+  }
   toggleSkolSettings() { this.setState(s => ({ skolSettingsOpen: !s.skolSettingsOpen })); }
+
+  // ── ŠKOLENÍ — Detail: „Editovat detaily" (in-place, §3.3.1) ─────────────
+  openSkolDetailEdit() {
+    this.setState(s => {
+      const t = this.skolAllTrainingsWith(s)[s.selectedIdx] || {};
+      const empty = this.skolEmptyForm();
+      const form = { ...empty, ...t, opakovani: { ...empty.opakovani, ...(t.opakovani || {}) } };
+      return { skolDetailEditOpen: true, skolForm: form, skolFormId: t.id };
+    });
+  }
+  closeSkolDetailEdit() { this.setState({ skolDetailEditOpen: false, skolForm: null }); }
+  saveSkolDetailEdit() {
+    this.setState(s => ({
+      skolDetailEditOpen: false, skolForm: null,
+      skolOverrides: { ...s.skolOverrides, [s.skolFormId]: { ...(s.skolOverrides[s.skolFormId] || {}), ...s.skolForm, deadlineDny: s.skolForm.pocetDni } }
+    }));
+  }
+
+  // ── ŠKOLENÍ — Návrhář (editor formuláře, §3.4) ───────────────────────────
+  openSkolDesign() {
+    this.setState(s => {
+      const t = this.skolAllTrainingsWith(s)[s.selectedIdx] || {};
+      const ov = s.skolOverrides[t.id] || {};
+      const src = ov.draftQuestions || t.questions || [];
+      return { skolDesignOpen: true, skolDesignId: t.id, skolDesignQuestions: src.map(q => ({ ...q })), skolDesignSelQ: src.length ? 0 : -1, skolDesignTab: 'navrhar' };
+    });
+  }
+  cancelSkolDesign() { this.setState({ skolDesignOpen: false, skolDesignId: null, skolDesignQuestions: [], skolDesignSelQ: 0 }); }
+  setSkolDesignTab(key) { this.setState({ skolDesignTab: key }); }
+  skolDesignAddQuestion(type) {
+    this.setState(s => {
+      const meta = this.SKOL_TYPE_META[type] || this.SKOL_TYPE_META.text;
+      const q = { id: 'nq' + Date.now() + Math.floor(Math.random() * 1000), type, text: '', required: false, options: meta.hasOptions ? ['Možnost 1', 'Možnost 2'] : [] };
+      const list = [...s.skolDesignQuestions, q];
+      return { skolDesignQuestions: list, skolDesignSelQ: list.length - 1 };
+    });
+  }
+  skolDesignSelectQ(i) { this.setState({ skolDesignSelQ: i }); }
+  skolDesignMoveQ(i, dir) {
+    this.setState(s => {
+      const list = [...s.skolDesignQuestions];
+      const j = i + dir;
+      if (j < 0 || j >= list.length) return {};
+      const tmp = list[i]; list[i] = list[j]; list[j] = tmp;
+      return { skolDesignQuestions: list, skolDesignSelQ: j };
+    });
+  }
+  skolDesignDupQ(i) {
+    this.setState(s => {
+      const list = [...s.skolDesignQuestions];
+      list.splice(i + 1, 0, { ...list[i], id: 'nq' + Date.now() + Math.floor(Math.random() * 1000) });
+      return { skolDesignQuestions: list, skolDesignSelQ: i + 1 };
+    });
+  }
+  skolDesignDeleteQ(i) {
+    this.setState(s => {
+      const list = s.skolDesignQuestions.filter((_, idx) => idx !== i);
+      let sel = s.skolDesignSelQ;
+      if (sel >= list.length) sel = list.length - 1;
+      return { skolDesignQuestions: list, skolDesignSelQ: sel };
+    });
+  }
+  setSkolDesignQField(key, val) {
+    this.setState(s => ({ skolDesignQuestions: s.skolDesignQuestions.map((q, i) => i === s.skolDesignSelQ ? { ...q, [key]: val } : q) }));
+  }
+  // Po změně typu se u výběrových typů automaticky doplní 2 výchozí možnosti,
+  // pokud žádné nejsou (§3.4).
+  setSkolDesignQType(type) {
+    this.setState(s => {
+      const meta = this.SKOL_TYPE_META[type] || this.SKOL_TYPE_META.text;
+      return {
+        skolDesignQuestions: s.skolDesignQuestions.map((q, i) => {
+          if (i !== s.skolDesignSelQ) return q;
+          const next = { ...q, type };
+          if (meta.hasOptions && !(next.options && next.options.length)) next.options = ['Možnost 1', 'Možnost 2'];
+          return next;
+        })
+      };
+    });
+  }
+  skolDesignSetOption(oi, val) {
+    this.setState(s => ({
+      skolDesignQuestions: s.skolDesignQuestions.map((q, i) => {
+        if (i !== s.skolDesignSelQ) return q;
+        const options = [...(q.options || [])]; options[oi] = val;
+        return { ...q, options };
+      })
+    }));
+  }
+  skolDesignAddOption() {
+    this.setState(s => ({ skolDesignQuestions: s.skolDesignQuestions.map((q, i) => i === s.skolDesignSelQ ? { ...q, options: [...(q.options || []), 'Nová možnost'] } : q) }));
+  }
+  skolDesignDeleteOption(oi) {
+    this.setState(s => ({ skolDesignQuestions: s.skolDesignQuestions.map((q, i) => i === s.skolDesignSelQ ? { ...q, options: (q.options || []).filter((_, idx) => idx !== oi) } : q) }));
+  }
+  // „Uložit" v Návrháři uloží KONCEPT otázek (draft, ≠ publikace verze,
+  // viz §3.3) a vrátí na drawer se záložkou Formulář.
+  saveSkolDesign() {
+    this.setState(s => ({
+      skolOverrides: { ...s.skolOverrides, [s.skolDesignId]: { ...(s.skolOverrides[s.skolDesignId] || {}), draftQuestions: s.skolDesignQuestions } },
+      skolDesignOpen: false, skolDesignId: null, skolDesignQuestions: [], skolItemTab: 'formular'
+    }));
+  }
+  // „Publikovat" — jen když existuje nepublikovaný koncept; vytvoří novou
+  // verzi (číslo o 1 vyšší než dosud nejvyšší), koncept se stane aktuální
+  // publikovanou verzí a panel přeskočí na záložku Publikováno (§3.3).
+  publishSkolForm() {
+    this.setState(s => {
+      const t = this.skolAllTrainingsWith(s)[s.selectedIdx];
+      if (!t) return {};
+      const ov = s.skolOverrides[t.id] || {};
+      const draft = ov.draftQuestions;
+      if (!draft) return {};
+      const maxV = (t.formVersions && t.formVersions.length) ? Math.max.apply(null, t.formVersions.map(v => v.verze)) : 0;
+      const newVersion = { verze: maxV + 1, datum: this.SKOL_TODAY_STR, autor: 'Karolína Fišerová' };
+      return {
+        skolOverrides: { ...s.skolOverrides, [t.id]: { ...ov, questions: draft, draftQuestions: null, formVersions: [newVersion, ...(t.formVersions || [])] } },
+        skolItemTab: 'publikovano'
+      };
+    });
+  }
+
+  // ── ŠKOLENÍ — Nastavení školení (Kategorie / Zařazení, §3.5) ────────────
+  stripDia(str) { return (str || '').normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+  skolAllCategories() {
+    return [...this.SKOL_CATEGORIES, ...this.state.skolCatsExtra].filter(c => !this.state.skolCatsDeleted.includes(c.key));
+  }
+  skolAllTags() {
+    return [...this.SKOL_TAGS, ...this.state.skolTagsExtra].filter(t => !this.state.skolTagsDeleted.includes(t.key));
+  }
+  skolCatUsage(key) { return this.skolAllTrainings().filter(t => t.category === key).length; }
+  skolTagUsage(key) { return this.skolAllTrainings().filter(t => (t.tags || []).includes(key)).length; }
+  setSkolNewCatName(v) { this.setState({ skolNewCatName: v }); }
+  setSkolNewTagName(v) { this.setState({ skolNewTagName: v }); }
+  pickSkolNewCatColor(i) { this.setState({ skolNewCatColorIdx: i }); }
+  pickSkolNewTagColor(i) { this.setState({ skolNewTagColorIdx: i }); }
+  // Kategorie — BEZ kontroly duplicity (schválně stejná nekonzistence jako
+  // v originálním prototypu, viz §3.5 — u Zařazení kontrola JE).
+  addSkolCategory() {
+    this.setState(s => {
+      const name = (s.skolNewCatName || '').trim();
+      if (!name) return {};
+      const sw = this.SKOL_COLOR_SWATCHES[s.skolNewCatColorIdx] || this.SKOL_COLOR_SWATCHES[0];
+      const key = 'cat_' + this.stripDia(name).toLowerCase().replace(/[^a-z0-9]+/g, '_') + '_' + Date.now();
+      return { skolCatsExtra: [...s.skolCatsExtra, { key, title: name, icon: 'tag', bg: sw.bg, iconColor: sw.color }], skolNewCatName: '', skolNewCatColorIdx: 0 };
+    });
+  }
+  deleteSkolCategory(key) {
+    this.setState(s => (this.skolCatUsage(key) > 0 ? {} : { skolCatsDeleted: [...s.skolCatsDeleted, key] }));
+  }
+  // Zařazení (tagy) — kontroluje duplicitu podle názvu BEZ OHLEDU na
+  // velikost písmen (§3.5).
+  addSkolTag() {
+    this.setState(s => {
+      const name = (s.skolNewTagName || '').trim();
+      if (!name) return {};
+      const dup = this.skolAllTags().some(t => t.label.toLowerCase() === name.toLowerCase());
+      if (dup) return {};
+      const sw = this.SKOL_COLOR_SWATCHES[s.skolNewTagColorIdx] || this.SKOL_COLOR_SWATCHES[0];
+      const key = 'tag_' + this.stripDia(name).toLowerCase().replace(/[^a-z0-9]+/g, '_') + '_' + Date.now();
+      return { skolTagsExtra: [...s.skolTagsExtra, { key, label: name, bg: sw.bg, color: sw.color }], skolNewTagName: '', skolNewTagColorIdx: 0 };
+    });
+  }
+  deleteSkolTag(key) {
+    this.setState(s => (this.skolTagUsage(key) > 0 ? {} : { skolTagsDeleted: [...s.skolTagsDeleted, key] }));
+  }
 
   toggleSidebar() { this.setState(s => ({ sidebarCollapsed: !s.sidebarCollapsed })); }
 
@@ -4826,13 +5620,15 @@ class Component extends DCLogic {
             orgTab, nadrRule, pozModalOpen, pozModalSection, pozIdx,
             nsmCreateOpen, nsmEditOpen, nsmEdit,
             evEditOpen, evEditTab, evEditModuleKey, evLang,
-            selectedSkolCat, skolConfirmedOpen, skolRunId, skolRunQ, skolMyAnswers, skolMyDone, skolDoneId,
-            skolListFilter, skolEmpFilter, skolFormOpen, skolFormMode, skolForm, skolItemTab, skolArchived, skolShared, skolSettingsOpen } = this.state;
+            selectedSkolCat, skolConfirmedOpen, skolRunId, skolRunQ, skolMyAnswers, skolMyDone, skolDoneId, skolMySaved,
+            skolListFilter, skolEmpFilter, skolFormOpen, skolFormMode, skolForm, skolItemTab, skolSettingsOpen,
+            skolDetailEditOpen, skolDesignOpen, skolDesignQuestions, skolDesignSelQ, skolDesignTab,
+            skolCatsExtra, skolTagsExtra, skolNewCatName, skolNewCatColorIdx, skolNewTagName, skolNewTagColorIdx } = this.state;
     const ACC = '#1572e8';
     const collapsed = sidebarCollapsed;
 
     // ── Module routing ──
-    const navOwnsContent = activeNav === 'smern' || activeNav === 'skol' || activeNav === 'dok' || activeNav === 'nastorg' || activeNav === 'nastsm' || activeNav === 'skolc';
+    const navOwnsContent = activeNav === 'smern' || activeNav === 'skol' || activeNav === 'dok' || activeNav === 'nastorg' || activeNav === 'nastsm' || activeNav === 'skolsprava';
     const isNastOrg = activeNav === 'nastorg';
     const isNastSm  = activeNav === 'nastsm';
     const isKonv       = activeNav === 'konv';
@@ -4881,7 +5677,7 @@ class Component extends DCLogic {
     });
     const navCompany = this.NAV_COMPANY.map(m => {
       const on = activeNav === m.id;
-      const clearTab = m.id === 'dok' || m.id === 'nastorg' || m.id === 'nastsm' || m.id === 'skolc';
+      const clearTab = m.id === 'dok' || m.id === 'nastorg' || m.id === 'nastsm' || m.id === 'skolsprava';
       return { ...m, onClick: () => this.setState({ activeNav: on ? null : m.id, ...(clearTab && !on ? { activeTab: null } : {}) }), style: navItemStyle(on), showFull: !collapsed, iconEl: this.mkNavIcon(m, collapsed, on ? ACC : '#9a93b5') };
     });
 
@@ -4924,7 +5720,11 @@ class Component extends DCLogic {
     const showSkolMain   = activeNav === 'skol' && !selectedSkolCat;
     const showSkolDetail = activeNav === 'skol' && !!selectedSkolCat;
     // „Katalog školení" — admin, nav-owned content (stejně jako Nastavení směrnic).
-    const showSkolAdmin  = activeNav === 'skolc';
+    // „Katalog školení" (skolc) zůstává BEZ vlastní obrazovky (prázdný
+    // placeholder, jako ostatní zatím-nehotové položky menu) — plnou
+    // administraci školení hostí samostatná položka „Správa školení"
+    // (skolsprava), viz Aptien-menu-reference.md.
+    const showSkolAdmin  = activeNav === 'skolsprava';
     const showZamestnanec = isZamestnanec && activeView === 'seznam';
     const showZamPlaceholder = isZamestnanec && activeView !== 'seznam' && activeView !== 'kalendar';
     const showAudPlaceholder = isAudity && activeView !== 'kalendar';
@@ -5532,18 +6332,33 @@ class Component extends DCLogic {
       const m = this.SKOL_STATUS_META[status] || this.SKOL_STATUS_META.nerozeslano;
       return { label: m.label, style: 'background:' + m.color + '1a;color:' + m.color + ';padding:4px 12px;border-radius:999px;font-size:10px;font-weight:700;white-space:nowrap' };
     };
+    const SKOL_DUE_STYLES = {
+      overdue: 'background:#ffebee;color:#c62828',
+      soon:    'background:#fff3e0;color:#e65100',
+      ok:      'background:#fff8e1;color:#8a6d1a',
+      none:    'background:#e8f5e9;color:#2E7D32'
+    };
     const mkSkolRow = (t) => {
       const status = this.skolMyStatusFor(t);
       const pill = skolStatusPill(status);
       const catMeta = this.SKOL_CATEGORIES.find(c => c.key === t.category) || {};
       const meAssign = (t.assignees || []).find(a => a.name === 'Karolína Fišerová') || {};
+      const savedQ = this.state.skolMySaved[t.id];
+      const hasProgress = typeof savedQ === 'number';
+      const answeredCount = Object.keys(this.state.skolMyAnswers[t.id] || {}).length;
+      const due = this.skolDueBadge(t, meAssign);
       return {
         ...t, status, pillLabel: pill.label, pillStyle: pill.style,
         catTitle: catMeta.title || '',
         isPending: status !== 'hotovo', isDone: status === 'hotovo',
-        btnLabel: status === 'rozpracovano' ? 'POKRAČOVAT' : 'ZAHÁJIT',
+        btnLabel: hasProgress ? 'POKRAČOVAT' : 'ZAHÁJIT',
+        btnStyle: hasProgress
+          ? 'background:#1572e8;color:#fff;border:none;padding:8px 18px;border-radius:999px;font-weight:800;font-size:11.5px;cursor:pointer;white-space:nowrap'
+          : 'background:#fff;color:#1572e8;border:1.5px solid #1572e8;padding:8px 18px;border-radius:999px;font-weight:800;font-size:11.5px;cursor:pointer;white-space:nowrap',
+        btnSubLabel: hasProgress ? (answeredCount + ' z ' + (t.questions || []).length) : '', hasSubLabel: hasProgress,
         onStart: () => this.openSkolRun(t.id),
-        doneAt: meAssign.doneAt || ''
+        doneAt: meAssign.doneAt || '',
+        dueLabel: due.label, dueStyle: 'display:inline-flex;padding:3px 10px;border-radius:999px;font-size:10px;font-weight:700;white-space:nowrap;' + (SKOL_DUE_STYLES[due.kind] || SKOL_DUE_STYLES.ok)
       };
     };
     const skolPendingRows = skolPending.map(mkSkolRow);
@@ -5561,98 +6376,221 @@ class Component extends DCLogic {
     const skolRunCurQ = skolRunQs[skolRunQ] || null;
     const skolRunIsLast = skolRunQ >= skolRunTotal - 1;
     const skolRunProgress = skolRunTotal ? Math.round(((skolRunQ + 1) / skolRunTotal) * 100) : 0;
-    const skolRunOptions = (skolRunCurQ && skolRunCurQ.options) ? skolRunCurQ.options.map(o => {
-      const on = skolMyAnswers[skolRunQ] === o;
-      return { label: o, onClick: () => this.skolPickAnswer(skolRunQ, o), radioIcon: on ? 'circle-dot' : 'circle', accent: on ? '#1572e8' : '#b0aac8' };
+    const skolRunAnswersForTraining = (skolMyAnswers[skolRunId] || {});
+    const skolRunOptions = (skolRunCurQ && skolRunCurQ.type === 'choice') ? (skolRunCurQ.options || []).map(o => {
+      const on = skolRunAnswersForTraining[skolRunQ] === o;
+      return { label: o, onClick: () => this.skolPickAnswer(o), radioIcon: on ? 'circle-dot' : 'circle', accent: on ? '#1572e8' : '#b0aac8' };
     }) : [];
     const skolRunIsChoice = !!(skolRunCurQ && skolRunCurQ.type === 'choice');
     const skolRunIsText = !!(skolRunCurQ && skolRunCurQ.type !== 'choice');
-    const skolRunAnswerText = skolMyAnswers[skolRunQ] || '';
+    const skolRunAnswerText = skolRunAnswersForTraining[skolRunQ] || '';
+    // Tlačítko „Další otázka" (mění se na „Dokončit školení" na poslední
+    // otázce) je jen OPTICKY ztlumené, dokud není vybraná odpověď — v kódu
+    // NENÍ skutečně zablokované proti kliknutí (§3.6, §5 bod 10).
+    const skolRunAnswered = skolRunAnswersForTraining[skolRunQ] !== undefined && skolRunAnswersForTraining[skolRunQ] !== '';
+    const skolRunNextLabel = skolRunIsLast ? 'DOKONČIT ŠKOLENÍ' : 'DALŠÍ OTÁZKA';
+    const skolRunNextAction = skolRunIsLast ? (() => this.skolFinishRun()) : (() => this.skolNextQ());
+    const skolRunNextStyle = 'display:inline-flex;align-items:center;gap:8px;background:#1572e8;color:#fff;border:none;padding:10px 22px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;opacity:' + (skolRunAnswered ? '1' : '.45');
     const skolDoneTraining = skolDoneId ? this.skolAllTrainings().find(t => t.id === skolDoneId) : null;
 
-    // ══ ŠKOLENÍ — administrace („Katalog školení") ══
-    const SKOL_LIST_FILTERS = [
-      { key: 'aktivni', label: 'Aktivní' }, { key: 'koncept', label: 'Koncept' }, { key: 'archivovano', label: 'Archivováno' }, { key: 'vse', label: 'Vše' }
-    ];
-    const skol_listFilters = SKOL_LIST_FILTERS.map(f => ({ ...f, on: skolListFilter === f.key, style: 'padding:6px 14px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid ' + (skolListFilter === f.key ? '#1572e8;background:#e8f0fd;color:#1572e8' : '#c8c4d8;background:#fff;color:#3d3a52'), onClick: () => this.setSkolListFilter(f.key) }));
+    // ══ ŠKOLENÍ — administrace („Správa školení") — seznam (§3.1) ══
     const skol_allAdmin = this.skolAllTrainings();
-    const skol_adminList = skol_allAdmin.filter(t => skolListFilter === 'vse' ? true : t.status === skolListFilter);
+    const skol_activeKoncept = skol_allAdmin.filter(t => t.status !== 'archivovano');
+    const skol_archivList = skol_allAdmin.filter(t => t.status === 'archivovano');
+    // Skutečně funkční je jen filtr „Aktivní a koncepty / Archiv" — s počtem
+    // u každého a nápovědou, která se mění podle zvoleného filtru.
+    const SKOL_LIST_FILTERS = [
+      { key: 'aktivni_koncept', label: 'Aktivní a koncepty', count: skol_activeKoncept.length },
+      { key: 'archiv', label: 'Archiv', count: skol_archivList.length }
+    ];
+    const skol_listFilters = SKOL_LIST_FILTERS.map(f => ({
+      ...f, on: skolListFilter === f.key,
+      style: 'padding:6px 14px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid ' + (skolListFilter === f.key ? '#1572e8;background:#e8f0fd;color:#1572e8' : '#c8c4d8;background:#fff;color:#3d3a52'),
+      onClick: () => this.setSkolListFilter(f.key)
+    }));
+    const skol_adminList = skolListFilter === 'archiv' ? skol_archivList : skol_activeKoncept;
+    const skol_listHint = skolListFilter === 'archiv'
+      ? 'Archivovaná školení jsou zastavená: novým zaměstnancům se už neposílají a slouží jen jako historie výsledků.'
+      : 'Aktivní školení se automaticky rozešlou každému novému zaměstnanci – i ta, kde už mají hotovo všichni současní. Koncepty ještě nebyly nikomu rozeslané.';
     const mkSkolAdminRow = (t) => {
       const lc = this.SKOL_LIFECYCLE_META[t.status] || this.SKOL_LIFECYCLE_META.koncept;
       const doneCount = (t.assignees || []).filter(a => a.status === 'hotovo').length;
       const totalCount = (t.assignees || []).length;
-      const pct = totalCount ? Math.round((doneCount / totalCount) * 100) : 0;
-      const catMeta = this.SKOL_CATEGORIES.find(c => c.key === t.category) || {};
+      const catMeta = this.skolAllCategories().find(c => c.key === t.category) || {};
+      const tagObjs = (t.tags || []).map(tk => this.skolAllTags().find(x => x.key === tk)).filter(Boolean);
+      // U názvu max. 2 štítky, zbytek jako „+N" s tooltipem se zbylými názvy (§3.1).
+      const shownTags = tagObjs.slice(0, 2);
+      const restTags = tagObjs.slice(2);
       return {
-        id: t.id, name: t.title, category: catMeta.title || '',
+        id: t.id, name: t.title, category: catMeta.title || '—',
+        tagsShown: shownTags.map(tg => ({ label: tg.label, style: 'display:inline-flex;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;white-space:nowrap;background:' + tg.bg + ';color:' + tg.color })),
+        hasMoreTags: restTags.length > 0, moreTagsLabel: '+' + restTags.length, moreTagsTitle: restTags.map(tg => tg.label).join(', '),
+        opakovaniText: this.skolOpakovaniText(t.opakovani), terminText: this.skolTerminText(t),
         lifecycleLabel: lc.label, lifecycleStyle: 'background:' + lc.color + '1a;color:' + lc.color + ';padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700',
-        confirmed: doneCount, pending: totalCount ? (totalCount - doneCount) : '---',
-        pctText: pct + ' %', barStyle: 'width:' + Math.max(pct, 3) + '%;background:#f2775d',
+        prirazeno: totalCount, dokonceno: doneCount,
         onOpen: () => this.pushDrawer('skoleni', skol_allAdmin.findIndex(x => x.id === t.id))
       };
     };
     const skol_adminRows = skol_adminList.map(mkSkolAdminRow);
 
-    // ── modal „Přidat/Editovat školení" (mirrors nsmEditOpen) ──
+    // ── modal „Přidat školení" (§3.2) i inline „Editovat detaily" (§3.3.1)
+    // sdílejí STEJNÝ tvar dat (`skolForm`) i tyto pomocné seznamy. ──
     const skolForm2 = skolForm || {};
-    const skol_formTagCards = this.SKOL_TAGS.map(tg => {
+    const skol_formTagCards = this.skolAllTags().map(tg => {
       const on = (skolForm2.tags || []).includes(tg.key);
       return { key: tg.key, label: tg.label, onClick: () => this.toggleSkolFormTag(tg.key), chipStyle: 'display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid ' + (on ? '#1572e8;background:#e8f0fd;color:#1572e8' : '#e0dded;background:#fff;color:#4a4660') };
     });
-    const skol_formCatOptions = this.SKOL_CATEGORIES.map(c => {
+    const skol_formTagsSummary = (skolForm2.tags || []).length
+      ? 'Vybráno: ' + skolForm2.tags.map(tk => (this.skolAllTags().find(x => x.key === tk) || {}).label).filter(Boolean).join(', ')
+      : 'Nevybráno';
+    const skol_formCatOptions = this.skolAllCategories().map(c => {
       const on = skolForm2.category === c.key;
       return { key: c.key, label: c.title, on, onClick: () => this.setSkolFormField('category', c.key), radioIcon: on ? 'circle-dot' : 'circle', accent: on ? '#1572e8' : '#b0aac8' };
     });
+    const skolFormOp = skolForm2.opakovani || { mode: 'jednorazove', perioda: 1, jednotka: 'roky' };
+    const SKOL_OPAK_OPTIONS = [
+      { key: 'jednorazove', icon: 'circle-check', title: 'Jednorázově', desc: 'Zaměstnanec absolvuje jednou, platnost neexpiruje.' },
+      { key: 'opakovane',   icon: 'rotate',        title: 'Opakovaně',  desc: 'Po zadané periodě platnost vyprší a školení se rozešle znovu.' }
+    ];
+    const skol_formOpakCards = SKOL_OPAK_OPTIONS.map(o => {
+      const on = skolFormOp.mode === o.key;
+      return { ...o, selCls: on ? 'nsm-card-sel' : '', onClick: () => this.setSkolFormOpakovaniField('mode', o.key) };
+    });
+    const skol_formOpakIsOpakovane = skolFormOp.mode === 'opakovane';
+    const SKOL_JEDNOTKA_OPTIONS = [{ key: 'dny', label: 'dnů' }, { key: 'mesice', label: 'měsíců' }, { key: 'roky', label: 'let' }];
+    const skol_formJednotkaOptions = SKOL_JEDNOTKA_OPTIONS.map(j => ({
+      ...j, on: skolFormOp.jednotka === j.key,
+      style: 'padding:5px 12px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid ' + (skolFormOp.jednotka === j.key ? '#1572e8;background:#e8f0fd;color:#1572e8' : '#c8c4d8;background:#fff;color:#3d3a52'),
+      onClick: () => this.setSkolFormOpakovaniField('jednotka', j.key)
+    }));
+    const skol_formOpakSentence = this.skolOpakovaniText(skolFormOp);
     const skol_formPrijemciCards = this.NSM_PRIJEMCI_OPTIONS.map(o => {
       const on = skolForm2.prijemci === o.key;
       return { ...o, selCls: on ? 'nsm-card-sel' : '', onClick: () => this.setSkolFormField('prijemci', o.key) };
     });
+    const skol_formPrijemciKonkretni = skolForm2.prijemci === 'konkretni';
+    const skol_formPrijemciPozice = skolForm2.prijemci === 'pozice';
+    const skol_formPozOptions = this.SKOL_POSITIONS.map(p => {
+      const on = skolForm2.prijemciPozice === p;
+      return { key: p, label: p, on, onClick: () => this.setSkolFormField('prijemciPozice', p), style: 'padding:6px 14px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid ' + (on ? '#1572e8;background:#e8f0fd;color:#1572e8' : '#c8c4d8;background:#fff;color:#3d3a52') };
+    });
+    // Konkrétní datum je zakázané, dokud je zvolené opakování „Opakovaně"
+    // (setSkolFormOpakovaniField při přepnutí na opakované sám přesune
+    // terminTyp z 'datum' na 'dny', takže tahle kombinace nikdy nenastane
+    // trvale — jen dokud probíhá přepnutí, viz §3.2).
+    const skol_formTerminOptions = this.NSM_TERMIN_OPTIONS.map(o => {
+      const disabled = o.key === 'datum' && skol_formOpakIsOpakovane;
+      const on = skolForm2.terminTyp === o.key && !disabled;
+      return {
+        ...o, on, disabled, onClick: disabled ? null : () => this.setSkolFormField('terminTyp', o.key),
+        style: 'display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;cursor:' + (disabled ? 'not-allowed' : 'pointer') + ';border:1.5px solid ' + (on ? '#1572e8' : '#e0dded') + ';background:' + (on ? '#e8f0fd' : '#fff') + ';opacity:' + (disabled ? '.45' : '1')
+      };
+    });
+    const skol_formShowDatum = skolForm2.terminTyp === 'datum';
+    const skol_formShowDny = skolForm2.terminTyp === 'dny';
+    const skol_formShowBezWarn = skolForm2.terminTyp === 'bez';
+    const skol_formBezWarnText = skol_formOpakIsOpakovane
+      ? 'U opakovaného školení bez termínu nejde hlídat prodlení – zaměstnanec zůstane „rozpracovaný" neomezeně. Doporučujeme počet dnů na potvrzení.'
+      : 'Bez termínu se školení nikdy neoznačí jako po termínu. Vhodné jen pro nepovinná školení.';
 
-    // ── item-drawer „Katalog školení" (mirrors drawerZamOpen) ──
+    // ── item-drawer „Správa školení" (mirrors drawerZamOpen) ──
     const SKOL_ITEM_TABS = [
       { key: 'zamestnanci', label: 'Zaměstnanci' }, { key: 'formular', label: 'Formulář' }, { key: 'detaily', label: 'Detaily' },
       { key: 'souvis', label: 'Souvislosti' }, { key: 'publikovano', label: 'Publikováno' }
     ];
-    const skolSel = skol_allAdmin[selectedIdx] || skol_allAdmin[0] || { id: 0, title: 'Školení', questions: [], assignees: [], category: 'povinne', status: 'aktivni', tags: [] };
+    const skolSel = skol_allAdmin[selectedIdx] || skol_allAdmin[0] || {
+      id: 0, title: 'Školení', popis: '', questions: [], assignees: [], category: 'povinne', tags: [],
+      status: 'aktivni', shared: false, opakovani: { mode: 'jednorazove', perioda: 1, jednotka: 'roky' },
+      terminTyp: 'dny', pocetDni: 5, konkretniDatum: '', formVersions: []
+    };
+    const skolSelOv = this.state.skolOverrides[skolSel.id] || {};
+    const skolSelHasDraft = !!skolSelOv.draftQuestions;
     const skolSelLc = this.SKOL_LIFECYCLE_META[skolSel.status] || this.SKOL_LIFECYCLE_META.koncept;
     const skol_itemTabs = SKOL_ITEM_TABS.map(t => {
       const on = skolItemTab === t.key;
       return { ...t, onClick: () => this.setSkolItemTab(t.key), style: this.drawerTabStyle(on) };
     });
-    const SKOL_EMP_FILTERS = [{ key: 'aktivni', label: 'Aktivní' }, { key: 'vse', label: 'Vše' }];
+
+    // Souhrnné dlaždice — jen mezi AKTIVNÍMI zaměstnanci (§2.3).
+    const skolSelActive = (skolSel.assignees || []).filter(a => a.aktivni !== false);
+    const skolScored = skolSelActive.filter(a => typeof a.score === 'number');
+    const skol_summaryTiles = [
+      { label: 'Hotovo', value: String(skolSelActive.filter(a => a.status === 'hotovo').length), color: '#2E7D32' },
+      { label: 'Rozpracováno', value: String(skolSelActive.filter(a => a.status === 'rozpracovano').length), color: '#EF6C00' },
+      { label: 'Odesláno', value: String(skolSelActive.filter(a => a.status === 'odeslano').length), color: '#1572e8' },
+      { label: 'Průměrné skóre', value: skolScored.length ? Math.round(skolScored.reduce((sum, a) => sum + a.score, 0) / skolScored.length) + ' %' : '—', color: '#5a5478' }
+    ];
+
+    const SKOL_EMP_FILTERS = [{ key: 'aktivni', label: 'Aktivní zaměstnanci' }, { key: 'neaktivni', label: 'Neaktivní zaměstnanci' }];
     const skol_empFilters = SKOL_EMP_FILTERS.map(f => {
       const on = skolEmpFilter === f.key;
       return { ...f, on, onClick: () => this.setSkolEmpFilter(f.key), style: 'padding:6px 14px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid ' + (on ? '#1572e8;background:#e8f0fd;color:#1572e8' : '#c8c4d8;background:#fff;color:#3d3a52') };
     });
-    const skol_empRows = (skolSel.assignees || []).map(a => {
-      const meta = this.SKOL_STATUS_META[a.status] || this.SKOL_STATUS_META.nerozeslano;
-      const emp = this.ZAM_EMPLOYEES.find(e => e.name === a.name);
-      return {
-        name: a.name, statusLabel: meta.label,
-        statusStyle: 'background:' + meta.color + '1a;color:' + meta.color + ';padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700',
-        doneAt: a.doneAt || '—',
-        avatarEl: emp ? this.mkAvatar(emp, 28) : null,
-        onOpen: emp ? () => this.pushDrawer('zamestnanec', this.ZAM_EMPLOYEES.indexOf(emp)) : null
-      };
-    });
+    const skol_empShowInactiveNote = skolEmpFilter === 'neaktivni';
+    const skol_empRows = (skolSel.assignees || [])
+      .filter(a => skolEmpFilter === 'neaktivni' ? a.aktivni === false : a.aktivni !== false)
+      .map(a => {
+        const meta = this.SKOL_STATUS_META[a.status] || this.SKOL_STATUS_META.nerozeslano;
+        const emp = this.ZAM_EMPLOYEES.find(e => e.name === a.name);
+        const hasScore = typeof a.score === 'number';
+        const scoreColor = !hasScore ? '#ddd' : (a.score >= 90 ? '#2E7D32' : a.score >= 50 ? '#EF6C00' : '#c62828');
+        return {
+          name: a.name, statusLabel: meta.label,
+          statusStyle: 'background:' + meta.color + '1a;color:' + meta.color + ';padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700',
+          odeslanoAt: a.odeslanoAt || '—', doneAt: a.doneAt || '—',
+          scoreText: hasScore ? a.score + ' %' : '—',
+          scoreBarStyle: 'width:' + (hasScore ? a.score : 0) + '%;background:' + scoreColor,
+          hasCert: !!a.certifikat,
+          avatarEl: emp ? this.mkAvatar(emp, 28) : null,
+          onOpen: emp ? () => this.pushDrawer('zamestnanec', this.ZAM_EMPLOYEES.indexOf(emp)) : null
+        };
+      });
+
+    // ── Detaily — read mode (§3.3) ──
     const skol_detailRows = [
-      { label: 'Název školení', type: 'plain', value: skolSel.title },
-      { label: 'Kategorie', type: 'plain', value: (this.SKOL_CATEGORIES.find(c => c.key === skolSel.category) || {}).title || '' },
-      { label: 'Štítky', type: 'plain', value: (skolSel.tags || []).map(tk => (this.SKOL_TAGS.find(x => x.key === tk) || {}).label).filter(Boolean).join(', ') || '—' },
-      { label: 'Příjemci', type: 'plain', value: skolSel.prijemci === 'vsichni' ? 'Všichni zaměstnanci' : (skolSel.prijemci === 'pozice' ? 'Pracovní pozice' : 'Konkrétní zaměstnanci') },
-      { label: 'Termín splnění', type: 'plain', value: skolSel.deadlineDny + ' dní od přiřazení' },
-      { label: 'Počet otázek', type: 'plain', value: String((skolSel.questions || []).length) },
-      { label: 'Stav', type: 'plain', value: skolSelLc.label }
+      { label: 'Název školení', value: skolSel.title },
+      { label: 'Popis', value: skolSel.popis || '—' },
+      { label: 'Kategorie', value: (this.skolAllCategories().find(c => c.key === skolSel.category) || {}).title || '—' },
+      { label: 'Zařazení', value: (skolSel.tags || []).map(tk => (this.skolAllTags().find(x => x.key === tk) || {}).label).filter(Boolean).join(', ') || '—' },
+      { label: 'Příjemci', value: skolSel.prijemci === 'vsichni' ? 'Všichni zaměstnanci' : (skolSel.prijemci === 'pozice' ? 'Pracovní pozice: ' + (skolSel.prijemciPozice || '—') : 'Konkrétní zaměstnanci a skupiny') },
+      { label: 'Opakování', value: this.skolOpakovaniText(skolSel.opakovani) },
+      { label: 'Termín splnění', value: this.skolTerminText(skolSel) },
+      { label: 'Počet otázek', value: String((skolSel.questions || []).length) },
+      { label: 'Stav', value: skolSelLc.label }
     ].map(r => ({ ...r, isPlain: true, isDate: false, isLink: false }));
-    const skolIsArchived = this.state.skolArchived.includes(skolSel.id);
-    const skolIsShared = !!this.state.skolShared[skolSel.id];
+    const skol_showDetailyRead = skolItemTab === 'detaily' && !skolDetailEditOpen;
+    const skol_showDetailyEdit = skolItemTab === 'detaily' && skolDetailEditOpen;
+
+    // ── Formulář — nepublikováno/publikováno indikátor (§3.3) ──
+    const skol_formStatusLabel = skolSelHasDraft ? 'Rozpracované změny – nepublikováno' : ((skolSel.formVersions || []).length ? 'Publikovaná verze – pouze náhled' : 'Zatím žádná publikovaná verze');
+    const skol_formStatusStyle = skolSelHasDraft
+      ? 'display:flex;align-items:center;gap:8px;background:#fff8e6;color:#8a6d1a;border:1px solid #f0e0b0;border-radius:8px;padding:10px 14px;font-size:12px;margin-bottom:18px'
+      : 'display:flex;align-items:center;gap:8px;background:#e8f5e9;color:#2E7D32;border:1px solid #c8e8d4;border-radius:8px;padding:10px 14px;font-size:12px;margin-bottom:18px';
+    const skol_formularSrc = skolSelHasDraft ? skolSelOv.draftQuestions : (skolSel.questions || []);
+
+    // ── Publikováno — historie verzí (nejnovější navrchu, §3.3) ──
+    const skol_publishedVersions = (skolSel.formVersions || []).map((v, i) => ({
+      verze: v.verze, datum: v.datum, autor: v.autor,
+      icon: i === 0 ? 'circle-check' : (i === (skolSel.formVersions.length - 1) ? 'plus' : 'pen'),
+      iconColor: i === 0 ? '#00C853' : '#9a95ad',
+      titleText: i === 0 ? ('Aktuální verze zveřejněna (v' + v.verze + ')') : ('Verze v' + v.verze)
+    }));
+    const skol_publishedEmpty = skol_publishedVersions.length === 0;
+
+    // ── Akce v hlavičce detailu (§3.3) ──
+    const skolSelShared = !!skolSel.shared;
+    const skolSelArchived = skolSel.status === 'archivovano';
+    let skolShareLabel = skolSelShared ? 'Sdíleno' : 'Sdílet zaměstnancům';
+    let skolShareDisabled = skolSelShared || skolSelArchived;
+    let skolShareNote = '';
+    if (skolSelArchived) skolShareNote = 'Archivováno – školení je mimo aktivní seznam a novým zaměstnancům se už nerozesílá.';
+    else if (skolSelShared) skolShareNote = 'Školení už bylo zaměstnancům nasdíleno.';
     const SKOL_ACTIONS = [
-      { label: 'Oblíbená', icon: 'star' },
-      { label: skolIsShared ? 'Sdíleno' : 'Sdílet', icon: 'share-nodes', onClick: () => this.toggleSkolShare(skolSel.id) },
-      { label: 'Náhled', icon: 'eye' }, { label: 'Oprávnění', icon: 'user-shield' },
-      { label: 'Historie změn', icon: 'clock-rotate-left' },
-      { label: skolIsArchived ? 'Aktivovat' : 'Archivovat', icon: skolIsArchived ? 'box-open' : 'box-archive', onClick: () => this.toggleSkolArchive(skolSel.id) },
-      { label: 'Uložit změny', icon: 'floppy-disk', disabled: true }
+      { label: 'Editovat formulář', icon: 'pen-to-square', onClick: () => this.openSkolDesign() },
+      ...(skolSelHasDraft ? [{ label: 'Publikovat', icon: 'cloud-arrow-up', onClick: () => this.publishSkolForm() }] : []),
+      { label: skolShareLabel, icon: 'share-nodes', disabled: skolShareDisabled, onClick: skolShareDisabled ? null : () => this.toggleSkolShare(skolSel.id) },
+      { label: skolSelArchived ? 'Obnovit' : 'Archivovat', icon: skolSelArchived ? 'box-open' : 'box-archive', onClick: () => this.toggleSkolArchive(skolSel.id) },
+      { label: 'Editovat detaily', icon: 'sliders', onClick: () => this.openSkolDetailEdit() }
     ];
     const skol_itemActions = SKOL_ACTIONS.map(ac => ({
       ...ac,
@@ -5660,6 +6598,99 @@ class Component extends DCLogic {
       style: 'display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:' + (ac.disabled ? '#bbb' : '#374151') + ';cursor:pointer',
       hover: ac.disabled ? 'display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#bbb;cursor:not-allowed' : 'display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:12.5px;color:#1572e8;cursor:pointer;background:rgba(21,114,232,.05)'
     }));
+
+    // ══ ŠKOLENÍ — Návrhář (editor formuláře, §3.4) ══
+    const SKOL_DESIGN_TABS = [
+      { key: 'navrhar', label: 'Návrhář' }, { key: 'vyzkouset', label: 'Vyzkoušet' },
+      { key: 'vzhled', label: 'Vzhled' }, { key: 'logika', label: 'Logika a podmínky' }, { key: 'json', label: 'JSON' }
+    ];
+    const skol_designTabs = SKOL_DESIGN_TABS.map(t => {
+      const on = skolDesignTab === t.key;
+      return { ...t, onClick: () => this.setSkolDesignTab(t.key), style: this.drawerTabStyle(on) };
+    });
+    const skol_designTraining = this.skolAllTrainings().find(t => t.id === this.state.skolDesignId) || { title: 'Formulář' };
+    const skol_designPalette = this.SKOL_PALETTE.map(p => ({ ...p, onClick: () => this.skolDesignAddQuestion(p.type) }));
+    const skol_designQArr = skolDesignQuestions || [];
+    const skol_designQuestions = skol_designQArr.map((q, i) => {
+      const meta = this.SKOL_TYPE_META[q.type] || this.SKOL_TYPE_META.text;
+      const on = skolDesignSelQ === i;
+      return {
+        n: i + 1, text: q.text || '(bez textu)', typeLabel: meta.label,
+        rowStyle: 'display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;margin-bottom:6px;border:1.5px solid ' + (on ? '#1572e8' : '#ececf3') + ';background:' + (on ? '#e8f0fd' : '#fff'),
+        onSelect: () => this.skolDesignSelectQ(i),
+        onUp: i === 0 ? null : () => this.skolDesignMoveQ(i, -1),
+        onDown: i === (skol_designQArr.length - 1) ? null : () => this.skolDesignMoveQ(i, 1),
+        upStyle: 'font-size:12px;cursor:pointer;color:' + (i === 0 ? '#ddd' : '#9a95ad'),
+        downStyle: 'font-size:12px;cursor:pointer;color:' + (i === (skol_designQArr.length - 1) ? '#ddd' : '#9a95ad'),
+        onDup: () => this.skolDesignDupQ(i),
+        onDelete: () => this.skolDesignDeleteQ(i)
+      };
+    });
+    const skol_designHasQuestions = skol_designQArr.length > 0;
+    const skolDesignSelQObj = (skolDesignSelQ >= 0 && skol_designQArr[skolDesignSelQ]) ? skol_designQArr[skolDesignSelQ] : null;
+    const skol_designHasSel = !!skolDesignSelQObj;
+    const skol_designSelText = skolDesignSelQObj ? skolDesignSelQObj.text : '';
+    const skol_designSelRequired = !!(skolDesignSelQObj && skolDesignSelQObj.required);
+    const skol_designRequiredIcon = skol_designSelRequired ? 'square-check' : 'square';
+    const skol_designRequiredAccent = skol_designSelRequired ? '#1572e8' : '#b0aac8';
+    const skol_designTypeOptions = this.SKOL_TYPE_ORDER.map(ty => {
+      const meta = this.SKOL_TYPE_META[ty];
+      const on = !!(skolDesignSelQObj && skolDesignSelQObj.type === ty);
+      return { key: ty, label: meta.label, on, radioIcon: on ? 'circle-dot' : 'circle', accent: on ? '#1572e8' : '#b0aac8', onClick: () => this.setSkolDesignQType(ty) };
+    });
+    const skol_designHasOptions = !!(skolDesignSelQObj && (this.SKOL_TYPE_META[skolDesignSelQObj.type] || {}).hasOptions);
+    const skol_designOptions = ((skolDesignSelQObj && skolDesignSelQObj.options) || []).map((o, oi) => ({
+      value: o, onChange: (e) => this.skolDesignSetOption(oi, e.target.value), onDelete: () => this.skolDesignDeleteOption(oi)
+    }));
+    // Vyzkoušet — náhled formuláře tak, jak ho uvidí zaměstnanec (§3.4).
+    const skol_designPreview = skol_designQArr.map((q, i) => {
+      const meta = this.SKOL_TYPE_META[q.type] || this.SKOL_TYPE_META.text;
+      return { n: i + 1, text: q.text || '(bez textu)', typeLabel: meta.label, isChoice: q.type === 'choice' || q.type === 'checkbox', options: q.options || [] };
+    });
+    // JSON — živě generované schéma ve stylu SurveyJS (§3.4).
+    const skol_designJson = JSON.stringify({
+      title: skol_designTraining.title || 'Formulář',
+      showProgressBar: 'top',
+      completedHtml: '<h3>Děkujeme za vyplnění.</h3>',
+      pages: [{ name: 'page1', elements: skol_designQArr.map((q, i) => {
+        const meta = this.SKOL_TYPE_META[q.type] || this.SKOL_TYPE_META.text;
+        const el = { type: meta.svType, name: 'question' + (i + 1), title: q.text || '', isRequired: !!q.required };
+        if (meta.hasOptions) el.choices = q.options || [];
+        return el;
+      }) }]
+    }, null, 2);
+
+    // ══ ŠKOLENÍ — Nastavení školení (Kategorie / Zařazení, §3.5) ══
+    const skol_catSwatches = this.SKOL_COLOR_SWATCHES.map((sw, i) => ({
+      ...sw, on: skolNewCatColorIdx === i,
+      style: 'width:26px;height:26px;border-radius:50%;cursor:pointer;background:' + sw.bg + ';border:2px solid ' + (skolNewCatColorIdx === i ? sw.color : 'transparent'),
+      onClick: () => this.pickSkolNewCatColor(i)
+    }));
+    const skol_tagSwatches = this.SKOL_COLOR_SWATCHES.map((sw, i) => ({
+      ...sw, on: skolNewTagColorIdx === i,
+      style: 'width:26px;height:26px;border-radius:50%;cursor:pointer;background:' + sw.bg + ';border:2px solid ' + (skolNewTagColorIdx === i ? sw.color : 'transparent'),
+      onClick: () => this.pickSkolNewTagColor(i)
+    }));
+    const skol_settingsCatRows = this.skolAllCategories().map(c => {
+      const usage = this.skolCatUsage(c.key);
+      const locked = usage > 0;
+      return {
+        key: c.key, title: c.title,
+        swatchStyle: 'width:18px;height:18px;border-radius:50%;background:' + c.bg + ';border:1.5px solid ' + c.iconColor,
+        usageText: usage === 0 ? 'nepoužito' : (usage === 1 ? 'použito v 1 školení' : 'použito ve ' + usage + ' školeních'),
+        locked, onDelete: locked ? null : () => this.deleteSkolCategory(c.key)
+      };
+    });
+    const skol_settingsTagRows = this.skolAllTags().map(tg => {
+      const usage = this.skolTagUsage(tg.key);
+      const locked = usage > 0;
+      return {
+        key: tg.key, title: tg.label,
+        swatchStyle: 'width:18px;height:18px;border-radius:50%;background:' + tg.bg + ';border:1.5px solid ' + tg.color,
+        usageText: usage === 0 ? 'nepoužito' : (usage === 1 ? 'použito v 1 školení' : 'použito ve ' + usage + ' školeních'),
+        locked, onDelete: locked ? null : () => this.deleteSkolTag(tg.key)
+      };
+    });
 
     const cal = this.calVals(activeTab, (calPeriods || {})[activeTab] || 'rok');
 
@@ -5882,7 +6913,7 @@ class Component extends DCLogic {
       skolPct: skolPct + ' %', skolPendingNum: skolPending.length,
       skolCountText: skolDoneList.length + ' z ' + skolMine.length + ' splněno',
       skolBarStyle: 'height:100%;background:#1572e8;width:' + skolPct + '%;border-radius:3px;transition:width .3s',
-      skolSubtitle: skolAllDone ? 'Všechna přiřazená školení máte splněná.' : 'Začněte těmi nejnaléhavějšími nahoře.',
+      skolSubtitle: skolAllDone ? 'Všechna přiřazená školení máte splněná.' : 'Začněte tím nejnaléhavějším nahoře.',
       skolPendingRows, skolDoneRows,
       skolConfirmedOpen, skolConfirmedNum: skolDoneList.length,
       skolConfirmedChevron: skolConfirmedOpen ? 'fa-solid fa-chevron-up' : 'fa-solid fa-chevron-down',
@@ -5893,45 +6924,94 @@ class Component extends DCLogic {
       selectedSkolIcon: selectedSkolCatData ? selectedSkolCatData.icon : '',
       selectedSkolIconColor: selectedSkolCatData ? selectedSkolCatData.iconColor : '',
       skolDetailRows, skolDetailPendingCount, skolDetailHasPending: skolDetailPendingCount > 0,
-      // ── běžící vyplňování školení (modal) ──
+      // ── běžící vyplňování školení (modal, §3.6) ──
       skolRunOpen: !!skolRunId, skolRunTitle: skolRunTraining ? skolRunTraining.title : '',
       skolRunQNum: skolRunQ + 1, skolRunTotal, skolRunProgress: skolRunProgress + ' %',
       skolRunProgressStyle: 'height:100%;background:#1572e8;width:' + skolRunProgress + '%;border-radius:3px;transition:width .3s',
-      skolRunQText: skolRunCurQ ? skolRunCurQ.q : '',
+      skolRunQText: skolRunCurQ ? skolRunCurQ.text : '',
       skolRunIsChoice, skolRunIsText, skolRunOptions, skolRunAnswerText,
       skolRunIsFirst: skolRunQ === 0, skolRunIsLast,
-      skolPrevQ: () => this.skolPrevQ(), skolNextQ: () => this.skolNextQ(),
+      skolPrevQ: () => this.skolPrevQ(),
+      // „Další otázka" / „Dokončit školení" — jeden a týž prvek, jen opticky
+      // ztlumený (ne skutečně zablokovaný) dokud není zodpovězeno (§3.6, §5.10).
+      skolRunNextLabel, skolRunNextAction, skolRunNextStyle,
+      // „Uložit a zavřít" ukládá ROZPRACOVANOU pozici — samostatné tlačítko,
+      // vždy dostupné, nezávisle na tom, jestli je aktuální otázka zodpovězená.
       skolSaveAndClose: () => this.skolSaveAndClose(), backToSkolList: () => this.backToSkolList(),
-      skolOnAnswerText: (e) => this.skolPickAnswer(skolRunQ, e.target.value),
-      // Krátká „hotovo" karta po dokončení (skolDoneId zůstane nastavené,
-      // dokud uživatel neklikne pryč / nezahájí jiné školení — obdoba
-      // toastu, ale bez časovače, ať to jde v prototypu klidně prohlédnout).
+      skolOnAnswerText: (e) => this.skolPickAnswer(e.target.value),
+      // Obrazovka „Školení dokončeno" (skolDoneId zůstane nastavené, dokud
+      // uživatel neklikne pryč / nezahájí jiné školení — bez časovače, ať jde
+      // v prototypu klidně prohlédnout) — dvě tlačítka: Zpět na přehled a
+      // Zobrazit odpovědi (bez funkce v prototypu, §3.6).
       skolJustDoneOpen: !!skolDoneId && !skolRunId,
       skolJustDoneTitle: skolDoneTraining ? skolDoneTraining.title : '',
       skolCloseJustDone: () => this.setState({ skolDoneId: null }),
-      // ── ŠKOLENÍ — Katalog školení (administrace) ──
-      showSkolAdmin, skol_listFilters, skol_adminRows,
-      skolOpenAdd: () => this.openSkolForm('add'),
+
+      // ── ŠKOLENÍ — Správa školení (administrace, §3.1) ──
+      showSkolAdmin, skol_listFilters, skol_adminRows, skol_listHint,
+      skolOpenAdd: () => this.openSkolForm(),
       skolSettingsOpen, toggleSkolSettings: () => this.toggleSkolSettings(),
-      skol_categories: this.SKOL_CATEGORIES, skol_tags: this.SKOL_TAGS,
-      // modal Přidat/Editovat školení
-      skolFormOpen, skolFormMode,
-      skolFormTitle: skolFormMode === 'edit' ? 'Upravit školení' : 'Přidat školení',
-      skolForm: skolForm2, skol_formTagCards, skol_formCatOptions, skol_formPrijemciCards,
+      skol_categories: this.skolAllCategories(), skol_tags: this.skolAllTags(),
+
+      // ── modal „Přidat školení" (§3.2) — sdílené se „Editovat detaily" ──
+      skolFormOpen, skolFormTitle: 'Přidat školení',
+      skolForm: skolForm2, skol_formTagCards, skol_formTagsSummary, skol_formCatOptions,
+      skol_formOpakCards, skol_formOpakIsOpakovane, skol_formJednotkaOptions, skol_formOpakSentence,
+      skol_formPrijemciCards, skol_formPrijemciKonkretni, skol_formPrijemciPozice, skol_formPozOptions,
+      skol_formTerminOptions, skol_formShowDatum, skol_formShowDny, skol_formShowBezWarn, skol_formBezWarnText,
       skolFormSetTitle: (e) => this.setSkolFormField('title', e.target.value),
-      skolFormSetDeadline: (e) => this.setSkolFormField('deadlineDny', parseInt(e.target.value) || 0),
+      skolFormSetPopis: (e) => this.setSkolFormField('popis', e.target.value),
+      skolFormSetPerioda: (e) => this.setSkolFormOpakovaniField('perioda', parseInt(e.target.value) || 1),
+      skolFormSetPocetDni: (e) => this.setSkolFormField('pocetDni', parseInt(e.target.value) || 0),
+      skolFormSetKonkretniDatum: (e) => this.setSkolFormField('konkretniDatum', e.target.value),
+      skolFormSetPrijemciText: (e) => this.setSkolFormField('prijemciText', e.target.value),
+      skolFormSetPrijemciSkupiny: (e) => this.setSkolFormField('prijemciSkupiny', e.target.value),
       skolCloseForm: () => this.closeSkolForm(),
       skolSaveForm: () => this.saveSkolForm(),
-      // item-drawer „Katalog školení"
+
+      // ── item-drawer „Správa školení" (§3.3) ──
       drawerSkolOpen: drawerOpen && drawerModule === 'skoleni',
       closeSkolDrawer: () => this.closeTopDrawer(),
       skol_railName: skolSel.title, skol_itemTabs, skol_itemActions,
       skolSelLifecycleLabel: skolSelLc.label,
       skolSelLifecycleStyle: 'border-radius:4px;padding:3px 10px;font-weight:800;font-size:11px;background:' + skolSelLc.color + ';color:#fff',
-      skol_empFilters, skol_empRows, skol_detailRows,
+      skol_shareNoteVisible: !!skolShareNote, skol_shareNoteText: skolShareNote,
+      skol_summaryTiles,
+      skol_empFilters, skol_empShowInactiveNote, skol_empRows,
+      skol_detailRows, skol_showDetailyRead, skol_showDetailyEdit,
+      skolOpenDetailEdit: () => this.openSkolDetailEdit(),
+      skolSaveDetailEdit: () => this.saveSkolDetailEdit(),
+      skolCancelDetailEdit: () => this.closeSkolDetailEdit(),
+      skol_formStatusLabel, skol_formStatusStyle,
+      skol_formularQuestions: skol_formularSrc.map((q, i) => {
+        const meta = this.SKOL_TYPE_META[q.type] || this.SKOL_TYPE_META.text;
+        return { n: i + 1, text: q.text || '', typeLabel: meta.label, options: q.options || [] };
+      }),
+      skolOpenDesignFromFormular: () => this.openSkolDesign(),
       skol_showZamestnanci: skolItemTab === 'zamestnanci', skol_showFormular: skolItemTab === 'formular',
       skol_showDetaily: skolItemTab === 'detaily', skol_showSouvis: skolItemTab === 'souvis', skol_showPublikovano: skolItemTab === 'publikovano',
-      skol_formularQuestions: (skolSel.questions || []).map((q, i) => ({ n: i + 1, text: q.q, typeLabel: q.type === 'choice' ? 'Výběr z možností' : 'Volný text', options: q.options || [] })),
+      skol_publishedVersions, skol_publishedEmpty,
+
+      // ── Návrhář — editor formuláře (celoobrazovková vrstva, §3.4) ──
+      skolDesignOpen, skolDesignTitle: skol_designTraining.title,
+      skol_designTabs,
+      skol_design_showNavrhar: skolDesignTab === 'navrhar', skol_design_showVyzkouset: skolDesignTab === 'vyzkouset',
+      skol_design_showVzhled: skolDesignTab === 'vzhled', skol_design_showLogika: skolDesignTab === 'logika', skol_design_showJson: skolDesignTab === 'json',
+      skol_designPalette, skol_designQuestions, skol_designHasQuestions,
+      skol_designHasSel, skol_designSelText, skol_designSelRequired, skol_designRequiredIcon, skol_designRequiredAccent, skol_designTypeOptions, skol_designHasOptions, skol_designOptions,
+      skolDesignSetText: (e) => this.setSkolDesignQField('text', e.target.value),
+      skolDesignToggleRequired: () => this.setSkolDesignQField('required', !skol_designSelRequired),
+      skolDesignAddOptionBtn: () => this.skolDesignAddOption(),
+      skol_designPreview, skol_designJson,
+      skolCancelDesign: () => this.cancelSkolDesign(), skolSaveDesign: () => this.saveSkolDesign(),
+
+      // ── Nastavení školení — Kategorie / Zařazení (§3.5) ──
+      skol_settingsCatRows, skol_settingsTagRows, skol_catSwatches, skol_tagSwatches,
+      skolNewCatName, skolNewTagName,
+      skolFormSetNewCatName: (e) => this.setSkolNewCatName(e.target.value),
+      skolFormSetNewTagName: (e) => this.setSkolNewTagName(e.target.value),
+      skolAddCategory: () => this.addSkolCategory(), skolAddTag: () => this.addSkolTag(),
+
       konverzaceSrc: this.konverzaceSrc
     };
   }
