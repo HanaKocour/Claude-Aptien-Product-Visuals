@@ -1,0 +1,313 @@
+<meta charset="utf-8">
+<!-- Ikony tohoto bloku jsou Font Awesome (Free). Řádky níže načtou FA a Nunito,
+     aby se blok vykreslil i při samostatném otevření souboru. V master
+     prototypu se obojí načítá z jeho assetů, takže tam jsou nadbytečné. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap">
+<!--
+  APTIEN — ADMINISTRACE / ROLE → DETAIL ROLE (MANAŽERSKÁ) · STATICKÝ BLOK
+  ====================================================================
+  Vlož CELÝ blok. NEREKONSTRUUJ ho. Otevírá se z ikonové lišty modulů
+  (viz admin-rail-menu.html), položka "Role". Skladba:
+    1) levý sub-sloupec (260px) — hledání + "Nová role" + seznam rolí,
+       každá s barevným štítkem (fialová #6200EA = Manažer, modrá
+       #1572e8 = Aktivní zaměstnanec); vybraná role = modré pozadí,
+    2) obsah vpravo — přepínač jazyka (Čeština/Angličtina), název +
+       popis role, karta "Aplikace pro zaměstnance" (přepínače viditelnosti
+       jednotlivých částí zaměstnanecké appky — některé "Nelze vypnout"),
+       a jen pro role typu Manažer navíc karta "Aplikace pro manažery"
+       + skupiny oprávnění (Management organizace, Personalistika) —
+       každý řádek: toggle zapnuto/vypnuto, úroveň oprávnění (select),
+       odkazy na podrobnosti (skupiny/kategorie/přílohy — podbarveno modře
+       když existuje obsah, šedě když ne) a doplňkové checkboxy vpravo.
+       Tento snímek ukazuje jeden rozkliknutý odkaz ("Oprávnění ke
+       skupinám" u Katalogu procesů) s vyplněným obsahem.
+  Pro roli typu "Aktivní zaměstnanec" karta "Aplikace pro manažery" a obě
+  skupiny oprávnění úplně mizí — zůstává jen karta "Aplikace pro
+  zaměstnance". Měň jen název/popis role a stavy přepínačů — barvy,
+  rozměry a skladbu řádků nech 1:1.
+-->
+<style>
+  body{margin:0;background:#f5f6f7}
+  .adm-shell{display:flex;font-family:'Nunito',sans-serif;min-height:100vh}
+  .adm-subcol{width:260px;flex-shrink:0;background:#fbfaFD;border-right:1px solid #ececec;display:flex;flex-direction:column}
+  .adm-sub-head{padding:18px 18px 10px;font-size:20px;font-weight:800;color:#2b2540}
+  .adm-sub-search{margin:0 16px 10px;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #CCCCCC;border-radius:8px;padding:7px 10px}
+  .adm-sub-search input{border:none;outline:none;font-family:inherit;font-size:12.5px;flex:1;background:transparent}
+  .adm-sub-new{margin:0 16px 14px;display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:#1572e8;cursor:pointer}
+  .adm-sub-group{padding:0 16px 6px}
+  .adm-sub-nav-item{display:flex;align-items:center;gap:11px;padding:9px 10px;margin:0 8px 2px;border-radius:8px;font-size:13px;font-weight:600;color:#4a4560;cursor:pointer}
+  .adm-sub-nav-item .adm-role-badge{margin-left:auto}
+  .adm-sub-nav-item:hover{background:#f0eef8}
+  .adm-sub-nav-item.on{background:#1572e8;color:#fff}
+  .adm-role-badge{font-size:11px;font-weight:400;padding:3px 8px;border-radius:4px;color:#fff;white-space:nowrap;flex-shrink:0;font-family:'Nunito',sans-serif;box-shadow:0 0 0 1.5px rgba(255,255,255,.55)}
+  .adm-role-badge.mgr{background:#6200EA}
+  .adm-role-badge.act{background:#1572e8}
+
+  .adm-content{flex:1;min-width:0;background:#f5f6f7}
+  .adm-view{padding:26px 32px 60px;max-width:1180px}
+  .adm-crumb{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#878787;margin-bottom:6px}
+  .adm-page-title{font-size:22px;font-weight:800;color:#2b2540;margin:0 0 20px}
+  .adm-card{background:#fff;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,.06);padding:26px 30px;margin-bottom:20px}
+  .adm-card h3{font-size:17px;font-weight:800;margin:0 0 22px;color:#2b2540}
+  .adm-field{margin-bottom:20px;max-width:520px}
+  .adm-field label{display:block;font-size:12.5px;font-weight:700;color:#4a4560;margin-bottom:7px}
+  .adm-field input[type=text]{width:100%;font-family:inherit;font-size:13.5px;padding:10px 13px;border:1px solid #CCCCCC;border-radius:7px;color:#2b2540;background:#fff;box-sizing:border-box}
+  .adm-field textarea{width:100%;font-family:inherit;font-size:13.5px;padding:10px 13px;border:1px solid #CCCCCC;border-radius:7px;color:#2b2540;background:#fff;box-sizing:border-box;resize:vertical}
+
+  .adm-applang-tabs{display:flex;gap:4px;border-bottom:1px solid #eee;margin-bottom:22px}
+  .adm-applang-tabs div{padding:9px 4px;font-size:13px;font-weight:700;color:#878787;cursor:pointer;border-bottom:2px solid transparent}
+  .adm-applang-tabs div.on{color:#1572e8;border-color:#1572e8}
+
+  .adm-tglwrap{display:flex;align-items:center;gap:9px}
+  .adm-tgl{width:50px;height:22px;border-radius:22px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
+  .adm-tgl.on{background:#6bbe7a}
+  .adm-tgl.off{background:#b0bbbe}
+  .adm-knob{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+  .adm-tgl.on .adm-knob{left:31px}
+  .adm-tgl.off .adm-knob{left:3px}
+  .adm-tgl.adm-locked{cursor:not-allowed;opacity:.85}
+  .adm-tgl-word{font-size:13px;font-weight:600;color:#1a1a1a;font-family:'Nunito',sans-serif;width:26px;flex-shrink:0}
+
+  .adm-app-toggle-row{display:flex;align-items:flex-start;gap:14px;padding:13px 0;border-bottom:1px solid #f4f3f8}
+  .adm-app-toggle-row .adm-info{flex:1}
+  .adm-app-toggle-row .adm-name{font-size:13.5px;font-weight:700;color:#2b2540}
+  .adm-app-toggle-row .adm-sub{font-size:11.5px;color:#1572e8;margin-top:4px;cursor:pointer;display:flex;align-items:center;gap:6px}
+  .adm-app-toggle-row .adm-sub-static{color:#878787;cursor:default}
+
+  .adm-quicklinks-preview{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+  .adm-qlp-item{display:flex;align-items:center;gap:11px}
+  .adm-qlp-icon{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0}
+  .adm-qlp-name{font-size:12.5px;font-weight:700;color:#2b2540}
+  .adm-qlp-url{font-size:11px;color:#878787}
+
+  .adm-perm-group{margin-bottom:26px}
+  .adm-perm-group h4{font-size:10px;font-weight:600;color:#878787;text-transform:uppercase;letter-spacing:.07em;margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid #eee}
+  .adm-perm-row{display:grid;grid-template-columns:210px 1fr 210px;gap:16px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #f4f3f8}
+  .adm-perm-row .adm-left{display:flex;align-items:center;gap:10px;padding-top:4px}
+  .adm-perm-row .adm-left .adm-name{font-size:13.5px;font-weight:700;color:#2b2540}
+  .adm-perm-row .adm-mid{display:flex;align-items:flex-start;flex-wrap:wrap;gap:12px}
+  .adm-perm-row select{font-family:inherit;font-size:12px;padding:6px 8px;border:1px solid #CCCCCC;border-radius:6px;color:#4a4560;width:118px;flex-shrink:0}
+  .adm-perm-links{display:flex;flex-wrap:wrap;gap:12px;width:100%}
+  .adm-perm-links a{display:inline-block;font-size:11.5px;text-decoration:underline;cursor:pointer}
+  .adm-perm-links a.adm-has-content{color:#1572e8}
+  .adm-perm-links a.adm-no-content{color:#878787}
+  .adm-perm-row .adm-checks{font-size:11px;color:#5a5570;padding-top:4px}
+  .adm-perm-row .adm-checks label{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-bottom:5px}
+  .adm-perm-row .adm-checks label.adm-check-disabled{color:#B1B2B3;cursor:default}
+  .adm-perm-info{margin-top:8px;background:#2b2540;color:#fff;font-size:12px;line-height:1.5;border-radius:9px;padding:11px 14px;max-width:280px}
+  .adm-perm-info-title{font-weight:800;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#b6aee0;margin-bottom:6px}
+  .adm-perm-info ul{margin:0;padding-left:16px}
+
+  .adm-placeholder-note{background:#fff8e6;border:1px dashed #f0c355;border-radius:8px;padding:12px 16px;font-size:12.5px;color:#8a6a15;margin-bottom:20px;max-width:640px}
+</style>
+<div class="adm-shell">
+
+  <nav class="adm-subcol">
+    <div class="adm-sub-head" style="padding-bottom:12px">Role</div>
+    <div class="adm-sub-search"><i class="fa-solid fa-magnifying-glass" style="color:#b0aac8;font-size:11px"></i><input placeholder="Vyhledání role …"></div>
+    <div class="adm-sub-new"><i class="fa-solid fa-plus"></i>Nová role</div>
+    <div class="adm-sub-group">
+      <div class="adm-sub-nav-item on"><span>Administrátor</span><span class="adm-role-badge mgr">Manažer</span></div>
+      <div class="adm-sub-nav-item"><span>intranet nově</span><span class="adm-role-badge act">Aktivní zaměstnanec</span></div>
+      <div class="adm-sub-nav-item"><span>Manažer nadřízený Sladká</span><span class="adm-role-badge mgr">Manažer</span></div>
+      <div class="adm-sub-nav-item"><span>nástup</span><span class="adm-role-badge act">Aktivní zaměstnanec</span></div>
+      <div class="adm-sub-nav-item"><span>New role test</span><span class="adm-role-badge mgr">Manažer</span></div>
+      <div class="adm-sub-nav-item"><span>Personalista</span><span class="adm-role-badge mgr">Manažer</span></div>
+      <div class="adm-sub-nav-item"><span>Projektový manažer</span><span class="adm-role-badge mgr">Manažer</span></div>
+      <div class="adm-sub-nav-item"><span>Ředitel firmy</span><span class="adm-role-badge mgr">Manažer</span></div>
+      <div class="adm-sub-nav-item"><span>Vedoucí</span><span class="adm-role-badge mgr">Manažer</span></div>
+      <div class="adm-sub-nav-item"><span>Zaměstnanec</span><span class="adm-role-badge act">Aktivní zaměstnanec</span></div>
+    </div>
+  </nav>
+
+  <div class="adm-content">
+    <div class="adm-view">
+      <div class="adm-crumb">Administrace</div>
+      <div class="adm-page-title">Role: Administrátor</div>
+      <div class="adm-applang-tabs">
+        <div class="on">Čeština</div>
+        <div>Angličtina</div>
+      </div>
+      <div class="adm-card">
+        <div class="adm-field"><label>Název role</label><input type="text" value="Administrátor"></div>
+        <div class="adm-field" style="max-width:100%"><label>Popis role</label><textarea rows="3" placeholder="Popis role"></textarea></div>
+      </div>
+
+      <div class="adm-card">
+        <h3>Aplikace pro zaměstnance</h3>
+        <div class="adm-app-toggle-row">
+          <div class="adm-info">
+            <div class="adm-name">Moje upozornění</div>
+            <div class="adm-sub adm-sub-static"><i class="fa-solid fa-lock" style="font-size:10px"></i>Zobrazeno vždy</div>
+          </div>
+          <div class="adm-tglwrap"><div class="adm-tgl on adm-locked" title="Nelze vypnout"><div class="adm-knob"></div></div><span class="adm-tgl-word">Ano</span></div>
+        </div>
+        <div class="adm-app-toggle-row"><div class="adm-info"><div class="adm-name">Nástěnka</div></div><div class="adm-tglwrap"><div class="adm-tgl on"><div class="adm-knob"></div></div><span class="adm-tgl-word">Ano</span></div></div>
+        <div class="adm-app-toggle-row"><div class="adm-info"><div class="adm-name">Moje směrnice</div></div><div class="adm-tglwrap"><div class="adm-tgl on"><div class="adm-knob"></div></div><span class="adm-tgl-word">Ano</span></div></div>
+        <div class="adm-app-toggle-row">
+          <div class="adm-info">
+            <div class="adm-name">O mně</div>
+            <div class="adm-sub"><i class="fa-regular fa-eye" style="font-size:10px"></i>Nastavení údajů, které zaměstnanec vidí a může upravit</div>
+          </div>
+          <div class="adm-tglwrap"><div class="adm-tgl on"><div class="adm-knob"></div></div><span class="adm-tgl-word">Ano</span></div>
+        </div>
+        <div class="adm-app-toggle-row">
+          <div class="adm-info">
+            <div class="adm-name">Kolegové</div>
+            <div class="adm-sub adm-sub-static"><i class="fa-regular fa-eye" style="font-size:10px"></i>Detailní informace o spolupracovnících</div>
+          </div>
+          <div class="adm-tglwrap"><div class="adm-tgl on"><div class="adm-knob"></div></div><span class="adm-tgl-word">Ano</span></div>
+        </div>
+        <div class="adm-app-toggle-row"><div class="adm-info"><div class="adm-name">Moje žádanky</div></div><div class="adm-tglwrap"><div class="adm-tgl off"><div class="adm-knob"></div></div><span class="adm-tgl-word">Ne</span></div></div>
+        <div class="adm-app-toggle-row"><div class="adm-info"><div class="adm-name">Moje školení</div></div><div class="adm-tglwrap"><div class="adm-tgl on"><div class="adm-knob"></div></div><span class="adm-tgl-word">Ano</span></div></div>
+        <div class="adm-app-toggle-row"><div class="adm-info"><div class="adm-name">Směrnice a dokumenty</div></div><div class="adm-tglwrap"><div class="adm-tgl on"><div class="adm-knob"></div></div><span class="adm-tgl-word">Ano</span></div></div>
+        <div class="adm-app-toggle-row"><div class="adm-info"><div class="adm-name">Termíny akce a školení</div></div><div class="adm-tglwrap"><div class="adm-tgl on"><div class="adm-knob"></div></div><span class="adm-tgl-word">Ano</span></div></div>
+        <div class="adm-app-toggle-row">
+          <div class="adm-info">
+            <div class="adm-name">Odkazy</div>
+            <div class="adm-sub adm-sub-static"><i class="fa-solid fa-lock" style="font-size:10px"></i>Odkazy se zobrazují pouze pokud jsou přiřazeny. Pokud nevidíte níže žádný seznam, zaměstnanec žádné odkazy nevidí.</div>
+            <div class="adm-quicklinks-preview">
+              <div class="adm-qlp-item">
+                <span class="adm-qlp-icon" style="background:#FF6D00"><i class="fa-solid fa-utensils"></i></span>
+                <div><div class="adm-qlp-name">Jídelní lístek</div><div class="adm-qlp-url">jidelnilistek.nasefirma.cz</div></div>
+              </div>
+              <div class="adm-qlp-item">
+                <span class="adm-qlp-icon" style="background:#00BFA5"><i class="fa-solid fa-images"></i></span>
+                <div><div class="adm-qlp-name">Firemní album</div><div class="adm-qlp-url">firemnialbum.nasefirma.cz</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="adm-tglwrap"><div class="adm-tgl on adm-locked" title="Nelze vypnout"><div class="adm-knob"></div></div><span class="adm-tgl-word">Ano</span></div>
+        </div>
+      </div>
+
+      <div class="adm-card">
+        <h3>Aplikace pro manažery</h3>
+        <div class="adm-app-toggle-row"><div class="adm-info"><div class="adm-name">Nastavení směrnic</div></div><div class="adm-tglwrap"><div class="adm-tgl on"><div class="adm-knob"></div></div><span class="adm-tgl-word">Ano</span></div></div>
+        <div class="adm-app-toggle-row"><div class="adm-info"><div class="adm-name">Inventury</div></div><div class="adm-tglwrap"><div class="adm-tgl on"><div class="adm-knob"></div></div><span class="adm-tgl-word">Ano</span></div></div>
+        <div class="adm-app-toggle-row"><div class="adm-info"><div class="adm-name">Správa a editace školení</div></div><div class="adm-tglwrap"><div class="adm-tgl on"><div class="adm-knob"></div></div><span class="adm-tgl-word">Ano</span></div></div>
+        <div class="adm-app-toggle-row"><div class="adm-info"><div class="adm-name">Nastavení organizace</div></div><div class="adm-tglwrap"><div class="adm-tgl on"><div class="adm-knob"></div></div><span class="adm-tgl-word">Ano</span></div></div>
+      </div>
+
+      <div class="adm-card">
+        <div class="adm-perm-group">
+          <h4>Management organizace</h4>
+          <div class="adm-perm-row">
+            <div class="adm-left"><div class="adm-tglwrap"><div class="adm-tgl on"><div class="adm-knob"></div></div></div><span class="adm-name">Katalog procesů</span></div>
+            <div class="adm-mid">
+              <select><option value="prohlizet">prohlížet</option><option value="upravovat">upravovat</option><option value="opravnovat" selected>opravňovat</option></select>
+              <span class="adm-perm-links">
+                <a class="adm-has-content">Oprávnění ke skupinám</a>
+                <a class="adm-has-content">Oprávnění ke kategoriím</a>
+                <a class="adm-has-content">Oprávnění na přílohy</a>
+              </span>
+              <div class="adm-perm-info">
+                <div class="adm-perm-info-title">Oprávnění ke skupinám</div>
+                <ul><li>Veřejné</li><li>Interní</li><li>HR</li></ul>
+              </div>
+            </div>
+            <div class="adm-checks">
+              <label>Povolit export dat<input type="checkbox" checked></label>
+              <label>Povolit plány aktivit<input type="checkbox"></label>
+              <label>Zobrazit žádanky<input type="checkbox"></label>
+              <label class="adm-check-disabled">Omezit přístup ke všem položkám:<input type="checkbox" disabled></label>
+            </div>
+          </div>
+          <div class="adm-perm-row">
+            <div class="adm-left"><div class="adm-tglwrap"><div class="adm-tgl on"><div class="adm-knob"></div></div></div><span class="adm-name">Směrnice</span></div>
+            <div class="adm-mid">
+              <select><option value="prohlizet">prohlížet</option><option value="upravovat">upravovat</option><option value="opravnovat" selected>opravňovat</option></select>
+              <span class="adm-perm-links">
+                <a class="adm-no-content">Oprávnění ke skupinám</a>
+                <a class="adm-has-content">Oprávnění ke kategoriím</a>
+                <a class="adm-has-content">Oprávnění na přílohy</a>
+              </span>
+            </div>
+            <div class="adm-checks">
+              <label>Povolit export dat<input type="checkbox"></label>
+              <label>Povolit plány aktivit<input type="checkbox"></label>
+              <label>Zobrazit žádanky<input type="checkbox"></label>
+              <label class="adm-check-disabled">Omezit přístup ke všem položkám:<input type="checkbox" disabled></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="adm-perm-group">
+          <h4>Personalistika</h4>
+          <div class="adm-perm-row">
+            <div class="adm-left"><div class="adm-tglwrap"><div class="adm-tgl on"><div class="adm-knob"></div></div></div><span class="adm-name">Zaměstnanci</span></div>
+            <div class="adm-mid">
+              <select><option value="prohlizet">prohlížet</option><option value="upravovat">upravovat</option><option value="opravnovat" selected>opravňovat</option></select>
+              <span class="adm-perm-links">
+                <a class="adm-has-content">Oprávnění ke skupinám</a>
+                <a class="adm-has-content">Oprávnění ke kategoriím</a>
+                <a class="adm-has-content">Oprávnění na přílohy</a>
+              </span>
+            </div>
+            <div class="adm-checks">
+              <label>Povolit export dat<input type="checkbox" checked></label>
+              <label>Povolit plány aktivit<input type="checkbox" checked></label>
+              <label>Zobrazit žádanky<input type="checkbox" checked></label>
+              <label class="adm-check-disabled">Omezit přístup ke všem položkám:<input type="checkbox" disabled></label>
+            </div>
+          </div>
+          <div class="adm-perm-row">
+            <div class="adm-left"><div class="adm-tglwrap"><div class="adm-tgl on"><div class="adm-knob"></div></div></div><span class="adm-name">Uchazeči</span></div>
+            <div class="adm-mid">
+              <select><option value="prohlizet">prohlížet</option><option value="upravovat">upravovat</option><option value="opravnovat" selected>opravňovat</option></select>
+              <span class="adm-perm-links">
+                <a class="adm-has-content">Oprávnění ke skupinám</a>
+                <a class="adm-has-content">Oprávnění ke kategoriím</a>
+                <a class="adm-no-content">Oprávnění na přílohy</a>
+              </span>
+            </div>
+            <div class="adm-checks">
+              <label>Povolit export dat<input type="checkbox" checked></label>
+              <label>Povolit plány aktivit<input type="checkbox"></label>
+              <label>Zobrazit žádanky<input type="checkbox"></label>
+              <label class="adm-check-disabled">Omezit přístup ke všem položkám:<input type="checkbox" disabled></label>
+            </div>
+          </div>
+          <div class="adm-perm-row">
+            <div class="adm-left"><div class="adm-tglwrap"><div class="adm-tgl on"><div class="adm-knob"></div></div></div><span class="adm-name">Volná pracovní místa</span></div>
+            <div class="adm-mid">
+              <select><option value="prohlizet">prohlížet</option><option value="upravovat">upravovat</option><option value="opravnovat" selected>opravňovat</option></select>
+              <span class="adm-perm-links">
+                <a class="adm-no-content">Oprávnění ke skupinám</a>
+                <a class="adm-has-content">Oprávnění ke kategoriím</a>
+                <a class="adm-no-content">Oprávnění na přílohy</a>
+              </span>
+            </div>
+            <div class="adm-checks">
+              <label>Povolit export dat<input type="checkbox"></label>
+              <label>Povolit plány aktivit<input type="checkbox"></label>
+              <label>Zobrazit žádanky<input type="checkbox"></label>
+              <label class="adm-check-disabled">Omezit přístup ke všem položkám:<input type="checkbox" disabled></label>
+            </div>
+          </div>
+          <div class="adm-perm-row">
+            <div class="adm-left"><div class="adm-tglwrap"><div class="adm-tgl on"><div class="adm-knob"></div></div></div><span class="adm-name">Akce a termíny školení <small style="font-weight:400;color:#878787;font-size:11px">(Nahrazuje katalog školení)</small></span></div>
+            <div class="adm-mid">
+              <select><option value="prohlizet">prohlížet</option><option value="upravovat">upravovat</option><option value="opravnovat" selected>opravňovat</option></select>
+              <span class="adm-perm-links">
+                <a class="adm-no-content">Oprávnění ke skupinám</a>
+                <a class="adm-has-content">Oprávnění ke kategoriím</a>
+                <a class="adm-no-content">Oprávnění na přílohy</a>
+              </span>
+            </div>
+            <div class="adm-checks">
+              <label>Povolit export dat<input type="checkbox"></label>
+              <label>Povolit plány aktivit<input type="checkbox"></label>
+              <label>Zobrazit žádanky<input type="checkbox"></label>
+              <label class="adm-check-disabled">Omezit přístup ke všem položkám:<input type="checkbox" disabled></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="adm-placeholder-note"><i class="fa-solid fa-circle-info"></i> Zbylé skupiny oprávnění (Majetek, Zakázky, Bezpečnost a další moduly) mají stejnou skladbu řádků — doplníme, až potvrdíš tenhle vzor.</div>
+      </div>
+    </div>
+  </div>
+
+</div>

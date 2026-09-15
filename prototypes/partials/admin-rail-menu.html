@@ -1,0 +1,49 @@
+<meta charset="utf-8">
+<!-- Ikony tohoto bloku jsou Font Awesome (Free). Řádky níže načtou FA a Nunito,
+     aby se blok vykreslil i při samostatném otevření souboru. V master
+     prototypu se obojí načítá z jeho assetů, takže tam jsou nadbytečné. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap">
+<!--
+  APTIEN — ADMINISTRACE / IKONOVÁ LIŠTA MODULŮ · STATICKÝ BLOK
+  ====================================================================
+  Vlož CELÝ blok. NEREKONSTRUUJ ho.
+  Otevírá se ozubeným kolečkem u karty uživatele v levém sidebaru
+  (viz sidebar-menu.html — .gear v usercard). Overlay přes celou appku,
+  vlastní topbar (viz screeny jednotlivých obrazovek) + tato lištа vlevo
+  (96px) + volitelný sub-sloupec (customizace, role) + obsah.
+  Funkční položky: Customizace, Uživatelé, Role (barevné, klikatelné).
+  Zbylé položky (Platby, Hosté, Skupiny, Evidence, Žádosti a Hlášení,
+  Tikety, Odkazy, API Klíče) jsou zatím `disabled` placeholdery — zobrazit
+  v šedé barvě, needitovat funkčnost, jen strukturu. Aktivní modul =
+  podbarvené pozadí rgba(21,114,232,.10) + modrý text/ikona #1572e8.
+  Měň jen to, které moduly jsou "aktivní"/"disabled" pro danou variantu.
+-->
+<style>
+  body{margin:0}
+  .adm-rail{width:96px;flex-shrink:0;background:#fff;border-right:1px solid #ececec;display:flex;flex-direction:column;overflow-y:auto;padding:10px 0;height:100vh;font-family:'Nunito',sans-serif}
+  .adm-railback{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px 14px;margin:0 6px 6px;border-bottom:1px solid #f0eef5;cursor:pointer;color:#878787}
+  .adm-railback:hover{color:#1572e8}
+  .adm-railback i{font-size:15px}
+  .adm-railback span{font-size:10px;font-weight:700}
+  .adm-railitem{display:flex;flex-direction:column;align-items:center;gap:5px;padding:11px 4px;margin:0 6px 2px;border-radius:8px;cursor:pointer;text-align:center}
+  .adm-railitem i{font-size:17px;color:#9a93b5}
+  .adm-railitem span{font-size:10.5px;font-weight:700;color:#6a6580;line-height:1.15}
+  .adm-railitem.on{background:rgba(21,114,232,.10)}
+  .adm-railitem.on i,.adm-railitem.on span{color:#1572e8}
+  .adm-railitem.adm-disabled{cursor:not-allowed;opacity:.42}
+</style>
+<nav class="adm-rail">
+  <div class="adm-railback"><i class="fa-solid fa-arrow-left"></i><span>Zpět</span></div>
+  <div class="adm-railitem on"><i class="fa-solid fa-sliders"></i><span>Customizace</span></div>
+  <div class="adm-railitem adm-disabled" title="Zatím nezpracováno"><i class="fa-solid fa-credit-card"></i><span>Platby</span></div>
+  <div class="adm-railitem"><i class="fa-solid fa-users-gear"></i><span>Uživatelé</span></div>
+  <div class="adm-railitem"><i class="fa-solid fa-user-shield"></i><span>Role</span></div>
+  <div class="adm-railitem adm-disabled" title="Zatím nezpracováno"><i class="fa-solid fa-user-tag"></i><span>Hosté</span></div>
+  <div class="adm-railitem adm-disabled" title="Zatím nezpracováno"><i class="fa-solid fa-people-group"></i><span>Skupiny</span></div>
+  <div class="adm-railitem adm-disabled" title="Zatím nezpracováno"><i class="fa-solid fa-table-list"></i><span>Evidence</span></div>
+  <div class="adm-railitem adm-disabled" title="Zatím nezpracováno"><i class="fa-solid fa-clipboard-list"></i><span>Žádosti a Hlášení</span></div>
+  <div class="adm-railitem adm-disabled" title="Zatím nezpracováno"><i class="fa-solid fa-ticket"></i><span>Tikety</span></div>
+  <div class="adm-railitem adm-disabled" title="Zatím nezpracováno"><i class="fa-solid fa-arrow-up-right-from-square"></i><span>Odkazy</span></div>
+  <div class="adm-railitem adm-disabled" title="Zatím nezpracováno"><i class="fa-solid fa-key"></i><span>API Klíče</span></div>
+</nav>

@@ -181,9 +181,9 @@ jednotlivých záložek viz `Aptien-pravidla-pouziti-UI.md`, sekce *Tab strip*.
 | Položka menu (`id`) | Flag | Datový zdroj |
 |---|---|---|
 | Moje směrnice (`smern`) | `showSmernMain` / `showSmernDetail` | `DOCS`, `CONFIRMED_DOCS_LIST`, `SMERNICE_CATEGORIES`, `SMERNICE_CAT_DOCS` |
-| Moje školení (`skol`) | `showSkolMain` / `showSkolDetail` | `SKOL_TRAININGS`, `SKOL_CATEGORIES`, `SKOL_TAGS` |
+| Moje školení (`skol`) | `showSkolMain` (jedna stránka, bez drilldownu; `skolMineDash`/`skolMineRun`/`skolMineDone` přepínají obsah IN-PAGE) | `SKOL_TRAININGS`, `SKOL_CATEGORIES`, `SKOL_TAGS` |
 | Katalog školení (`skolc`) | prázdný placeholder (záměrně) | – |
-| Správa školení (`skolsprava`) | `showSkolAdmin` (+ item-drawer `drawerSkolOpen`, Návrhář `skolDesignOpen`, Nastavení školení `skolSettingsOpen`) | `SKOL_TRAININGS` (jednotný zdroj, sdílený s osobním pohledem) |
+| Správa školení (`skolsprava`) | `showSkolAdmin` (seznam) / `skolFormOpen` (Přidat školení, in-page) / `skolSettingsOpen` (Nastavení školení, in-page) – vzájemně se vylučující stránky; + item-drawer `drawerSkolOpen` (akce jako header pilulky) a Návrhář `skolDesignOpen` | `SKOL_TRAININGS` (jednotný zdroj, sdílený s osobním pohledem) |
 | Směrnice a dokumenty (`dok`) | `showDokTilesView` / `showDokDetailView` | `DOK_CATEGORIES` |
 | Moje konverzace (`konv`) | `isKonv` (`konvShowList`/`konvShowDetail`) | `KONV_LIST`, `KONV_THREADS` |
 | Rizika / Ochranné pomůcky / Zakázky / Zaměstnanec | přes `activeTab` (8 / 2 / 12 / 0) | modulová data |

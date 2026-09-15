@@ -522,14 +522,22 @@
               <span style="font-size:12px; color:#555; text-align:center; line-height:1.35; font-weight:500">O mně</span>
             </div>
 
-            <div style="display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer" sc-camel-on-click="{{ goSmernice }}">
               <div style="width:80px; height:80px; background:white; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 10px rgba(0,0,0,.08)">
-                <i class="fa-solid fa-book" style="font-size:28px; color:#555"></i>
+                <!-- Stejná ikona jako "Moje směrnice" v desktop menu (SVG_ICONS['books']) -->
+                <svg width="28" height="28" viewBox="0 0 512 512" fill="#555"><path d="M0 32C0 14.3 14.3 0 32 0L96 0c17.7 0 32 14.3 32 32l0 64L0 96 0 32zm0 96l128 0 0 256L0 384 0 128zM0 416l128 0 0 64c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32-14.3-32-32l0-64zM160 32c0-17.7 14.3-32 32-32l64 0c17.7 0 32 14.3 32 32l0 64L160 96l0-64zm0 96l128 0 0 256-128 0 0-256zm0 288l128 0 0 64c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32-14.3-32-32l0-64zM289.4 117.8c40.9-11 81.8-21.9 122.8-32.9l8.2 30.9L297.6 148.8l-8.2-30.9zm74.2 278.3c40.9-11 81.8-21.9 122.8-32.9l8.2 30.9L371.8 427c-2.7-10.3-5.5-20.6-8.2-30.9z" opacity=".4"/><path d="M288 112.6l1.4 5.2L412.2 85 395.8 23.7c-4.5-17-22-27.1-38.9-22.6L295.5 17.6c-2.7 .7-5.2 1.8-7.5 3.1L288 96 160 96l0 32 128 0 0-15.4zm132.4 3.2L297.6 148.8l66 247.4 122.8-32.9-66-247.4zM388.2 488.3c4.5 17 22 27.1 38.9 22.6l61.4-16.5c16.9-4.6 27-22.1 22.5-39.1l-16.3-61.1L371.8 427l16.3 61.3zM0 96l0 32 128 0 0-32L0 96zM128 384L0 384l0 32 128 0 0-32zm160 0l-128 0 0 32 128 0 0-32z"/></svg>
               </div>
               <span style="font-size:12px; color:#555; text-align:center; line-height:1.35; font-weight:500">Moje směrnice</span>
             </div>
 
-            <div style="display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer" sc-camel-on-click="{{ goSkoleni }}">
+              <div style="width:80px; height:80px; background:white; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 10px rgba(0,0,0,.08)">
+                <i class="fa-solid fa-graduation-cap" style="font-size:28px; color:#555"></i>
+              </div>
+              <span style="font-size:12px; color:#555; text-align:center; line-height:1.35; font-weight:500">Moje školení</span>
+            </div>
+
+            <div style="display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer" sc-camel-on-click="{{ goDokumenty }}">
               <div style="width:80px; height:80px; background:white; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 10px rgba(0,0,0,.08)">
                 <i class="fa-solid fa-book-open" style="font-size:26px; color:#555"></i>
               </div>
@@ -538,21 +546,24 @@
 
             <div style="display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer">
               <div style="width:80px; height:80px; background:white; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 10px rgba(0,0,0,.08)">
-                <i class="fa-solid fa-table-cells" style="font-size:28px; color:#555"></i>
+                <!-- Stejná ikona jako "Nástěnka" v desktop postranním menu (SVG_ICONS['grid-horizontal'], §design 1:1) — Font Awesome Free nemá odpovídající fa-solid ikonu, proto vložena jako inline SVG. -->
+                <svg width="28" height="28" viewBox="0 0 448 512" fill="#555"><path d="M0 328c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48zM160 168c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48zM320 328c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48z" opacity=".4"/><path d="M0 168c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48zM160 328c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48zM448 168l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40z"/></svg>
               </div>
               <span style="font-size:12px; color:#555; text-align:center; line-height:1.35; font-weight:500">Nástěnka</span>
             </div>
 
             <div style="display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer">
               <div style="width:80px; height:80px; background:white; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 10px rgba(0,0,0,.08)">
-                <i class="fa-solid fa-address-book" style="font-size:28px; color:#555"></i>
+                <!-- Stejná ikona jako "Kolegové" v desktop menu (SVG_ICONS['users']) -->
+                <svg width="28" height="28" viewBox="0 0 640 512" fill="#555"><path d="M0 298.7C0 310.4 9.6 320 21.3 320l213.3 0c.2 0 .4 0 .7 0c-26.6-23.5-43.3-57.8-43.3-96c0-7.6 .7-15 1.9-22.3c-13.6-6.3-28.7-9.7-44.6-9.7l-42.7 0C47.8 192 0 239.8 0 298.7zM64 80a80 80 0 1 0 160 0A80 80 0 1 0 64 80zM404.7 320c.2 0 .4 0 .7 0l213.3 0c11.8 0 21.3-9.6 21.3-21.3C640 239.8 592.2 192 533.3 192l-42.7 0c-15.9 0-31 3.5-44.6 9.7c1.3 7.2 1.9 14.7 1.9 22.3c0 38.2-16.8 72.5-43.3 96zM432 80a80 80 0 1 0 160 0A80 80 0 1 0 432 80z" opacity=".4"/><path d="M320 320a96 96 0 1 0 0-192 96 96 0 1 0 0 192zm-58.7 32C187.7 352 128 411.7 128 485.3c0 14.7 11.9 26.7 26.7 26.7l330.7 0c14.7 0 26.7-11.9 26.7-26.7C512 411.7 452.3 352 378.7 352l-117.3 0z"/></svg>
               </div>
               <span style="font-size:12px; color:#555; text-align:center; line-height:1.35; font-weight:500">Kolegové</span>
             </div>
 
             <div style="display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer">
               <div style="width:80px; height:80px; background:white; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 10px rgba(0,0,0,.08)">
-                <i class="fa-solid fa-graduation-cap" style="font-size:28px; color:#555"></i>
+                <!-- Stejná ikona jako "Katalog školení" v desktop menu (SVG_ICONS['book-open-reader']) -->
+                <svg width="28" height="28" viewBox="0 0 512 512" fill="#555"><path d="M160 96a96 96 0 1 0 192 0A96 96 0 1 0 160 96z" opacity=".4"/><path d="M240 512l0-264c-52.1-36.4-114.1-56-177.7-56L32 192c-17.7 0-32 14.3-32 32L0 427c0 16.4 12.5 30.2 28.8 31.8l96 9.6c23.2 2.3 45.9 8.9 66.8 19.3L240 512zm32 0l48.4-24.2c20.9-10.4 43.5-17 66.8-19.3l96-9.6c16.4-1.6 28.8-15.4 28.8-31.8l0-203c0-17.7-14.3-32-32-32l-30.3 0c-63.6 0-125.6 19.6-177.7 56l0 264z"/></svg>
               </div>
               <span style="font-size:12px; color:#555; text-align:center; line-height:1.35; font-weight:500; padding:0 2px">Katalog školení</span>
             </div>
@@ -988,6 +999,453 @@
       </div>
     </sc-if>
 
+    <!-- MOJE SMĚRNICE SCREEN -->
+    <sc-if value="{{ isSmernice }}" hint-placeholder-val="{{ false }}">
+      <div class="screen-enter" style="flex:1; display:flex; flex-direction:column; background:#f0f0f8; height:844px">
+        <div style="background:#111; height:56px; display:flex; align-items:center; padding:0 16px; gap:12px; flex-shrink:0; position:relative">
+          <button style="background:none; border:none; cursor:pointer; padding:6px; color:white">
+            <i class="fa-solid fa-bars" style="font-size:18px"></i>
+          </button>
+          <div style="position:absolute; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:9px">
+            <svg width="24" height="26" sc-camel-view-box="400.9 201.5 598.3 651.4" fill="white">
+              <path d="m 990.7,648.5 c -7.2,-17.3 -16.8,-33.3 -25.3,-50.4 -5,-10 -10,-20 -14.9,-29.9 -12.6,-25.3 -25.2,-50.6 -37.8,-75.8 -14,-28 -27.9,-56 -41.9,-83.9 -12.7,-25.4 -25.4,-50.8 -38,-76.2 -8.8,-17.6 -17.5,-35.2 -26.3,-52.7 -2.4,-4.9 -5,-9.7 -7.3,-14.7 -0.2,-0.3 -0.3,-0.7 -0.5,-1 -18.2,-37.9 -57.1,-62.4 -99.2,-62.4 -42.4,0 -80.2,23.7 -98.8,61.6 L 415.2,635 l -1.6,3.2 c -8.3,15.7 -12.7,33.5 -12.7,51.4 0,5.6 0.4,11.1 1.2,16.6 1.4,9 3.9,17.9 7.4,26.3 5.4,12.7 13,24.1 22.7,34 l 0.3,0.3 c 49.1,53.1 151.5,86.1 267.1,86.1 31.5,0 63,-2.4 94.1,-7.6 28,-4.7 55.6,-11.7 82.1,-21.7 22.9,-8.7 45.1,-19.6 64.9,-34 12.3,-9 24.7,-18 34.3,-30 8.6,-10.7 15.2,-22.9 19.2,-36 3.3,-10.6 5,-21.6 5,-32.7 0,-14.5 -2.8,-29 -8.5,-42.4 z M 786,352 l -11.4,22.8 -172.1,345 -6.4,12.9 c -15.7,31.1 -47.9,52.4 -85.2,52.4 -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-16.2 4,-31.4 11.1,-44.8 l 1.7,-3.4 183.8,-368.6 1.6,-3.3 c 15.5,-31.8 48.1,-53.6 85.8,-53.6 52.7,0 95.5,42.8 95.5,95.5 0.1,14.5 -3.1,28.3 -8.9,40.6 z m 103.3,434.4 c -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-52.7 42.8,-95.5 95.5,-95.5 52.7,0 95.5,42.8 95.5,95.5 0,52.7 -42.7,95.5 -95.5,95.5 z"></path>
+            </svg>
+            <span style="color:white; font-size:20px; font-weight:700; letter-spacing:-0.4px">aptien</span>
+          </div>
+          <div style="margin-left:auto; display:flex; align-items:center; gap:13px">
+            <div style="width:34px; height:34px; border-radius:50%; background:conic-gradient(#ff6b6b 0deg,#ffd93d 90deg,#6bcb77 180deg,#4d96ff 270deg,#ff6b6b 360deg); overflow:hidden; display:flex; align-items:center; justify-content:center; border:1.5px solid rgba(255,255,255,.25)">
+              <svg width="20" height="20" sc-camel-view-box="0 0 20 20" fill="none">
+                <circle cx="10" cy="8" r="4" fill="rgba(0,0,0,.25)"></circle>
+                <ellipse cx="10" cy="18" rx="8" ry="5" fill="rgba(0,0,0,.2)"></ellipse>
+              </svg>
+            </div>
+            <i class="fa-solid fa-gear" style="color:white; font-size:17px; cursor:pointer"></i>
+          </div>
+        </div>
+
+        <div style="flex:1; overflow-y:auto; background:#f0f0f8; padding-bottom:24px">
+          <div style="display:flex; align-items:center; gap:8px; padding:16px 16px 12px">
+            <i class="fa-solid fa-house" style="color:#1572e8; font-size:15px; cursor:pointer" sc-camel-on-click="{{ goHome }}"></i>
+            <i class="fa-solid fa-chevron-right" style="color:#ccc; font-size:10px"></i>
+            <span style="color:#1a1a1a; font-size:14px; font-weight:600">Moje směrnice</span>
+          </div>
+
+          <div style="padding:0 16px 16px">
+            <div style="background:white; border-radius:999px; padding:10px 16px; display:flex; align-items:center; gap:10px; box-shadow:0 1px 4px rgba(0,0,0,.07)">
+              <i class="fa-solid fa-magnifying-glass" style="color:#B1B2B3; font-size:14px"></i>
+              <span style="font-size:13px; color:#B1B2B3">Vyhledejte dokument nebo kategorii</span>
+            </div>
+          </div>
+
+          <sc-if value="{{ smernHasPending }}" hint-placeholder-val="{{ true }}">
+            <div sc-camel-on-click="{{ goSmerniceDetail }}" style="margin:0 16px 14px; background:white; border-radius:14px; padding:18px; box-shadow:0 1px 6px rgba(0,0,0,.07); cursor:pointer">
+              <div style="display:flex; align-items:flex-start; gap:10px">
+                <div style="flex:1; min-width:0">
+                  <div style="font-size:15px; font-weight:800; color:#1a1a1a">Zbývá vám potvrdit <span style="color:#1572e8">{{ smernPendingCount }}</span> dokumentů</div>
+                  <div style="font-size:12px; color:#9aa0a6; margin-top:3px">{{ smernConfirmedCount }} z {{ smernTotal }} hotovo · {{ smernPctText }}</div>
+                </div>
+                <i class="fa-solid fa-chevron-right" style="color:#c2c6cc; font-size:13px; flex-shrink:0; margin-top:4px"></i>
+              </div>
+              <div style="height:6px; background:#ededf2; border-radius:3px; overflow:hidden; margin:12px 0 10px">
+                <div style="{{ smernBarStyle }}"></div>
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap">
+                <sc-if value="{{ smernHasOverdue }}" hint-placeholder-val="{{ true }}">
+                  <span style="background:#fde8e8; color:#d9463e; padding:3px 8px; border-radius:3px; font-size:10px; font-weight:700">{{ smernOverdueCount }} po termínu</span>
+                </sc-if>
+                <sc-if value="{{ smernHasNoDeadline }}" hint-placeholder-val="{{ true }}">
+                  <span style="background:#e8f8ed; color:#2E7D32; padding:3px 8px; border-radius:3px; font-size:10px; font-weight:700">{{ smernNoDeadlineCount }} bez termínu</span>
+                </sc-if>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ smernAllDone }}" hint-placeholder-val="{{ false }}">
+            <div style="margin:0 16px 14px; background:white; border-radius:14px; padding:20px 18px; box-shadow:0 1px 6px rgba(0,0,0,.07)">
+              <div style="font-size:15px; font-weight:800; color:#12946b">Máte splněno!</div>
+              <div style="font-size:12px; color:#5a7a60; margin-top:3px">Všechny požadované dokumenty máte potvrzené.</div>
+            </div>
+          </sc-if>
+
+          <!-- POTVRZENO (rozbalovací, stejný vzor jako desktop toggleSmernConfirmed) -->
+          <div style="margin:0 16px 14px; background:white; border-radius:14px; box-shadow:0 1px 6px rgba(0,0,0,.07); overflow:hidden">
+            <div sc-camel-on-click="{{ toggleSmernConfirmed }}" style="display:flex; align-items:center; gap:10px; padding:14px 16px; cursor:pointer; user-select:none">
+              <i class="fa-solid fa-circle-check" style="color:#00C853; font-size:15px; flex-shrink:0"></i>
+              <span style="font-size:14px; font-weight:800; color:#1a1a1a">Potvrzeno</span>
+              <span style="background:#e8f8ed; color:#2E7D32; font-size:10px; font-weight:700; padding:2px 7px; border-radius:3px">{{ smernConfirmedCount }}</span>
+              <div style="flex:1"></div>
+              <i class="{{ smernConfirmedChevron }}" style="color:#9aa0a6; font-size:13px; flex-shrink:0"></i>
+            </div>
+            <sc-if value="{{ smernConfirmedOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="border-top:1px solid #f2f2f2">
+                <sc-for list="{{ smernConfirmedRows }}" as="d" hint-placeholder-count="5">
+                  <div style="display:flex; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid #f5f5f7">
+                    <div style="width:36px; height:36px; border-radius:50%; background:#e8f8ed; display:flex; align-items:center; justify-content:center; flex-shrink:0">
+                      <i class="fa-solid fa-check" style="color:#2E7D32; font-size:13px"></i>
+                    </div>
+                    <div style="flex:1; min-width:0">
+                      <div style="font-size:13.5px; font-weight:700; color:#1a1a1a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ d.name }}</div>
+                      <div style="font-size:11.5px; color:#9aa0a6; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ d.file }} · potvrzeno {{ d.confirmedAt }}</div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+
+          <div style="padding:4px 16px 10px; font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:#9aa0a6; font-weight:800">
+            Procházet<span style="display:block; font-size:15px; text-transform:none; color:#1a1a1a; letter-spacing:0; margin-top:2px; font-weight:800">Všechny dokumenty</span>
+          </div>
+          <div style="padding:0 16px">
+            <sc-for list="{{ smernCatsRows }}" as="c" hint-placeholder-count="5">
+              <div style="display:flex; align-items:center; gap:14px; background:{{ c.bg }}; border-radius:14px; padding:14px 16px; margin-bottom:10px; cursor:pointer">
+                <div style="width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,.85); display:flex; align-items:center; justify-content:center; flex-shrink:0">
+                  <i class="fa-solid fa-{{ c.icon }}" style="color:{{ c.iconColor }}; font-size:17px"></i>
+                </div>
+                <div style="flex:1; min-width:0">
+                  <div style="font-size:14px; font-weight:700; color:#2b2540">{{ c.title }}</div>
+                  <div style="font-size:12px; margin-top:2px; color:{{ c.countColor }}; font-weight:600">{{ c.countLabel }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- MOJE SMĚRNICE — K POTVRZENÍ (detail) SCREEN -->
+    <sc-if value="{{ isSmerniceDetail }}" hint-placeholder-val="{{ false }}">
+      <div class="screen-enter" style="flex:1; display:flex; flex-direction:column; background:#f0f0f8; height:844px">
+        <div style="background:#111; height:56px; display:flex; align-items:center; padding:0 16px; gap:12px; flex-shrink:0; position:relative">
+          <button style="background:none; border:none; cursor:pointer; padding:6px; color:white">
+            <i class="fa-solid fa-bars" style="font-size:18px"></i>
+          </button>
+          <div style="position:absolute; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:9px">
+            <svg width="24" height="26" sc-camel-view-box="400.9 201.5 598.3 651.4" fill="white">
+              <path d="m 990.7,648.5 c -7.2,-17.3 -16.8,-33.3 -25.3,-50.4 -5,-10 -10,-20 -14.9,-29.9 -12.6,-25.3 -25.2,-50.6 -37.8,-75.8 -14,-28 -27.9,-56 -41.9,-83.9 -12.7,-25.4 -25.4,-50.8 -38,-76.2 -8.8,-17.6 -17.5,-35.2 -26.3,-52.7 -2.4,-4.9 -5,-9.7 -7.3,-14.7 -0.2,-0.3 -0.3,-0.7 -0.5,-1 -18.2,-37.9 -57.1,-62.4 -99.2,-62.4 -42.4,0 -80.2,23.7 -98.8,61.6 L 415.2,635 l -1.6,3.2 c -8.3,15.7 -12.7,33.5 -12.7,51.4 0,5.6 0.4,11.1 1.2,16.6 1.4,9 3.9,17.9 7.4,26.3 5.4,12.7 13,24.1 22.7,34 l 0.3,0.3 c 49.1,53.1 151.5,86.1 267.1,86.1 31.5,0 63,-2.4 94.1,-7.6 28,-4.7 55.6,-11.7 82.1,-21.7 22.9,-8.7 45.1,-19.6 64.9,-34 12.3,-9 24.7,-18 34.3,-30 8.6,-10.7 15.2,-22.9 19.2,-36 3.3,-10.6 5,-21.6 5,-32.7 0,-14.5 -2.8,-29 -8.5,-42.4 z M 786,352 l -11.4,22.8 -172.1,345 -6.4,12.9 c -15.7,31.1 -47.9,52.4 -85.2,52.4 -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-16.2 4,-31.4 11.1,-44.8 l 1.7,-3.4 183.8,-368.6 1.6,-3.3 c 15.5,-31.8 48.1,-53.6 85.8,-53.6 52.7,0 95.5,42.8 95.5,95.5 0.1,14.5 -3.1,28.3 -8.9,40.6 z m 103.3,434.4 c -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-52.7 42.8,-95.5 95.5,-95.5 52.7,0 95.5,42.8 95.5,95.5 0,52.7 -42.7,95.5 -95.5,95.5 z"></path>
+            </svg>
+            <span style="color:white; font-size:20px; font-weight:700; letter-spacing:-0.4px">aptien</span>
+          </div>
+          <div style="margin-left:auto; display:flex; align-items:center; gap:13px">
+            <div style="width:34px; height:34px; border-radius:50%; background:conic-gradient(#ff6b6b 0deg,#ffd93d 90deg,#6bcb77 180deg,#4d96ff 270deg,#ff6b6b 360deg); overflow:hidden; display:flex; align-items:center; justify-content:center; border:1.5px solid rgba(255,255,255,.25)">
+              <svg width="20" height="20" sc-camel-view-box="0 0 20 20" fill="none">
+                <circle cx="10" cy="8" r="4" fill="rgba(0,0,0,.25)"></circle>
+                <ellipse cx="10" cy="18" rx="8" ry="5" fill="rgba(0,0,0,.2)"></ellipse>
+              </svg>
+            </div>
+            <i class="fa-solid fa-gear" style="color:white; font-size:17px; cursor:pointer"></i>
+          </div>
+        </div>
+
+        <div style="flex:1; overflow-y:auto; background:#f0f0f8; padding-bottom:24px">
+          <div style="display:flex; align-items:center; gap:8px; padding:16px 16px 12px">
+            <i class="fa-solid fa-house" style="color:#1572e8; font-size:15px; cursor:pointer" sc-camel-on-click="{{ goHome }}"></i>
+            <i class="fa-solid fa-chevron-right" style="color:#ccc; font-size:10px"></i>
+            <span style="color:#1a1a1a; font-size:14px; font-weight:600">Moje směrnice</span>
+          </div>
+
+          <div style="padding:0 16px 14px">
+            <div style="background:white; border-radius:999px; padding:10px 16px; display:flex; align-items:center; gap:10px; box-shadow:0 1px 4px rgba(0,0,0,.07)">
+              <i class="fa-solid fa-magnifying-glass" style="color:#B1B2B3; font-size:14px"></i>
+              <span style="font-size:13px; color:#B1B2B3">Vyhledejte dokument nebo kategorii</span>
+            </div>
+          </div>
+
+          <div style="padding:0 16px 16px">
+            <div sc-camel-on-click="{{ goSmernice }}" style="display:inline-flex; align-items:center; gap:7px; padding:8px 16px; border-radius:999px; border:1px solid #e0e0e6; background:white; font-size:12px; font-weight:700; color:#4a4a52; cursor:pointer">
+              <i class="fa-solid fa-arrow-left" style="font-size:11px"></i>Zpět
+            </div>
+          </div>
+
+          <div style="margin:0 16px 12px; background:white; border-radius:14px; overflow:hidden; box-shadow:0 1px 6px rgba(0,0,0,.07)">
+            <div style="display:flex; align-items:center; gap:12px; padding:16px">
+              <div style="width:38px; height:38px; border-radius:10px; background:#e3edfd; display:flex; align-items:center; justify-content:center; flex-shrink:0">
+                <i class="fa-solid fa-clipboard-check" style="color:#1572e8; font-size:16px"></i>
+              </div>
+              <div style="font-size:15px; font-weight:800; color:#1a1a1a">K potvrzení <span style="font-weight:600; color:#9aa0a6; font-size:13px">{{ smernPendingCount }} dokumentů</span></div>
+            </div>
+            <sc-for list="{{ smernPendingRows }}" as="d" hint-placeholder-count="13">
+              <div style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-top:1px solid #f2f2f2">
+                <div style="width:38px; height:38px; border-radius:50%; background:{{ d.iconBg }}; display:flex; align-items:center; justify-content:center; flex-shrink:0">
+                  <i class="fa-solid fa-{{ d.icon }}" style="color:{{ d.iconColor }}; font-size:15px"></i>
+                </div>
+                <div style="flex:1; min-width:0">
+                  <div style="font-size:13.5px; font-weight:700; color:#1a1a1a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ d.title }}</div>
+                  <div style="font-size:11.5px; color:#9aa0a6; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ d.file }}</div>
+                </div>
+                <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0">
+                  <span style="{{ d.badgeStyle }}">{{ d.badgeText }}</span>
+                  <div sc-camel-on-click="{{ d.onConfirm }}" style="{{ d.btnStyle }}">POTVRDIT</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- MOJE ŠKOLENÍ SCREEN -->
+    <sc-if value="{{ isSkoleni }}" hint-placeholder-val="{{ false }}">
+      <div class="screen-enter" style="flex:1; display:flex; flex-direction:column; background:#f0f0f8; height:844px">
+        <div style="background:#111; height:56px; display:flex; align-items:center; padding:0 16px; gap:12px; flex-shrink:0; position:relative">
+          <button style="background:none; border:none; cursor:pointer; padding:6px; color:white">
+            <i class="fa-solid fa-bars" style="font-size:18px"></i>
+          </button>
+          <div style="position:absolute; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:9px">
+            <svg width="24" height="26" sc-camel-view-box="400.9 201.5 598.3 651.4" fill="white">
+              <path d="m 990.7,648.5 c -7.2,-17.3 -16.8,-33.3 -25.3,-50.4 -5,-10 -10,-20 -14.9,-29.9 -12.6,-25.3 -25.2,-50.6 -37.8,-75.8 -14,-28 -27.9,-56 -41.9,-83.9 -12.7,-25.4 -25.4,-50.8 -38,-76.2 -8.8,-17.6 -17.5,-35.2 -26.3,-52.7 -2.4,-4.9 -5,-9.7 -7.3,-14.7 -0.2,-0.3 -0.3,-0.7 -0.5,-1 -18.2,-37.9 -57.1,-62.4 -99.2,-62.4 -42.4,0 -80.2,23.7 -98.8,61.6 L 415.2,635 l -1.6,3.2 c -8.3,15.7 -12.7,33.5 -12.7,51.4 0,5.6 0.4,11.1 1.2,16.6 1.4,9 3.9,17.9 7.4,26.3 5.4,12.7 13,24.1 22.7,34 l 0.3,0.3 c 49.1,53.1 151.5,86.1 267.1,86.1 31.5,0 63,-2.4 94.1,-7.6 28,-4.7 55.6,-11.7 82.1,-21.7 22.9,-8.7 45.1,-19.6 64.9,-34 12.3,-9 24.7,-18 34.3,-30 8.6,-10.7 15.2,-22.9 19.2,-36 3.3,-10.6 5,-21.6 5,-32.7 0,-14.5 -2.8,-29 -8.5,-42.4 z M 786,352 l -11.4,22.8 -172.1,345 -6.4,12.9 c -15.7,31.1 -47.9,52.4 -85.2,52.4 -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-16.2 4,-31.4 11.1,-44.8 l 1.7,-3.4 183.8,-368.6 1.6,-3.3 c 15.5,-31.8 48.1,-53.6 85.8,-53.6 52.7,0 95.5,42.8 95.5,95.5 0.1,14.5 -3.1,28.3 -8.9,40.6 z m 103.3,434.4 c -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-52.7 42.8,-95.5 95.5,-95.5 52.7,0 95.5,42.8 95.5,95.5 0,52.7 -42.7,95.5 -95.5,95.5 z"></path>
+            </svg>
+            <span style="color:white; font-size:20px; font-weight:700; letter-spacing:-0.4px">aptien</span>
+          </div>
+          <div style="margin-left:auto; display:flex; align-items:center; gap:13px">
+            <div style="width:34px; height:34px; border-radius:50%; background:conic-gradient(#ff6b6b 0deg,#ffd93d 90deg,#6bcb77 180deg,#4d96ff 270deg,#ff6b6b 360deg); overflow:hidden; display:flex; align-items:center; justify-content:center; border:1.5px solid rgba(255,255,255,.25)">
+              <svg width="20" height="20" sc-camel-view-box="0 0 20 20" fill="none">
+                <circle cx="10" cy="8" r="4" fill="rgba(0,0,0,.25)"></circle>
+                <ellipse cx="10" cy="18" rx="8" ry="5" fill="rgba(0,0,0,.2)"></ellipse>
+              </svg>
+            </div>
+            <i class="fa-solid fa-gear" style="color:white; font-size:17px; cursor:pointer"></i>
+          </div>
+        </div>
+
+        <div style="flex:1; overflow-y:auto; background:#f0f0f8; padding-bottom:24px">
+          <div style="display:flex; align-items:center; gap:8px; padding:16px 16px 12px">
+            <i class="fa-solid fa-house" style="color:#1572e8; font-size:15px; cursor:pointer" sc-camel-on-click="{{ goHome }}"></i>
+            <i class="fa-solid fa-chevron-right" style="color:#ccc; font-size:10px"></i>
+            <span style="color:#1a1a1a; font-size:14px; font-weight:600">Moje školení</span>
+          </div>
+
+          <div style="padding:0 16px 16px">
+            <div style="background:white; border-radius:999px; padding:10px 16px; display:flex; align-items:center; gap:10px; box-shadow:0 1px 4px rgba(0,0,0,.07)">
+              <i class="fa-solid fa-magnifying-glass" style="color:#B1B2B3; font-size:14px"></i>
+              <span style="font-size:13px; color:#B1B2B3">Vyhledejte školení nebo kategorii</span>
+            </div>
+          </div>
+
+          <sc-if value="{{ skolHasPending }}" hint-placeholder-val="{{ true }}">
+            <div style="margin:0 16px 14px; background:white; border-radius:14px; padding:18px; box-shadow:0 1px 6px rgba(0,0,0,.07)">
+              <div style="font-size:15px; font-weight:800; color:#1a1a1a">Zbývá vám dokončit <span style="color:#1572e8">{{ skolPendingCount }}</span> školení</div>
+              <div style="font-size:12px; color:#9aa0a6; margin-top:3px">{{ skolDoneCount }} z {{ skolTotal }} dokončeno · {{ skolPctText }}</div>
+              <div style="height:6px; background:#ededf2; border-radius:3px; overflow:hidden; margin:12px 0 10px">
+                <div style="{{ skolBarStyle }}"></div>
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap">
+                <sc-if value="{{ skolHasOverdue }}" hint-placeholder-val="{{ true }}">
+                  <span style="background:#fde8e8; color:#d9463e; padding:3px 8px; border-radius:3px; font-size:10px; font-weight:700">{{ skolOverdueCount }} po termínu</span>
+                </sc-if>
+                <sc-if value="{{ skolHasInProgress }}" hint-placeholder-val="{{ true }}">
+                  <span style="background:#e3edfd; color:#1572e8; padding:3px 8px; border-radius:3px; font-size:10px; font-weight:700">{{ skolInProgressCount }} probíhá</span>
+                </sc-if>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ !skolHasPending }}" hint-placeholder-val="{{ false }}">
+            <div style="margin:0 16px 14px; background:white; border-radius:14px; padding:20px 18px; box-shadow:0 1px 6px rgba(0,0,0,.07)">
+              <div style="font-size:15px; font-weight:800; color:#12946b">Máte splněno!</div>
+              <div style="font-size:12px; color:#5a7a60; margin-top:3px">Všechna přiřazená školení máte dokončená.</div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ skolHasPending }}" hint-placeholder-val="{{ true }}">
+            <div style="margin:0 16px 14px; background:white; border-radius:14px; overflow:hidden; box-shadow:0 1px 6px rgba(0,0,0,.07)">
+              <sc-for list="{{ skolPendingRows }}" as="t" hint-placeholder-count="5">
+                <div style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #f2f2f2">
+                  <div style="width:38px; height:38px; border-radius:50%; background:{{ t.iconBg }}; display:flex; align-items:center; justify-content:center; flex-shrink:0">
+                    <i class="fa-solid fa-{{ t.icon }}" style="color:{{ t.iconColor }}; font-size:15px"></i>
+                  </div>
+                  <div style="flex:1; min-width:0">
+                    <div style="font-size:13.5px; font-weight:700; color:#1a1a1a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ t.title }}</div>
+                    <div style="font-size:11.5px; color:#9aa0a6; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ t.category }}</div>
+                  </div>
+                  <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0">
+                    <span style="{{ t.badgeStyle }}">{{ t.badgeText }}</span>
+                    <div style="{{ t.btnStyle }}">{{ t.btnLabel }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <!-- DOKONČENO (rozbalovací, stejný vzor jako Potvrzeno u Moje směrnice) -->
+          <div style="margin:0 16px 14px; background:white; border-radius:14px; box-shadow:0 1px 6px rgba(0,0,0,.07); overflow:hidden">
+            <div sc-camel-on-click="{{ toggleSkolDone }}" style="display:flex; align-items:center; gap:10px; padding:14px 16px; cursor:pointer; user-select:none">
+              <i class="fa-solid fa-circle-check" style="color:#00C853; font-size:15px; flex-shrink:0"></i>
+              <span style="font-size:14px; font-weight:800; color:#1a1a1a">Dokončeno</span>
+              <span style="background:#e8f8ed; color:#2E7D32; font-size:10px; font-weight:700; padding:2px 7px; border-radius:3px">{{ skolDoneCount }}</span>
+              <div style="flex:1"></div>
+              <i class="{{ skolDoneChevron }}" style="color:#9aa0a6; font-size:13px; flex-shrink:0"></i>
+            </div>
+            <sc-if value="{{ skolDoneOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="border-top:1px solid #f2f2f2">
+                <sc-for list="{{ skolDoneRows }}" as="t" hint-placeholder-count="4">
+                  <div style="display:flex; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid #f5f5f7">
+                    <div style="width:36px; height:36px; border-radius:50%; background:#e8f8ed; display:flex; align-items:center; justify-content:center; flex-shrink:0">
+                      <i class="fa-solid fa-check" style="color:#2E7D32; font-size:13px"></i>
+                    </div>
+                    <div style="flex:1; min-width:0">
+                      <div style="font-size:13.5px; font-weight:700; color:#1a1a1a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ t.title }}</div>
+                      <div style="font-size:11.5px; color:#9aa0a6; margin-top:2px">{{ t.category }} · dokončeno {{ t.doneAt }}</div>
+                    </div>
+                    <span style="{{ t.pctStyle }}">{{ t.pctLabel }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+
+          <div style="padding:4px 16px 10px; font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:#9aa0a6; font-weight:800">
+            Procházet<span style="display:block; font-size:15px; text-transform:none; color:#1a1a1a; letter-spacing:0; margin-top:2px; font-weight:800">Všechna školení</span>
+          </div>
+          <div style="padding:0 16px">
+            <sc-for list="{{ skolTagsRows }}" as="tg" hint-placeholder-count="8">
+              <div style="display:flex; align-items:center; gap:14px; background:{{ tg.bg }}; border-radius:14px; padding:14px 16px; margin-bottom:10px; cursor:pointer">
+                <div style="width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,.85); display:flex; align-items:center; justify-content:center; flex-shrink:0">
+                  <i class="fa-solid fa-{{ tg.icon }}" style="color:{{ tg.iconColor }}; font-size:17px"></i>
+                </div>
+                <div style="flex:1; min-width:0">
+                  <div style="font-size:14px; font-weight:700; color:#2b2540">{{ tg.label }}</div>
+                  <div style="font-size:12px; margin-top:2px; color:{{ tg.countColor }}; font-weight:600">{{ tg.countLabel }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- SMĚRNICE A DOKUMENTY SCREEN -->
+    <sc-if value="{{ isDokumenty }}" hint-placeholder-val="{{ false }}">
+      <div class="screen-enter" style="flex:1; display:flex; flex-direction:column; background:#f0f0f8; height:844px">
+        <div style="background:#111; height:56px; display:flex; align-items:center; padding:0 16px; gap:12px; flex-shrink:0; position:relative">
+          <button style="background:none; border:none; cursor:pointer; padding:6px; color:white">
+            <i class="fa-solid fa-bars" style="font-size:18px"></i>
+          </button>
+          <div style="position:absolute; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:9px">
+            <svg width="24" height="26" sc-camel-view-box="400.9 201.5 598.3 651.4" fill="white">
+              <path d="m 990.7,648.5 c -7.2,-17.3 -16.8,-33.3 -25.3,-50.4 -5,-10 -10,-20 -14.9,-29.9 -12.6,-25.3 -25.2,-50.6 -37.8,-75.8 -14,-28 -27.9,-56 -41.9,-83.9 -12.7,-25.4 -25.4,-50.8 -38,-76.2 -8.8,-17.6 -17.5,-35.2 -26.3,-52.7 -2.4,-4.9 -5,-9.7 -7.3,-14.7 -0.2,-0.3 -0.3,-0.7 -0.5,-1 -18.2,-37.9 -57.1,-62.4 -99.2,-62.4 -42.4,0 -80.2,23.7 -98.8,61.6 L 415.2,635 l -1.6,3.2 c -8.3,15.7 -12.7,33.5 -12.7,51.4 0,5.6 0.4,11.1 1.2,16.6 1.4,9 3.9,17.9 7.4,26.3 5.4,12.7 13,24.1 22.7,34 l 0.3,0.3 c 49.1,53.1 151.5,86.1 267.1,86.1 31.5,0 63,-2.4 94.1,-7.6 28,-4.7 55.6,-11.7 82.1,-21.7 22.9,-8.7 45.1,-19.6 64.9,-34 12.3,-9 24.7,-18 34.3,-30 8.6,-10.7 15.2,-22.9 19.2,-36 3.3,-10.6 5,-21.6 5,-32.7 0,-14.5 -2.8,-29 -8.5,-42.4 z M 786,352 l -11.4,22.8 -172.1,345 -6.4,12.9 c -15.7,31.1 -47.9,52.4 -85.2,52.4 -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-16.2 4,-31.4 11.1,-44.8 l 1.7,-3.4 183.8,-368.6 1.6,-3.3 c 15.5,-31.8 48.1,-53.6 85.8,-53.6 52.7,0 95.5,42.8 95.5,95.5 0.1,14.5 -3.1,28.3 -8.9,40.6 z m 103.3,434.4 c -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-52.7 42.8,-95.5 95.5,-95.5 52.7,0 95.5,42.8 95.5,95.5 0,52.7 -42.7,95.5 -95.5,95.5 z"></path>
+            </svg>
+            <span style="color:white; font-size:20px; font-weight:700; letter-spacing:-0.4px">aptien</span>
+          </div>
+          <div style="margin-left:auto; display:flex; align-items:center; gap:13px">
+            <div style="width:34px; height:34px; border-radius:50%; background:conic-gradient(#ff6b6b 0deg,#ffd93d 90deg,#6bcb77 180deg,#4d96ff 270deg,#ff6b6b 360deg); overflow:hidden; display:flex; align-items:center; justify-content:center; border:1.5px solid rgba(255,255,255,.25)">
+              <svg width="20" height="20" sc-camel-view-box="0 0 20 20" fill="none">
+                <circle cx="10" cy="8" r="4" fill="rgba(0,0,0,.25)"></circle>
+                <ellipse cx="10" cy="18" rx="8" ry="5" fill="rgba(0,0,0,.2)"></ellipse>
+              </svg>
+            </div>
+            <i class="fa-solid fa-gear" style="color:white; font-size:17px; cursor:pointer"></i>
+          </div>
+        </div>
+
+        <div style="flex:1; overflow-y:auto; background:#f0f0f8; padding-bottom:24px">
+          <div style="display:flex; align-items:center; gap:8px; padding:16px 16px 12px">
+            <i class="fa-solid fa-house" style="color:#1572e8; font-size:15px; cursor:pointer" sc-camel-on-click="{{ goHome }}"></i>
+            <i class="fa-solid fa-chevron-right" style="color:#ccc; font-size:10px"></i>
+            <span style="color:#1a1a1a; font-size:14px; font-weight:600">Směrnice a dokumenty</span>
+          </div>
+
+          <div style="padding:0 16px 16px">
+            <div style="background:white; border-radius:999px; padding:10px 16px; display:flex; align-items:center; gap:10px; box-shadow:0 1px 4px rgba(0,0,0,.07)">
+              <i class="fa-solid fa-magnifying-glass" style="color:#B1B2B3; font-size:14px"></i>
+              <span style="font-size:13px; color:#B1B2B3">Vyhledejte dokument nebo kategorii</span>
+            </div>
+          </div>
+
+          <div style="padding:4px 16px 10px; font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:#9aa0a6; font-weight:800">
+            Procházet<span style="display:block; font-size:15px; text-transform:none; color:#1a1a1a; letter-spacing:0; margin-top:2px; font-weight:800">Všechny dokumenty</span>
+          </div>
+          <div style="padding:0 16px">
+            <sc-for list="{{ dokCatsRows }}" as="c" hint-placeholder-count="3">
+              <div sc-camel-on-click="{{ c.onClick }}" style="display:flex; align-items:center; gap:14px; background:{{ c.bg }}; border-radius:14px; padding:14px 16px; margin-bottom:10px; cursor:pointer">
+                <div style="width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,.85); display:flex; align-items:center; justify-content:center; flex-shrink:0">
+                  <i class="fa-solid fa-{{ c.icon }}" style="color:{{ c.iconColor }}; font-size:17px"></i>
+                </div>
+                <div style="flex:1; min-width:0">
+                  <div style="font-size:14px; font-weight:700; color:#2b2540; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden">{{ c.title }}</div>
+                  <div style="font-size:12px; margin-top:2px; color:#5a5470; font-weight:600">{{ c.countLabel }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- SMĚRNICE A DOKUMENTY — KATEGORIE (detail) SCREEN -->
+    <sc-if value="{{ isDokumentyDetail }}" hint-placeholder-val="{{ false }}">
+      <div class="screen-enter" style="flex:1; display:flex; flex-direction:column; background:#f0f0f8; height:844px">
+        <div style="background:#111; height:56px; display:flex; align-items:center; padding:0 16px; gap:12px; flex-shrink:0; position:relative">
+          <button style="background:none; border:none; cursor:pointer; padding:6px; color:white">
+            <i class="fa-solid fa-bars" style="font-size:18px"></i>
+          </button>
+          <div style="position:absolute; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:9px">
+            <svg width="24" height="26" sc-camel-view-box="400.9 201.5 598.3 651.4" fill="white">
+              <path d="m 990.7,648.5 c -7.2,-17.3 -16.8,-33.3 -25.3,-50.4 -5,-10 -10,-20 -14.9,-29.9 -12.6,-25.3 -25.2,-50.6 -37.8,-75.8 -14,-28 -27.9,-56 -41.9,-83.9 -12.7,-25.4 -25.4,-50.8 -38,-76.2 -8.8,-17.6 -17.5,-35.2 -26.3,-52.7 -2.4,-4.9 -5,-9.7 -7.3,-14.7 -0.2,-0.3 -0.3,-0.7 -0.5,-1 -18.2,-37.9 -57.1,-62.4 -99.2,-62.4 -42.4,0 -80.2,23.7 -98.8,61.6 L 415.2,635 l -1.6,3.2 c -8.3,15.7 -12.7,33.5 -12.7,51.4 0,5.6 0.4,11.1 1.2,16.6 1.4,9 3.9,17.9 7.4,26.3 5.4,12.7 13,24.1 22.7,34 l 0.3,0.3 c 49.1,53.1 151.5,86.1 267.1,86.1 31.5,0 63,-2.4 94.1,-7.6 28,-4.7 55.6,-11.7 82.1,-21.7 22.9,-8.7 45.1,-19.6 64.9,-34 12.3,-9 24.7,-18 34.3,-30 8.6,-10.7 15.2,-22.9 19.2,-36 3.3,-10.6 5,-21.6 5,-32.7 0,-14.5 -2.8,-29 -8.5,-42.4 z M 786,352 l -11.4,22.8 -172.1,345 -6.4,12.9 c -15.7,31.1 -47.9,52.4 -85.2,52.4 -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-16.2 4,-31.4 11.1,-44.8 l 1.7,-3.4 183.8,-368.6 1.6,-3.3 c 15.5,-31.8 48.1,-53.6 85.8,-53.6 52.7,0 95.5,42.8 95.5,95.5 0.1,14.5 -3.1,28.3 -8.9,40.6 z m 103.3,434.4 c -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-52.7 42.8,-95.5 95.5,-95.5 52.7,0 95.5,42.8 95.5,95.5 0,52.7 -42.7,95.5 -95.5,95.5 z"></path>
+            </svg>
+            <span style="color:white; font-size:20px; font-weight:700; letter-spacing:-0.4px">aptien</span>
+          </div>
+          <div style="margin-left:auto; display:flex; align-items:center; gap:13px">
+            <div style="width:34px; height:34px; border-radius:50%; background:conic-gradient(#ff6b6b 0deg,#ffd93d 90deg,#6bcb77 180deg,#4d96ff 270deg,#ff6b6b 360deg); overflow:hidden; display:flex; align-items:center; justify-content:center; border:1.5px solid rgba(255,255,255,.25)">
+              <svg width="20" height="20" sc-camel-view-box="0 0 20 20" fill="none">
+                <circle cx="10" cy="8" r="4" fill="rgba(0,0,0,.25)"></circle>
+                <ellipse cx="10" cy="18" rx="8" ry="5" fill="rgba(0,0,0,.2)"></ellipse>
+              </svg>
+            </div>
+            <i class="fa-solid fa-gear" style="color:white; font-size:17px; cursor:pointer"></i>
+          </div>
+        </div>
+
+        <div style="flex:1; overflow-y:auto; background:#f0f0f8; padding-bottom:24px">
+          <div style="display:flex; align-items:center; gap:8px; padding:16px 16px 12px">
+            <i class="fa-solid fa-house" style="color:#1572e8; font-size:15px; cursor:pointer" sc-camel-on-click="{{ goHome }}"></i>
+            <i class="fa-solid fa-chevron-right" style="color:#ccc; font-size:10px"></i>
+            <span style="color:#1a1a1a; font-size:14px; font-weight:600">Směrnice a dokumenty</span>
+          </div>
+
+          <div style="padding:0 16px 14px">
+            <div style="background:white; border-radius:999px; padding:10px 16px; display:flex; align-items:center; gap:10px; box-shadow:0 1px 4px rgba(0,0,0,.07)">
+              <i class="fa-solid fa-magnifying-glass" style="color:#B1B2B3; font-size:14px"></i>
+              <span style="font-size:13px; color:#B1B2B3">Vyhledejte dokument nebo kategorii</span>
+            </div>
+          </div>
+
+          <div style="padding:0 16px 16px">
+            <div sc-camel-on-click="{{ goDokumenty }}" style="display:inline-flex; align-items:center; gap:7px; padding:8px 16px; border-radius:999px; border:1px solid #e0e0e6; background:white; font-size:12px; font-weight:700; color:#4a4a52; cursor:pointer">
+              <i class="fa-solid fa-arrow-left" style="font-size:11px"></i>Zpět na kategorie
+            </div>
+          </div>
+
+          <div style="margin:0 16px 12px; background:white; border-radius:14px; overflow:hidden; box-shadow:0 1px 6px rgba(0,0,0,.07)">
+            <div style="display:flex; align-items:center; gap:12px; padding:16px">
+              <div style="width:38px; height:38px; border-radius:10px; background:{{ selectedDokBg }}; display:flex; align-items:center; justify-content:center; flex-shrink:0">
+                <i class="fa-solid fa-{{ selectedDokIcon }}" style="color:{{ selectedDokIconColor }}; font-size:16px"></i>
+              </div>
+              <div style="min-width:0">
+                <div style="font-size:14.5px; font-weight:800; color:#1a1a1a">{{ selectedDokTitle }}</div>
+                <div style="font-size:12px; color:#9aa0a6; margin-top:2px">{{ selectedDokCountLabel }}</div>
+              </div>
+            </div>
+            <sc-for list="{{ selectedDokDocs }}" as="d" hint-placeholder-count="1">
+              <div style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-top:1px solid #f2f2f2">
+                <div style="width:38px; height:38px; border-radius:50%; background:#f0f0f2; display:flex; align-items:center; justify-content:center; flex-shrink:0">
+                  <i class="fa-solid fa-file-lines" style="color:#7c8792; font-size:15px"></i>
+                </div>
+                <div style="flex:1; min-width:0">
+                  <div style="font-size:13.5px; font-weight:700; color:#1a1a1a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ d.title }}</div>
+                  <div style="font-size:11.5px; color:#9aa0a6; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ d.file }}</div>
+                </div>
+                <div style="font-size:11.5px; font-weight:700; color:#1572e8; cursor:pointer; flex-shrink:0; border:1.5px solid #d8d6e0; border-radius:999px; padding:6px 14px">OTEVŘÍT</div>
+              </div>
+            </sc-for>
+          </div>
+
+        </div>
+      </div>
+    </sc-if>
+
   </div>
 </div>
 </x-dc>
@@ -1002,6 +1460,14 @@ class Component extends DCLogic {
     omneDocsOpen: true,
     omneIssuedOpen: false,
     omneLinksOpen: false,
+    // Moje směrnice — id dokumentů potvrzených v této relaci (přesouvají se
+    // z „K potvrzení" do „Potvrzeno", stejný princip jako desktop confirmDoc).
+    smernConfirmedIds: [],
+    smernConfirmedOpen: false,
+    skolDoneOpen: false,
+    // Směrnice a dokumenty — obecná knihovna dokumentů (bez potvrzování),
+    // vybraná kategorie pro drill-down obrazovku.
+    selectedDokCat: null,
     messagesByConv: {
       0: [
         { id:1, isDate:true, isOwn:false, isOther:false, date:'08.07.2026' },
@@ -1076,6 +1542,104 @@ class Component extends DCLogic {
     { title:'Schůzka', subtitle:'test notifikace xy', start:'08.06.2026 16:34', end:'08.06.2026 16:49', author:'Hana Kocour', stamp:'16:34 | 08.06.2026', avatarBg:'conic-gradient(#ff6b6b 0deg,#ffd93d 90deg,#6bcb77 180deg,#4d96ff 270deg,#ff6b6b 360deg)' },
   ];
 
+
+  // ── MOJE SMĚRNICE DATA (design 1:1 dle mobilních screenů) ───────────────
+  // % SPLNĚNO = potvrzené / všechny přiřazené (nezávisí na termínu potvrzení),
+  // stejný princip jako v desktop prototypu (Aptien-pravidla-pouziti-UI.md §6.5.2).
+  SMERN_NOW = '02.09.2026';
+  SMERN_DOCS = [
+    { id:1,  title:'NOvá dokumentace manuál',     file:'Jak si nastavit workflow.pptx',                    overdueKind:'overdue',    overdueText:'307 dní po termínu' },
+    { id:2,  title:'new pdf',                     file:'Invoice-APT-0444.pdf',                             overdueKind:'overdue',    overdueText:'81 dní po termínu' },
+    { id:3,  title:'new pdf',                     file:'PENHE-2K-S-BG, HE-3K-S-BG_z_CE_2024_SK.pdf',       overdueKind:'overdue',    overdueText:'81 dní po termínu' },
+    { id:4,  title:'Nový řád 2026',                file:'Invoice-APT-0444.pdf',                             overdueKind:'overdue',    overdueText:'77 dní po termínu' },
+    { id:5,  title:'dokument pro všechny',         file:'invoice-Aptien-20260105-761.pdf',                  overdueKind:'overdue',    overdueText:'75 dní po termínu' },
+    { id:6,  title:'Organizační řád 2026',         file:'org_rad_2026.pdf',                                 overdueKind:'overdue',    overdueText:'62 dní po termínu' },
+    { id:7,  title:'Pracovní pozice',              file:'pozice.png',                                       overdueKind:'overdue',    overdueText:'54 dní po termínu' },
+    { id:8,  title:'Test pro všechny 16-06',       file:'9.png',                                            overdueKind:'overdue',    overdueText:'40 dní po termínu' },
+    { id:9,  title:'Bezpečnostní směrnice 2026',   file:'bezpecnost.pdf',                                   overdueKind:'overdue',    overdueText:'33 dní po termínu' },
+    { id:10, title:'GDPR poučení',                 file:'gdpr.pdf',                                         overdueKind:'overdue',    overdueText:'20 dní po termínu' },
+    { id:11, title:'KL Tor zireael',                file:'checklist.png',                                    overdueKind:'overdue',    overdueText:'9 dní po termínu' },
+    { id:12, title:'Test velikosti tile komponenty', file:'portr.png',                                       overdueKind:'noDeadline', overdueText:null },
+    { id:13, title:'Etický kodex',                 file:'etika.pdf',                                        overdueKind:'noDeadline', overdueText:null },
+  ];
+  SMERN_CONFIRMED = [
+    { name:'BOZP na pracovišti',              file:'Dummy Směrnice 9.docx',   confirmedAt:'09.07.2026' },
+    { name:'Dress policy',                    file:'Dummy document.docx',     confirmedAt:'09.07.2026' },
+    { name:'SOP pro XPR200',                  file:'Dummy Certifikát.docx',   confirmedAt:'09.07.2026' },
+    { name:'HR Policy',                       file:'2021-07-15.png',          confirmedAt:'09.07.2026' },
+    { name:'Organizační příručka',            file:'prirucka_2026.pdf',       confirmedAt:'09.07.2026' },
+    { name:'Etický kodex chování',            file:'eticky_kodex_v2.pdf',     confirmedAt:'03.07.2026' },
+    { name:'Směrnice o cestovních náhradách', file:'cestovni_nahrady.pdf',    confirmedAt:'03.07.2026' },
+    { name:'Pravidla home office',            file:'home_office.pdf',         confirmedAt:'28.06.2026' },
+    { name:'Whistleblowing — oznámení',       file:'oznameni.pdf',            confirmedAt:'28.06.2026' },
+    { name:'Zásady zpracování osobních údajů',file:'gdpr_zasady.pdf',         confirmedAt:'20.06.2026' },
+    { name:'Provozní řád skladu',             file:'sklad_rad.pdf',           confirmedAt:'20.06.2026' },
+    { name:'Krizový plán',                    file:'krizovy_plan.pdf',        confirmedAt:'15.06.2026' },
+    { name:'Směrnice o VOC',                  file:'voc_smernice.pdf',        confirmedAt:'15.06.2026' },
+    { name:'Pokyn ředitele č. 4/2026',        file:'pokyn_4_2026.pdf',        confirmedAt:'10.06.2026' },
+    { name:'Pracovní řád',                    file:'pracovni_rad.pdf',        confirmedAt:'10.06.2026' },
+    { name:'Manuál kvality',                  file:'manual_kvality.pdf',      confirmedAt:'02.06.2026' },
+    { name:'Postup reklamace',                file:'reklamace.pdf',           confirmedAt:'02.06.2026' },
+    { name:'Bezpečnostní list CHLS',          file:'bl_chls.pdf',             confirmedAt:'28.05.2026' },
+    { name:'Metodika hodnocení rizik',        file:'hodnoceni_rizik.pdf',     confirmedAt:'28.05.2026' },
+    { name:'Standard obsluhy VZV',            file:'vzv_standard.pdf',        confirmedAt:'20.05.2026' },
+    { name:'Interní audit – checklist',       file:'audit_checklist.pdf',     confirmedAt:'20.05.2026' },
+    { name:'Etický kodex dodavatele',         file:'eticky_dodavatel.pdf',    confirmedAt:'12.05.2026' },
+  ];
+  SMERN_CATS = [
+    { title:'Řád',                                      icon:'gavel',             bg:'#b8bcc8', iconColor:'#3a3f52', total:12, pending:12 },
+    { title:'Požární bezpečnost a ochrana zdraví',       icon:'fire-extinguisher', bg:'#cabde8', iconColor:'#4a2d80', total:1,  pending:0 },
+    { title:'Směrnice',                                  icon:'file-contract',     bg:'#e4e2ea', iconColor:'#4a4660', total:1,  pending:0 },
+    { title:'Pracovní postup',                           icon:'diagram-project',   bg:'#e8dfa8', iconColor:'#6b5c14', total:1,  pending:0 },
+    { title:'Norma',                                     icon:'certificate',       bg:'#e8c9a8', iconColor:'#7a4a1e', total:4,  pending:0 },
+  ];
+  plCount(n) { return n === 1 ? '1 dokument' : (n >= 2 && n <= 4 ? n + ' dokumenty' : n + ' dokumentů'); }
+
+  // ── MOJE ŠKOLENÍ DATA (stejný vzor jako Moje směrnice, §design 1:1) ─────
+  SKOL_PENDING = [
+    { id:1, title:'Vstupní školení BOZP',                     category:'BOZP',                  overdueKind:'overdue',   overdueText:'12 dní po termínu', inProgress:false },
+    { id:2, title:'Požární poplachové směrnice',              category:'Požární ochrana',       overdueKind:'soon',      overdueText:'za 2 dny',          inProgress:false },
+    { id:3, title:'GDPR poučení zaměstnanců',                 category:'GDPR',                  overdueKind:'ok',        overdueText:'za 14 dní',         inProgress:false },
+    { id:4, title:'Školení řidičů referentských vozidel',     category:'Firemní vozový park',   overdueKind:'ok',        overdueText:'za 21 dní',         inProgress:true, answered:3, ofTotal:8 },
+    { id:5, title:'Etický kodex a compliance',                category:'Compliance',            overdueKind:'noDeadline',overdueText:null,                inProgress:false },
+  ];
+  SKOL_DONE = [
+    { title:'Úvodní školení nového zaměstnance',        category:'Onboarding',    doneAt:'03.07.2026', pct:100 },
+    { title:'Pravidelné školení BOZP 2025',             category:'BOZP',          doneAt:'12.05.2026', pct:92 },
+    { title:'Phishing a kybernetická bezpečnost',       category:'IT bezpečnost', doneAt:'28.04.2026', pct:88 },
+    { title:'Použití OOPP',                             category:'Pomůcky',      doneAt:'15.03.2026', pct:95 },
+  ];
+  SKOL_TAGS = [
+    { label:'BOZP',            icon:'helmet-safety',     bg:'#a8c4ec', iconColor:'#2d5080', countLabel:'1 k vyplnění',  countColor:'#1572e8' },
+    { label:'Požární ochrana', icon:'fire-extinguisher', bg:'#e0c0c0', iconColor:'#802828', countLabel:'1 k vyplnění',  countColor:'#1572e8' },
+    { label:'GDPR',            icon:'shield-halved',     bg:'#c2b4e2', iconColor:'#4a2d80', countLabel:'1 k vyplnění',  countColor:'#1572e8' },
+    { label:'IT bezpečnost',   icon:'lock',              bg:'#a8d0e0', iconColor:'#1a5870', countLabel:'1 dokončeno',  countColor:'#5a5470' },
+    { label:'Compliance',      icon:'scale-balanced',    bg:'#b4bac8', iconColor:'#2a2f4a', countLabel:'1 k vyplnění',  countColor:'#1572e8' },
+    { label:'Onboarding',      icon:'people-arrows',     bg:'#d0c8b4', iconColor:'#5a4a28', countLabel:'1 dokončeno',  countColor:'#5a5470' },
+    { label:'Pomůcky',         icon:'users',             bg:'#b8d4b8', iconColor:'#285828', countLabel:'1 dokončeno',  countColor:'#5a5470' },
+    { label:'Dodavatelé',      icon:'handshake',         bg:'#d4d0a8', iconColor:'#585020', countLabel:'3 školení',    countColor:'#5a5470' },
+  ];
+
+  // ── SMĚRNICE A DOKUMENTY DATA (obecná knihovna, bez potvrzování — design
+  // 1:1 dle mobilních screenů) ─────────────────────────────────────────────
+  DOK_CATS = [
+    {
+      key:'it', title:'Přehled metodických pokynů IT bezpečnosti, instruktážní a školicí videa',
+      icon:'fingerprint', bg:'#a8c4ec', iconColor:'#2d5080',
+      docs:[ { title:'IT směrnice', file:'Jeff portrét bez pozadí.png' } ],
+    },
+    {
+      key:'navody', title:'Návody a přístrojová dokumentace',
+      icon:'book-open', bg:'#c2b4e2', iconColor:'#4a2d80',
+      docs:[ { title:'Návod k obsluze tiskárny', file:'navod_tiskarna.pdf' } ],
+    },
+    {
+      key:'rad', title:'Řád',
+      icon:'book', bg:'#b4bac8', iconColor:'#2a2f4a',
+      docs:[ { title:'Pracovní řád', file:'pracovni_rad.pdf' } ],
+    },
+  ];
+
   componentDidUpdate(prevProps, prevState) {
     const becameChat = this.state.screen === 'chat' && prevState.screen !== 'chat';
     const convChanged = this.state.screen === 'chat' && this.state.selectedConv !== prevState.selectedConv;
@@ -1111,19 +1675,102 @@ class Component extends DCLogic {
     }));
   }
 
+  // Moje směrnice — POTVRDIT přesune dokument z „K potvrzení" do „Potvrzeno"
+  // (stejný princip jako desktop confirmDoc, viz Aptien-aplikace-offline.html).
+  confirmDoc(id) {
+    this.setState(s => ({ smernConfirmedIds: [...s.smernConfirmedIds, id] }));
+  }
+
   renderVals() {
     const {
       screen, selectedConv, messageText, searchText, messagesByConv,
       omneProfileOpen, omneDocsOpen, omneIssuedOpen, omneLinksOpen,
+      smernConfirmedIds, smernConfirmedOpen, skolDoneOpen, selectedDokCat,
     } = this.state;
     const conv = this.conversations[selectedConv] || this.conversations[0];
     const messages = messagesByConv[selectedConv] || [];
+
+    // ── Moje směrnice ──
+    const smernPendingDocs = this.SMERN_DOCS.filter(d => !smernConfirmedIds.includes(d.id));
+    const smernJustConfirmed = this.SMERN_DOCS.filter(d => smernConfirmedIds.includes(d.id))
+      .map(d => ({ name: d.title, file: d.file, confirmedAt: this.SMERN_NOW }));
+    const smernConfirmedRows = [...this.SMERN_CONFIRMED, ...smernJustConfirmed];
+    const smernTotal = this.SMERN_DOCS.length + this.SMERN_CONFIRMED.length;
+    const smernConfirmedCount = smernConfirmedRows.length;
+    const smernPendingCount = smernPendingDocs.length;
+    const smernPct = Math.round((smernConfirmedCount / smernTotal) * 100);
+    const smernAllDone = smernPendingCount === 0;
+    const smernOverdueCount = smernPendingDocs.filter(d => d.overdueKind === 'overdue').length;
+    const smernNoDeadlineCount = smernPendingDocs.filter(d => d.overdueKind === 'noDeadline').length;
+    const smernPendingRows = smernPendingDocs.map(d => {
+      const overdue = d.overdueKind === 'overdue';
+      return {
+        ...d,
+        badgeStyle: 'background:' + (overdue ? '#fde8e8' : '#e8f8ed') + ';color:' + (overdue ? '#d9463e' : '#2E7D32') + ';padding:3px 8px;border-radius:3px;font-size:10px;font-weight:700;white-space:nowrap',
+        badgeText: overdue ? d.overdueText : '∞  Bez termínu',
+        btnStyle: 'background:' + (overdue ? '#d9463e' : '#00C853') + ';color:#fff;padding:8px 16px;border-radius:999px;font-weight:800;font-size:11px;cursor:pointer;white-space:nowrap',
+        iconBg: overdue ? '#fde8e8' : '#e8f8ed', iconColor: overdue ? '#d9463e' : '#2E7D32', icon: overdue ? 'circle-exclamation' : 'infinity',
+        onConfirm: () => this.confirmDoc(d.id),
+      };
+    });
+    const smernCatsRows = this.SMERN_CATS.map(c => ({
+      ...c,
+      countLabel: c.pending ? (c.pending + ' k potvrzení') : this.plCount(c.total),
+      countColor: c.pending ? '#1572e8' : '#5a5470',
+    }));
+
+    // ── Moje školení ──
+    const SKOL_DUE = {
+      overdue: { bg: '#fde8e8', color: '#d9463e' },
+      soon:    { bg: '#fff3e0', color: '#FF6D00' },
+      ok:      { bg: '#e8f8ed', color: '#2E7D32' },
+      noDeadline: { bg: '#e8f8ed', color: '#2E7D32' },
+    };
+    const skolPendingRows = this.SKOL_PENDING.map(t => {
+      const due = SKOL_DUE[t.overdueKind] || SKOL_DUE.ok;
+      const badgeText = t.overdueKind === 'noDeadline' ? '∞  Bez termínu' : t.overdueText;
+      const inProgress = !!t.inProgress;
+      return {
+        ...t,
+        badgeStyle: 'background:' + due.bg + ';color:' + due.color + ';padding:3px 8px;border-radius:3px;font-size:10px;font-weight:700;white-space:nowrap',
+        badgeText,
+        btnStyle: 'color:#fff;padding:8px 16px;border-radius:999px;font-weight:800;font-size:11px;white-space:nowrap;background:' + (inProgress ? '#1572e8' : due.color),
+        btnLabel: inProgress ? 'POKRAČOVAT' : 'ZAHÁJIT ŠKOLENÍ',
+        iconBg: t.overdueKind === 'overdue' ? '#fde8e8' : (t.overdueKind === 'soon' ? '#fff3e0' : '#e3edfd'),
+        iconColor: t.overdueKind === 'overdue' ? '#d9463e' : (t.overdueKind === 'soon' ? '#FF6D00' : '#1572e8'),
+        icon: 'graduation-cap',
+      };
+    });
+    const skolDoneRows = this.SKOL_DONE.map(t => {
+      const pctMeta = t.pct >= 90 ? { bg: '#e8f8ed', color: '#2E7D32' } : (t.pct >= 50 ? { bg: '#fff3e0', color: '#a05a1e' } : { bg: '#fde8e8', color: '#d9463e' });
+      return { ...t, pctLabel: t.pct + ' %', pctStyle: 'display:inline-flex;padding:3px 8px;border-radius:999px;font-size:10px;font-weight:700;white-space:nowrap;background:' + pctMeta.bg + ';color:' + pctMeta.color };
+    });
+    const skolPendingCount = this.SKOL_PENDING.length;
+    const skolDoneCount = this.SKOL_DONE.length;
+    const skolTotal = skolPendingCount + skolDoneCount;
+    const skolPct = skolTotal ? Math.round((skolDoneCount / skolTotal) * 100) : 0;
+    const skolOverdueCount = this.SKOL_PENDING.filter(t => t.overdueKind === 'overdue').length;
+    const skolInProgressCount = this.SKOL_PENDING.filter(t => t.inProgress).length;
+    const skolTagsRows = this.SKOL_TAGS;
+
+    // ── Směrnice a dokumenty ──
+    const dokCatsRows = this.DOK_CATS.map(c => ({
+      ...c,
+      countLabel: this.plCount(c.docs.length),
+      onClick: () => this.setState({ screen: 'dokumenty-detail', selectedDokCat: c.key }),
+    }));
+    const selectedDokCatObj = selectedDokCat ? this.DOK_CATS.find(c => c.key === selectedDokCat) : null;
 
     return {
       isHome: screen === 'home',
       isConversations: screen === 'conversations',
       isChat: screen === 'chat',
       isOMne: screen === 'omne',
+      isSmernice: screen === 'smernice',
+      isSmerniceDetail: screen === 'smernice-detail',
+      isSkoleni: screen === 'skoleni',
+      isDokumenty: screen === 'dokumenty',
+      isDokumentyDetail: screen === 'dokumenty-detail',
       chatTitle: conv.title,
       messages,
       messageText,
@@ -1131,6 +1778,10 @@ class Component extends DCLogic {
       goHome: () => this.setState({ screen: 'home' }),
       goConversations: () => this.setState({ screen: 'conversations' }),
       goOMne: () => this.setState({ screen: 'omne' }),
+      goSmernice: () => this.setState({ screen: 'smernice' }),
+      goSmerniceDetail: () => this.setState({ screen: 'smernice-detail' }),
+      goSkoleni: () => this.setState({ screen: 'skoleni' }),
+      goDokumenty: () => this.setState({ screen: 'dokumenty', selectedDokCat: null }),
       goChat0: () => this.setState({ screen: 'chat', selectedConv: 0 }),
       goChat1: () => this.setState({ screen: 'chat', selectedConv: 1 }),
       goChat2: () => this.setState({ screen: 'chat', selectedConv: 2 }),
@@ -1138,6 +1789,39 @@ class Component extends DCLogic {
       onMessageKeyDown: (e) => { if (e.key === 'Enter') this.sendMessage(); },
       sendMessage: () => this.sendMessage(),
       onSearchChange: (e) => this.setState({ searchText: e.target.value }),
+
+      // Moje směrnice
+      smernPendingCount, smernConfirmedCount, smernTotal,
+      smernPctText: smernPct + ' %',
+      smernBarStyle: 'height:100%;background:#1572e8;width:' + smernPct + '%;border-radius:3px;transition:width .3s',
+      smernAllDone, smernHasPending: !smernAllDone,
+      smernHasOverdue: smernOverdueCount > 0, smernOverdueCount,
+      smernHasNoDeadline: smernNoDeadlineCount > 0, smernNoDeadlineCount,
+      smernPendingRows, smernConfirmedRows,
+      smernConfirmedOpen, smernConfirmedChevron: smernConfirmedOpen ? 'fa-solid fa-chevron-down' : 'fa-solid fa-chevron-right',
+      toggleSmernConfirmed: () => this.setState(s => ({ smernConfirmedOpen: !s.smernConfirmedOpen })),
+      smernCatsRows,
+
+      // Moje školení
+      skolPendingCount, skolDoneCount, skolTotal,
+      skolPctText: skolPct + ' %',
+      skolBarStyle: 'height:100%;background:#1572e8;width:' + skolPct + '%;border-radius:3px;transition:width .3s',
+      skolHasPending: skolPendingCount > 0,
+      skolHasOverdue: skolOverdueCount > 0, skolOverdueCount,
+      skolHasInProgress: skolInProgressCount > 0, skolInProgressCount,
+      skolPendingRows, skolDoneRows,
+      skolDoneOpen, skolDoneChevron: skolDoneOpen ? 'fa-solid fa-chevron-down' : 'fa-solid fa-chevron-right',
+      toggleSkolDone: () => this.setState(s => ({ skolDoneOpen: !s.skolDoneOpen })),
+      skolTagsRows,
+
+      // Směrnice a dokumenty
+      dokCatsRows,
+      selectedDokTitle: selectedDokCatObj ? selectedDokCatObj.title : '',
+      selectedDokIcon: selectedDokCatObj ? selectedDokCatObj.icon : '',
+      selectedDokBg: selectedDokCatObj ? selectedDokCatObj.bg : '',
+      selectedDokIconColor: selectedDokCatObj ? selectedDokCatObj.iconColor : '',
+      selectedDokCountLabel: selectedDokCatObj ? this.plCount(selectedDokCatObj.docs.length) : '',
+      selectedDokDocs: selectedDokCatObj ? selectedDokCatObj.docs : [],
 
       // O mně
       profileOpen: omneProfileOpen,

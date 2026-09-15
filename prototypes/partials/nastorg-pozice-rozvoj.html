@@ -5,10 +5,10 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap">
 <!--
-  APTIEN — MODAL „UPRAVIT PRACOVNÍ POZICI" / SEKCE „Dokumenty" · STATICKÝ BLOK
+  APTIEN — MODAL „UPRAVIT PRACOVNÍ POZICI" / SEKCE „Rozvoj zaměstnance" · STATICKÝ BLOK
   ============================================================================
   Vlož CELÝ blok. NEREKONSTRUUJ ho. Obsah sekce:
-  beze změny: panel „Pouze pro tuto pracovní pozici“ + převzaté distribuční listy, každý SBALITELNÝ (chevron-down = otevřeno, chevron-right = zavřeno).
+  přejmenováno z „Plánované aktivity“, obsah beze změny: panel „Pouze pro tuto pracovní pozici“ + převzaté aktivity ve SBALITELNÝCH skupinách (chevron-down = otevřeno, chevron-right = zavřeno).
 
   Skladba celého okna je popsaná v Aptien-pravidla-pouziti-UI.md §11.5.
   Rám (hlavička · levá navigace 246px · patička) je u všech sekcí STEJNÝ —
@@ -113,15 +113,15 @@
 <span style="flex: 1 1 0%; min-width: 0px;">Onboarding checklist</span>
 <span style="font-size: 12px; font-weight: 600; color: rgb(164, 169, 186);">6</span>
 </div>
-<div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
-<i class="fa-solid fa-calendar-check" style="color: rgb(123, 128, 146);"></i>
-<span style="flex: 1 1 0%; min-width: 0px;">Rozvoj zaměstnance</span>
-<span style="font-size: 12px; font-weight: 600; color: rgb(164, 169, 186);">39</span>
-</div>
 <div class="apt-modal-nav-item" style="background: rgb(74, 127, 232); color: rgb(255, 255, 255); font-weight: 700;">
-<i class="fa-solid fa-folder-open" style="color: rgb(255, 255, 255);"></i>
+<i class="fa-solid fa-calendar-check" style="color: rgb(255, 255, 255);"></i>
+<span style="flex: 1 1 0%; min-width: 0px;">Rozvoj zaměstnance</span>
+<span style="font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.85);">39</span>
+</div>
+<div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
+<i class="fa-solid fa-folder-open" style="color: rgb(123, 128, 146);"></i>
 <span style="flex: 1 1 0%; min-width: 0px;">Dokumenty</span>
-<span style="font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.85);">11</span>
+<span style="font-size: 12px; font-weight: 600; color: rgb(164, 169, 186);">11</span>
 </div>
 <div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
 <i class="fa-solid fa-chalkboard-user" style="color: rgb(123, 128, 146);"></i>
@@ -130,15 +130,17 @@
 </div>
 </div>
 <div class="apt-modal-content">
-<div class="apt-modal-h2">Dokumenty</div>
+<div class="apt-modal-h2">Rozvoj zaměstnance</div>
 <div class="apt-panel">
 <div class="apt-panel-head">
 <i class="fa-solid fa-user-group" style="color: rgb(74, 127, 232); font-size: 14px;"></i>
 <span class="apt-panel-title">Pouze pro tuto pracovní pozici</span>
+<div style="flex: 1 1 0%;"></div>
+<div class="apt-btn-blue">PŘIDAT NOVOU AKTIVITU</div>
 </div>
 <div style="padding: 14px 18px 18px;">
-<div style="font-size: 13px; color: rgb(123, 128, 146); margin-bottom: 12px;">Distribuční listy navázané přímo na tuto pracovní pozici.</div>
-<div class="apt-note">Tato pracovní pozice není v žádném distribučním listu, takže k ní není přiřazen žádný dokument.</div>
+<div style="font-size: 13px; color: rgb(123, 128, 146); margin-bottom: 12px;">Aktivity nastavené přímo pro tuto pracovní pozici.</div>
+<div class="apt-note">Pro tuto pracovní pozici zatím není vyžadována žádná plánovaná aktivita.</div>
 </div>
 </div>
 <div style="display: flex; align-items: center; gap: 12px; margin: 0px 0px 12px;">
@@ -147,87 +149,29 @@
 </div>
 <div class="apt-panel" style="background: rgb(250, 251, 253);">
 <div class="apt-panel-head" style="background: rgb(242, 244, 249);">
-<i class="fa-solid fa-people-group" style="color: rgb(123, 128, 146); font-size: 13px;"></i>
+<i class="fa-solid fa-lock" style="color: rgb(123, 128, 146); font-size: 13px;"></i>
 <span class="apt-panel-title">Pro všechny zaměstnance</span>
-<span class="apt-count-pill">11</span>
+<span class="apt-count-pill">39</span>
 </div>
-<div style="padding: 12px 18px 4px; font-size: 13px; color: rgb(123, 128, 146);">Distribuční listy platné pro každého zaměstnance bez ohledu na pracovní pozici. Změna se projeví u všech pozic.</div>
-<div class="apt-doc-list">
-<div class="apt-doc-head" style="cursor: pointer;">
+<div style="padding: 12px 18px 4px; font-size: 13px; color: rgb(123, 128, 146);">Tyto aktivity platí pro každého zaměstnance bez ohledu na pracovní pozici. Odsud je nelze měnit.</div>
+<div class="apt-group">
+<div class="apt-group-head" style="cursor: pointer;">
 <i class="fa-solid fa-chevron-down" style="font-size: 11px; color: rgb(123, 128, 146); width: 11px; text-align: center;"></i>
-<i class="fa-solid fa-list" style="font-size: 12px; color: rgb(144, 150, 166);"></i>
-<div style="min-width: 0px;">
-<div style="font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: rgb(144, 150, 166);">Distribuční list</div>
+<span>Školení a osobní rozvoj</span><span class="apt-count-pill">3</span>
 </div>
-<span class="apt-count-pill">1</span>
-<div style="flex: 1 1 0%;"></div>
-<div style="display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: rgb(21, 114, 232); white-space: nowrap;">
-<i class="fa-solid fa-circle-check" style="font-size: 12px;"></i>Vyžaduje potvrzení · Za 5 dní
+<div class="apt-act-row"><div class="apt-act-name">Pohovor se zaměstnacem</div><span class="apt-tag-grey">Ročně</span></div>
+<div class="apt-act-row"><div class="apt-act-name">Pravidelné školení BOZP</div><span class="apt-tag-grey">Ročně</span></div>
+<div class="apt-act-row"><div class="apt-act-name">Revize mzdy</div><span class="apt-tag-grey">Ročně</span></div>
 </div>
-</div>
-<div style="background: rgb(255, 255, 255); border-top: 1px solid rgb(241, 242, 247); padding: 11px 16px;">
-<div style="font-size: 13px; color: rgb(63, 68, 87);">Test notifikace 1</div>
-<div class="apt-doc-file"><i class="fa-solid fa-file-image" style="color: rgb(74, 127, 232); font-size: 12px;"></i>IMAP _ automatick_ zalo_en_ _ 1 klik schv_lit.png</div>
-<div class="apt-doc-file"><i class="fa-solid fa-file-image" style="color: rgb(74, 127, 232); font-size: 12px;"></i>Hotovo Sticker.png</div>
-</div>
-</div>
-<div class="apt-doc-list">
-<div class="apt-doc-head" style="cursor: pointer;">
+<div class="apt-group">
+<div class="apt-group-head" style="cursor: pointer;">
 <i class="fa-solid fa-chevron-down" style="font-size: 11px; color: rgb(123, 128, 146); width: 11px; text-align: center;"></i>
-<i class="fa-solid fa-list" style="font-size: 12px; color: rgb(144, 150, 166);"></i>
-<div style="min-width: 0px;">
-<div style="font-size: 14px; font-weight: 700; color: rgb(63, 68, 87);">it směrnice</div>
-<div style="font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: rgb(144, 150, 166);">Distribuční list</div>
+<span>před nástupem</span><span class="apt-count-pill">4</span>
 </div>
-<span class="apt-count-pill">1</span>
-<div style="flex: 1 1 0%;"></div>
-<div style="display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: rgb(123, 128, 146); white-space: nowrap;">
-<i class="fa-solid fa-circle-info" style="font-size: 12px;"></i>Pouze zveřejněno
-</div>
-</div>
-<div style="background: rgb(255, 255, 255); border-top: 1px solid rgb(241, 242, 247); padding: 11px 16px;">
-<div style="font-size: 13px; color: rgb(63, 68, 87);">IT směrnice</div>
-<div class="apt-doc-file"><i class="fa-solid fa-file-image" style="color: rgb(74, 127, 232); font-size: 12px;"></i>Jeff portrét bez pozadí.png</div>
-</div>
-</div>
-<div class="apt-doc-list">
-<div class="apt-doc-head" style="cursor: pointer;">
-<i class="fa-solid fa-chevron-down" style="font-size: 11px; color: rgb(123, 128, 146); width: 11px; text-align: center;"></i>
-<i class="fa-solid fa-list" style="font-size: 12px; color: rgb(144, 150, 166);"></i>
-<div style="min-width: 0px;">
-<div style="font-size: 14px; font-weight: 700; color: rgb(63, 68, 87);">Nová distrivuce pro všechny15-06</div>
-<div style="font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: rgb(144, 150, 166);">Distribuční list</div>
-</div>
-<span class="apt-count-pill">1</span>
-<div style="flex: 1 1 0%;"></div>
-<div style="display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: rgb(21, 114, 232); white-space: nowrap;">
-<i class="fa-solid fa-circle-check" style="font-size: 12px;"></i>Vyžaduje potvrzení · Za 4 dny
-</div>
-</div>
-<div style="background: rgb(255, 255, 255); border-top: 1px solid rgb(241, 242, 247); padding: 11px 16px;">
-<div style="font-size: 13px; color: rgb(63, 68, 87);">dokument pro všechny</div>
-<div class="apt-doc-file"><i class="fa-solid fa-file-pdf" style="color: rgb(198, 40, 40); font-size: 12px;"></i>invoice-Aptien-20260105-76140.pdf</div>
-</div>
-</div>
-<div class="apt-doc-list">
-<div class="apt-doc-head" style="cursor: pointer;">
-<i class="fa-solid fa-chevron-down" style="font-size: 11px; color: rgb(123, 128, 146); width: 11px; text-align: center;"></i>
-<i class="fa-solid fa-list" style="font-size: 12px; color: rgb(144, 150, 166);"></i>
-<div style="min-width: 0px;">
-<div style="font-size: 14px; font-weight: 700; color: rgb(63, 68, 87);">Nový řád 2026</div>
-<div style="font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: rgb(144, 150, 166);">Distribuční list</div>
-</div>
-<span class="apt-count-pill">1</span>
-<div style="flex: 1 1 0%;"></div>
-<div style="display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: rgb(21, 114, 232); white-space: nowrap;">
-<i class="fa-solid fa-circle-check" style="font-size: 12px;"></i>Vyžaduje potvrzení · Za 5 dní
-</div>
-</div>
-<div style="background: rgb(255, 255, 255); border-top: 1px solid rgb(241, 242, 247); padding: 11px 16px;">
-<div style="font-size: 13px; color: rgb(63, 68, 87);">Nový řád 2026</div>
-<div class="apt-doc-file"><i class="fa-solid fa-file-pdf" style="color: rgb(198, 40, 40); font-size: 12px;"></i>Invoice-APT-0444.pdf</div>
-<div class="apt-doc-file"><i class="fa-solid fa-file-image" style="color: rgb(74, 127, 232); font-size: 12px;"></i>logo.png</div>
-</div>
+<div class="apt-act-row"><div class="apt-act-name">Hlídání certifikátu</div><span class="apt-tag-grey">Nepravidelná</span></div>
+<div class="apt-act-row"><div class="apt-act-name">hlídání certifikátu 2</div><span class="apt-tag-grey">Nepravidelná</span></div>
+<div class="apt-act-row"><div class="apt-act-name">Mohu zadat do šablony odpovědnou osobu</div><span class="apt-tag-grey">Jednorázová</span></div>
+<div class="apt-act-row"><div class="apt-act-name">Vstupní lékařská prohlídka</div><span class="apt-tag-grey">Jednorázová</span></div>
 </div>
 </div>
 </div>

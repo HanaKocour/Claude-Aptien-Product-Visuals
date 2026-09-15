@@ -1275,9 +1275,9 @@ Skladba karty: **řádek filtrů** → **sloupec karet pozic**.
   jiná komponenta než hledání v toolbaru evidence (§5.1).
 - **Karta pozice** (`.poz-card`): bílá, `border:1px solid #e8e6f0`,
   radius 8px, padding `14px 18px`, mezera 10px. Obsahuje název pozice
-  (14px, řez 700, `#3f4457`), pod ním **obsazení** = řádky
-  avatar 26px + jméno (13px, `#6b7280`). Vpravo nahoře ikona
-  `box-archive` (`#9096a6`) = archivace pozice.
+  (14px, řez 700, `#3f4457`), pod ním **obsazení** = řádky s **jen
+  jménem** (13px, `#6b7280`, `margin-top:9px`) — **bez avataru**.
+  Vpravo nahoře ikona `box-archive` (`#9096a6`) = archivace pozice.
   **Pozice bez obsazení je normální stav** — karta pak obsahuje jen název.
 - Klik na kartu otevírá **modal „Upravit pracovní pozici"** (§11.5),
   ne drawer.
@@ -1320,16 +1320,17 @@ Detail pracovní pozice se **NEOTEVÍRÁ jako drawer** (§7). Je to
 
 | Skupina | Položky (ikona) |
 |---|---|
-| `POZICE` | Základní nastavení `sliders` · Organizační zařazení `sitemap` · Pracovní náplň `list-check` |
-| `POŽADAVKY` | Kvalifikace a způsobilost `graduation-cap` · Požadavky pracovní pozice `clipboard-check` · Bezpečnostní a zdravotní rizika `triangle-exclamation` |
-| `NÁVAZNÉ` | Plánované aktivity `calendar-check` (počet) · Dokumenty `folder-open` (počet) |
+| `POZICE` | Základní info `sliders` · Přiřazení zaměstnanci `users` · Organizační zařazení `sitemap` · Pracovní náplň `list-check` |
+| `POŽADAVKY` | Požadavky na kvalifikaci `graduation-cap` · Požadavky na způsobilost `user-check` · Vybavení, nástroje, systémy `screwdriver-wrench` · Pracoviště a rizika `triangle-exclamation` |
+| `NÁVAZNÉ` | Onboarding checklist `clipboard-check` (počet) · Rozvoj zaměstnance `calendar-check` (počet) · Dokumenty `folder-open` (počet) · Školení `chalkboard-user` (**bez počtu**) |
 
 - Nadpis skupiny: 10.5px, uppercase, letter-spacing `.09em`, `#a4a9ba`.
 - **Aktivní položka** = modrá pilulka `#4a7fe8`, bílý text, řez 700,
   radius 8px, ikona bílá. **Neaktivní** = průhledná, text `#2b2540`
   řez 500, ikona `#7b8092`.
-- Skupina `NÁVAZNÉ` zobrazuje vpravo počet (aktivní bíle, jinak `#a4a9ba`).
-- **Výchozí otevřená sekce = `Základní nastavení`** (`pozModalSection`).
+- Skupina `NÁVAZNÉ` zobrazuje vpravo počet (aktivní bíle, jinak `#a4a9ba`)
+  — **kromě `Školení`, to badge nikdy nemá** (design ho tam nedefinuje).
+- **Výchozí otevřená sekce = `Základní info`** (`pozModalSection`).
 
 **Formulářové prvky v obsahu (pevné):**
 
@@ -1339,24 +1340,98 @@ Detail pracovní pozice se **NEOTEVÍRÁ jako drawer** (§7). Je to
 - `select`: bílý, `border:1px solid #d9dde8`, radius 5px, výchozí hodnota
   `---`, vpravo `chevron-down`;
 - rozvržení dvousloupcové `1fr 1fr`, mezery `22px 46px`, max. šířka 1040px;
-- **pilulka zaměstnance** (`Přiřazení zaměstnanci`): pozadí `#4a7fe8`,
-  bílý text 13px řez 600, vlevo avatar 24px — **fotka, jinak světlý
-  kroužek `#dfe6f5` s obecnou ikonou `user`**, nikdy barevné iniciály;
-  za posledním chipem kruhové tlačítko `user-plus` s modrým lemem;
-- **řádek přiřazené položky** (procesy, požadavky): bílý pruh
-  `border:1px solid #eceef5`, radius 5px, text **`#c2703a`**, vpravo
-  `trash`; prázdný stav = tentýž pruh s textem
-  „Žádný přiřazený pracovní proces".
+- **richtextové pole** (`.apt-rte-toolbar` + `.apt-rte-body`) — **VŠECHNA
+  víceřádková textová pole v modalu** (tj. každé místo, kde byla dřív
+  obyčejná `.apt-f-area`) mají tuto lištu, **bez výjimky** — obyčejná
+  `.apt-f-area` (bez lišty) se v tomto modalu už nikde nepoužívá; mimo
+  modal (např. formulář školení, editace evidence) zůstává `.apt-f-area`
+  beze změny a lištu nedostává. Lišta nástrojů: bílá,
+  `border:1px solid #e2e5ef` (spodní hrana světlejší `#eef0f6`), radius
+  `6px 6px 0 0`, padding `5px 8px`; ikony `bold` · `italic` · `underline`,
+  oddělovač (`1px × 14px`, `#e2e5ef`), `list-ul` · `list-ol` · `link` —
+  všechny `11px`, `#7b8092`, padding `5px 7px`. Tělo hned pod lištou:
+  bílé, lem bez horní hrany (navazuje na lištu), radius `0 0 6px 6px`,
+  min. výška 90px, padding `8px 11px`. Je to **jen vzhled** (statický
+  blok), žádná funkční editace textu.
 
-**Sekce `Plánované aktivity` a `Dokumenty` — dvě úrovně dědičnosti:**
+  | Sekce | Pole s richtextem |
+  |---|---|
+  | Základní info | Další informace k pracovní pozici |
+  | Organizační zařazení | Další informace k organizačnímu zařazení |
+  | Pracovní náplň | Pracovní náplň · Popis odpovědnosti · Další informace k pracovní náplni |
+  | Požadavky na kvalifikaci | Požadavky na vzdělání a kvalifikaci · Požadavky na praxi · Požadavky na dovednosti |
+  | Požadavky na způsobilost | Požadavky na zdravotní způsobilost · Další požadavky na způsobilost |
+  | Vybavení, nástroje, systémy | Požadavky na pracovní pomůcky · Další požadavky pracovní pozice |
+  | Pracoviště a rizika | Bezpečnostní rizika pracovní pozice · Zdravotní rizika pracovní pozice · Další rizika |
+
+  Jednořádková pole (`input`) a výběrová pole (`select`, katalogový
+  výběr) richtext lištu **nikdy** nemají — patří jen k víceřádkovým
+  textovým polím výše.
+- **katalogový select** (kvalifikace, způsobilost, vybavení, rizika) —
+  **skutečný funkční `<select class="apt-native-select">` s `<optgroup>`
+  kategoriemi**, přesně podle designu (viz jeho `<select>` element, ne jen
+  vzhled jako u ostatních `.apt-f-*` polí). Klik na pole **otevírá nativní
+  dropdown prohlížeče** — u zavřeného pole nic dalšího implementovat
+  netřeba, otevírání je čistě nativní chování `<select>`u. Katalog je
+  **jeden sdílený seznam pro všechny 4 sekce** (stejný jako v designu),
+  12 kategorií: Adaptace · Aplikace a licence · Auta · Fyzické předpoklady
+  · Klíče a vstupní karty · Ochranné prostředky · Oprávnění · Počítače ·
+  Vybavení · Zdravotní · Znalosti a dovednosti · Školení. Styl:
+  bílé pozadí, `border:1px solid #d9dde8`, radius 5px, výška 34px, text
+  `#2b2540`.
+  ⛔ Dřívější `.apt-f-select` div s `<span>---</span>` + `chevron-down`
+  (bez skutečné interaktivity) byl u těchto 4 polí **chybný** — nešlo ho
+  otevřít vůbec, protože to nebyl `<select>`. U ostatních výběrů v appce
+  (Organizační zařazení, „Vyberte proces…" v Pracovní náplni) tahle
+  dekorativní varianta zůstává záměrně — jde jen o statický vzhled, ne
+  o repliku designu s reálným katalogem.
+- **řádek přiřazené položky** (kvalifikace, způsobilost, vybavení, rizika):
+  bílý pruh `border:1px solid #eceef5`, radius 5px, text **`#c2703a`**,
+  vpravo `trash`; prázdný stav = tentýž pruh s textem
+  „Žádný přiřazený pracovní proces". **Výčet je vždy z pevně daného
+  katalogu** (stejně jako v designu, ze kterého modal vychází) —
+  položka se **nepřidává jako volný text ani se neotevírá do detailu**;
+  přidání jde výhradně přes katalogový select + pilulku `PŘIDAT`,
+  odebrání jen ikonou `trash` na řádku. Řádky samotné nejsou klikací
+  (žádné rozkliknutí/detail) — je to prostý plochý seznam vybraných
+  katalogových položek. **Funkční v master prototypu** (§ výše): PŘIDAT
+  přidá vybranou položku (kontrola duplicity podle názvu), koš ji
+  odebere — stav žije v `pozSel_kvalifikace` / `pozSel_zpusobilost` /
+  `pozSel_vybaveni` / `pozSel_rizikaReqs` (viz `addPozSel`/`removePozSel`).
+  V partialech (statické snímky bez `<script>`) select zůstává reálný
+  a jde otevřít (nativní chování prohlížeče), ale PŘIDAT/koš tam
+  nefungují — partial nemá běžící frameworkový stav, stejná konvence
+  jako u ostatních partialů v repu.
+
+**Sekce `Základní info`:** jen `Název pracovní pozice` / `Krátký popis` /
+`Další informace k pracovní pozici`, dvousloupcové rozvržení. **Chipy
+zaměstnanců tu už nejsou** — mají vlastní sekci vedle.
+
+**Sekce `Přiřazení zaměstnanci`:** krátký úvodní text + **pilulky
+zaměstnanců** obsazujících pozici: pozadí `#4a7fe8`, bílý text 13px řez
+600, vlevo avatar 24px — **fotka, jinak světlý kroužek `#dfe6f5`
+s obecnou ikonou `user`**, nikdy barevné iniciály; za posledním chipem
+kruhové tlačítko `user-plus` s modrým lemem.
+
+**Sekce `Požadavky na kvalifikaci` / `Požadavky na způsobilost` /
+`Vybavení, nástroje, systémy` / `Pracoviště a rizika`:** shodný vzorec —
+2–3 textarea pole (volný popis) + katalogový výběr + seznam vybraných
+položek jako **řádek přiřazené položky** (viz výše). `Vybavení, nástroje,
+systémy` je přejmenovaná bývalá „Požadavky pracovní pozice" — pole
+**„Mzdové podmínky" bylo odstraněno**. `Pracoviště a rizika` je
+přejmenovaná bývalá „Bezpečnostní a zdravotní rizika", obsah beze změny.
+
+**Sekce `Rozvoj zaměstnance` a `Dokumenty` — dvě úrovně dědičnosti:**
+(`Rozvoj zaměstnance` je přejmenovaná bývalá „Plánované aktivity",
+obsah beze změny)
 
 1. panel **„Pouze pro tuto pracovní pozici"** (hlavička `#f4f7fd`, ikona
-   `user-group` modrá) — u aktivit i s tlačítkem `PŘIDAT NOVOU AKTIVITU`;
+   `user-group` modrá) — u rozvoje i s tlačítkem `PŘIDAT NOVOU AKTIVITU`;
    prázdný stav = **modrá poznámka** (pozadí `#eef4fe`, levý pruh
    `3px solid #4a7fe8`);
 2. oddělovač **„PŘEVZATO Z NASTAVENÍ ZAMĚSTNANCŮ"** (10.5px uppercase
    `#a4a9ba` + tenká linka);
-3. panel **„Pro všechny zaměstnance"** s počtem; u aktivit má ikonu
+3. panel **„Pro všechny zaměstnance"** s počtem; u rozvoje má ikonu
    `lock` a větu „Odsud je nelze měnit." Uvnitř **sbalitelné skupiny**
    (§11.5.1); položka = název (`#4a7fe8`) + **šedý štítek periodicity**
    `#9096a6` (Ročně / Nepravidelná / Jednorázová).
@@ -1365,21 +1440,36 @@ Detail pracovní pozice se **NEOTEVÍRÁ jako drawer** (§7). Je to
    (modře, `circle-check`) nebo `Pouze zveřejněno` (šedě, `circle-info`);
    pod tím název dokumentu a soubory (`file-pdf` červeně, `file-image` modře).
 
+**Sekce `Školení` — dvě úrovně dědičnosti, BEZ sbalitelných skupin:**
+stejná dvoupanelová skladba jako výše (1. „Pouze pro tuto pracovní
+pozici" → 2. oddělovač → 3. „Pro všechny zaměstnance" s počtem), ale
+panel „Pro všechny zaměstnance" má ikonu `people-group` (**ne `lock`**,
+žádná věta „Odsud je nelze měnit.") a položky jsou **plochý seznam** bez
+skupin a bez periodicity: ikona `chalkboard-user` modře + název modře
+(`#4a7fe8`), žádný trash/edit. Panel „Pouze pro tuto pracovní pozici" je
+v prototypu vždy prázdný (modrá poznámka „Pro tuto pracovní pozici
+zatím není nastavené žádné vlastní školení.") — vlastní školení na
+úrovni pozice tu zatím není modelováno.
+
 #### 11.5.1 Sbalitelné skupiny — PEVNÉ pravidlo
 
-Skupiny v obou návazných sekcích jsou **sbalitelné a chovají se stejně**:
+Skupiny v sekcích `Rozvoj zaměstnance`, `Dokumenty` a `Onboarding
+checklist` jsou **sbalitelné a chovají se stejně**:
 
 - **kliká se na celou hlavičku skupiny**, ne jen na šipku
   (`cursor:pointer`, hover `#eef2f9`, `user-select:none`);
 - ikona vlevo: **`chevron-down` = otevřeno**, **`chevron-right` = zavřeno**;
   má pevnou šířku 11px a `text-align:center`, aby text neposkakoval;
-- **výchozí stav = otevřeno**. Stav drží `pozActOpen` (aktivity) a
-  `pozDocOpen` (distribuční listy), klíčem je `key` skupiny; **chybějící
-  klíč znamená otevřeno** — zavírá se až explicitním `false`;
+- **výchozí stav = otevřeno**. Stav drží `pozActOpen` (rozvoj),
+  `pozDocOpen` (distribuční listy) a `pozOnbOpen` (fáze onboardingu),
+  klíčem je `key` skupiny; **chybějící klíč znamená otevřeno** — zavírá
+  se až explicitním `false`;
 - zavřená skupina schová celý obsah, hlavička (název + počet) zůstává,
   takže je z počtu pořád vidět, co se skrývá;
 - v sekci `Dokumenty` je sbalitelnou jednotkou **jeden distribuční list**
-  (hlavička = název + `DISTRIBUČNÍ LIST` + počet + stav vpravo).
+  (hlavička = název + `DISTRIBUČNÍ LIST` + počet + stav vpravo);
+  v sekci `Onboarding checklist` je sbalitelnou jednotkou **jedna fáze
+  nástupu** (hlavička = název fáze + počet položek), viz §11.5.3.
 
 #### 11.5.2 Prázdné stavy návazných sekcí — PEVNÉ pravidlo
 
@@ -1390,37 +1480,76 @@ strukturu sekce** — oba panely i oddělovač zůstávají, jen místo obsahu j
 
 | Panel | Sekce | Text prázdného stavu |
 |---|---|---|
-| Pouze pro tuto pracovní pozici | Aktivity | „Pro tuto pracovní pozici zatím není vyžadována žádná plánovaná aktivita." |
-| Pro všechny zaměstnance | Aktivity | „Zatím nejsou nastavené žádné plánované aktivity pro všechny zaměstnance." |
+| Pouze pro tuto pracovní pozici | Rozvoj zaměstnance | „Pro tuto pracovní pozici zatím není vyžadována žádná plánovaná aktivita." |
+| Pro všechny zaměstnance | Rozvoj zaměstnance | „Zatím nejsou nastavené žádné plánované aktivity pro všechny zaměstnance." |
 | Pouze pro tuto pracovní pozici | Dokumenty | „Tato pracovní pozice není v žádném distribučním listu, takže k ní není přiřazen žádný dokument." |
 | Pro všechny zaměstnance | Dokumenty | „Zatím není nastavený žádný distribuční list pro všechny zaměstnance." |
+| Pouze pro tuto pracovní pozici | Školení | „Pro tuto pracovní pozici zatím není nastavené žádné vlastní školení." (v prototypu **vždy** — vlastní školení na úrovni pozice zatím není modelováno) |
+| Pro všechny zaměstnance | Školení | „Zatím není nastavené žádné školení pro všechny zaměstnance." |
+| Fáze nástupu (celá sekce) | Onboarding checklist | „Pro tuto pracovní pozici zatím není nastavený žádný onboarding checklist." |
 
 - **Počty musí sedět s obsahem.** Když je panel „Pro všechny zaměstnance"
   prázdný, má štítek `0` a **stejně tak počet u položky v levé navigaci**.
-  Nikdy nenech v navigaci 39 / 11, když je sekce prázdná.
-- Tlačítko `PŘIDAT NOVOU AKTIVITU` zůstává i v prázdném stavu — je to
-  jediná cesta, jak aktivitu založit.
-- Panel „Pro všechny zaměstnance" si i v prázdném stavu drží ikonu `lock`
-  a vysvětlující větu; mizí jen sbalitelné skupiny.
+  Nikdy nenech v navigaci 39 / 11 / 6, když je sekce prázdná. (`Školení`
+  je výjimka — nemá v navigaci badge vůbec, viz výše.)
+- Tlačítko `PŘIDAT NOVOU AKTIVITU` zůstává i v prázdném stavu sekce
+  `Rozvoj zaměstnance` — je to jediná cesta, jak aktivitu založit.
+- Panel „Pro všechny zaměstnance" si u `Rozvoj zaměstnance`/`Dokumenty`
+  i v prázdném stavu drží ikonu `lock` a vysvětlující větu; mizí jen
+  sbalitelné skupiny. U `Školení` tato ikona/věta není nikdy (viz výše).
 - V prototypu tento stav drží pozice s příznakem `fresh: true`
   (**„Referent nákupu"**, poslední karta v seznamu) — otevři ji a uvidíš
-  prázdný stav obou sekcí. Ostatní pozice zůstávají s daty.
+  prázdný stav sekcí `Rozvoj zaměstnance`, `Dokumenty` i `Onboarding
+  checklist`. Ostatní pozice zůstávají s daty.
+
+#### 11.5.3 Sekce „Onboarding checklist" — POVINNÁ skladba
+
+Nová sekce, jiná stavba než zbytek `NÁVAZNÉ` — **není** rozdělená na
+„Pouze pro tuto pozici" / „Pro všechny zaměstnance", je to jeden celek:
+
+- pod nadpisem `apt-modal-h2` krátký vysvětlující text (13px, `#7b8092`):
+  „Fáze jsou společné pro položky checklistu i aktivity. Položka je jen
+  splněno / nesplněno, aktivita se plánuje a hlídá. Pořadí lze měnit
+  tažením.";
+- jeden `apt-panel` „Fáze nástupu" s hlavičkou (ikona `list-check`
+  modrá) a souhrnným štítkem vpravo `{{ N }} položek · {{ M }} aktivit`;
+- uvnitř **sbalitelné skupiny** (§11.5.1) — jedna skupina = jedna fáze
+  (např. „Před nástupem", „První den"), hlavička = chevron + název fáze +
+  počet;
+- obsah skupiny: max. jedna **aktivita** nahoře (ikona `grip-vertical`
+  pro přetažení, název `#4a7fe8`, štítek pozice — světle modré pozadí
+  `#eaf1fd`, text `#1572e8` — a ikony `pen`/`trash`), pak **položky
+  checklistu** — text modře, vpravo šedý štítek `Pro všechny` a ikona
+  `lock` (položky jsou vždy „pro všechny", nejdou editovat tady);
+  splněná položka má vlevo `square-check` modře místo prázdného místa;
+- patička skupiny = dva odkazy `+ POLOŽKA` a `+ AKTIVITA` (modře,
+  řez 700, 12.5px) pro přidání dalšího řádku do dané fáze.
 
 **Hotové bloky:** rám okna `partials/nastorg-pozice-modal.html` (prázdný
 obsah, k vložení vlastní sekce), jednotlivé sekce:
 
 | Sekce | Partial |
 |---|---|
-| Základní nastavení | `partials/nastorg-pozice-zakladni.html` |
+| Základní info | `partials/nastorg-pozice-zakladni.html` |
+| Přiřazení zaměstnanci | `partials/nastorg-pozice-prirazeni.html` |
 | Organizační zařazení | `partials/nastorg-pozice-organizacni.html` |
 | Pracovní náplň | `partials/nastorg-pozice-naplne.html` |
-| Kvalifikace a způsobilost | `partials/nastorg-pozice-kvalifikace.html` |
-| Požadavky pracovní pozice | `partials/nastorg-pozice-pozadavky.html` |
-| Bezpečnostní a zdravotní rizika | `partials/nastorg-pozice-rizika.html` |
-| Plánované aktivity | `partials/nastorg-pozice-aktivity.html` |
-| Plánované aktivity — prázdný stav | `partials/nastorg-pozice-aktivity-prazdne.html` |
+| Požadavky na kvalifikaci | `partials/nastorg-pozice-kvalifikace.html` |
+| Požadavky na způsobilost | `partials/nastorg-pozice-zpusobilost.html` |
+| Vybavení, nástroje, systémy | `partials/nastorg-pozice-vybaveni.html` |
+| Pracoviště a rizika | `partials/nastorg-pozice-rizika.html` |
+| Onboarding checklist | `partials/nastorg-pozice-onboarding.html` |
+| Rozvoj zaměstnance | `partials/nastorg-pozice-rozvoj.html` |
 | Dokumenty | `partials/nastorg-pozice-dokumenty.html` |
-| Dokumenty — prázdný stav | `partials/nastorg-pozice-dokumenty-prazdne.html` |
+| Školení | `partials/nastorg-pozice-skoleni.html` |
+| Seznam pozic (podzáložka „Pracovní pozice", §11.3) | `partials/nastorg-pracovni-pozice.html` |
+
+Starší partialy `nastorg-pozice-pozadavky.html` (→ nahrazeno
+`nastorg-pozice-vybaveni.html`) a `nastorg-pozice-aktivity.html` (→
+nahrazeno `nastorg-pozice-rozvoj.html`) jsou po tomto přejmenování
+zastaralé; prázdné stavy `nastorg-pozice-aktivity-prazdne.html` a
+`nastorg-pozice-dokumenty-prazdne.html` čekají na aktualizaci na nový
+12položkový rám navigace.
 
 ### 11.6 Záložka „Nastavení nadřízených"
 
