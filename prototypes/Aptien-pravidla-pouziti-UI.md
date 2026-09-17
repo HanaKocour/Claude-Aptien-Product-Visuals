@@ -767,7 +767,7 @@ Panel překrývá obsah; zavírá se zpět.
 | Rizika | Detaily · Přílohy · Souvislosti · Úkoly · Konverzace |
 | Ochranné pomůcky | Detaily · Přílohy · Souvislosti (3) · Kalendář · Úkoly · Poznámky · Konverzace |
 | Zakázky | Detaily · Přílohy · Souvislosti (3) · Kalendář · Zápisy · Úkoly · Poznámky · Konverzace |
-| **Zaměstnanec** ⚠ jediný modul se speciálním drawerem, viz §6.4 | Detaily · Plány aktivit · Přílohy · Souvislosti · Kalendář · **Pracovní zařazení** (jen zde, §7.1.6) · Zápisy · Úkoly · Poznámky · Konverzace |
+| **Zaměstnanec** ⚠ jediný modul se speciálním drawerem, viz §6.4 | Detaily · Plány aktivit · Přílohy · Souvislosti · Kalendář · **Pracovní zařazení** (jen zde, §7.1.6) · Zápisy · Úkoly · Poznámky · Konverzace · **Onboarding** (jen zde, POSLEDNÍ tab, §7.1.8) |
 
 **Akce v detailu:** závazný výčet, pořadí a styly jsou v **§7.2**. Rám
 draweru (backdrop → panel → spine → hlavička → item tabs → tělo + akční
@@ -814,6 +814,7 @@ vlož ho doslovně a do slotu přidej obsah aktivní záložky.
 | Plány aktivit – **rozbalená skupina** | `partials/drawer-tab-plany-rozbaleno.html` | 3 varianty rozbalené skupiny (splněné aktivity / čekající na akci / hromadné akce) — **jen na výslovné zadání** |
 | Konverzace | `partials/drawer-konverzace.html` | bubliny + composer |
 | **Pracovní zařazení** (jen Zaměstnanec) | `partials/drawer-tab-pracovni-zarazeni.html` | pole pod sebou s tučným popiskem nahoře (ne řádkový layout Detailů): Nadřízený (1 tag v rámečku) → Podřízení (needitovatelný seznam) → Pracuje na pozici (1 tag + odkaz na požadavky) → Organizační jednotka (prázdný stav) → Uživatelská skupina (víc tagů); ULOŽIT vpravo dole, **viz §7.1.6** |
+| **Onboarding** (jen Zaměstnanec, POSLEDNÍ tab) | `partials/drawer-tab-onboarding.html` | hlavička + „STÁHNOUT SOUHRN (PDF)" → progress bar „Splněno X z Y" (jen z položek) → sbalitelné fáze nástupu (položky + aktivity, chip „N splněno"/„N zbývá") → readonly „Směrnice platné pro tohoto zaměstnance"; badge rozsahu jen když NENÍ „Pro všechny" (modrý „Pro pracovní pozici" / fialový mazatelný „Pouze pro tohoto zaměstnance"), **viz §7.1.8** |
 
 Sady záložek podle modulu jsou v tabulce výše; **záložka bez partialu má
 prázdný stav** (ikona modulu + název záložky), ne vymyšlený obsah.
@@ -1026,6 +1027,68 @@ funguje jako personální identifikační štítek/breadcrumb na konkrétní
 osobu). Stavová pilulka „AKTIVNÍ" (zelená) zůstává třetí v pořadí beze
 změny. **Tenhle druhý chip se nikde jinde v aplikaci nepoužívá** – u
 žádného jiného modulu hlavička druhý chip nemá.
+
+#### 7.1.8 Záložka Onboarding (JEN Zaměstnanec — PEVNÉ pravidlo, POSLEDNÍ tab)
+
+> Zdroj pravdy = Claude Design, projekt „Onboarding checklist umístění",
+> soubor `Onboarding v2.dc.html` (import 10. 9. 2026) + master prototyp
+> (`zam_showOnboarding` / `ZAM_ONBOARD_PHASES` / `ZAM_ONBOARD_SMERNICE`).
+> Stejné pravidlo jako u „Pracovní zařazení" (§7.1.6): **tahle záložka
+> nemá partial pro jiné moduly** — nekopíruj ji do jiných evidencí, i
+> kdyby zadání říkalo „stejně jako u Zaměstnance".
+
+**Pozice v pásu záložek:** úplně **POSLEDNÍ**, za „Konverzace" (viz
+tabulka sad záložek výše). Pořadí ostatních záložek se touto změnou
+nemění.
+
+Skladba (pořadí závazné):
+
+1. **Hlavička** — název záložky + podtitulek shrnující, pro koho platí
+   (položky pro všechny + položky pro konkrétní pracovní pozici
+   zaměstnance) + sekundární lemovaná pilulka „STÁHNOUT SOUHRN (PDF)"
+   (placeholder, bez funkce — export je mimo rozsah zadání).
+2. **Souhrnný progress bar** „Splněno X z Y" — počítá se **jen z
+   POLOŽEK checklistu**, nikdy z aktivit (aktivita se plánuje a hlídá,
+   „plní" se jen položka).
+3. **Sbalitelné skupiny = FÁZE nástupu** — stejné fáze jako v Editaci
+   evidence (§13.3), sdílené pro položky i aktivity. Hlavička skupiny:
+   tmavý pill s celkovým počtem řádků fáze + zelený chip „N splněno" +
+   šedý chip „N zbývá" (oba počty **jen z položek**, ne z aktivit).
+   - **Řádek POLOŽKA:** text nahoře; pod ním „Splněno &lt;datum&gt;"
+     (když splněno) nebo nic, volitelně poznámka zaměstnance; vpravo
+     pilulka Splněno/Nesplněno + ikona tužky. Šablonové řádky (scope
+     „Pro všechny" / „Pro pracovní pozici") **nejdou přejmenovat ani
+     smazat** — jen zaškrtnout a napsat poznámku. Koš má **jen** řádek
+     přidaný přímo u tohoto zaměstnance.
+   - **Řádek AKTIVITA:** text nahoře; pod ním datum + šedý štítek typu
+     „Jednorázová"; vpravo kolečkový checkmark (zelený když
+     splněno/naplánováno) + datum + kebab menu „⋮".
+   - **Štítek rozsahu** pod textem řádku, zobrazí se **jen když řádek
+     NENÍ „Pro všechny"**: fialový **„Pouze pro tohoto zaměstnance"**
+     (řádek přidaný přímo v této záložce — jediný s košem) nebo modrý
+     s ikonou aktovky **„Pro pracovní pozici: &lt;pozice&gt;"** (zděděno
+     ze zdrojového checklistu podle pracovní pozice zaměstnance,
+     needitovatelné a nemazatelné tady).
+   - Pod výčtem řádků skupiny: odkazy „+ VLASTNÍ POLOŽKA" /
+     „+ VLASTNÍ AKTIVITA" — otevírají **stejný sdílený modal** jako
+     „+ POLOŽKA"/„+ AKTIVITA" v Editaci evidence (§13.3), jen pole „Je
+     pro" je tady **zamčené** na „Pouze pro tohoto zaměstnance" (na
+     rozdíl od needitovatelného zdroje, kde je volba otevřená).
+4. **Readonly seznam směrnic** platných pro tohoto zaměstnance, se
+   štítkem rozsahu platnosti u každé — **bez** tlačítka POTVRDIT (to
+   existuje jen na agendě „Moje směrnice" samotného zaměstnance).
+
+**Datový model (neplést se sourozeneckými funkcemi):** zobrazení tady je
+**ilustrační INSTANCE se stavem splnění** (`ZAM_ONBOARD_PHASES`),
+NEZÁVISLÁ 1:1 na zdrojovém checklistu Editace evidence (`EV_ONBOARD_PHASES`,
+§13.3) — stejná konvence jako `ZAM_PLANY_GROUPS` vs `POZ_ACT_GROUPS`.
+Nepleť ani s `POZ_ONBOARD_GROUPS` (needitovatelný seznam školení v modalu
+„Upravit pracovní pozici", §11.5) — to je třetí, samostatná funkce.
+
+Barvy: výchozí primární modrá `#1572e8` (progress bar, ikony aktivit,
+odkazy) — **nikdy** žlutá barva modulu Zaměstnanci (`#f1c40f`).
+
+Partial k doslovnému vložení: `partials/drawer-tab-onboarding.html`.
 
 ### 7.2 Pravý sloupec akcí (KOMPLETNÍ VÝČET, pořadí závazné)
 
@@ -1566,35 +1629,88 @@ tabulky jako §11.4.
 
 ---
 
-## 12. Nastavení směrnic → Seznamy příjemců (menu `nastsm`)
+## 12. Nastavení směrnic → Distribuční listy (menu `nastsm`)
 
-Zdroj pravdy: reálná produkční aplikace, firma „Nerospec" (screenshoty
-27. 8. 2026). Sidebar položka „Nastavení směrnic" (`nastsm`, skupina
-„Naše firma") dřív nikam nevedla — teď otevírá **celou vlastní
+Zdroj pravdy: v1 reálná produkční aplikace, firma „Nerospec" (screenshoty
+27. 8. 2026); v2 (16. 9. 2026) nový design hlavní stránky, viz §12.5;
+v3 (16. 9. 2026) přejmenování + oprava barev podle novější stránky v
+Claude Design, viz §12.8. Sidebar položka „Nastavení směrnic" (`nastsm`,
+skupina „Naše firma") dřív nikam nevedla — teď otevírá **celou vlastní
 stránku**, ne podzáložky jako §11 (Nastavení organizace).
 
-### 12.1 Hlavní stránka „Seznamy příjemců"
+### 12.1 Hlavní stránka „Distribuční listy" (v3, 16. 9. 2026)
 
-Skladba (pořadí je závazné):
+**Tahle sekce popisuje v3** — nahrazuje dřívější „Distribuční seznamy"
+(ještě dřív „Seznamy příjemců") podle stránky „Seznamy prijemcu v2" v
+Claude Design (POZOR na matoucí číslování stránek — viz §12.8). Skladba
+(pořadí je závazné):
 
-1. Nadpis `Seznamy příjemců` vlevo, primární modré tlačítko
-   `+ VYTVOŘIT SEZNAM PŘÍJEMCŮ` vpravo (otevírá modal §12.2). **Plná
-   barva `#1572e8`** (viz „Primární" tlačítko výše v tomto dokumentu) —
-   NE světlejší `#4a7fe8`, který je jen výchozí (needitovaný) odstín
-   sdílené třídy `.apt-btn-blue` jinde v appce. Stejné pravidlo platí
-   pro VŠECHNA primární tlačítka v této §12 (`POKRAČOVAT`, `UPRAVIT
-   ZDROJ`, `ULOŽIT`).
-2. Toolbar: šedé tlačítko `Zobrazení` (dropdown vzhled, needitovatelné)
-   + vyhledávací pole `Vyhledat seznam příjemců`.
-3. **Tři skupiny tabulek, VŽDY v tomto pořadí** — pořadí odpovídá
-   šíři zásahu (od nejširšího k nejužšímu): `Pro všechny zaměstnance` →
-   `Pro pracovní pozice` → `Pro konkrétní zaměstnance`.
-4. Každá tabulka má sloupce **Název · Akce zaměstnance · Termín akce ·
-   Potvrzeno dne · Čeká · Splnění**, na konci kebab menu (⋮).
+1. **Drobečková navigace** (nová v v3): `Nastavení směrnic › Distribuční
+   listy` — malý šedý text (`#9096a6`, 12.5px) nad nadpisem, `›`
+   oddělovač (`fa-chevron-right`).
+2. Nadpis `Distribuční listy` na vlastním řádku (přejmenováno ze
+   „Distribuční seznamy" — viz §12.8).
+3. **Dvě tlačítka na dalším řádku, podle výsledné akce** — text i ikony
+   změněné ve v3 (viz §12.8): primární modré `✓ POTVRZENÍ OD
+   ZAMĚSTNANCE` (ikona `circle-check`) a sekundární bílé `ⓘ ZVEŘEJNĚNO
+   NA PORTÁLE` (ikona `circle-info`, šedá `#9096a6`) — **BEZ `+` ikony**
+   (obě otevírají modal §12.2, jen předvyplní jinou výchozí hodnotu pole
+   Způsob doručení v kroku 2/§12.3 — `Vyžaduje potvrzení`, resp. `Pouze
+   zveřejněno`). **Plná barva `#1572e8`** u primárního (viz „Primární"
+   tlačítko výše v tomto dokumentu) — NE světlejší `#4a7fe8`, který je
+   jen výchozí (needitovaný) odstín sdílené třídy `.apt-btn-blue` jinde
+   v appce. Stejné pravidlo platí pro VŠECHNA primární tlačítka v této
+   §12 (`POKRAČOVAT`, `UPRAVIT ZDROJ`, `ULOŽIT`). Sekundární tlačítko má
+   tmavý text `#1a1a1a` a velmi světlý lem `#e2e4ea` (téměř neviditelný,
+   OVĚŘENO pixel-by-pixel — NE tmavší `#c8c4d8`/`#3d3a52` z dřívějšího
+   kola).
+3. Toolbar, **tři odlišné komponenty** (ověřeno pixel-by-pixel na
+   Claude Design, viz §12.5 čtvrté a páté kolo — nejsou to tři stejné
+   pilulky!):
+   - `Zobrazení` — tmavě šedý plný „chip" **`#a6a6ad`, bílý text +
+     ikony**, bez lemu (dropdown vzhled, needitovatelné). Je to STEJNÁ
+     komponenta jako `.poz-filter` v §11.3 (Nastavení organizace →
+     Pracovní pozice) — zavedený vzor pro filtrovací tlačítka v appce,
+     ne nový.
+   - `Vyhledat distribuční list` a `Název dokumentu` — světlá
+     šedomodrá výplň **`#f2f5f7`**, šedý text, bez lemu, **stejná
+     pevná šířka** (ne search flex-grow + kratší filtr). `Název
+     dokumentu` hledá napříč VŠEMI dokumenty v listu, ne jen v rámci
+     aktivní záložky.
+5. **Záložky s počtem, VŽDY v tomto pořadí** (nahrazují dřívější tři
+   stackované sekce s nadpisy — na obrazovce je vidět vždy jen aktivní
+   záložka, přepínání je funkční): `Pro všechny zaměstnance` →
+   `Pro pracovní pozice` → `Pro konkrétní zaměstnance`. **Jsou to
+   „folder" taby, NE podtržené (underline) taby** — aktivní záložka je
+   bílá zaoblená karta (`border-radius:10px 10px 0 0`), která bez mezery
+   splývá přímo s tabulkou pod ní (tabulka má nahoře nulový margin a
+   levý horní roh ostrý, `border-radius:0 10px 10px 10px`) — vypadá to
+   jako JEDEN spojitý bílý tvar. Text+ikona aktivní záložky modré
+   (`#1572e8`), počet vpravo jako modrý kolečkový štítek
+   (`#1572e8`/bílá). Neaktivní záložky nemají žádné pozadí (prosvítá
+   šedá stránky), text+ikona šedé (`#8a90a3`), počet v šedém štítku
+   (`#eef0f5`/`#7b8092`), jsou nižší než aktivní (nemají spodní
+   padding) — nad tabulkou je proto u nich vidět šedá mezera.
+6. Hlavička tabulky (`Název`, `Pravidla distribuce`, …) — OVĚŘENO na
+   designu pixel-by-pixel: pozadí **čistě bílé `#fff`** (NE světle šedé
+   `#fafbfd`), text **neutrální tmavší šedá `#6b7280`** (NE světlá
+   modrošedá `#8a90a3`, která má proti bílému pozadí moc nízký
+   kontrast) — jinak beze změny (11.5px, 700, spodní linka `#edeff5`).
+7. Tabulka aktivní záložky má sloupce **Název · Pravidla distribuce ·
+   Termín akce · Potvrzeno dne · Čeká · Splnění**, na konci kebab menu
+   (⋮).
    - **Název** — modrý odkaz, klik otevírá editační modal (§12.3)
      předvyplněný daty toho řádku.
-   - **Akce zaměstnance** — `Vyžaduje potvrzení` nebo
-     `Pouze zveřejněno` (odpovídá poli Způsob doručení v §12.3).
+   - **Pravidla distribuce** (dřív sloupec „Akce zaměstnance" s prostým
+     textem) — barevný pevně široký (150px, text vycentrovaný) štítek:
+     `Vyžaduje potvrzení` = **ORANŽOVÝ wash `#ffede0`/`#c65600`** + ikona
+     `circle-check` (OPRAVENO ve v3, viz §12.8 — dřív modrý; modrá
+     zůstává jen na primárním tlačítku, štítek má vlastní „pozor/čeká
+     se" barvu nezávislou na tlačítku); `Pouze zveřejněno` = neutrální
+     šedá `#eef0f5`/`#7b8092` + ikona `circle-info` (design v2 canvasu
+     nemá viditelný řádek s tímto stavem — barva ponechána z
+     předchozího kola, dokud nebude referenční screenshot). Řez textu
+     600 (NE 700, tučnější řez proti designu vypadal moc křiklavě).
    - **Termín akce** — `Za N dní` / `Bez termínu` / `---` (u
      `Pouze zveřejněno` termín vždy `---`, protože se nic nepotvrzuje).
    - **Potvrzeno dne** a **Čeká** — modrá podtržená čísla (odkazy na
@@ -1603,9 +1719,9 @@ Skladba (pořadí je závazné):
      `N %`. Barva pruhu je jednotná teplá — v reálné appce jsou
      všechny dosavadní seznamy nízko rozpracované (0–21 %), škála podle
      prahů není zavedená.
-   - Prázdná skupina (typicky `Pro konkrétní zaměstnance`) se
+   - Prázdná záložka (typicky `Pro konkrétní zaměstnance`) se
      nezobrazuje jako tabulka bez řádků, ale jako samostatný šedý box
-     s textem `Zatím žádný seznam příjemců.`
+     s textem `Zatím žádný distribuční seznam.`
 
 **⚠ Obsah řádků (ukázková data) musí být SMYSLUPLNÝ, ne testovací
 smetí.** Tahle stránka je základ pro budoucí návrhovou práci, proto
@@ -1717,6 +1833,497 @@ stejné výšce. Se `flex-start` je ikona vždy na úrovni prvního řádku
 názvu, tedy vždy „před popisem" a na stejném místě bez ohledu na délku
 názvu.
 
+### 12.5 v2 — „Distribuční seznamy" (16. 9. 2026)
+
+Uživatel dodal nový design hlavní stránky (`Seznamy prijemcu v3.dc.html`,
+Claude Design) a požádal o výměnu dosavadní „Seznamy příjemců" za tuhle
+novou verzi — v master prototypu i jako partial. §12.1 výše už popisuje
+VÝSLEDNÝ stav (v2); tahle podsekce jen shrnuje, co konkrétně se změnilo
+a proč, pro budoucí orientaci:
+
+- **Nadpis:** „Seznamy příjemců" → „Distribuční seznamy".
+- **Tlačítko založení:** jedno `VYTVOŘIT SEZNAM PŘÍJEMCŮ` → dvě podle
+  výsledné akce (`NOVÝ SEZNAM PRO POTVRZENÍ` / `NOVÝ SEZNAM PRO
+  ZVEŘEJNĚNÍ`), obě s ikonou `+`. Důvod (z návrhového zadání): akce,
+  která na konci nastane (musí uživatel potvrdit, nebo je to jen
+  zveřejněné), je pro tenhle proces důležitá, tlačítko o ní má rovnou
+  mluvit — dřív název tlačítka mluvil jen o založení seznamu, ne o tom,
+  co se s ním stane.
+- **Stackované sekce → záložky s počtem.** Vizuálně kompaktnější a
+  odpovídá designu; pořadí záložek zůstává STEJNÉ jako dřívější pořadí
+  sekcí (závazné, viz výše).
+- **Sloupec „Akce zaměstnance" (prostý text) → „Pravidla distribuce"
+  (barevný štítek).** V designu prošel štítek `Vyžaduje potvrzení`
+  postupně tří úpravami, než se ustálil: nejdřív plná primární modrá
+  (stejná jako tlačítko), pak (na žádost „až moc křiklavé") zesvětlený
+  wash se stejným odstínem textu, nakonec sjednocená pevná šířka
+  s `Pouze zveřejněno`, aby oba stavy měly stejně širokou „kostru"
+  bez ohledu na délku textu.
+- **Toolbar:** vyhledávací pole přejmenováno na „Vyhledat distribuční
+  list" + přibyl samostatný filtr „Název dokumentu" (hledá napříč
+  všemi dokumenty v listu, nezávisle na aktivní záložce).
+- **Beze změny:** editační modal (§12.3), krok 1 „Vyberte zdroj"
+  (§12.2), sdílená karta (§12.4), ukázková data (`NSM_GROUPS_DATA`) —
+  jen doplněná o `badgeCls`/`badgeIcon` pro nový štítek.
+
+Soubory tohoto kola: `Aptien-aplikace-offline.html` (routing `nastsm`,
+`nsm_tabs`/`nsm_active`, `nsmOpenCreatePotvrzeni`/`nsmOpenCreateZverejneni`),
+`Aptien-pravidla-pouziti-UI.md` (§12.1 přepsané na v2 + tahle §12.5),
+`partials/nastsm-seznamy-prijemcu.html` (samostatná needitovatelná
+ukázka, stejná konvence jako ostatní `partials/nastsm-*.html`).
+
+### 12.6 Oprava záložek a filtrů podle Claude Design (16. 9. 2026, 2. kolo)
+
+Uživatel po dodání v2 upozornil, že záložky a filtry **neodpovídají
+designu** („opět jsi nedodržel záložky... a taky správné zobrazení
+filtrů"). Ověřeno znovu na Claude Design, tentokrát **pixel-by-pixel**
+(`getPixel` na screenshotu canvasu, ne jen odhad ze zoomu) — odhalilo
+dvě strukturální chyby prvního kola:
+
+- **Záložky byly „underline" styl** (celá lišta bílá, spodní linka
+  `#e5e7ef`, 2px modré podtržení u aktivní) — design má ale **„folder
+  tab"**: jen aktivní záložka má bílé zaoblené pozadí, které BEZ MEZERY
+  splývá s tabulkou pod ní v jeden spojitý bílý tvar (`border-radius:
+  10px 10px 0 0` na záložce, `0 10px 10px 10px` na tabulce, `margin-top:0`).
+  Neaktivní záložky nemají žádné pozadí (prosvítá šedá stránky) a jsou
+  nižší (bez spodního paddingu) — nad tabulkou je proto u nich vidět
+  šedá mezera. Viz opravený popis v §12.1 bod 4.
+- **Filtry byly všechny tři stejné** (bílé, lem `#d9dde8`) — design má
+  ale **tři různé komponenty**: `Zobrazení` je tmavě šedý plný chip
+  `#a6a6ad` s bílým textem (zjištěno, že je to STEJNÁ, už zavedená
+  komponenta jako `.poz-filter` v §11.3), zatímco `Vyhledat distribuční
+  list` a `Název dokumentu` mají světlou šedomodrou výplň `#f2f5f7` bez
+  lemu a stejnou pevnou šířku. Viz opravený popis v §12.1 bod 3.
+
+**Poučení pro příště:** u `/design/p/…` odkazů (Claude Design canvas)
+nejde použít `Artifact.read` (jen `/artifact/<id>` funguje) — čtení
+přes prohlížeč + zoom screenshot je nutné, ale **samotný zoom
+screenshot nestačí k odhalení jemných rozdílů výplně** (např. `#f2f5f7`
+vs `#a6a6ad` na šedém pozadí stránky vypadají v zoomu podobně). Teprve
+`getPixel` (Python/PIL na uloženém screenshotu) na více bodech
+spolehlivě odliší skutečné barvy a přesné hranice/šířky komponent.
+
+Soubory tohoto kola: `Aptien-aplikace-offline.html`,
+`Aptien-pravidla-pouziti-UI.md` (§12.1 opraveno + tahle §12.6),
+`partials/nastsm-seznamy-prijemcu.html`.
+
+### 12.7 Oprava hlavičky tabulky a řezu štítků (16. 9. 2026, 3. kolo)
+
+Uživatel po druhém kole doplnil: „ještě štítky ve sloupci pravidla
+distribuce a hlavička tabulky!" Design znovu ověřen pixel-by-pixel:
+
+- **Hlavička tabulky** (`Název`, `Pravidla distribuce`, …) měla
+  pozadí `#fafbfd` a text `#8a90a3` — design má ale **čistě bílé
+  pozadí `#fff`** a **tmavší neutrální šedý text `#6b7280`** (žádný
+  modrý nádech, vyšší kontrast). Zjištěno sampling přes `getPixel` —
+  pozadí vyšlo spolehlivě `(255,255,255)`, text kolem `rgb(100,100,100)`
+  i s odečtením JPEG/antialiasing šumu jasně tmavší a neutrálnější než
+  `#8a90a3`.
+- **Štítky v „Pravidla distribuce"** — výplň a barvy (`#e8f0fd`/
+  `#1572e8` u „Vyžaduje potvrzení") už seděly přesně (potvrzeno
+  samplingem), ale **řez textu byl moc tučný** (700) — v designu
+  působí štítek výrazně lehčeji. Sníženo na **600**. Šířka (150px,
+  pevná, vycentrovaný text) beze změny — zůstává platná z historie
+  úprav v Claude Design chatu k tomuto souboru („Oba štítky mají teď
+  pevnou stejnou šířku (150px), text vycentrovaný").
+
+**Ověřeno:** partial přerenderovaný Playwrightem (bílá hlavička,
+lehčí štítky) i master prototyp — beze změny chování. Bez nových
+chyb v konzoli.
+
+### Soubory tohoto kola
+
+`Aptien-aplikace-offline.html`, `Aptien-pravidla-pouziti-UI.md`
+(§12.1 opraveno + tahle §12.7), `partials/nastsm-seznamy-prijemcu.html`.
+
+---
+
+### 12.8 Přejmenování na „Distribuční listy" + oranžový štítek (16. 9. 2026, 4. kolo)
+
+Uživatel po třetím kole poslal **vlastní screenshot** (ne odkaz na
+Claude Design) ukazující stránku, která se od dosud implementovaného
+`v2` designu (`Seznamy prijemcu v3.dc.html`) zásadně liší: jiný nadpis,
+jiná tlačítka, oranžový (ne modrý) štítek. Zpráva: „pořád to vypadá
+jinak, podívej na screen a znovu to zkus."
+
+**Příčina — matoucí číslování stránek v Claude Design projektu.**
+Sdílený odkaz, který jsme dostali na začátku, vede na stránku
+pojmenovanou `Seznamy prijemcu v3` uvnitř Claude Design projektu — ale
+ten projekt má **3 stránky** (`Seznamy příjemců` = nejstarší v1,
+`Seznamy prijemcu v2`, `Seznamy prijemcu v3`), a název stránky
+NEODPOVÍDÁ chronologii: uživatel od třetího kola dál upravoval stránku
+pojmenovanou **„v2"**, která je ve skutečnosti NOVĚJŠÍ než „v3" (na
+kterou pořád mířil náš odkaz). Screenshot dodaný uživatelem se pixel
+přesně shoduje se stránkou `Seznamy prijemcu v2` (stejná data řádků —
+„Libor pokus 3/4", „Metodický pokyn pro všechny 16-06" atd. — jen jiný
+vzhled) — ověřeno otevřením `?file=Seznamy+prijemcu+v2.dc.html` přímo.
+
+**Co se změnilo oproti dosavadní v2 implementaci** (podle stránky
+„v2" v Claude Design, ověřeno pixel-by-pixel + přímo z uživatelova
+screenshotu):
+
+- **Nadpis:** „Distribuční seznamy" → **„Distribuční listy"**.
+- **Nová drobečková navigace** nad nadpisem: `Nastavení směrnic ›
+  Distribuční listy` — v dosavadní implementaci úplně chyběla.
+- **Tlačítka přejmenovaná a bez `+` ikony:** `NOVÝ SEZNAM PRO
+  POTVRZENÍ` → `POTVRZENÍ OD ZAMĚSTNANCE` (ikona `circle-check`
+  místo `plus`); `NOVÝ SEZNAM PRO ZVEŘEJNĚNÍ` → `ZVEŘEJNĚNO NA
+  PORTÁLE` (ikona `circle-info`, šedá). Sekundární tlačítko dostalo
+  tmavší text (`#1a1a1a` místo `#3d3a52`) a světlejší, téměř neviditelný
+  lem (`#e2e4ea` místo `#c8c4d8`).
+- **Štítek „Vyžaduje potvrzení" změnil barvu z modré na ORANŽOVOU**
+  (`#ffede0`/`#c65600`, ověřeno `getPixel` na uživatelově screenshotu i
+  na canvasu) — primární tlačítko zůstává modré, takže barva štítku
+  teď NENÍ odvozená od barvy tlačítka (na rozdíl od dřívějšího
+  předpokladu v §12.1) — je to samostatná „pozor/čeká se" barva.
+  `Pouze zveřejněno` badge nemá na této stránce viditelný příklad
+  řádku, ponechán beze změny (šedý).
+- **Toolbar, tabulka, záložky (folder-tab), hlavička tabulky** —
+  BEZE ZMĚNY, stránka „v2" v tomto ohledu vypadá stejně jako to, co
+  jsme už měli implementované (a co jsme ověřili v pátém/šestém kole).
+
+**Poučení pro příště:** v Claude Design projektu s víc stránkami
+nevěřit tomu, že název stránky („v2"/„v3") odpovídá časové posloupnosti
+úprav — než začít další kolo oprav, otevřít `Choose design systems`/
+selektor stránek (`Pages`) v levém panelu a zkontrolovat `Edited …
+ago` časové razítko u KAŽDÉ stránky projektu, ne jen té, na kterou vede
+uložený odkaz. Sdílený odkaz může směřovat na starší stránku, i když
+uživatel dál aktivně upravuje jinou.
+
+**Ověřeno:** partial i master prototyp přerenderované Playwrightem
+(nová drobečková navigace, nadpis, tlačítka, oranžový štítek) — tab
+switching a editační modal funkční beze změny. Bez nových chyb v
+konzoli.
+
+### Soubory tohoto kola
+
+`Aptien-aplikace-offline.html`, `Aptien-menu-reference.md`,
+`Aptien-pravidla-pouziti-UI.md` (§12 přejmenováno + §12.1 přepsané +
+tahle §12.8), `partials/nastsm-seznamy-prijemcu.html`.
+
+### 12.9 Ohraničení hledacích polí + tlačítka „přidat" (16. 9. 2026, 5. kolo)
+
+Uživatel požádal o dvě věci najednou: (1) sjednotit vzhled hledacích
+polí `Vyhledat distribuční list` / `Název dokumentu` s hledacím polem
+na obrazovce „Moje směrnice"; (2) vylepšit texty/ikony obou tlačítek
+pro založení nového listu, protože dosavadní znění (`POTVRZENÍ OD
+ZAMĚSTNANCE` / `ZVEŘEJNĚNO NA PORTÁLE`, ikony `circle-check`/
+`circle-info` ze 4. kola) čte jako POPIS STAVU, ne jako AKCE přidání —
+uživatelčina slova: „musí být nějak dávat smysl, že to je jako
+přidat".
+
+**Ohraničení polí — zdroj pravdy přímo v souboru, ne v Claude Design.**
+Jde o vnitřní sjednocení stylu v rámci téhož prototypu, ne o shodu s
+externím designem, takže stačilo grepnout stávající CSS hledacího pole
+„Moje směrnice" (`border:1px solid #ededf2` + `box-shadow:0 4px 10px
+rgba(0,0,0,.05)` + bílé pozadí) a stejné vlastnosti doplnit do
+`.nsm-search`/`.nsm-doc-filter` (dřív `background:#f2f5f7; border:none`
+bez jakéhokoli ohraničení). Tvar (`border-radius:7px`, výška 36px,
+šířka 260px) zůstal — kopíruje se jen OHRANIČENÍ, ne celý tvar pilulky
+z „Moje směrnice" (tam je `border-radius:30px`, jiný kontext — velké
+centrální hero pole, ne kompaktní toolbar).
+
+**Tlačítka — otevřené zadání, řešeno přes 3 varianty k výběru.**
+Protože uživatelka sama napsala „pomoz mi", „asi" a nechala větu
+nedokončenou („...xxx"), šlo o výslovné pozvání k návrhu, ne o hotové
+zadání — připraveny a odeslány (jako samostatný srovnávací obrázek,
+NE rovnou zapracované do prototypu) 3 varianty:
+
+- **A** — nadpis „Vytvořit nový distribuční list" nad tlačítky + text
+  „VYTVOŘIT LIST S/KE ..." + ikona `circle-plus`.
+- **B** — původní text zachován, jen s prefixem „NOVÝ LIST: ..." +
+  původní ikony (`circle-check`/`circle-info`).
+- **C** — zkrácený text „PŘIDAT: ..." + ikona `square-plus`.
+
+Uživatelka vybrala **kombinaci B + ikona `circle-plus`** (ne originální
+`circle-check`/`circle-info` z varianty B, ale kruhové plus z varianty
+A) — výsledný text a ikony:
+
+- `<i class="fa-solid fa-circle-plus">` **NOVÝ LIST: POTVRZENÍ OD
+  ZAMĚSTNANCE** (primární modré tlačítko).
+- `<i class="fa-solid fa-circle-plus" style="color:#9096a6">` **NOVÝ
+  LIST: ZVEŘEJNĚNÍ NA PORTÁLE** (sekundární bílé tlačítko) — všimni si
+  slovního tvaru „ZVEŘEJNĚNÍ" (podstatné jméno), ne „ZVEŘEJNĚNO"
+  (dosavadní tvar) — s prefixem „NOVÝ LIST:" před ním gramaticky
+  navazuje lépe.
+
+**Poučení pro příště — jak ověřit ikony/varianty bez sítě.** V tomhle
+sandboxu selhává načtení Font Awesome i přes lokální `@font-face`
+(chybí `assets/fonts/*.woff2` na disku, `ERR_TUNNEL_CONNECTION_FAILED`
+na CDN) — ikony se v Playwright screenshotech NEVYKRESLÍ vůbec, ani v
+`partial.png`, ani nikde jinde v master prototypu. Pro srovnávací
+náhled variant (kde je tvar ikony přímo předmětem rozhodování) proto
+nepoužívat `<i class="fa-...">`, ale inline SVG s ručně vypsanou
+`path` (viz `btn_compare.html`) — jinak návrh vypadá jako prázdné
+tlačítko bez ikony a uživatel nemá z čeho vybírat. Chybějící ikony ve
+screenshotech samotného prototypu (mimo srovnávací obrázek) NEJSOU
+chyba tohoto kola — jde o dlouhodobé omezení prostředí, kód sám je v
+pořádku a v reálném prohlížeči s přístupem k fontům se vykreslí
+správně.
+
+**Ověřeno:** partial i master prototyp přerenderované Playwrightem
+(ohraničení polí, nový text/ikony tlačítek) — přepínání záložek
+(„Pro pracovní pozice") a editační modal („Upravit seznam příjemců")
+funkční beze změny, bez nových chyb v konzoli.
+
+### Soubory tohoto kola
+
+`Aptien-aplikace-offline.html` (CSS `.nsm-search`/`.nsm-doc-filter` +
+obě tlačítka + komentář nad blokem), `partials/nastsm-seznamy-prijemcu.html`
+(stejné změny + komentář na začátku souboru), tahle `Aptien-pravidla-pouziti-UI.md`
+(§12.9).
+
+### 12.10 Restyle podle standalone exportu z Claude Design (16. 9. 2026, 6. kolo)
+
+Uživatel nahrál `Distribucni listy v3 - standalone.html` — samostatný,
+self-contained HTML export z Claude Design (ne screenshot, ne odkaz na
+canvas) — se zadáním „udělej podle toho tu stránku, zanech i původní
+texty tlačítek". Tenhle typ zdroje je STRUKTURÁLNĚ jiný a spolehlivější
+než dřívější zdroje (screenshot/canvas): jde o vykreslitelný HTML se
+zabudovaným `<script type="text/x-dc">` obsahujícím přímo zdrojová data
+(`RAW_GROUPS`, funkce `barColor()`) a inline styly na každém elementu —
+šlo tedy přečíst PŘESNÉ hodnoty (`getComputedStyle` přes Playwright
+`page.evaluate`), ne je odhadovat z pixelů.
+
+**Dvě otevřené otázky vyřešené s uživatelem přes `AskUserQuestion`
+(důležité, protože soubor si protiřečil s dřívějšími koly):**
+
+1. **Obsah řádků tabulky** — soubor obsahuje 14/3/8 řádků reálných
+   produkčních dat konkrétního klienta (nemocnice — `PHŘ pneumologie a
+   ftizeologie`, `PHŘ sociálních lůžek` apod.), včetně jednoho řádku s
+   reálným příjmením osoby (`... Malínský`) a dvou zjevně testovacích
+   řádků `Libor pokus 3`/`Libor pokus 4`. Uživatel zvolil **„Jen vzhled,
+   data nechat"** — VZHLED/STRUKTURA se přebírá 1:1 ze souboru, ale
+   OBSAH řádků zůstává současný bezpečný ukázkový (Kodex chování a
+   etika, GDPR, BOZP 2026 atd. — stejná data jako v §12.1/kolo 3),
+   BEZ reálného jména osoby a BEZ testovacích záznamů. Tohle je
+   pokračování pravidla z kola 3 (žádná testovací data 1:1).
+2. **Nadpis „Distribuční seznamy" (ne „Distribuční listy") + modrý (ne
+   oranžový) štítek „Vyžaduje potvrzení"** — přesný OPAK toho, co bylo
+   opraveno v kole 7/8 podle uživatelova vlastního screenshotu reálné
+   appky. Uživatel na explicitní dotaz zvolil **„Vrátit podle souboru"**
+   — potvrdil, že standalone export je novější/autoritativnější zdroj
+   pravdy než dřívější screenshot. Nadpis i barva štítku se tedy VRACÍ
+   na verzi z kol 4-6 (modrá, „seznamy").
+
+**Co všechno se přesně převzalo ze standalone exportu** (`getComputedStyle`
+hodnoty, ne odhad):
+
+- **Nadpis:** `font-size:21.6px; font-weight:800; color:#1a1a1a` (dřív
+  22px/700/`#2b2540`).
+- **Tlačítka:** ikona `fa-solid fa-plus` (prostý plus, NE `circle-plus`
+  z kola 8) — TEXT ale zůstává „NOVÝ LIST: POTVRZENÍ OD ZAMĚSTNANCE" /
+  „NOVÝ LIST: ZVEŘEJNĚNÍ NA PORTÁLE" z kola 8 (výslovné přání
+  uživatelky, soubor sám má jiný text „NOVÝ SEZNAM PRO POTVRZENÍ" apod.
+  — ten se NEPŘEVZAL). Padding primární `11px 20px`, sekundární
+  `10px 20px`, lem sekundárního `1.5px solid #ececec`, ikona sekundárního
+  `color:#878787`.
+- **Toolbar:** `Zobrazení` chip `background:#a4a4a4; height:23px;
+  border-radius:4px; padding:0 16px; font-size:12px; font-weight:600`,
+  ikona `fa-table-list`. Hledací pole VRACEJÍ se na flat pilulku (kolo 9
+  ruší border+shadow z kola 8): `background:#f2f5f7; border:none;
+  border-radius:999px; width:320px; padding:8px 14px` — tohle je
+  vědomý reverz kola 8 podle nového autoritativního zdroje, ne
+  přehlédnutí.
+- **Záložky (folder tab):** přidána ikona před textem — `fa-users`
+  (Pro všechny zaměstnance), `fa-id-badge` (Pro pracovní pozice, dřív
+  `fa-briefcase`), `fa-user` (Pro konkrétní zaměstnance). Barva ikony
+  JEN u aktivní záložky (`#1572e8`/`#304FFE`/`#00B8D4` podle skupiny),
+  jinak šedá `#878787`. Aktivní záložka dostala `box-shadow:0 5px 20px
+  rgba(0,0,0,.1)` — STEJNÝ stín jako tabulka pod ní (`.nsm-table`, také
+  nově s tímto stínem místo dřívějšího `1px solid #edeff5` okraje) —
+  aby vizuálně splývaly v jednu kartu. Text neaktivní záložky
+  `color:#263238` (dřív `#8a90a3`), count-pill neaktivní
+  `background:#ececec; color:#878787` (dřív `#eef0f5`/`#7b8092`).
+- **Štítek „Pravidla distribuce":** REVERT na modrou (viz bod 2 výše) —
+  `background:rgba(21,114,232,.12); color:#1572e8`; „Pouze zveřejněno"
+  `background:#ececec; color:#878787`. Užší (90px, dřív 150px),
+  hranatější (`border-radius:4px`, dřív `999px` pill), menší písmo
+  (9px, dřív 12px).
+- **Tabulka — hlavička:** `color:#1a1a1a` (dřív `#6b7280` z kola 6),
+  `font-size:12px`, `border-bottom:2px solid #ebedf2`.
+- **Tabulka — název řádku:** `.nsm-link` teď TMAVÝ podtržený
+  (`color:#1a1a1a; text-decoration:underline; font-weight:700`), NE
+  modrý bez podtržení (dřív `#1572e8`, podtržení jen na hover) — reálný
+  odkaz teď vypadá jako tmavý podtržený text, ne jako klasický modrý
+  hypertextový odkaz.
+- **Tabulka — čísla „Potvrzeno dne"/„Čeká":** `.nsm-num` teď šedá
+  (`color:#565656`, dřív `#1572e8` modrá) s podtržením.
+- **Pruh Splnění:** track užší a vyšší (`120px`/`8px`, dřív
+  `170px`/`7px`), plně kulatý (`border-radius:999px`, dřív `4px`).
+  **Barva teď podle škály místo jednotné `#f2775d`** — přesná funkce
+  `barColor()` ze zdrojového souboru: `pct<=0` → `#ececec` (šedá),
+  `pct<35` → `#EF5350` (červená), `pct<67` → `#FF6D00` (oranžová),
+  jinak `#00C853` (zelená). Text procenta bez mezery (`0%`, dřív
+  `0 %`), barva `#878787` (dřív `#6b7280`).
+- **Kebab menu:** barva `#b1b2b3` (dřív `#9096a6`).
+
+**Poučení pro příště — standalone HTML export je lepší zdroj pravdy
+než screenshot NEBO odkaz na živý Claude Design canvas.** Dá se otevřít
+přímo v Playwright a přečíst `getComputedStyle`/`outerHTML` každého
+elementu i CSS proměnné z `:root` — žádné pixel-sampling, žádné
+riziko špatně odhadnutého odstínu. Když uživatel takový soubor pošle,
+je to silnější signál než dřívější screenshot i než živý odkaz na
+canvas (ten může ukazovat jinou stránku, viz kolo 7/§12.8) — ale POKUD
+si protiřečí s předchozím explicitně potvrzeným rozhodnutím (jako tady
+nadpis/barva štítku), je pořád na místě se zeptat, ne mlčky přepsat
+dřívější opravu bez potvrzení.
+
+**Ověřeno:** partial i master prototyp přerenderované Playwrightem
+(nadpis, tlačítka, toolbar, záložky s ikonami, modrý štítek, pruh s
+barvou podle %) — přepínání všech tří záložek (včetně prázdného stavu
+„Pro konkrétní zaměstnance") a editační modal funkční beze změny, bez
+nových chyb v konzoli. Barva pruhu ověřena na reálných hodnotách (21 %,
+13 %, 18 % → červená, pod prahem 35 %).
+
+### Soubory tohoto kola
+
+`Aptien-aplikace-offline.html` (CSS restyle §12.9 bloku + JS `nsmBarColor`
++ `NSM_GROUP_ICONS` s barvami + komentář nad blokem), `partials/nastsm-seznamy-prijemcu.html`
+(stejné vizuální změny, komentář na začátku souboru přepsaný na v4), tahle
+`Aptien-pravidla-pouziti-UI.md` (§12.10).
+
+### 12.11 Doladění: text tlačítek 1:1 podle standalone exportu (17. 9. 2026, 7. kolo)
+
+Dvě navazující drobnosti na §12.10, obě přímo od uživatelky v témže
+vlákně:
+
+1. **Zjištěný problém: dřívější commit se do repozitáře vůbec
+   nedostal.** Když bylo kolo 9 (§12.10) hotové, `device_commit_files`
+   selhal, protože se propojení s uživatelčiným počítačem mezitím
+   přerušilo — uživatelka tak dál viděla PŘEDCHOZÍ (kolo 8) verzi
+   souborů a nahlásila „pořád to nevidím změněný, zejména filtry a
+   hledací pole a názvy tlačítek". Než cokoli dalšího opravovat, bylo
+   potřeba ověřit `device_list_dir` (velikost/mtime souborů na disku
+   vs. lokální verze) — potvrdilo se, že soubory na disku byly
+   opravdu starší, ne že by restyle z kola 9 byl špatně. Po opětovném
+   připojení se soubory domitovaly úspěšně.
+2. **Text tlačítek nakonec 1:1 podle souboru.** V kole 9 uživatelka
+   výslovně žádala ponechat text z kola 8 („NOVÝ LIST: POTVRZENÍ OD
+   ZAMĚSTNANCE“/„NOVÝ LIST: ZVEŘEJNĚNÍ NA PORTÁLE“) a měnit jen ikonu
+   na prostý „+“. Po zjištění bodu 1 výše si to rozmyslela: chtěla i
+   text přesně podle standalone exportu. Finální znění: **„NOVÝ SEZNAM
+   PRO POTVRZENÍ“** (primární modré) / **„NOVÝ SEZNAM PRO ZVEŘEJNĚNÍ“**
+   (sekundární bílé) — ikona „+“ z kola 9 zůstává beze změny.
+
+**Poučení pro příště:** když se `device_commit_files` nepodaří kvůli
+přerušenému spojení a soubory se pošlou jen do chatu, je potřeba při
+příštím připojení AKTIVNĚ ověřit stav souborů na disku (`device_list_dir`
+— velikost/mtime), ne čekat, až si uživatel stěžuje, že nic nevidí
+změněné. Zmatek ohledně „změny se neprojevily" může mít dvě různé
+příčiny — starý soubor na disku, nebo genuinně nesprávná
+implementace — a je potřeba je od sebe rozlišit dřív, než se začne
+znovu upravovat kód.
+
+**Ověřeno:** partial i master prototyp přerenderované Playwrightem
+(přesný text obou tlačítek), tab switching a editační modal beze
+změny, bez chyb v konzoli.
+
+### Soubory tohoto kola
+
+`Aptien-aplikace-offline.html` (text obou tlačítek + komentáře),
+`partials/nastsm-seznamy-prijemcu.html` (stejná změna + komentáře),
+tahle `Aptien-pravidla-pouziti-UI.md` (§12.11).
+
+---
+
+### 12.12 Bílé pozadí hledacích polí toolbaru (17. 9. 2026, 8. kolo)
+
+Uživatelka: „ještě tedy prosím u inputů search udělej pozadí uvnitř
+inputu bílé aby se zvýraznilo samotné pole".
+
+Pole „Vyhledat distribuční list" a filtr „Název dokumentu" (`.nsm-search`,
+`.nsm-doc-filter`) měly od kola 9 flat šedou výplň `#f2f5f7` bez okraje
+podle standalone exportu — na světle šedém pozadí stránky se ale pole
+samo vizuálně ztrácelo. Změna: pozadí pilulky **bílé** (`#fff`) + tenký
+světlý okraj `#e3e6ea` (1px), aby pole proti pozadí stránky vystoupilo.
+Tvar (pilulka, border-radius 999px), rozměry, ikona a placeholder text
+beze změny. Tlačítko „Zobrazení" (`.nsm-toolbar-btn`, tmavě šedý chip)
+zůstává beze změny — jde jen o samotná vyhledávací/filtrovací pole.
+
+**Ověřeno:** master prototyp přerenderovaný Playwrightem — obě pole
+bílá s viditelným světlým okrajem, bez chyb v konzoli.
+
+### Soubory tohoto kola
+
+`Aptien-aplikace-offline.html` (CSS `.nsm-search`/`.nsm-doc-filter` +
+komentář), `partials/nastsm-seznamy-prijemcu.html` (stejná změna +
+komentář), tahle `Aptien-pravidla-pouziti-UI.md` (§12.12).
+
+---
+
+### 12.13 Finální standalone export: jednořádkové štítky + „Zdrojové
+evidence" (17. 9. 2026, 9. kolo)
+
+Uživatelka nahrála „finální verzi" standalone HTML exportu z Claude
+Design (`Distribucni listy v3 - standalone.html`, stejný zdroj jako
+§12.10, ale s dvěma novinkami navíc) se třemi požadavky:
+
+1. **Štítek „Pravidla distribuce" na jeden řádek, obě varianty s
+   ikonou.** JS logika (`badgeCls`/`badgeIcon`) i CSS (`.nsm-badge`,
+   barvy/rozměry) už od §12.10 přesně odpovídaly zdrojovému souboru —
+   chybělo ale `white-space:nowrap`, takže se text v užší 90px pilulce
+   (9px písmo) zalamoval na dva řádky. Doplněno u `.nsm-badge` v obou
+   souborech. „Vyžaduje potvrzení" = modrý wash + `fa-circle-check`,
+   „Pouze zveřejněno" = šedá + `fa-circle-info` (beze změny, jen teď
+   viditelně na jednom řádku).
+2. **Ozubené kolečko „Zdrojové evidence" vpravo od nadpisu.** Nová
+   ikona (`.nsm-gear-btn`, kolo pill 36×36px) otevírá modal se
+   seznamem evidencí, ze kterých je možné do distribučních seznamů
+   vybírat dokumenty — přesně podle struktury zdrojového souboru
+   (`ALL_EVIDENCES`, `linkedEvidences`/`availableEvidences`,
+   `toggleGear`/`requestAddEvidence`/`confirmAddEvidence` apod.),
+   přemapované na `nsm*` state/handlery master prototypu:
+   - `nsmEvidences` (6 evidencí, 3 už `linked:true` — Směrnice a
+     předpisy, Pracovní pozice, Zaměstnanci; 3 zatím nezapojené —
+     Školení, Vybavení a technika, Smluvní dokumentace) — zapojené se
+     vypisují nahoře se zelenou fajfkou.
+   - Popisný text pod nadpisem modalu uživatelka výslovně chtěla
+     přeformulovat, ať dává smysl — místo obecného „Distribuční
+     seznamy se sestavují z těchto evidencí" (doslovný text zdroje) je
+     teď: **„Evidence, ze kterých je možné do distribučních seznamů
+     vybírat dokumenty."**
+   - Dole vyhledávací pole „Vyhledat evidenci…" s dropdownem
+     (`nsmAvailableEvidences`, filtrováno přes `nsmEvidenceQuery`) —
+     klik na položku NEPŘIDÁ evidenci rovnou, ale otevře **dotazující
+     se potvrzovací modal** (uživatelčin výslovný požadavek
+     „nezapomeň i na dotazující se modál"): „Přidat evidenci
+     „{{ nsmPendingEvidenceName }}"?" + vysvětlující text o dopadu
+     (zapnutí řízené dokumentace, evidence se stane zdrojem) +
+     ZRUŠIT/PŘIDAT EVIDENCI. Potvrzením se evidence přesune do horní
+     (zapojené) části seznamu a modal Zdrojové evidence se otevře
+     zpátky.
+   - Oba modaly použily existující sdílenou třídu `.apt-modal-overlay`
+     + `.apt-modal` (stejný vzor jako `nsmCreateOpen`/`nsmEditOpen`),
+     ne bespoke inline styly ze zdrojového souboru — kvůli vizuální
+     konzistenci s ostatními modaly v prototypu.
+   - Partial (`nastsm-seznamy-prijemcu.html`) dostal jen STATICKÝ
+     vzhled ozubeného kolečka (bez `sc-if`/`sc-camel-on-click` —
+     partial obecně neobsahuje žádné modaly, jen výchozí pohled, viz
+     §12.1 a dřívější kola).
+   - Zdrojová data evidencí (skutečné názvy dokumentů typu „PHŘ
+     pneumologie a ftizeologie Malínský") z nahraného souboru se
+     NEKOPÍROVALA — obsahovaly reálné/testovací zdravotnické záznamy
+     včetně příjmení, stejný důvod jako u §12.10 (jen vzhled/struktura
+     ze souboru, data zůstávají bezpečná ukázková).
+
+**Ověřeno:** master prototyp přerenderovaný Playwrightem — otevření
+gear modalu, vyhledání a klik na nezapojenou evidenci → potvrzovací
+modal se správným názvem evidence → PŘIDAT EVIDENCI → evidence se
+přesune nahoru se zelenou fajfkou, modal Zdrojové evidence zůstane
+otevřený. Partial přerenderovaný samostatně (statický gear icon,
+jednořádkové štítky). Bez nových chyb v konzoli (existující
+nesouvisející SVG/`net::ERR_FILE_NOT_FOUND` chyby jsou stejné jako
+v předchozích kolech, netýkají se této oblasti).
+
+### Soubory tohoto kola
+
+`Aptien-aplikace-offline.html` (`.nsm-badge` nowrap, nový `.nsm-gear-btn`
++ `.nsm-ev-*` CSS, state `nsmShowGear`/`nsmEvidences`/…, markup gear
+tlačítka + oba modaly, handlery v `renderVals()`), `partials/nastsm-
+seznamy-prijemcu.html` (`.nsm-badge` nowrap, statický gear icon), tahle
+`Aptien-pravidla-pouziti-UI.md` (§12.13).
+
 ---
 
 ## 13. Editace evidence („Nastavení evidence") — generický modal
@@ -1751,20 +2358,22 @@ Zaměstnanci.** Levé menu záložek je pro každou evidenci STEJNÉ:
 16. PDF formuláře
 17. Online formuláře
 
-**Jediná výjimka: „Onboarding checklist".** Vkládá se do menu hned ZA
-„Základní nastavení", ale **JEN u evidence Zaměstnanci** — je to
-obsahově specifické pro nástup nového zaměstnance a u jiné evidence
-nedává smysl. Nekopíruj ho k jiným evidencím, i kdyby zadání říkalo
-„stejně jako u Zaměstnanci" — je to výslovná výjimka ze sdíleného
-seznamu, ne vzor k replikaci.
+**Jediná výjimka: „Onboarding checklist".** Vkládá se do menu **hned ZA
+„Plány aktivit"** (v2, dle importu z Claude Design 10. 9. 2026 — dřív
+byl dočasně hned za „Základní nastavení", zdrojem pravdy pro pozici je
+teď artboard „EDITACE EVIDENCE"), ale **JEN u evidence Zaměstnanci** —
+je to obsahově specifické pro nástup nového zaměstnance a u jiné
+evidence nedává smysl. Nekopíruj ho k jiným evidencím, i kdyby zadání
+říkalo „stejně jako u Zaměstnanci" — je to výslovná výjimka ze
+sdíleného seznamu, ne vzor k replikaci.
 
-V prototypu je zatím vypracovaná obsahově jen záložka **„Základní
-nastavení"** (§13.2). Zbylých 16 (+ Onboarding checklist) záložek
-zobrazuje needitovatelný prázdný stav — šedý rámeček s ikonou kladiva a
-textem „Obsah této záložky zatím není v prototypu definován." Až bude
-zadání konkrétní záložky rozšiřovat, nahraď JEN její prázdný stav
-skutečným obsahem — zbytek modalu (nav, ostatní záložky) nech beze
-změny.
+V prototypu jsou obsahově vypracované záložky **„Základní nastavení"**
+(§13.2) a **„Onboarding checklist"** (jen Zaměstnanci, §13.3). Zbylých
+16 záložek zobrazuje needitovatelný prázdný stav — šedý rámeček s
+ikonou kladiva a textem „Obsah této záložky zatím není v prototypu
+definován." Až bude zadání konkrétní záložky rozšiřovat, nahraď JEN
+její prázdný stav skutečným obsahem — zbytek modalu (nav, ostatní
+záložky) nech beze změny.
 
 ### 13.1 Zapojení tužky u další evidence (postup)
 
@@ -1819,6 +2428,66 @@ JINÁ barva než `#4a7fe8` u aktivní položky v modalu „Upravit pracovní
 pozici" (§11.5). Obě existují v reálné appce vedle sebe (různé části UI,
 různé stáří) — nesluč je do jedné a neměň jednu podle druhé, drž se
 přesně toho, co ukazuje zdrojový screenshot pro daný modal.
+
+### 13.3 Záložka „Onboarding checklist" (JEN evidence Zaměstnanci)
+
+Zdroj pravdy: Claude Design, projekt „Onboarding checklist umístění",
+soubor `Onboarding v2.dc.html` (import 10. 9. 2026), artboard „EDITACE
+EVIDENCE" — pro tuto sekci zatím není referenční screenshot reálné
+appky (na rozdíl od §13.2), rozložení proto vychází z vizuálního jazyka
+modalu „Upravit pracovní pozici" (`.apt-panel`/`.apt-group`, §11.5).
+Modal zobrazuje banner „**První verze k připomínkování**" nad obsahem
+záložky — nech ho, dokud zadání výslovně neřekne jinak.
+
+**Datový model (závazné, cituje přímo popis artboardu):** „Evidence má
+**jeden** onboarding checklist. U každé položky a aktivity se určuje,
+jestli platí pro všechny zaměstnance, nebo jen pro vybranou pracovní
+pozici." Tedy:
+
+- **Jedna** sada FÁZÍ (ne víc pojmenovaných šablon podle pozice — starší
+  návrh, nahrazený tímto). Fáze v prototypu: „Před nástupem" · „První
+  den" · „První týden" · „Do 30 dnů".
+- Každá fáze = seznam řádků dvou druhů: **POLOŽKA** (checklist, jen
+  splněno/nesplněno) a **AKTIVITA** (plánuje a hlídá se, ikona
+  `fa-calendar-check`).
+- Každý řádek má **scope**: šedý tag „Pro všechny" (výchozí) nebo modrý
+  tag s ikonou aktovky „Pro pozici: &lt;název pozice&gt;" (viditelný jen
+  u řádků navázaných na konkrétní pracovní pozici).
+- Tohle je **ZDROJOVÁ, plně editovatelná** definice — na rozdíl od
+  `pozSec_onboarding` / `POZ_ONBOARD_GROUPS` v modalu „Upravit pracovní
+  pozici" (§11.5), což je **jiná, samostatná** funkce (needitovatelný
+  seznam školení navázaný na pozici, se zámky u položek „Pro všechny")
+  a **zůstává beze změny** — nepřebírá data odsud a neslučuj je.
+- Zobrazení u konkrétního zaměstnance (drawer, záložka „Onboarding",
+  §7.1.8) je **třetí**, samostatná ilustrační datová sada se stavem
+  splnění — needitovatelná 1:1 vazba na tento zdroj.
+
+Skladba obsahu záložky (pořadí závazné):
+
+1. Banner „První verze k připomínkování" (`.apt-note`).
+2. Nadpis „Onboarding checklist" + vysvětlující text (datový model výše).
+3. Panel `.apt-panel` „Fáze nástupu" — hlavička s ikonou
+   `fa-list-check`, souhrnný pill „N položek · M aktivit" a vysvětlující
+   řádek o rozdílu položka/aktivita a přetahování pořadí.
+4. Sbalitelné skupiny `.apt-group` = fáze, každá s pillem počtu řádků.
+   Uvnitř řádky (drag handle `fa-grip-vertical` + ikona aktivity u
+   aktivit + text + tag scope + tužka + koš), dole odkazy
+   „+ POLOŽKA" / „+ AKTIVITA".
+5. **⚠ v2 (10. 9. 2026): ŽÁDNÉ tlačítko „Přidat fázi"** — fáze jsou
+   fixní, dají se do nich jen přidávat položky/aktivity a přetahovat
+   pořadí.
+
+**Přidání položky/aktivity** otevírá SDÍLENÝ modal (stejný, jaký
+používá i „+ VLASTNÍ POLOŽKA"/„+ VLASTNÍ AKTIVITA" v drawer záložce
+Onboarding, §7.1.8): pole Text, u aktivity navíc „Typ aktivity" (fixně
+„Jednorázová") a „Koho upozornit"; pole „Je pro" je tady (needitovatelný
+zdroj) **otevřená volba** Pro všechny / Pro vybranou pracovní pozici —
+v drawer zaměstnance je stejné pole naopak **zamčené** na „Pouze pro
+tohoto zaměstnance".
+
+Patička modalu: jen `ULOŽIT` vpravo, stejně jako u §13.2.
+
+Partial k doslovnému vložení: `partials/evx-onboarding-checklist.html`.
 
 ---
 

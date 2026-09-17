@@ -1,0 +1,351 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free) + Nunito. Řádky níže je načtou,
+     aby se blok vykreslil i při samostatném otevření souboru. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<!--
+  APTIEN — EDITACE EVIDENCE („Nastavení evidence"), záložka Onboarding checklist
+  ===============================================================================
+  Zdroj pravdy: Claude Design, projekt „Onboarding u zaměstnance" / soubor
+  `Onboarding v2.dc.html` (import 10. 9. 2026, artboard „EDITACE EVIDENCE" +
+  textový popis v chatu daného projektu) + master prototyp (`evShowOnboarding`,
+  `EV_ONBOARD_PHASES`, §13.3). Sourozenecký soubor `evx-editace-evidence.html`
+  zachycuje stejný modal na záložce „Základní nastavení" — sdílí s ním celou
+  kostru modalu (`.apt-modal*`), levé menu i pravidlo o pevné indigové
+  `#4b64f5` u aktivní položky menu.
+
+  ⚠ TATO ZÁLOŽKA EXISTUJE JEN U EVIDENCE ZAMĚSTNANCI (`evModule.extraTab`,
+     viz `editace-evidence-nastaveni-generic-modal.md`). U jiných evidencí
+     (Rizika, Ochranné pomůcky…) se nevkládá vůbec — levé menu má tam jen
+     původních 17 položek beze změny.
+
+  ⚠ POZICE V LEVÉM MENU (v2, 10. 9. 2026): hned ZA „Plány aktivit", NE hned
+     za „Základní nastavení" (to bylo jen prozatímní umístění před importem
+     designu — zdroj pravdy je teď artboard „EDITACE EVIDENCE").
+
+  Datový model (závazné, cituje přímo popis v Claude Design artboardu):
+  „Evidence má JEDEN onboarding checklist. U každé položky a aktivity se
+  určuje, jestli platí pro všechny zaměstnance, nebo jen pro vybranou
+  pracovní pozici." Tedy:
+    - JEDNA sada fází (`EV_ONBOARD_PHASES`), NE víc pojmenovaných šablon
+      podle pozice (to byl starší návrh z `zamestnanci-onboarding-checklist-prompt.md`,
+      nahrazený tímto).
+    - Každá fáze = seznam řádků dvou druhů: POLOŽKA (checklist, jen
+      splněno/nesplněno) a AKTIVITA (plánuje a hlídá se, ikona kalendáře).
+    - Každý řádek má scope „Pro všechny" (šedý tag) nebo „Pro pozici: <název>"
+      (modrý tag) — VIZ dva ukázkové řádky níže (e16, e18).
+    - ⚠ Tohle je ZDROJOVÁ, needitovatelná-needitovatelná definice (naopak
+      needitovatelná/zamčená — je EDITOVATELNÁ tady). NEPLÉST s
+      `pozSec_onboarding` / `POZ_ONBOARD_GROUPS` v modalu „Upravit pracovní
+      pozici" (§11.5) — to je JINÁ, samostatná funkce (needitovatelný
+      seznam školení navázaný na pozici, se zámky u položek „Pro všechny"),
+      která tímto zůstává BEZE ZMĚNY a nepřebírá data odsud.
+    - Zobrazení u konkrétního zaměstnance (drawer, záložka „Onboarding",
+      viz `drawer-tab-onboarding.html`) je TŘETÍ, samostatná datová sada
+      (`ZAM_ONBOARD_PHASES`) — ilustrační INSTANCE se stavem splnění, needitovatelná
+      1:1 vazba na tento zdroj (stejná konvence jako `ZAM_PLANY_GROUPS` vs
+      `POZ_ACT_GROUPS`).
+
+  ⚠ v2 (10. 9. 2026): ŽÁDNÉ tlačítko „Přidat fázi" — fáze jsou fixní
+     (Před nástupem / První den / První týden / Do 30 dnů), lze do nich jen
+     PŘIDÁVAT položky/aktivity (odkazy „+ POLOŽKA" / „+ AKTIVITA" dole v
+     každé skupině) a přetahovat pořadí (ikona `fa-grip-vertical`).
+
+  Přidání položky/aktivity otevírá SDÍLENÝ modal (viz `onbModalOpen` v
+  master prototypu) — u needitovatelné needitovatelné volby „Je pro" je
+  zamčeno na „Pro všechny", tady (needitovatelný zdroj) je volba otevřená
+  (přepínač Pro všechny / Pro vybranou pozici). Tenhle static soubor
+  zachycuje jen VÝSLEDNÝ stav seznamu (modal viz textový popis v §13.3
+  master prototypu / `Aptien-pravidla-pouziti-UI.md` §13.3).
+
+  Barvy tagů (`.apt-tag-grey`, přebarveno inline stylem dle scope):
+    - „Pro všechny": pozadí #eef0f5, text #7b8092 (výchozí neutrální).
+    - „Pro pozici: …": pozadí #eaf1fd, text #1572e8 (odstín primární modré,
+      STEJNÝ jazyk jako `.pz-` odkazy v `drawer-tab-pracovni-zarazeni.html`,
+      ale JINÁ komponenta — nepleť s App-Kit Tagem).
+
+  Panel `.apt-panel` / skupiny `.apt-group` jsou VIZUÁLNĚ převzaté z modalu
+  „Upravit pracovní pozici" (`nastorg-pozice-onboarding.html`,
+  `POZ_ONBOARD_GROUPS`) — SDÍLENÝ vizuální jazyk (CSS), ale data i chování
+  (needitovatelné/zamčené položky tam vs. plně editovatelný zdroj tady) jsou
+  nezávislé, viz výše.
+
+  Měň JEN data: texty položek/aktivit, fáze, scope. Struktura, barvy a
+  rozměry zůstávají.
+-->
+<style>
+  body { font-family:'Nunito',sans-serif; }
+  .apt-modal-overlay { position:fixed; inset:0; background:rgba(20,22,30,.55); display:flex; align-items:center; justify-content:center; }
+  .apt-modal { width:min(1180px,94vw); height:min(920px,92vh); background:#fff; border-radius:12px; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,.35); }
+  .apt-modal-head { flex-shrink:0; display:flex; align-items:center; padding:18px 24px 14px; }
+  .apt-modal-title { font-size:19px; font-weight:700; color:#3f4457; flex:1; }
+  .apt-modal-close { font-size:19px; color:#8a90a3; cursor:pointer; line-height:1; }
+  .apt-modal-body { flex:1; min-height:0; display:flex; }
+  .apt-modal-nav { width:246px; flex-shrink:0; background:#fff; padding:0 14px 18px; overflow-y:auto; }
+  .apt-modal-nav-item { display:flex; align-items:center; gap:11px; padding:9px 12px; border-radius:8px; font-size:13.5px; cursor:pointer; margin-bottom:2px; }
+  .apt-modal-content { flex:1; min-width:0; background:#f7f8fc; padding:26px 30px 30px; overflow-y:auto; display:flex; flex-direction:column; }
+  .apt-modal-h2 { font-size:19px; font-weight:600; color:#5b6070; margin:0 0 22px; }
+  .apt-modal-foot { flex-shrink:0; display:flex; align-items:center; gap:12px; padding:14px 24px; background:#fff; border-top:1px solid #eeeff4; }
+  .apt-btn-blue { display:inline-flex; align-items:center; gap:8px; background:#1572e8; color:#fff; font-size:12px; font-weight:700; letter-spacing:.03em; padding:9px 26px; border-radius:999px; cursor:pointer; white-space:nowrap; box-shadow:0 2px 6px rgba(21,114,232,.28); }
+  .apt-note { background:#eef4fe; border-left:3px solid #4a7fe8; border-radius:0 5px 5px 0; padding:11px 15px; font-size:13px; color:#4a5163; }
+  .apt-panel { background:#fff; border:1px solid #edeff5; border-radius:8px; overflow:hidden; margin-bottom:22px; }
+  .apt-panel-head { display:flex; align-items:center; gap:11px; padding:13px 18px; background:#f4f7fd; }
+  .apt-panel-title { font-size:15px; font-weight:700; color:#3f4457; }
+  .apt-count-pill { background:#e6e9f2; color:#5b6070; font-size:11px; font-weight:700; border-radius:5px; padding:2px 8px; }
+  .apt-group { background:#fafbfd; border:1px solid #eef0f6; border-radius:7px; margin:0 14px 12px; overflow:hidden; }
+  .apt-group-head { display:flex; align-items:center; gap:10px; padding:11px 14px; font-size:14px; font-weight:700; color:#3f4457; user-select:none; cursor:pointer; }
+  .apt-group-head:hover { background:#eef2f9; }
+  .apt-tag-grey { display:inline-block; background:#9096a6; color:#fff; font-size:10.5px; font-weight:700; border-radius:4px; padding:2px 8px; }
+  .evx-row { display:flex; align-items:center; gap:9px; padding:9px 16px; background:#fff; border-top:1px solid #f1f2f7; }
+  .evx-row-add { display:flex; gap:22px; padding:10px 16px; background:#fff; border-top:1px solid #f1f2f7; }
+</style>
+
+<div class="apt-modal-overlay">
+  <div class="apt-modal">
+    <div class="apt-modal-head">
+      <div class="apt-modal-title">Editace evidence</div>
+      <div class="apt-modal-close">✕</div>
+    </div>
+    <div class="apt-modal-body">
+      <div class="apt-modal-nav">
+        <div class="apt-modal-nav-item" style="color:#2b2540">Základní nastavení</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Kategorie</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Stavy položek</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Detaily</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Přílohy</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Plány aktivit</div>
+        <!-- ⚠ v2 (10.9.2026): pozice hned ZA „Plány aktivit" — zdroj: artboard EDITACE EVIDENCE -->
+        <div class="apt-modal-nav-item" style="background:#4b64f5;color:#fff;font-weight:700">Onboarding checklist</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Vydávání</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Náklady a spotřeba</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Zápisy</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Dashboard evidence</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Založení položky</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Pohledy na položky</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Rychlé akce</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Nastavení extranetu</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Upozornění</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">PDF formuláře</div>
+        <div class="apt-modal-nav-item" style="color:#2b2540">Online formuláře</div>
+      </div>
+      <div class="apt-modal-content">
+
+        <div class="apt-note" style="margin-bottom:18px">
+          <b>První verze k připomínkování.</b> Pro tuto sekci zatím není referenční screenshot — rozložení vychází z vizuálního jazyka modalu pracovní pozice.
+        </div>
+        <div class="apt-modal-h2" style="margin-bottom:8px">Onboarding checklist</div>
+        <div style="font-size:13px;color:#7b8092;margin-bottom:18px;max-width:760px">Evidence má jeden onboarding checklist. U každé položky a aktivity se určuje, jestli platí pro všechny zaměstnance, nebo jen pro vybranou pracovní pozici.</div>
+
+        <div class="apt-panel">
+          <div class="apt-panel-head">
+            <i class="fa-solid fa-list-check" style="color:#1572e8;font-size:14px"></i>
+            <span class="apt-panel-title">Fáze nástupu</span>
+            <span class="apt-count-pill">13 položek · 7 aktivit</span>
+          </div>
+          <div style="padding:8px 18px 4px;font-size:12.5px;color:#9096a6">Fáze jsou společné pro položky checklistu i aktivity — v záznamu zaměstnance se podle nich obojí seskupí. Položka je jen splněno / nesplněno, aktivita se plánuje a hlídá. Pořadí lze měnit tažením.</div>
+
+          <!-- FÁZE 1 · Před nástupem (4 položky + 1 aktivita) -->
+          <div class="apt-group">
+            <div class="apt-group-head">
+              <i class="fa-solid fa-chevron-down" style="font-size:11px;color:#7b8092;width:11px;text-align:center"></i>
+              <span>Před nástupem</span><span class="apt-count-pill">5</span>
+            </div>
+            <div class="evx-row">
+              <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+              <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">Podepsat pracovní smlouvu a předat kopii zaměstnanci</div>
+              <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092"><i class="fa-solid fa-users" style="font-size:9px;margin-right:5px"></i>Pro všechny</span>
+              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+              <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+            </div>
+            <div class="evx-row">
+              <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+              <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">Zaslat vstupní dotazník a osobní údaje ke zpracování</div>
+              <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092"><i class="fa-solid fa-users" style="font-size:9px;margin-right:5px"></i>Pro všechny</span>
+              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+              <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+            </div>
+            <div class="evx-row">
+              <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+              <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">Zřídit pracovní e-mail a přístupy do interních systémů</div>
+              <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092"><i class="fa-solid fa-users" style="font-size:9px;margin-right:5px"></i>Pro všechny</span>
+              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+              <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+            </div>
+            <div class="evx-row">
+              <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+              <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">Připravit pracovní místo a techniku</div>
+              <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092"><i class="fa-solid fa-users" style="font-size:9px;margin-right:5px"></i>Pro všechny</span>
+              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+              <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+            </div>
+            <div class="evx-row">
+              <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+              <i class="fa-solid fa-calendar-check" style="color:#1572e8;font-size:12px"></i>
+              <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">Vstupní lékařská prohlídka</div>
+              <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092"><i class="fa-solid fa-users" style="font-size:9px;margin-right:5px"></i>Pro všechny</span>
+              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+              <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+            </div>
+            <div class="evx-row-add">
+              <span style="color:#4a7fe8;font-size:12.5px;font-weight:700;cursor:pointer"><i class="fa-solid fa-plus" style="font-size:10px;margin-right:5px"></i>POLOŽKA</span>
+              <span style="color:#4a7fe8;font-size:12.5px;font-weight:700;cursor:pointer"><i class="fa-solid fa-plus" style="font-size:10px;margin-right:5px"></i>AKTIVITA</span>
+            </div>
+          </div>
+
+          <!-- FÁZE 2 · První den (4 položky + 1 aktivita) -->
+          <div class="apt-group">
+            <div class="apt-group-head">
+              <i class="fa-solid fa-chevron-down" style="font-size:11px;color:#7b8092;width:11px;text-align:center"></i>
+              <span>První den</span><span class="apt-count-pill">5</span>
+            </div>
+            <div class="evx-row">
+              <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+              <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">Předat notebook, mobilní telefon a přístupovou kartu</div>
+              <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092"><i class="fa-solid fa-users" style="font-size:9px;margin-right:5px"></i>Pro všechny</span>
+              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+              <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+            </div>
+            <div class="evx-row">
+              <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+              <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">Představit tým a nadřízeného</div>
+              <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092"><i class="fa-solid fa-users" style="font-size:9px;margin-right:5px"></i>Pro všechny</span>
+              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+              <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+            </div>
+            <div class="evx-row">
+              <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+              <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">Seznámit s pracovním řádem a BOZP</div>
+              <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092"><i class="fa-solid fa-users" style="font-size:9px;margin-right:5px"></i>Pro všechny</span>
+              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+              <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+            </div>
+            <div class="evx-row">
+              <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+              <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">Nastavit přístup do firemního intranetu</div>
+              <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092"><i class="fa-solid fa-users" style="font-size:9px;margin-right:5px"></i>Pro všechny</span>
+              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+              <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+            </div>
+            <div class="evx-row">
+              <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+              <i class="fa-solid fa-calendar-check" style="color:#1572e8;font-size:12px"></i>
+              <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">Uvítací pohovor s HR</div>
+              <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092"><i class="fa-solid fa-users" style="font-size:9px;margin-right:5px"></i>Pro všechny</span>
+              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+              <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+            </div>
+            <div class="evx-row-add">
+              <span style="color:#4a7fe8;font-size:12.5px;font-weight:700;cursor:pointer"><i class="fa-solid fa-plus" style="font-size:10px;margin-right:5px"></i>POLOŽKA</span>
+              <span style="color:#4a7fe8;font-size:12.5px;font-weight:700;cursor:pointer"><i class="fa-solid fa-plus" style="font-size:10px;margin-right:5px"></i>AKTIVITA</span>
+            </div>
+          </div>
+
+          <!-- FÁZE 3 · První týden (3 položky + 3 aktivity, z toho e16 scope „pozice") -->
+          <div class="apt-group">
+            <div class="apt-group-head">
+              <i class="fa-solid fa-chevron-down" style="font-size:11px;color:#7b8092;width:11px;text-align:center"></i>
+              <span>První týden</span><span class="apt-count-pill">6</span>
+            </div>
+            <div class="evx-row">
+              <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+              <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">Absolvovat vstupní školení BOZP</div>
+              <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092"><i class="fa-solid fa-users" style="font-size:9px;margin-right:5px"></i>Pro všechny</span>
+              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+              <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+            </div>
+            <div class="evx-row">
+              <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+              <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">Nastudovat organizační strukturu firmy</div>
+              <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092"><i class="fa-solid fa-users" style="font-size:9px;margin-right:5px"></i>Pro všechny</span>
+              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+              <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+            </div>
+            <div class="evx-row">
+              <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+              <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">Projít si interní směrnice</div>
+              <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092"><i class="fa-solid fa-users" style="font-size:9px;margin-right:5px"></i>Pro všechny</span>
+              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+              <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+            </div>
+            <div class="evx-row">
+              <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+              <i class="fa-solid fa-calendar-check" style="color:#1572e8;font-size:12px"></i>
+              <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">Schůzka s nadřízeným – shrnutí prvního týdne</div>
+              <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092"><i class="fa-solid fa-users" style="font-size:9px;margin-right:5px"></i>Pro všechny</span>
+              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+              <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+            </div>
+            <div class="evx-row">
+              <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+              <i class="fa-solid fa-calendar-check" style="color:#1572e8;font-size:12px"></i>
+              <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">Naplánovat úvodní školení IT bezpečnosti</div>
+              <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092"><i class="fa-solid fa-users" style="font-size:9px;margin-right:5px"></i>Pro všechny</span>
+              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+              <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+            </div>
+            <!-- ⚠ e16 — ukázkový řádek se scope „Pro pozici" (modrý tag), viz popis nahoře -->
+            <div class="evx-row">
+              <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+              <i class="fa-solid fa-calendar-check" style="color:#1572e8;font-size:12px"></i>
+              <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">Nastavit přístupy do docházkového systému</div>
+              <span class="apt-tag-grey" style="background:#eaf1fd;color:#1572e8"><i class="fa-solid fa-briefcase" style="font-size:9px;margin-right:5px"></i>Pro pozici: Vedoucí útvaru hospodářské správy</span>
+              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+              <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+            </div>
+            <div class="evx-row-add">
+              <span style="color:#4a7fe8;font-size:12.5px;font-weight:700;cursor:pointer"><i class="fa-solid fa-plus" style="font-size:10px;margin-right:5px"></i>POLOŽKA</span>
+              <span style="color:#4a7fe8;font-size:12.5px;font-weight:700;cursor:pointer"><i class="fa-solid fa-plus" style="font-size:10px;margin-right:5px"></i>AKTIVITA</span>
+            </div>
+          </div>
+
+          <!-- FÁZE 4 · Do 30 dnů (2 položky, z toho e18 scope „pozice" + 2 aktivity) -->
+          <div class="apt-group">
+            <div class="apt-group-head">
+              <i class="fa-solid fa-chevron-down" style="font-size:11px;color:#7b8092;width:11px;text-align:center"></i>
+              <span>Do 30 dnů</span><span class="apt-count-pill">4</span>
+            </div>
+            <div class="evx-row">
+              <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+              <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">Vyplnit zpětnou vazbu na onboarding</div>
+              <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092"><i class="fa-solid fa-users" style="font-size:9px;margin-right:5px"></i>Pro všechny</span>
+              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+              <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+            </div>
+            <!-- ⚠ e18 — druhý ukázkový řádek se scope „Pro pozici" (POLOŽKA, ne aktivita) -->
+            <div class="evx-row">
+              <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+              <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">Dokončit povinná online školení</div>
+              <span class="apt-tag-grey" style="background:#eaf1fd;color:#1572e8"><i class="fa-solid fa-briefcase" style="font-size:9px;margin-right:5px"></i>Pro pozici: Vedoucí útvaru hospodářské správy</span>
+              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+              <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+            </div>
+            <div class="evx-row">
+              <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+              <i class="fa-solid fa-calendar-check" style="color:#1572e8;font-size:12px"></i>
+              <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">Hodnoticí pohovor po 30 dnech</div>
+              <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092"><i class="fa-solid fa-users" style="font-size:9px;margin-right:5px"></i>Pro všechny</span>
+              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+              <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+            </div>
+            <div class="evx-row">
+              <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+              <i class="fa-solid fa-calendar-check" style="color:#1572e8;font-size:12px"></i>
+              <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">Revize nastavení přístupových práv</div>
+              <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092"><i class="fa-solid fa-users" style="font-size:9px;margin-right:5px"></i>Pro všechny</span>
+              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+              <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+            </div>
+            <div class="evx-row-add">
+              <span style="color:#4a7fe8;font-size:12.5px;font-weight:700;cursor:pointer"><i class="fa-solid fa-plus" style="font-size:10px;margin-right:5px"></i>POLOŽKA</span>
+              <span style="color:#4a7fe8;font-size:12.5px;font-weight:700;cursor:pointer"><i class="fa-solid fa-plus" style="font-size:10px;margin-right:5px"></i>AKTIVITA</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="apt-modal-foot">
+      <div style="flex:1"></div>
+      <div class="apt-btn-blue">ULOŽIT</div>
+    </div>
+  </div>
+</div>

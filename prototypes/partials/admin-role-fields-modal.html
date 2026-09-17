@@ -1,0 +1,72 @@
+<meta charset="utf-8">
+<!-- Ikony tohoto bloku jsou Font Awesome (Free). Řádky níže načtou FA a Nunito,
+     aby se blok vykreslil i při samostatném otevření souboru. V master
+     prototypu se obojí načítá z jeho assetů, takže tam jsou nadbytečné. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap">
+<!--
+  APTIEN — ADMINISTRACE / ROLE → "O MNĚ" — NASTAVENÍ VIDITELNOSTI ÚDAJŮ (MODAL)
+  ====================================================================
+  Vlož CELÝ blok. NEREKONSTRUUJ ho. Otevírá se z detailu role (viz
+  admin-role-detail.html), kartа "Aplikace pro zaměstnance" → řádek
+  "O mně" → odkaz "Nastavení údajů, které zaměstnanec vidí a může
+  upravit" (ikona oka). Modal přes celou administraci (tmavý overlay).
+  Tabulka: každý údaj formuláře "O mně" má dva nezávislé přepínače —
+  "Pouze číst" a "Může i upravit". Logika (NEMĚNIT):
+    • zaškrtnutí "Může i upravit" automaticky zaškrtne i "Pouze číst"
+      (úprava jde vždy jen spolu se čtením),
+    • odškrtnutí "Pouze číst" automaticky odškrtne i "Může i upravit"
+      (bez čtení nejde ani upravovat).
+  Tlačítka dole jsou standardní pilulky appky (.apt-btn-grey / .apt-btn-blue).
+  Měň jen názvy polí a výchozí zaškrtnutí — skladbu tabulky a chování
+  nech 1:1.
+-->
+<style>
+  body{margin:0;background:#f5f6f7;font-family:'Nunito',sans-serif}
+  .adm-modal-back{position:relative;min-height:100vh;background:rgba(30,27,46,.45);display:flex;align-items:flex-start;justify-content:center;padding:60px 20px}
+  .adm-modal{background:#fff;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.25);width:100%;max-width:640px;padding:26px 30px 24px}
+  .adm-mhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+  .adm-mhead h3{font-size:19px;font-weight:800;margin:0;color:#2b2540}
+  .adm-mclose{cursor:pointer;color:#878787;font-size:16px}
+  .adm-hint{font-size:11.5px;color:#878787;margin-bottom:8px}
+  table.adm-fieldsperm{width:100%;border-collapse:collapse;margin-bottom:4px}
+  table.adm-fieldsperm th{text-align:left;font-size:10px;font-weight:600;color:#878787;text-transform:uppercase;letter-spacing:.07em;padding:8px 10px;border-bottom:1px solid #eee}
+  table.adm-fieldsperm th:not(:first-child){text-align:center;width:120px}
+  table.adm-fieldsperm td{padding:10px;font-size:13px;color:#2b2540;border-bottom:1px solid #f5f4f9}
+  table.adm-fieldsperm td:not(:first-child){text-align:center}
+  table.adm-fieldsperm tr:last-child td{border-bottom:none}
+  .adm-msave{margin-top:20px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid #f0eef5;padding-top:18px}
+  /* Tlačítka appky jsou VŽDY pilulky (border-radius:999px), VELKÁ PÍSMENA, stejná
+     velikost — .apt-btn-blue (primární) a .apt-btn-grey (sekundární/zrušit) jsou
+     reálné, znovupoužitelné třídy z master prototypu i UI kitu appky. */
+  .apt-btn-blue{display:inline-flex;align-items:center;gap:8px;background:#4a7fe8;color:#fff;font-size:12px;font-weight:700;letter-spacing:.03em;padding:9px 26px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  .apt-btn-grey{display:inline-flex;align-items:center;gap:9px;background:#6b7280;color:#fff;font-size:12px;font-weight:700;letter-spacing:.03em;padding:9px 20px;border-radius:999px;cursor:pointer;white-space:nowrap}
+</style>
+<div class="adm-modal-back">
+  <div class="adm-modal">
+    <div class="adm-mhead">
+      <h3>O mně — viditelnost a úprava údajů</h3>
+      <i class="fa-solid fa-xmark adm-mclose"></i>
+    </div>
+    <div class="adm-hint" style="margin-bottom:16px">Ukázkový formulář „O mně" tak, jak ho uvidí zaměstnanec s touto rolí. U každého údaje nastavíte, zda ho smí jen číst, nebo i upravovat — úprava jde vždy jen spolu se čtením.</div>
+    <table class="adm-fieldsperm">
+      <thead><tr><th></th><th>Pouze číst</th><th>Může i upravit</th></tr></thead>
+      <tbody>
+        <tr><td>Jméno a příjmení</td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td></tr>
+        <tr><td>Datum narození</td><td><input type="checkbox" checked></td><td><input type="checkbox"></td></tr>
+        <tr><td>Rodné číslo</td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td>Osobní e-mail</td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td></tr>
+        <tr><td>Telefonní číslo</td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td></tr>
+        <tr><td>Adresa bydliště</td><td><input type="checkbox" checked></td><td><input type="checkbox"></td></tr>
+        <tr><td>Bankovní účet</td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td>Zdravotní pojišťovna</td><td><input type="checkbox" checked></td><td><input type="checkbox"></td></tr>
+        <tr><td>Fotografie profilu</td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td></tr>
+        <tr><td>Poznámka k zaměstnanci</td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+      </tbody>
+    </table>
+    <div class="adm-msave">
+      <div class="apt-btn-grey">ZRUŠIT</div>
+      <div class="apt-btn-blue">ULOŽIT</div>
+    </div>
+  </div>
+</div>

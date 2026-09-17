@@ -1,0 +1,303 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free) + Nunito. Řádky níže je načtou,
+     aby se blok vykreslil i při samostatném otevření souboru. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<!--
+  APTIEN — DRAWER, ZÁLOŽKA „ONBOARDING"
+  ======================================
+  OBSAH ZÁLOŽKY do slotu `item-drawer-shell.html`. Vlož CELÝ, neskládej
+  z hlavy. Zdroj pravdy: Claude Design, projekt „Onboarding checklist
+  umístění", soubor `Onboarding v2.dc.html` (10. 9. 2026) + master
+  prototyp (`zam_showOnboarding` / `ZAM_ONBOARD_PHASES` / `ZAM_ONBOARD_SMERNICE`).
+
+  ⚠ TATO ZÁLOŽKA EXISTUJE JEN U MODULU ZAMĚSTNANEC (§7.1.8), stejné
+     pravidlo jako u „Pracovní zařazení" (§7.1.6) — nekopíruj ji do
+     jiných evidencí.
+
+  ⚠ POZICE V PÁSU ZÁLOŽEK: úplně POSLEDNÍ, za „Konverzace". Pořadí
+     ostatních záložek se nemění (viz `item-drawer-shell.html`, tab
+     strip: Detaily · Plány aktivit · Přílohy · Souvislosti · Kalendář ·
+     Pracovní zařazení · Zápisy · Úkoly · Poznámky · Konverzace ·
+     **Onboarding**).
+
+  Skladba (pořadí je závazné):
+    1. Hlavička: název + podtitulek „Položky pro všechny + položky pro
+       pozici <pozice>" + sekundární tlačítko „STÁHNOUT SOUHRN (PDF)"
+       (jen placeholder, bez funkce — export se mimo rozsah zadání).
+    2. Souhrnný progress bar „Splněno X z Y" (počítá se JEN z položek
+       checklistu, ne z aktivit — aktivita se plánuje a hlídá, ne
+       „plní").
+    3. Sbalitelné skupiny = FÁZE nástupu (sdílené pro položky i
+       aktivity, stejné fáze jako v Editaci evidence). Skupina: tmavý
+       pill s počtem řádků + zelený chip „N splněno" + šedý chip
+       „N zbývá" (počty jen z položek).
+       - Řádek POLOŽKA: text, dole „Splněno <datum>" nebo nic, volitelná
+         poznámka; vpravo pilulka Splněno/Nesplněno + tužka (needitovatelné
+         šablonové řádky nejdou přejmenovat, jen zaškrtnout/napsat
+         poznámku — koš mají JEN zaměstnanecké řádky).
+       - Řádek AKTIVITA: text, dole datum + štítek typu „Jednorázová";
+         vpravo kolečkový checkmark (zelený když splněno/naplánováno)
+         + datum + kebab menu „⋮".
+       - Štítek rozsahu pod textem, JEN když řádek NENÍ „Pro všechny":
+         fialový „Pouze pro tohoto zaměstnance" (řádek přidaný přímo
+         tady, má navíc koš) nebo modrý s aktovkou „Pro pracovní
+         pozici: <pozice>" (zděděno z pracovní pozice zaměstnance).
+       - Pod skupinou: „+ VLASTNÍ POLOŽKA" / „+ VLASTNÍ AKTIVITA" —
+         otevírají STEJNÝ modal jako „+ POLOŽKA"/„+ AKTIVITA" v Editaci
+         evidence (text, u aktivity typ „Jednorázová" + „Koho
+         upozornit", zařazení do fáze), jen pole „Je pro" je zamčené na
+         „Pouze pro tohoto zaměstnance" (viz komentář u modalu níže).
+    4. Readonly seznam směrnic platných pro zaměstnance (bez tlačítka
+       POTVRDIT — to je jen na agendě „Moje směrnice" samotného
+       zaměstnance), se štítkem rozsahu platnosti.
+
+  Měň JEN data: texty, jména, data, poznámky, počty. Struktura, barvy
+  (výchozí modrá `#1572e8`, NIKDY žlutá barva modulu Zaměstnanci) a
+  rozměry zůstávají.
+-->
+<style>
+  .zam-onb-pdfbtn { display:inline-flex; align-items:center; gap:8px; background:#fff; color:#1572e8; font-weight:800; font-size:12px; letter-spacing:.03em; cursor:pointer; padding:9px 18px; border:1px solid #1572e8; border-radius:999px; white-space:nowrap; }
+  .zam-onb-group { margin-bottom:14px; border-radius:6px; overflow:hidden; border:1px solid #e9e7f1; }
+  .zam-onb-group-head { display:flex; align-items:center; gap:12px; padding:12px 16px; background:#efeef4; cursor:pointer; }
+  .zam-onb-group-title { font-weight:800; font-size:14px; color:#2b2942; }
+  .zam-onb-count-pill { display:inline-flex; align-items:center; justify-content:center; min-width:22px; height:20px; padding:0 6px; background:#2b2942; color:#fff; border-radius:4px; font-size:11px; font-weight:700; white-space:nowrap; }
+  .zam-onb-chip { background:#78788c; color:#fff; font-size:11px; font-weight:700; padding:3px 10px; border-radius:4px; white-space:nowrap; }
+  .zam-onb-row { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; padding:12px 16px; background:#fff; border-top:1px solid #f2f1f7; }
+  .zam-onb-row-title { font-weight:700; font-size:13.5px; color:#1e1b2e; margin-bottom:3px; }
+  .zam-onb-row-meta { font-size:12px; color:#6c6785; }
+  .zam-onb-row-note { font-size:12px; color:#9aa2b0; margin-top:2px; }
+  .zam-onb-typ-tag { background:#eef0f5; color:#7b8092; font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:4px; }
+  .zam-onb-scope-badge { display:inline-flex; align-items:center; gap:5px; font-size:10.5px; font-weight:700; padding:3px 9px; border-radius:999px; margin-top:6px; white-space:nowrap; }
+  .zam-onb-pill { display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:700; padding:5px 12px; border-radius:999px; white-space:nowrap; }
+  .zam-onb-pill.done { background:#e8f8ed; color:#1a8a3d; }
+  .zam-onb-pill.open { background:#eef0f5; color:#7b8092; }
+  .zam-onb-akt-check { width:31px; height:31px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:13px; background:#d9dde8; }
+  .zam-onb-akt-check.done { background:#00c853; }
+  .zam-onb-addrow { display:flex; gap:22px; padding:11px 16px 12px; background:#fff; border-top:1px solid #f2f1f7; }
+  .zam-onb-addrow span { color:#1572e8; font-size:12.5px; font-weight:700; cursor:pointer; }
+  .zam-onb-smernice-row { display:flex; align-items:center; gap:12px; padding:11px 14px; background:#fff; border-bottom:1px solid #f2f1f7; }
+  .zam-onb-smernice-row:last-child { border-bottom:none; }
+  .apt-panel { background:#fff; border:1px solid #edeff5; border-radius:8px; overflow:hidden; }
+  .apt-tag-grey { display:inline-block; font-size:10.5px; font-weight:700; border-radius:4px; padding:2px 8px; }
+</style>
+
+<div style="padding:20px 28px 28px;font-family:'Nunito',sans-serif">
+
+  <!-- 1 · Hlavička -->
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px">
+    <div>
+      <div style="font-size:17px;font-weight:800;color:#1e1b2e">Onboarding checklist</div>
+      <div style="font-size:12.5px;color:#9aa2b0;margin-top:3px">Položky pro všechny + položky pro pozici <b>Vedoucí útvaru hospodářské správy</b></div>
+    </div>
+    <div class="zam-onb-pdfbtn"><i class="fa-solid fa-file-arrow-down" style="font-size:11px"></i>STÁHNOUT SOUHRN (PDF)</div>
+  </div>
+
+  <!-- 2 · Progress -->
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+    <span style="font-size:12.5px;font-weight:700;color:#4a5163;white-space:nowrap">Splněno 3 z 10</span>
+    <div style="flex:1;height:6px;background:#ededf2;border-radius:3px;overflow:hidden"><div style="height:100%;background:#1572e8;width:30%;border-radius:3px"></div></div>
+  </div>
+
+  <!-- 3 · Fáze — Před nástupem (3 řádky: 1 splněná položka, 1 nesplněná, 1 aktivita) -->
+  <div class="zam-onb-group">
+    <div class="zam-onb-group-head">
+      <i class="fa-solid fa-chevron-down" style="font-size:12px;color:#5a5478"></i>
+      <span class="zam-onb-group-title">Před nástupem</span>
+      <span class="zam-onb-count-pill">3</span>
+      <span class="zam-onb-chip" style="background:#00C853">1 splněno</span>
+      <span class="zam-onb-chip" style="background:#78788c">1 zbývá</span>
+    </div>
+    <div class="zam-onb-row">
+      <div style="flex:1;min-width:0">
+        <div class="zam-onb-row-title">Podepsat pracovní smlouvu a předat kopii zaměstnanci</div>
+        <div class="zam-onb-row-meta">Splněno 3. 8. 2026</div>
+        <div class="zam-onb-row-note">Originál založen do osobního spisu.</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+        <span class="zam-onb-pill done"><i class="fa-solid fa-check"></i>Splněno</span>
+        <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+      </div>
+    </div>
+    <div class="zam-onb-row">
+      <div style="flex:1;min-width:0">
+        <div class="zam-onb-row-title">Zřídit pracovní e-mail a přístupy do interních systémů</div>
+        <div class="zam-onb-row-note">Čeká se na schválení přístupu do ekonomického modulu.</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+        <span class="zam-onb-pill open"><i class="fa-regular fa-circle"></i>Nesplněno</span>
+        <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+      </div>
+    </div>
+    <div class="zam-onb-row">
+      <div style="flex:1;min-width:0">
+        <div class="zam-onb-row-title">Vstupní lékařská prohlídka</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:2px">
+          <span class="zam-onb-row-meta">31. 7. 2026</span>
+          <span class="zam-onb-typ-tag">Jednorázová</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:44px;flex-shrink:0">
+        <div class="zam-onb-akt-check done"><i class="fa-solid fa-check"></i></div>
+        <div style="font-size:10px;color:#888">31. 7. 2026</div>
+        <i class="fa-solid fa-ellipsis-vertical" style="color:#c5c0d8;font-size:13px;cursor:pointer"></i>
+      </div>
+    </div>
+    <div class="zam-onb-addrow">
+      <span><i class="fa-solid fa-plus" style="font-size:10px;margin-right:5px"></i>VLASTNÍ POLOŽKA</span>
+      <span><i class="fa-solid fa-plus" style="font-size:10px;margin-right:5px"></i>VLASTNÍ AKTIVITA</span>
+    </div>
+  </div>
+
+  <!-- 3 · Fáze — První den (6 řádků: 2 splněné položky, 3 nesplněné [z toho 1 „Pro pozici"], 1 aktivita) -->
+  <div class="zam-onb-group">
+    <div class="zam-onb-group-head">
+      <i class="fa-solid fa-chevron-down" style="font-size:12px;color:#5a5478"></i>
+      <span class="zam-onb-group-title">První den</span>
+      <span class="zam-onb-count-pill">6</span>
+      <span class="zam-onb-chip" style="background:#00C853">2 splněno</span>
+      <span class="zam-onb-chip" style="background:#78788c">3 zbývá</span>
+    </div>
+    <div class="zam-onb-row">
+      <div style="flex:1;min-width:0">
+        <div class="zam-onb-row-title">Předat notebook, mobilní telefon a přístupovou kartu</div>
+        <div class="zam-onb-row-meta">Splněno 3. 8. 2026</div>
+        <div class="zam-onb-row-note">Notebook DELL 5540, inv. č. 4021.</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+        <span class="zam-onb-pill done"><i class="fa-solid fa-check"></i>Splněno</span>
+        <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+      </div>
+    </div>
+    <div class="zam-onb-row">
+      <div style="flex:1;min-width:0">
+        <div class="zam-onb-row-title">Představit tým a nadřízeného</div>
+        <div class="zam-onb-row-meta">Splněno 3. 8. 2026</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+        <span class="zam-onb-pill done"><i class="fa-solid fa-check"></i>Splněno</span>
+        <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+      </div>
+    </div>
+    <div class="zam-onb-row">
+      <div style="flex:1;min-width:0">
+        <div class="zam-onb-row-title">Seznámit s pracovním řádem a BOZP</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+        <span class="zam-onb-pill open"><i class="fa-regular fa-circle"></i>Nesplněno</span>
+        <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+      </div>
+    </div>
+    <div class="zam-onb-row">
+      <div style="flex:1;min-width:0">
+        <div class="zam-onb-row-title">Nastavit přístup do firemního intranetu</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+        <span class="zam-onb-pill open"><i class="fa-regular fa-circle"></i>Nesplněno</span>
+        <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+      </div>
+    </div>
+    <div class="zam-onb-row">
+      <div style="flex:1;min-width:0">
+        <div class="zam-onb-row-title">Podepsat interní směrnici o ochraně osobních údajů</div>
+        <div><span class="zam-onb-scope-badge" style="background:#e8f0fd;color:#1565C0"><i class="fa-solid fa-briefcase" style="font-size:9px"></i>Pro pracovní pozici: Vedoucí útvaru hospodářské správy</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+        <span class="zam-onb-pill open"><i class="fa-regular fa-circle"></i>Nesplněno</span>
+        <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+      </div>
+    </div>
+    <div class="zam-onb-row">
+      <div style="flex:1;min-width:0">
+        <div class="zam-onb-row-title">Uvítací pohovor s HR</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:2px">
+          <span class="zam-onb-row-meta">3. 8. 2026</span>
+          <span class="zam-onb-typ-tag">Jednorázová</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:44px;flex-shrink:0">
+        <div class="zam-onb-akt-check done"><i class="fa-solid fa-check"></i></div>
+        <div style="font-size:10px;color:#888">3. 8. 2026</div>
+        <i class="fa-solid fa-ellipsis-vertical" style="color:#c5c0d8;font-size:13px;cursor:pointer"></i>
+      </div>
+    </div>
+    <div class="zam-onb-addrow">
+      <span><i class="fa-solid fa-plus" style="font-size:10px;margin-right:5px"></i>VLASTNÍ POLOŽKA</span>
+      <span><i class="fa-solid fa-plus" style="font-size:10px;margin-right:5px"></i>VLASTNÍ AKTIVITA</span>
+    </div>
+  </div>
+
+  <!-- 3 · Fáze — První týden (5 řádků: 0 splněných položek, 1 aktivita „Pro všechny", 1 aktivita „Pouze pro tohoto zaměstnance" — ukázka zaměstnaneckého řádku s koš ikonou) -->
+  <div class="zam-onb-group">
+    <div class="zam-onb-group-head">
+      <i class="fa-solid fa-chevron-down" style="font-size:12px;color:#5a5478"></i>
+      <span class="zam-onb-group-title">První týden</span>
+      <span class="zam-onb-count-pill">5</span>
+      <span class="zam-onb-chip" style="background:#00C853">0 splněno</span>
+      <span class="zam-onb-chip" style="background:#78788c">3 zbývá</span>
+    </div>
+    <div class="zam-onb-row">
+      <div style="flex:1;min-width:0"><div class="zam-onb-row-title">Absolvovat vstupní školení BOZP</div></div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0"><span class="zam-onb-pill open"><i class="fa-regular fa-circle"></i>Nesplněno</span><i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i></div>
+    </div>
+    <div class="zam-onb-row">
+      <div style="flex:1;min-width:0"><div class="zam-onb-row-title">Nastudovat organizační strukturu firmy</div></div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0"><span class="zam-onb-pill open"><i class="fa-regular fa-circle"></i>Nesplněno</span><i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i></div>
+    </div>
+    <div class="zam-onb-row">
+      <div style="flex:1;min-width:0"><div class="zam-onb-row-title">Projít si interní směrnice</div></div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0"><span class="zam-onb-pill open"><i class="fa-regular fa-circle"></i>Nesplněno</span><i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i></div>
+    </div>
+    <div class="zam-onb-row">
+      <div style="flex:1;min-width:0">
+        <div class="zam-onb-row-title">Schůzka s nadřízeným – shrnutí prvního týdne</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:2px"><span class="zam-onb-typ-tag">Jednorázová</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:44px;flex-shrink:0">
+        <div class="zam-onb-akt-check"><i class="fa-solid fa-check"></i></div>
+        <i class="fa-solid fa-ellipsis-vertical" style="color:#c5c0d8;font-size:13px;cursor:pointer"></i>
+      </div>
+    </div>
+    <!-- řádek přidaný přímo na zaměstnanci přes „+ VLASTNÍ AKTIVITA" — fialový štítek + navíc koš -->
+    <div class="zam-onb-row">
+      <div style="flex:1;min-width:0">
+        <div class="zam-onb-row-title">Zajistit přístup do specifického interního nástroje pro tento tým</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:2px"><span class="zam-onb-typ-tag">Jednorázová</span></div>
+        <div><span class="zam-onb-scope-badge" style="background:#f3e8fd;color:#7b1fa2"><i class="fa-solid fa-user-lock" style="font-size:9px"></i>Pouze pro tohoto zaměstnance</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:44px;flex-shrink:0">
+        <div class="zam-onb-akt-check"><i class="fa-solid fa-check"></i></div>
+        <i class="fa-solid fa-ellipsis-vertical" style="color:#c5c0d8;font-size:13px;cursor:pointer"></i>
+      </div>
+    </div>
+    <div class="zam-onb-addrow">
+      <span><i class="fa-solid fa-plus" style="font-size:10px;margin-right:5px"></i>VLASTNÍ POLOŽKA</span>
+      <span><i class="fa-solid fa-plus" style="font-size:10px;margin-right:5px"></i>VLASTNÍ AKTIVITA</span>
+    </div>
+  </div>
+
+  <!-- 4 · Seznam směrnic (§3.5 zadání 27. 8. 2026) — readonly, bez POTVRDIT -->
+  <div style="font-size:13px;font-weight:800;color:#2b2942;margin:22px 0 10px">Směrnice platné pro tohoto zaměstnance</div>
+  <div class="apt-panel">
+    <div class="zam-onb-smernice-row">
+      <i class="fa-solid fa-book" style="color:#1572e8;font-size:13px"></i>
+      <span style="flex:1;min-width:0;font-size:13px;color:#2b2942">Pracovní řád</span>
+      <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092">Pro všechny zaměstnance</span>
+    </div>
+    <div class="zam-onb-smernice-row">
+      <i class="fa-solid fa-book" style="color:#1572e8;font-size:13px"></i>
+      <span style="flex:1;min-width:0;font-size:13px;color:#2b2942">Směrnice o ochraně osobních údajů (GDPR)</span>
+      <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092">Pro všechny zaměstnance</span>
+    </div>
+    <div class="zam-onb-smernice-row">
+      <i class="fa-solid fa-book" style="color:#1572e8;font-size:13px"></i>
+      <span style="flex:1;min-width:0;font-size:13px;color:#2b2942">BOZP a požární ochrana</span>
+      <span class="apt-tag-grey" style="background:#eef0f5;color:#7b8092">Pro všechny zaměstnance</span>
+    </div>
+    <div class="zam-onb-smernice-row">
+      <i class="fa-solid fa-book" style="color:#1572e8;font-size:13px"></i>
+      <span style="flex:1;min-width:0;font-size:13px;color:#2b2942">Kompetenční matice — vedoucí pracovníci</span>
+      <span class="apt-tag-grey" style="background:#eaf1fd;color:#1572e8">Pro pozici: Vedoucí útvaru hospodářské správy</span>
+    </div>
+  </div>
+
+</div>

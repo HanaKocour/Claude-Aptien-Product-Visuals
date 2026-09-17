@@ -34,7 +34,9 @@
   .adm-sub-head{padding:18px 18px 10px;font-size:20px;font-weight:800;color:#2b2540}
   .adm-sub-search{margin:0 16px 10px;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #CCCCCC;border-radius:8px;padding:7px 10px}
   .adm-sub-search input{border:none;outline:none;font-family:inherit;font-size:12.5px;flex:1;background:transparent}
-  .adm-sub-new{margin:0 16px 14px;display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:#1572e8;cursor:pointer}
+  /* Tlačítka appky jsou VŽDY pilulky (border-radius:999px) a VELKÝMI PÍSMENY,
+     stejná velikost — viz UI kit appky (Claude-HK-Aptien-App). */
+  .adm-sub-new{margin:0 16px 14px;display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:.03em;color:#1572e8;background:#eef4fe;cursor:pointer;border-radius:999px;padding:9px 20px;white-space:nowrap}
   .adm-sub-group{padding:0 16px 6px}
   .adm-sub-nav-item{display:flex;align-items:center;gap:11px;padding:9px 10px;margin:0 8px 2px;border-radius:8px;font-size:13px;font-weight:600;color:#4a4560;cursor:pointer}
   .adm-sub-nav-item .adm-role-badge{margin-left:auto}
@@ -106,7 +108,7 @@
   <nav class="adm-subcol">
     <div class="adm-sub-head" style="padding-bottom:12px">Role</div>
     <div class="adm-sub-search"><i class="fa-solid fa-magnifying-glass" style="color:#b0aac8;font-size:11px"></i><input placeholder="Vyhledání role …"></div>
-    <div class="adm-sub-new"><i class="fa-solid fa-plus"></i>Nová role</div>
+    <div class="adm-sub-new"><i class="fa-solid fa-plus"></i>NOVÁ ROLE</div>
     <div class="adm-sub-group">
       <div class="adm-sub-nav-item on"><span>Administrátor</span><span class="adm-role-badge mgr">Manažer</span></div>
       <div class="adm-sub-nav-item"><span>intranet nově</span><span class="adm-role-badge act">Aktivní zaměstnanec</span></div>

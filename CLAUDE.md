@@ -69,6 +69,7 @@ zeptej, než abys cokoli domýšlel.
 > - `drawer-tab-plany.html` – obsah **záložky Plány aktivit** (PŘIDAT AKTIVITU + karty skupin se stavovými chipy, **vše sbalené**)
 > - `drawer-tab-plany-rozbaleno.html` – rozbalené skupiny Plánů aktivit (3 varianty) – jen na výslovné zadání
 > - `drawer-tab-pracovni-zarazeni.html` – obsah **záložky Pracovní zařazení** (JEN modul Zaměstnanec, §7.1.6) – Nadřízený / Podřízení / Pracuje na pozici / Organizační jednotka / Uživatelská skupina, App-Kit User Badge + Tag komponenty. Avatary jsou VŽDY jednotná neutrální App-Kit fallback barva, NE osobní/per-person barvy.
+> - `drawer-tab-onboarding.html` – obsah **záložky Onboarding** (JEN modul Zaměstnanec, §7.1.8, POSLEDNÍ tab) – hlavička + PDF export, progress bar „Splněno X z Y", fáze nástupu (jen položky, ne aktivity, v součtu), badge „Pro pozici"/„Jen pro tohoto zaměstnance" (fialový, mazatelný), readonly panel „Směrnice platné pro tohoto zaměstnance". Ilustrační instance, NEVÁZANÁ 1:1 na `evx-onboarding-checklist.html`.
 > - `drawer-konverzace.html` – obsah **tabu Konverzace v draweru** (bubliny + composer)
 >
 > Celá obrazovka evidence = `evidence-toolbar` + jeden z pohledů
@@ -114,6 +115,7 @@ Postup pro každou obrazovku:
 | Drawer, záložka **Plány aktivit** | `item-drawer-shell.html`, do slotu `drawer-tab-plany.html` |
 | Drawer, tab Konverzace | `item-drawer-shell.html`, do slotu `drawer-konverzace.html` |
 | Drawer, záložka **Pracovní zařazení** (jen modul Zaměstnanec) | `item-drawer-shell.html`, do slotu `drawer-tab-pracovni-zarazeni.html` |
+| Drawer, záložka **Onboarding** (jen modul Zaměstnanec, POSLEDNÍ tab) | `item-drawer-shell.html`, do slotu `drawer-tab-onboarding.html` |
 | Nastavení organizace (podzáložky Organizace / Pracovní pozice / Katalog požadavků / Nastavení nadřízených) | `nastorg-organizace.html` / `nastorg-pracovni-pozice.html` + `nastorg-pozice-*.html` (detail pozice) / `nastorg-katalog-pozadavku.html` / `nastorg-nastaveni-nadrizenych.html` – viz `Aptien-pravidla-pouziti-UI.md` §11 |
 | Nastavení směrnic → Seznamy příjemců | `nastsm-seznamy-prijemcu.html` (hlavní stránka) + `nastsm-vytvorit-krok1.html` / `nastsm-upravit-seznam.html` (modaly) – viz `Aptien-pravidla-pouziti-UI.md` §12 |
 | Moje konverzace – seznam | `konverzace-list.html` |
@@ -263,6 +265,30 @@ obrazovky.
 | Značka „teď" v kalendáři | `#FF3D00` | stejná červená jako notifikační bublina |
 | **Přepínač období v kalendáři** (Den/Týden/Měsíc/1 Rok) + šipky `‹ ›` | tmavě šedá `#424242` | **VÝJIMKA z modré** — není to view switcher; aktivní volba = inverze (bílé pozadí, šedý text) |
 
+> **Tlačítka jsou VŽDY pilulky, VŽDY VELKÝMI PÍSMENY a VŽDY stejné
+> velikosti — viz UI kit appky (`Claude-HK-Aptien-App`).** Platí pro
+> každé skutečné tlačítko/akci v celé aplikaci, nejen v evidenci:
+> `border-radius: 999px` (nikdy hranaté ani jen mírně zaoblené rohy),
+> text vždy CELÝ VELKÝMI PÍSMENY („ULOŽIT", „PŘIDAT ZAKÁZKU", „ZRUŠIT"),
+> a jednotná velikost napříč appkou (`font-size ~12px`, `font-weight
+> 700–800`, `letter-spacing .03–.04em`, padding `9px 20–26px` u
+> primárních/sekundárních akcí, `6–7px 14–16px` u menších toolbar pilulek).
+> Master prototyp má na tohle už reálné, znovupoužitelné třídy — **použij
+> je, nevymýšlej nové**: `.apt-btn-blue` (primární, plná modrá `#4a7fe8`),
+> `.apt-btn-grey` (sekundární/zrušit, `#6b7280`) — obě v
+> `Aptien-aplikace-offline.html`. Kde je potřeba obrysová/tint varianta
+> (např. sekundární „vytvořit z…", jemné odkazové tlačítko v kartě), drž
+> stejné rozměry (`font-size 12px`, `font-weight 700`, `border-radius
+> 999px`, padding `9px 20px`) a jen zaměň výplň za `transparent` + `border:
+> 1.5px solid #1572e8` (obrysová, dle `.btn-2` v UI kitu appky), nebo za
+> jemný tint `background:#eef4fe;color:#1572e8` (měkké sekundární
+> tlačítko v kartě/sloupci). **Výjimka:** čistě textový „+ odkaz" bez
+> rámečku (např. „+ Přidat" v kanban sloupci, „+ Přidat možnost" v
+> návrháři školení) zůstává plain text s ikonou — pilulku dostávají jen
+> prvky, které se vizuálně tváří jako tlačítko (mají pozadí nebo rámeček).
+> Ikonová tlačítka bez textu (tužka, koš, tři tečky) touhle podobou
+> nejsou vázána — zůstávají tak, jak jsou zavedená v prototypu.
+
 > **Konkrétní chyba, které se vyvaruj:** neobarvuj **view switcher**
 > „tématickou" barvou modulu (např. teal `#00BFA5`) – ten je vždy modrý.
 > **Aktivní záložka přebírá barvu svého modulu (`c800`)** – tj. tu, kterou
@@ -396,7 +422,8 @@ tab strip + sidebar):
 | Moje konverzace | blok `isKonv` (menu `konv`) |
 | Nastavení organizace | blok `showNastOrg` (menu `nastorg`) – vlastní stránka se 4 podzáložkami (Organizace / Pracovní pozice / Katalog požadavků / Nastavení nadřízených), viz §11 a `Aptien-menu-reference.md` |
 | Nastavení směrnic → Seznamy příjemců | blok `showNastSm` (menu `nastsm`) – vlastní stránka BEZ podzáložek (na rozdíl od Nastavení organizace), viz §12 a `Aptien-menu-reference.md` |
-| Editace evidence („Nastavení evidence") | modal `evEditOpen` – GENERICKÝ pro libovolnou evidenci, otevírá se z tužky vedle názvu evidence v toolbaru (zapojeno u Zaměstnanci / Rizika / Ochranné pomůcky). Levé menu záložek stejné pro všechny evidence, výjimka „Onboarding checklist" jen u Zaměstnanci. Viz §13 |
+| Editace evidence („Nastavení evidence") | modal `evEditOpen` – GENERICKÝ pro libovolnou evidenci, otevírá se z tužky vedle názvu evidence v toolbaru (zapojeno u Zaměstnanci / Rizika / Ochranné pomůcky). Levé menu záložek stejné pro všechny evidence, výjimka „Onboarding checklist" jen u Zaměstnanci (pozice v menu: hned za „Plány aktivit", v2 10. 9. 2026) – jeden sdílený checklist (`EV_ONBOARD_PHASES`), fáze s položkami/aktivitami, scope „Pro všechny"/„Pro pozici", BEZ tlačítka „Přidat fázi". Partial: `evx-onboarding-checklist.html`. Viz §13 |
+| Administrace (Customizace / Uživatelé / Role) | blok `adminOpen` – celoobrazovkový overlay NEZÁVISLÝ na `activeNav`/`activeTab` (leží jako sourozenec těsně před `</x-dc>`, mimo běžné routování appky). Otevírá se ozubeným kolečkem v top baru (ikonový řádek vpravo nahoře, `sc-camel-on-click="{{ adm_openAdmin }}"` — NE ozubené kolečko v usercard sidebaru, to zůstává nezapojené). Vlastní ikonová lišta modulů vlevo (`adminRail`: `customizace` / `uzivatele` / `role` funkční, zbytek `disabled` placeholder) + volitelný sub-sloupec (Customizace, Role) + obsah. Role → karta „Aplikace pro zaměstnance" → řádek „O mně" otevírá modal `adminFieldsModalOpen` (viditelnost/úprava polí formuláře „O mně", tabulka Pouze číst/Může i upravit s provázanou logikou — úprava vyžaduje čtení). Všechny nové `sc-camel-*`/`sc-raw-*` atributy a třídy mají prefix `adm-`/`adm_`/`ADMIN_`, ať se nekříží se zbytkem appky. **Pozor na dvě specifika tohoto master souboru, na která se snadno zapomene:** (1) události/atributy se váží VÝHRADNĚ přes `sc-camel-on-click` / `sc-camel-on-change` / `sc-camel-checked` / `sc-camel-disabled` / `sc-camel-value` (systém tyto atributy dekóduje sám dle jejich vlastního jména za `sc-camel-`) — nikdy `onClick=`/`checked=`; (2) `<table>` se šablonovými `{{ }}`/`sc-for` uvnitř MUSÍ použít `sc-raw-table`/`sc-raw-thead`/`sc-raw-tbody`/`sc-raw-tr`/`sc-raw-th`/`sc-raw-td` (a `sc-raw-select`), jinak prohlížeč při parsování obsah tabulky „foster-parentuje" ven a řádky se nevykreslí. Partials: `admin-rail-menu.html`, `admin-customizace-zakladni.html`, `admin-uzivatele-seznam.html`, `admin-role-detail.html`, `admin-role-fields-modal.html`. |
 | Pravidla a chování UI (referenční spec) | `prototypes/Aptien-pravidla-pouziti-UI.md` |
 
 > **Obrazovky z menu nejsou komponenty – jsou to bloky `<sc-if>` v master
@@ -486,6 +513,8 @@ tab strip + sidebar):
     záložek draweru),
     `drawer-tab-pracovni-zarazeni.html` (záložka Pracovní zařazení, jen
     modul Zaměstnanec, §7.1.6),
+    `drawer-tab-onboarding.html` (záložka Onboarding, jen modul
+    Zaměstnanec, POSLEDNÍ tab, §7.1.8),
     `konverzace-list.html` (Moje konverzace – seznam),
     `konverzace-chat.html` (Moje konverzace – otevřený chat),
     `drawer-konverzace.html` (tab Konverzace v draweru),
@@ -502,7 +531,19 @@ tab strip + sidebar):
     `combo-scena.html` (kombinovaný vizuál víc obrazovek najednou, viz
     `Aptien-pravidla-kombinovanych-vizualu.md`),
     `evx-editace-evidence.html` (generický modal „Editace evidence" –
-    záložka Základní nastavení, evidence Zaměstnanci; viz §13)
+    záložka Základní nastavení, evidence Zaměstnanci; viz §13),
+    `evx-onboarding-checklist.html` (generický modal „Editace evidence" –
+    záložka Onboarding checklist, jen evidence Zaměstnanci; jeden sdílený
+    checklist fází s položkami/aktivitami a scope Pro všechny/Pro pozici;
+    viz §13.3),
+    `admin-rail-menu.html` (Administrace – ikonová lišta modulů),
+    `admin-customizace-zakladni.html` (Administrace → Customizace →
+    Základní nastavení), `admin-uzivatele-seznam.html` (Administrace →
+    Uživatelé – seznam se statistikami, tabulkou a stránkováním),
+    `admin-role-detail.html` (Administrace → Role – detail role vč.
+    manažerských karet a skupin oprávnění), `admin-role-fields-modal.html`
+    (Administrace → Role → „O mně" – modal nastavení viditelnosti/úpravy
+    polí)
   - `_archive/` – původní bundled prototypy (jen historická reference)
 - `profile-images/` – profilové obrázky person do avatarů (viz README uvnitř)
 - `files/` – zdrojové podklady, šablony rámečků

@@ -130,8 +130,10 @@ bílé karty, výchozí je první) — viz `Aptien-pravidla-pouziti-UI.md` §11:
 
 Položka `Nastavení směrnic` (`nastsm`) je také **nav-owned content**
 (ruší aktivní záložku topbaru), ale na rozdíl od `Nastavení organizace`
-nemá podzáložky — otevírá rovnou celou stránku „Seznamy příjemců" (tři
-skupiny tabulek + modal „Vytvořit"/"Upravit seznam příjemců") — viz
+nemá podzáložky — otevírá rovnou celou stránku „Distribuční listy"
+(v3, 16. 9. 2026 — dřív „Distribuční seznamy", ještě dřív „Seznamy
+příjemců"; drobečková navigace, tři záložky s počtem + modal
+„Vytvořit"/"Upravit seznam příjemců") — viz
 `Aptien-pravidla-pouziti-UI.md` §12.
 
 ---

@@ -139,11 +139,20 @@ Organizace → `partials/nastorg-organizace.html` · Pracovní pozice →
 `partials/nastorg-pracovni-pozice.html` · Katalog požadavků →
 `partials/nastorg-katalog-pozadavku.html` · Nastavení nadřízených →
 `partials/nastorg-nastaveni-nadrizenych.html` · otevřená pozice →
-`partials/nastorg-pozice-<sekce>.html` (modal, ne drawer; sekce =
-`zakladni` / `organizacni` / `naplne` / `kvalifikace` / `pozadavky` /
-`rizika` / `aktivity` / `dokumenty`, prázdný rám je
-`partials/nastorg-pozice-modal.html`). Pro čerstvě založenou pozici bez
-nastavení použij `nastorg-pozice-aktivity-prazdne.html` /
+`partials/nastorg-pozice-<sekce>.html` (modal, ne drawer; prázdný rám je
+`partials/nastorg-pozice-modal.html`). Modal má dnes (od přepracování,
+viz `kombinovane-vizualy.md`) **12 záložek ve 3 skupinách** — `sekce` je
+jedna z:
+- *Pozice:* `zakladni` (Základní info) / `prirazeni` (Přiřazení zaměstnanci) / `organizacni` (Organizační zařazení)
+- *Požadavky:* `naplne` (Pracovní náplň) / `kvalifikace` (Požadavky na kvalifikaci) / `zpusobilost` (Požadavky na způsobilost) / `vybaveni` (Vybavení, nástroje, systémy) / `rizika` (Pracoviště a rizika)
+- *Návazné:* `onboarding` (Onboarding checklist) / `rozvoj` (Rozvoj zaměstnance) / `dokumenty` (Dokumenty) / `skoleni` (Školení)
+
+⛔ Staré názvy `pozadavky` a `aktivity` jsou zastaralé — soubory
+`nastorg-pozice-pozadavky.html` a `nastorg-pozice-aktivity.html` v
+repozitáři ještě existují (čekají na úklid), ale obsahově je nahradily
+dnešní `vybaveni` a `rozvoj`/`onboarding`. Negeneruj podle starých
+souborů, drž se seznamu výše. Pro čerstvě založenou pozici bez nastavení
+použij `nastorg-pozice-aktivity-prazdne.html` /
 `nastorg-pozice-dokumenty-prazdne.html`.
 **Přihlášený uživatel:** [jméno + přidej profilovou fotku, nebo „—"]
 **Kontext (jen pro pochopení tématu, NEZOBRAZUJ v obrázku):** [text, nebo „—"]

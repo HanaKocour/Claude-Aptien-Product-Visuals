@@ -23,7 +23,12 @@
   .adm-view{padding:26px 32px 60px;max-width:none}
   .adm-crumb{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#878787;margin-bottom:6px}
   .adm-page-title{font-size:22px;font-weight:800;color:#2b2540;margin:0 0 20px;display:flex;align-items:center;gap:14px}
-  .adm-btn-add{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:#878787;cursor:pointer}
+  /* Tlačítka appky jsou VŽDY pilulky (border-radius:999px), VELKÁ PÍSMENA, stejná
+     velikost — viz UI kit appky (Claude-HK-Aptien-App). Primární akce plná modrá
+     (.adm-btn-add, stejná specifikace jako reálná třída .apt-btn-blue), sekundární
+     obrysová (.adm-btn-outline, jako .btn-2 v UI kitu appky). */
+  .adm-btn-add{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:.03em;color:#fff;background:#4a7fe8;cursor:pointer;border-radius:999px;padding:9px 20px;white-space:nowrap}
+  .adm-btn-outline{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:.03em;color:#1572e8;background:transparent;border:1.5px solid #1572e8;cursor:pointer;border-radius:999px;padding:9px 20px;white-space:nowrap}
 
   .adm-stats-row{display:flex;gap:46px;margin-bottom:22px;flex-wrap:wrap}
   .adm-stat-block{display:grid;grid-template-columns:max-content max-content;column-gap:10px;row-gap:6px;align-items:center}
@@ -55,7 +60,7 @@
   .adm-bulk-bar{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;gap:18px;background:#2b2540;color:#fff;padding:13px 32px;box-shadow:0 -2px 14px rgba(0,0,0,.15)}
   .adm-bulk-count{font-size:12.5px;font-weight:700;color:#d9d5e6}
   .adm-bulk-actions{display:flex;gap:10px}
-  .adm-bulk-actions button{font-family:inherit;font-size:12.5px;font-weight:800;padding:8px 16px;border-radius:7px;border:none;cursor:pointer}
+  .adm-bulk-actions button{font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.03em;padding:9px 20px;border-radius:999px;border:none;cursor:pointer;white-space:nowrap}
   .adm-bulk-actions button.adm-remove{background:#fff;color:#c0526f}
   .adm-bulk-actions button.adm-assign{background:#1572e8;color:#fff}
 </style>
@@ -63,8 +68,8 @@
   <div class="adm-crumb">Administrace</div>
   <div class="adm-page-title">
     Seznam uživatelů
-    <span class="adm-btn-add"><i class="fa-solid fa-plus"></i>Vytvořit nového uživatele</span>
-    <span class="adm-btn-add" style="margin-left:auto"><i class="fa-solid fa-plus"></i>Vytvořit ze zaměstnanců</span>
+    <span class="adm-btn-add"><i class="fa-solid fa-plus"></i>VYTVOŘIT NOVÉHO UŽIVATELE</span>
+    <span class="adm-btn-outline" style="margin-left:auto"><i class="fa-solid fa-plus"></i>VYTVOŘIT ZE ZAMĚSTNANCŮ</span>
   </div>
   <div class="adm-stats-row">
     <div class="adm-stat-block">
@@ -280,8 +285,8 @@
   <div class="adm-bulk-bar">
     <span class="adm-bulk-count">2 vybráno</span>
     <div class="adm-bulk-actions">
-      <button class="adm-remove"><i class="fa-solid fa-ban"></i> Odebrat licenci</button>
-      <button class="adm-assign"><i class="fa-solid fa-plus"></i> Přiřadit licenci: Aktivní zaměstnanec</button>
+      <button class="adm-remove"><i class="fa-solid fa-ban"></i> ODEBRAT LICENCI</button>
+      <button class="adm-assign"><i class="fa-solid fa-plus"></i> PŘIŘADIT LICENCI: AKTIVNÍ ZAMĚSTNANEC</button>
     </div>
   </div>
 -->

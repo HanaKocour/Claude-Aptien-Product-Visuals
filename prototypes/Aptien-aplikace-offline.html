@@ -491,6 +491,30 @@
        viz §7.1.6 poznámka o App Kitu. */
     .zam-pz-box { border:1px solid #d9dde8; border-radius:4px; padding:8px 10px; min-height:40px; display:flex; align-items:center; flex-wrap:wrap; gap:8px; background:#fff; }
     .zam-pz-empty { color:#aaa; font-size:13px; cursor:pointer; }
+    /* §7.1.8 — záložka Onboarding (JEN Zaměstnanec). Skupiny sdílejí
+       skladbu s ostatními sbalitelnými skupinami draweru (viz Plány
+       aktivit) — tmavý pill počtu + barevné chipy splněno/zbývá. */
+    .zam-onb-pdfbtn { display:inline-flex; align-items:center; gap:8px; background:#fff; color:#1572e8; font-weight:800; font-size:12px; letter-spacing:.03em; cursor:pointer; padding:9px 18px; border:1px solid #1572e8; border-radius:999px; white-space:nowrap; }
+    .zam-onb-group { margin-bottom:14px; border-radius:6px; overflow:hidden; border:1px solid #e9e7f1; }
+    .zam-onb-group-head { display:flex; align-items:center; gap:12px; padding:12px 16px; background:#efeef4; cursor:pointer; }
+    .zam-onb-group-title { font-weight:800; font-size:14px; color:#2b2942; }
+    .zam-onb-count-pill { display:inline-flex; align-items:center; justify-content:center; min-width:22px; height:20px; padding:0 6px; background:#2b2942; color:#fff; border-radius:4px; font-size:11px; font-weight:700; white-space:nowrap; }
+    .zam-onb-chip { background:#78788c; color:#fff; font-size:11px; font-weight:700; padding:3px 10px; border-radius:4px; white-space:nowrap; }
+    .zam-onb-row { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; padding:12px 16px; background:#fff; border-top:1px solid #f2f1f7; }
+    .zam-onb-row-title { font-weight:700; font-size:13.5px; color:#1e1b2e; margin-bottom:3px; }
+    .zam-onb-row-meta { font-size:12px; color:#6c6785; }
+    .zam-onb-row-note { font-size:12px; color:#9aa2b0; margin-top:2px; }
+    .zam-onb-typ-tag { background:#eef0f5; color:#7b8092; font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:4px; }
+    .zam-onb-scope-badge { display:inline-flex; align-items:center; gap:5px; font-size:10.5px; font-weight:700; padding:3px 9px; border-radius:999px; margin-top:6px; white-space:nowrap; }
+    .zam-onb-pill { display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:700; padding:5px 12px; border-radius:999px; white-space:nowrap; }
+    .zam-onb-pill.done { background:#e8f8ed; color:#1a8a3d; }
+    .zam-onb-pill.open { background:#eef0f5; color:#7b8092; }
+    .zam-onb-akt-check { width:31px; height:31px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:13px; background:#d9dde8; }
+    .zam-onb-akt-check.done { background:#00c853; }
+    .zam-onb-addrow { display:flex; gap:22px; padding:11px 16px 12px; background:#fff; border-top:1px solid #f2f1f7; }
+    .zam-onb-addrow span { color:#1572e8; font-size:12.5px; font-weight:700; cursor:pointer; }
+    .zam-onb-smernice-row { display:flex; align-items:center; gap:12px; padding:11px 14px; background:#fff; border-bottom:1px solid #f2f1f7; }
+    .zam-onb-smernice-row:last-child { border-bottom:none; }
     .apt-list-row { display:flex; align-items:center; justify-content:space-between; background:#fff; border:1px solid #eceef5; border-radius:5px; padding:9px 13px; margin-bottom:6px; font-size:13px; color:#c2703a; }
     .apt-list-row i { color:#7b8092; cursor:pointer; font-size:13px; }
     .apt-panel { background:#fff; border:1px solid #edeff5; border-radius:8px; overflow:hidden; margin-bottom:22px; }
@@ -508,24 +532,87 @@
     .apt-doc-head { display:flex; align-items:center; gap:10px; padding:11px 14px; background:#fafbfd; }
     .apt-doc-file { display:flex; align-items:center; gap:8px; font-size:12.5px; color:#4a7fe8; margin-top:3px; }
 
-    /* ── NASTAVENÍ SMĚRNIC → Seznamy příjemců (§12) ── */
-    .nsm-toolbar-btn { display:inline-flex; align-items:center; gap:9px; background:#fff; border:1px solid #d9dde8; border-radius:6px; height:36px; padding:0 13px; font-size:13px; color:#4a5163; cursor:pointer; white-space:nowrap; }
-    .nsm-search { display:inline-flex; align-items:center; gap:9px; background:#fff; border:1px solid #d9dde8; border-radius:6px; height:36px; padding:0 13px; font-size:13px; color:#9096a6; flex:1; max-width:320px; }
+    /* ── NASTAVENÍ SMĚRNIC → Distribuční seznamy (§12, v2) ──
+       Toolbar filtry: OVĚŘENO na designu pixel-by-pixel (getPixel na
+       screenshotu). DŮLEŽITÉ — `Zobrazení` NENÍ stejná jako ostatní dva
+       filtry! Je to tmavě šedý plný „chip" `#a6a6ad` s BÍLÝM textem/ikonou
+       (dropdown selector) — STEJNÁ barva a vzhled jako `.poz-filter` v §11.3
+       (Nastavení organizace → Pracovní pozice), takže je to zavedená
+       komponenta, ne nová. `Vyhledat distribuční list` a `Název dokumentu`
+       mají naopak světlou šedomodrou výplň `#f2f5f7` (STEJNÝ odstín, jaký
+       je jinde v projektu zdokumentovaný jako barva z reálného screenshotu
+       appky) s šedým textem — ŽÁDNÝ border u žádného z nich.
+       (Toto byla chyba v předchozím kole — všechny tři byly mylně sjednoceny
+       na světlou výplň.) `Vyhledat distribuční list` a `Název dokumentu`
+       mají na designu STEJNOU šířku (ne search flex-grow + kratší filtr,
+       jak bylo dřív) — proto tu obě mají pevnou stejnou `width`. */
+    /* Kolo 9 (§12.10): přestylováno podle autoritativního standalone
+       exportu z Claude Design (`Distribucni listy v3 - standalone.html`,
+       přesný `getComputedStyle` výtah přes Playwright, ne odhad ze
+       screenshotu) — nahrazuje odhad z §12.8/§12.5-7. Barvy přejaté
+       z CSS proměnných zdrojového souboru: `--primary:#1572e8`,
+       `--ink:#1a1a1a`, `--g60:#878787`, `--g80:#565656`, `--g40:#b1b2b3`,
+       `--g10:#ececec`, `--red:#EF5350`, `--orange:#FF6D00`, `--green:#00C853`. */
+    .nsm-toolbar-btn { display:inline-flex; align-items:center; gap:8px; background:#a4a4a4; border:none; border-radius:4px; height:23px; padding:0 16px; font-size:12px; font-weight:600; color:#fff; cursor:pointer; white-space:nowrap; }
+    .nsm-search { display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid #e3e6ea; border-radius:999px; padding:8px 14px; font-size:13px; color:#878787; width:320px; flex-shrink:0; }
+    .nsm-doc-filter { display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid #e3e6ea; border-radius:999px; padding:8px 14px; font-size:13px; color:#878787; width:320px; flex-shrink:0; }
+    /* Sekundární tlačítko „NOVÝ SEZNAM PRO ZVEŘEJNĚNÍ" — stejný pill
+       tvar jako primární, bílé pozadí + tenký lem. */
+    .nsm-btn-secondary { display:inline-flex; align-items:center; gap:8px; background:#fff; border:1.5px solid #ececec; color:#1a1a1a; font-size:12px; font-weight:700; letter-spacing:.03em; padding:10px 20px; border-radius:999px; cursor:pointer; white-space:nowrap; }
+    .nsm-btn-secondary:hover { border-color:#9096a6; background:#fafbfd; }
+    /* Záložky skupin (nahrazují dřívější stackované sekce s nadpisy) —
+       pořadí záložek zůstává závazné dle §12.1: Pro všechny zaměstnance →
+       Pro pracovní pozice → Pro konkrétní zaměstnance.
+       „Folder tab": aktivní záložka je bílá kartička se zaoblenými horními
+       rohy + stejný stín jako tabulka pod ní (`0 5px 20px rgba(0,0,0,.1)`,
+       kolo 9), takže vizuálně splývají v jednu kartu. Neaktivní záložky
+       nemají pozadí (prosvítá šedé pozadí stránky). Ikona před textem má
+       barvu podle skupiny, JEN když je záložka aktivní (jinak šedá g60) —
+       viz `NSM_GROUP_ICON_COLORS` v JS. */
+    .nsm-tabs { display:flex; align-items:flex-start; gap:0; }
+    .nsm-tab { display:flex; align-items:center; gap:8px; font-size:13px; cursor:pointer; height:44px; padding:0 20px; border-radius:10px 10px 0 0; box-sizing:border-box; }
+    .nsm-tab.active { background:#fff; color:#1572e8; font-weight:700; box-shadow:0 5px 20px rgba(0,0,0,.1); margin-bottom:-1px; }
+    .nsm-tab:not(.active) { color:#263238; font-weight:600; }
+    .nsm-tab-count { display:inline-flex; align-items:center; justify-content:center; min-width:20px; height:20px; font-size:10px; font-weight:700; padding:0 5px; border-radius:999px; background:#ececec; color:#878787; }
+    .nsm-tab.active .nsm-tab-count { background:#1572e8; color:#fff; }
+    /* Štítek „Pravidla distribuce" — barvy převzaté přesně ze standalone
+       exportu (kolo 9, §12.10): „Vyžaduje potvrzení" MODRÝ wash
+       `rgba(21,114,232,.12)`/`#1572e8` (revert z oranžové §12.8 — soubor
+       je autoritativnější než dřívější uživatelův screenshot, potvrzeno
+       uživatelem). „Pouze zveřejněno" neutrální šedá `#ececec`/`#878787`.
+       Užší (90px, ne 150px), hranatější (border-radius 4px, ne pill),
+       menší písmo (9px). */
+    .nsm-badge { display:inline-flex; align-items:center; justify-content:center; gap:6px; width:90px; padding:6px 12px; border-radius:4px; font-size:9px; font-weight:600; line-height:1; white-space:nowrap; }
+    .nsm-badge-confirm { background:rgba(21,114,232,.12); color:#1572e8; }
+    .nsm-badge-publish { background:#ececec; color:#878787; }
     .nsm-section-title { font-size:15px; font-weight:700; color:#2b2540; margin:26px 0 10px; }
-    .nsm-table { background:#fff; border:1px solid #edeff5; border-radius:8px; overflow:hidden; }
-    .nsm-table-row { display:grid; grid-template-columns:1.9fr 1.3fr 1fr .9fr .9fr 1.7fr 24px; gap:10px; align-items:center; padding:11px 14px; border-bottom:1px solid #f4f5f9; font-size:13px; color:#3f4457; }
+    .nsm-table { background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 5px 20px rgba(0,0,0,.1); }
+    .nsm-table-row { display:grid; grid-template-columns:1.9fr 1.3fr 1fr .9fr .9fr 1.7fr 24px; gap:10px; align-items:center; padding:13px 18px; border-bottom:1px solid #ebedf2; font-size:13px; color:#565656; }
     .nsm-table-row:last-child { border-bottom:none; }
-    .nsm-table-head { font-size:11.5px; font-weight:700; color:#8a90a3; background:#fafbfd; border-bottom:1px solid #edeff5; }
+    .nsm-table-head { font-size:12px; font-weight:700; color:#1a1a1a; background:#fff; border-bottom:2px solid #ebedf2; }
     .nsm-table-row.nsm-row:hover { background:#f7f9fd; }
-    .nsm-link { color:#1572e8; text-decoration:none; cursor:pointer; font-weight:600; }
-    .nsm-link:hover { text-decoration:underline; }
-    .nsm-num { color:#1572e8; text-decoration:underline; text-underline-offset:2px; cursor:pointer; }
+    .nsm-link { color:#1a1a1a; text-decoration:underline; cursor:pointer; font-weight:700; }
+    .nsm-num { color:#565656; text-decoration:underline; cursor:pointer; }
     .nsm-progress-wrap { display:flex; align-items:center; gap:10px; }
-    .nsm-progress-track { width:170px; height:7px; border-radius:4px; background:#e7e9f0; overflow:hidden; flex-shrink:0; }
-    .nsm-progress-fill { height:100%; border-radius:4px; }
-    .nsm-progress-pct { font-size:12px; color:#6b7280; width:32px; flex-shrink:0; }
-    .nsm-kebab { color:#9096a6; cursor:pointer; font-size:14px; padding:4px 6px; }
+    .nsm-progress-track { width:120px; height:8px; border-radius:999px; background:#ececec; overflow:hidden; flex-shrink:0; }
+    .nsm-progress-fill { height:100%; border-radius:999px; }
+    .nsm-progress-pct { font-size:11px; font-weight:600; color:#878787; width:30px; flex-shrink:0; }
+    .nsm-kebab { color:#b1b2b3; cursor:pointer; font-size:14px; padding:4px 6px; }
     .nsm-kebab:hover { color:#3f4457; }
+
+    /* Ozubené kolečko „Zdrojové evidence" (§12.13, podle finální verze
+       standalone exportu) — vpravo od nadpisu, otevírá modal se seznamem
+       evidencí, ze kterých je možné do distribučních seznamů vybírat
+       dokumenty. */
+    .nsm-gear-btn { width:36px; height:36px; border-radius:999px; border:1.5px solid #ececec; background:#fff; color:#878787; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+    .nsm-gear-btn:hover { border-color:#c7d3ec; color:#1572e8; }
+    .nsm-ev-row { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:8px; background:#f9f9fb; }
+    .nsm-ev-row + .nsm-ev-row { margin-top:4px; }
+    .nsm-ev-search-box { display:flex; align-items:center; gap:8px; border:1.5px solid #ececec; border-radius:8px; padding:9px 12px; cursor:text; }
+    .nsm-ev-search-box input { flex:1; border:none; outline:none; background:transparent; font-family:'Nunito',sans-serif; font-size:12px; color:#1a1a1a; }
+    .nsm-ev-dropdown { position:absolute; top:calc(100% + 4px); left:0; right:0; background:#fff; border:1px solid #ececec; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,.12); max-height:180px; overflow-y:auto; z-index:30; }
+    .nsm-ev-dropdown-item { display:flex; align-items:center; gap:10px; padding:9px 12px; border:none; background:transparent; cursor:pointer; text-align:left; font-family:'Nunito',sans-serif; width:100%; box-sizing:border-box; }
+    .nsm-ev-dropdown-item:hover { background:#f7f9fd; }
 
     /* Modal step banner — „Vyberte zdroj" / „Nastavení seznamu příjemců" */
     .nsm-step-banner { display:flex; align-items:center; justify-content:center; gap:9px; background:#eef4fe; color:#1572e8; font-size:14px; font-weight:700; padding:13px; border-radius:8px; margin-bottom:20px; }
@@ -595,7 +682,7 @@
   .adm-sub-head{padding:18px 18px 10px;font-size:20px;font-weight:800;color:#2b2540}
   .adm-sub-search{margin:0 16px 10px;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #CCCCCC;border-radius:8px;padding:7px 10px}
   .adm-sub-search input{border:none;outline:none;font-family:inherit;font-size:12.5px;flex:1;background:transparent}
-  .adm-sub-new{margin:0 16px 14px;display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:#1572e8;cursor:pointer}
+  .adm-sub-new{margin:0 16px 14px;display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:.03em;color:#1572e8;background:#eef4fe;cursor:pointer;border-radius:999px;padding:9px 20px;white-space:nowrap;align-self:flex-start}
   .adm-sub-group{padding:14px 16px 6px}
   .adm-sub-group-label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#878787;margin:0 0 6px 2px}
   .adm-sub-nav-item{display:flex;align-items:center;gap:11px;padding:9px 10px;margin:0 8px 2px;border-radius:8px;font-size:13px;font-weight:600;color:#4a4560;cursor:pointer}
@@ -618,7 +705,8 @@
   .adm-field label{display:block;font-size:12.5px;font-weight:700;color:#4a4560;margin-bottom:7px}
   .adm-field input[type=text],.adm-field input[type=email]{width:100%;font-family:inherit;font-size:13.5px;padding:10px 13px;border:1px solid #CCCCCC;border-radius:7px;color:#2b2540;background:#fff}
   .adm-hint{font-size:11.5px;color:#878787;margin-bottom:8px}
-  .adm-btn-link{color:#1572e8;font-weight:700;font-size:12.5px;cursor:pointer;background:#eef4fe;border:none;border-radius:7px;padding:9px 16px;display:inline-flex;align-items:center;gap:7px}
+  .adm-btn-link{color:#1572e8;font-weight:700;font-size:12px;letter-spacing:.03em;cursor:pointer;background:#eef4fe;border:none;border-radius:999px;padding:9px 20px;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+  .adm-btn-outline{color:#1572e8;font-weight:700;font-size:12px;letter-spacing:.03em;cursor:pointer;background:transparent;border:1.5px solid #1572e8;border-radius:999px;padding:9px 20px;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
   .adm-imgbox{width:118px;height:107px;border-radius:8px;overflow:hidden;position:relative;background:#eee;margin-bottom:14px}
   .adm-imgbox-rm{position:absolute;bottom:-9px;left:50%;transform:translateX(-50%);width:22px;height:22px;border-radius:50%;background:#fff;border:1px solid #eee;box-shadow:0 0 10px rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;color:#e53935;font-size:10px;cursor:pointer}
 
@@ -659,7 +747,7 @@
   .adm-row-actions i{color:#B1B2B3;cursor:pointer;font-size:13px}
   .adm-row-actions i:hover{color:#1572e8}
 
-  .adm-btn-add{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:#878787;cursor:pointer}
+  .adm-btn-add{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:.03em;color:#fff;background:#4a7fe8;cursor:pointer;border-radius:999px;padding:9px 20px;white-space:nowrap}
 
   .adm-pagination{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:16px}
   .adm-pg-info{font-size:12px;color:#878787;margin-right:10px}
@@ -670,7 +758,7 @@
   .adm-bulk-bar{flex-shrink:0;display:flex;align-items:center;gap:18px;background:#2b2540;color:#fff;padding:13px 32px;box-shadow:0 -2px 14px rgba(0,0,0,.15);z-index:10}
   .adm-bulk-count{font-size:12.5px;font-weight:700;color:#d9d5e6}
   .adm-bulk-actions{display:flex;gap:10px}
-  .adm-bulk-actions button{font-family:inherit;font-size:12.5px;font-weight:800;padding:8px 16px;border-radius:7px;border:none;cursor:pointer}
+  .adm-bulk-actions button{font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.03em;padding:9px 20px;border-radius:999px;border:none;cursor:pointer;white-space:nowrap}
   .adm-bulk-actions button.adm-remove{background:#fff;color:#c0526f}
   .adm-bulk-actions button.adm-assign{background:#1572e8;color:#fff}
 
@@ -710,8 +798,18 @@
 
   .adm-placeholder-note{background:#fff8e6;border:1px dashed #f0c355;border-radius:8px;padding:12px 16px;font-size:12.5px;color:#8a6a15;margin-bottom:20px;max-width:640px}
   .adm-msave{margin-top:20px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid #f0eef5;padding-top:18px}
-  .adm-mbtn{font-family:inherit;font-size:12.5px;font-weight:800;padding:10px 18px;border-radius:7px;cursor:pointer;border:none}
-  .adm-mbtn-primary{background:#1572e8;color:#fff}
+
+  .adm-modal-back{position:fixed;inset:0;background:rgba(30,27,46,.45);display:flex;align-items:flex-start;justify-content:center;z-index:600;padding:60px 20px;overflow-y:auto}
+  .adm-modal{background:#fff;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.25);width:100%;max-width:640px;padding:26px 30px 24px}
+  .adm-mhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+  .adm-mhead h3{font-size:19px;font-weight:800;margin:0;color:#2b2540}
+  .adm-mclose{cursor:pointer;color:#878787;font-size:16px}
+  table.adm-fieldsperm{width:100%;border-collapse:collapse;margin-bottom:4px}
+  table.adm-fieldsperm th{text-align:left;font-size:10px;font-weight:600;color:#878787;text-transform:uppercase;letter-spacing:.07em;padding:8px 10px;border-bottom:1px solid #eee}
+  table.adm-fieldsperm th:not(:first-child){text-align:center;width:120px}
+  table.adm-fieldsperm td{padding:10px;font-size:13px;color:#2b2540;border-bottom:1px solid #f5f4f9}
+  table.adm-fieldsperm td:not(:first-child){text-align:center}
+  table.adm-fieldsperm tr:last-child td{border-bottom:none}
   </style>
 </helmet>
 
@@ -737,7 +835,7 @@
       </div>
       <i class="fa-solid fa-comment-dots" style="font-size:17px;cursor:pointer;color:#fff"></i>
       <i class="fa-solid fa-mobile-screen-button" style="font-size:17px;cursor:pointer;color:#fff"></i>
-      <i class="fa-solid fa-gear" style="font-size:17px;cursor:pointer;color:#fff"></i>
+      <i class="fa-solid fa-gear" style="font-size:17px;cursor:pointer;color:#fff" sc-camel-on-click="{{ adm_openAdmin }}"></i>
       <i class="fa-solid fa-right-from-bracket" style="font-size:17px;cursor:pointer;color:#fff"></i>
     </div>
   </div>
@@ -765,7 +863,7 @@
             <div style="font-weight:700;font-size:14px;color:#2b2540;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Karolína Fišerová</div>
             <div style="font-size:12px;color:#9a93b5;font-weight:600;">Zaměstnanec</div>
           </div>
-          <i class="fa-solid fa-gear" style="color:#c2bdd6;font-size:14px;cursor:pointer" sc-camel-on-click="{{ adm_openAdmin }}"></i>
+          <i class="fa-solid fa-gear" style="color:#c2bdd6;font-size:14px;cursor:pointer"></i>
         </div>
       </sc-if>
       <sc-if value="{{ showSidebarCollapsed }}" hint-placeholder-val="{{ false }}">
@@ -1873,50 +1971,172 @@
       </sc-if>
 
       <!-- ══════════════════════════════════════════════════════════
-           NASTAVENÍ SMĚRNIC → SEZNAMY PŘÍJEMCŮ (sidebar `nastsm`) — §12
-           Skladba: nadpis + VYTVOŘIT SEZNAM PŘÍJEMCŮ vpravo → toolbar
-           (Zobrazení, hledání) → skupiny tabulek (Pro všechny
-           zaměstnance / Pro pracovní pozice / Pro konkrétní zaměstnance).
-           Klik na název řádku otevírá editační modal (§12.3).
+           NASTAVENÍ SMĚRNIC → DISTRIBUČNÍ SEZNAMY (sidebar `nastsm`) — §12
+           v4 (16.-17. 9. 2026, kolo 9-10, restylováno podle uživatelova
+           autoritativního standalone HTML exportu z Claude Design
+           `Distribucni listy v3 - standalone.html` — §12.10/§12.11).
+           Skladba: drobečková navigace → nadpis „Distribuční seznamy" →
+           dvě tlačítka pro založení nového listu, obě s ikonou prostý
+           „+" a textem PŘESNĚ podle standalone exportu (NOVÝ SEZNAM PRO
+           POTVRZENÍ / NOVÝ SEZNAM PRO ZVEŘEJNĚNÍ — kolo 10, uživatelka
+           nakonec chtěla i text 1:1 podle souboru, ne jen ikonu) →
+           toolbar (hledací pole pilulka s bílým pozadím uvnitř a
+           světlým okrajem `#e3e6ea` — kolo 8 flat `#f2f5f7`, kolo 11
+           bílá pro zvýraznění pole; tlačítko Zobrazení zůstává šedé)
+           (Zobrazení, hledání, filtr Název dokumentu) → záložky s
+           počty a ikonami
+           (Pro všechny zaměstnance / Pro pracovní pozice / Pro konkrétní
+           zaměstnance, VŽDY v tomto pořadí) → tabulka aktivní záložky se
+           sloupcem „Pravidla distribuce" jako barevný štítek (modrý pro
+           „Vyžaduje potvrzení" — kolo 9, revert z oranžové §12.8 podle
+           standalone exportu; štítek na JEDEN řádek, `white-space:nowrap`
+           doplněno v kole 12/§12.13). Klik na název řádku otevírá editační
+           modal (§12.3). Vpravo od nadpisu ozubené kolečko „Zdrojové
+           evidence" (kolo 12/§12.13, podle FINÁLNÍ verze standalone
+           exportu) → modal se seznamem evidencí, ze kterých je možné do
+           distribučních seznamů vybírat dokumenty + vyhledávací pole na
+           přidání další evidence, potvrzované samostatným dotazujícím se
+           modalem (nevratná akce — zapíná řízenou dokumentaci evidence).
            ══════════════════════════════════════════════════════════ -->
       <sc-if value="{{ showNastSm }}" hint-placeholder-val="{{ false }}">
         <div style="flex:1;overflow-y:auto;padding:26px 32px 48px">
-          <div style="display:flex;align-items:center;margin-bottom:20px">
-            <div style="font-size:22px;font-weight:700;color:#2b2540;flex:1">Seznamy příjemců</div>
-            <div class="apt-btn-blue nsm-btn-primary" sc-camel-on-click="{{ nsmOpenCreate }}"><i class="fa-solid fa-plus" style="font-size:10px"></i>VYTVOŘIT SEZNAM PŘÍJEMCŮ</div>
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
-            <div class="nsm-toolbar-btn"><i class="fa-regular fa-rectangle-list" style="font-size:12px"></i>Zobrazení<i class="fa-solid fa-chevron-down" style="font-size:10px;margin-left:4px"></i></div>
-            <div class="nsm-search"><i class="fa-solid fa-magnifying-glass" style="font-size:12px"></i>Vyhledat seznam příjemců</div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px">
+            <div>
+              <div style="font-size:12.5px;color:#9096a6;margin-bottom:8px">Nastavení směrnic <i class="fa-solid fa-chevron-right" style="font-size:9px;margin:0 6px"></i> Distribuční seznamy</div>
+              <div style="font-size:21.6px;font-weight:800;color:#1a1a1a">Distribuční seznamy</div>
+            </div>
+            <div style="position:relative;margin-top:2px">
+              <div class="nsm-gear-btn" title="Zdrojové evidence" sc-camel-on-click="{{ nsmToggleGear }}"><i class="fa-solid fa-gear"></i></div>
+            </div>
           </div>
 
-          <sc-for list="{{ nsm_groups }}" as="grp" hint-placeholder-count="3">
-            <div class="nsm-section-title">{{ grp.title }}</div>
-            <sc-if value="{{ grp.hasRows }}" hint-placeholder-val="{{ true }}">
-              <div class="nsm-table" style="margin-bottom:8px">
-                <div class="nsm-table-row nsm-table-head">
-                  <div>Název</div><div>Akce zaměstnance</div><div>Termín akce</div><div>Potvrzeno dne</div><div>Čeká</div><div>Splnění</div><div></div>
+          <!-- ══════════════════════════════════════════════════════════
+               MODAL „Zdrojové evidence" (§12.13) — otevírá se ozubeným
+               kolečkem vpravo od nadpisu. Ukazuje, ze kterých evidencí je
+               možné do distribučních seznamů vybírat dokumenty (zelená
+               fajfka = evidence je už zdrojem/má zapnutou řízenou
+               dokumentaci). Dole jde vyhledávací pole s dropdownem
+               dohledat a přidat další evidenci — přidání potvrzuje
+               samostatný „dotazující se" modal (nsmShowAddEvidenceConfirm
+               níže), protože zapnutí řízené dokumentace je nevratná akce
+               s dopadem na danou evidenci.
+               ══════════════════════════════════════════════════════════ -->
+          <sc-if value="{{ nsmShowGear }}" hint-placeholder-val="{{ false }}">
+            <div class="apt-modal-overlay" sc-camel-on-click="{{ nsmToggleGear }}">
+              <div class="apt-modal" style="height:auto;max-height:90vh;width:min(440px,94vw)" sc-camel-on-click="{{ stopClick }}">
+                <div class="apt-modal-head">
+                  <div class="apt-modal-title" style="font-size:16px">Zdrojové evidence</div>
+                  <div class="apt-modal-close" sc-camel-on-click="{{ nsmToggleGear }}">✕</div>
                 </div>
-                <sc-for list="{{ grp.rows }}" as="r" hint-placeholder-count="5">
-                  <div class="nsm-table-row nsm-row">
-                    <div><span class="nsm-link" sc-camel-on-click="{{ r.onOpen }}">{{ r.name }}</span></div>
-                    <div>{{ r.action }}</div>
-                    <div>{{ r.deadline }}</div>
-                    <div><span class="nsm-num">{{ r.confirmed }}</span></div>
-                    <div><span class="nsm-num">{{ r.pending }}</span></div>
-                    <div class="nsm-progress-wrap">
-                      <div class="nsm-progress-track"><div class="nsm-progress-fill" style="{{ r.barStyle }}"></div></div>
-                      <span class="nsm-progress-pct">{{ r.pctText }}</span>
-                    </div>
-                    <div><i class="fa-solid fa-ellipsis-vertical nsm-kebab"></i></div>
+                <div style="padding:0 26px 26px">
+                  <div style="font-size:12.5px;color:#9096a6;line-height:1.5;margin-bottom:18px">Evidence, ze kterých je možné do distribučních seznamů vybírat dokumenty.</div>
+
+                  <div style="display:flex;flex-direction:column;margin-bottom:20px">
+                    <sc-for list="{{ nsmLinkedEvidences }}" as="ev" hint-placeholder-count="3">
+                      <div class="nsm-ev-row">
+                        <i class="{{ ev.icon }}" style="color:#1572e8;width:16px;font-size:13px"></i>
+                        <span style="flex:1;font-size:12.5px;font-weight:600;color:#1a1a1a">{{ ev.name }}</span>
+                        <i class="fa-solid fa-check" style="color:#00C853;font-size:11px"></i>
+                      </div>
+                    </sc-for>
                   </div>
-                </sc-for>
+
+                  <sc-if value="{{ nsmHasAvailableEvidences }}" hint-placeholder-val="{{ true }}">
+                    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9096a6;margin-bottom:8px;border-top:1px solid #ebedf2;padding-top:16px">Přidat další evidenci</div>
+                    <div style="position:relative">
+                      <div class="nsm-ev-search-box" sc-camel-on-click="{{ nsmOpenEvidenceDropdown }}">
+                        <i class="fa-solid fa-magnifying-glass" style="color:#9096a6;font-size:12px"></i>
+                        <input type="text" sc-camel-default-value="{{ nsmEvidenceQuery }}" sc-camel-on-change="{{ nsmOnEvidenceSearch }}" placeholder="Vyhledat evidenci…">
+                        <i class="fa-solid fa-chevron-down" style="color:#9096a6;font-size:10px"></i>
+                      </div>
+                      <sc-if value="{{ nsmShowEvidenceDropdown }}" hint-placeholder-val="{{ false }}">
+                        <div sc-camel-on-click="{{ nsmCloseEvidenceDropdown }}" style="position:fixed;inset:0;z-index:29"></div>
+                        <div class="nsm-ev-dropdown">
+                          <sc-for list="{{ nsmAvailableEvidences }}" as="ev" hint-placeholder-count="2">
+                            <div class="nsm-ev-dropdown-item" sc-camel-on-click="{{ ev.onAdd }}">
+                              <i class="{{ ev.icon }}" style="color:#9096a6;width:16px;font-size:13px"></i>
+                              <span style="flex:1;font-size:12px;font-weight:600;color:#1a1a1a">{{ ev.name }}</span>
+                            </div>
+                          </sc-for>
+                          <sc-if value="{{ nsmNoEvidenceMatches }}" hint-placeholder-val="{{ false }}">
+                            <div style="padding:12px;font-size:11px;color:#9096a6">Žádná evidence neodpovídá hledání.</div>
+                          </sc-if>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-if>
+                </div>
+                <div class="apt-modal-foot" style="border-top:none;justify-content:flex-end">
+                  <div style="background:transparent;color:#878787;font-weight:700;font-size:12px;padding:10px 16px;cursor:pointer" sc-camel-on-click="{{ nsmToggleGear }}">ZAVŘÍT</div>
+                </div>
               </div>
-            </sc-if>
-            <sc-if value="{{ grp.isEmpty }}" hint-placeholder-val="{{ false }}">
-              <div class="nsm-table" style="padding:22px 16px;color:#9096a6;font-size:13px;margin-bottom:8px">Zatím žádný seznam příjemců.</div>
-            </sc-if>
-          </sc-for>
+            </div>
+          </sc-if>
+
+          <!-- „Dotazující se" potvrzovací modal — zapnutí řízené
+               dokumentace pro vybranou evidenci má reálný dopad (evidence
+               se stane zdrojem pro distribuční seznamy), proto se
+               nepřidává rovnou klikem v dropdownu, ale až po potvrzení. -->
+          <sc-if value="{{ nsmShowAddEvidenceConfirm }}" hint-placeholder-val="{{ false }}">
+            <div class="apt-modal-overlay" sc-camel-on-click="{{ nsmCancelAddEvidence }}">
+              <div class="apt-modal" style="height:auto;max-height:90vh;width:min(400px,94vw)" sc-camel-on-click="{{ stopClick }}">
+                <div style="padding:24px">
+                  <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+                    <i class="fa-solid fa-triangle-exclamation" style="color:#FF6D00;font-size:16px"></i>
+                    <div style="font-size:14px;font-weight:700;color:#1a1a1a">Přidat evidenci „{{ nsmPendingEvidenceName }}“?</div>
+                  </div>
+                  <div style="font-size:12px;color:#565656;line-height:1.5;margin-bottom:20px">Evidence se stane zdrojem pro distribuční seznamy — půjde z ní vybírat dokumenty a bude podléhat pravidlům řízené dokumentace. Chcete pokračovat?</div>
+                  <div style="display:flex;justify-content:flex-end;gap:8px">
+                    <div style="background:transparent;color:#878787;font-weight:700;font-size:12px;padding:10px 16px;cursor:pointer" sc-camel-on-click="{{ nsmCancelAddEvidence }}">ZRUŠIT</div>
+                    <div class="apt-btn-blue nsm-btn-primary" sc-camel-on-click="{{ nsmConfirmAddEvidence }}">PŘIDAT EVIDENCI</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px">
+            <div class="apt-btn-blue nsm-btn-primary" style="padding:11px 20px" sc-camel-on-click="{{ nsmOpenCreatePotvrzeni }}"><i class="fa-solid fa-plus" style="font-size:13px"></i>NOVÝ SEZNAM PRO POTVRZENÍ</div>
+            <div class="nsm-btn-secondary" sc-camel-on-click="{{ nsmOpenCreateZverejneni }}"><i class="fa-solid fa-plus" style="font-size:13px;color:#878787"></i>NOVÝ SEZNAM PRO ZVEŘEJNĚNÍ</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px">
+            <div class="nsm-toolbar-btn"><i class="fa-solid fa-table-list" style="font-size:11px"></i>Zobrazení<i class="fa-solid fa-chevron-down" style="font-size:8px;margin-left:4px"></i></div>
+            <div class="nsm-search"><i class="fa-solid fa-magnifying-glass" style="font-size:12px"></i>Vyhledat distribuční list</div>
+            <div class="nsm-doc-filter"><i class="fa-regular fa-file-lines" style="font-size:12px"></i>Název dokumentu</div>
+          </div>
+
+          <div class="nsm-tabs">
+            <sc-for list="{{ nsm_tabs }}" as="t" hint-placeholder-count="3">
+              <div class="{{ t.cls }}" sc-camel-on-click="{{ t.onClick }}">
+                <i class="{{ t.iconCls }}" style="font-size:13px;color:{{ t.iconColor }}"></i>{{ t.title }}<span class="nsm-tab-count">{{ t.count }}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{ nsm_active.hasRows }}" hint-placeholder-val="{{ true }}">
+            <div class="nsm-table" style="margin-top:0;border-radius:0 10px 10px 10px">
+              <div class="nsm-table-row nsm-table-head">
+                <div>Název</div><div>Pravidla distribuce</div><div>Termín akce</div><div>Potvrzeno dne</div><div>Čeká</div><div>Splnění</div><div></div>
+              </div>
+              <sc-for list="{{ nsm_active.rows }}" as="r" hint-placeholder-count="5">
+                <div class="nsm-table-row nsm-row">
+                  <div><span class="nsm-link" sc-camel-on-click="{{ r.onOpen }}">{{ r.name }}</span></div>
+                  <div><span class="{{ r.badgeCls }}"><i class="{{ r.badgeIcon }}"></i>{{ r.action }}</span></div>
+                  <div>{{ r.deadline }}</div>
+                  <div><span class="nsm-num">{{ r.confirmed }}</span></div>
+                  <div><span class="nsm-num">{{ r.pending }}</span></div>
+                  <div class="nsm-progress-wrap">
+                    <div class="nsm-progress-track"><div class="nsm-progress-fill" style="{{ r.barStyle }}"></div></div>
+                    <span class="nsm-progress-pct">{{ r.pctText }}</span>
+                  </div>
+                  <div><i class="fa-solid fa-ellipsis-vertical nsm-kebab"></i></div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ nsm_active.isEmpty }}" hint-placeholder-val="{{ false }}">
+            <div class="nsm-table" style="padding:22px 16px;color:#9096a6;font-size:13px;margin-top:0;border-radius:0 10px 10px 10px">Zatím žádný distribuční seznam.</div>
+          </sc-if>
         </div>
       </sc-if>
 
@@ -2968,10 +3188,10 @@
             <sc-if value="{{ zak_showZapisy }}" hint-placeholder-val="{{ false }}">
               <div style="padding:16px 20px">
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap">
-                  <button style="background:#a4a4a4;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-magnifying-glass" style="font-size:12px"></i>Od</button>
-                  <button style="background:#a4a4a4;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-magnifying-glass" style="font-size:12px"></i>Do</button>
-                  <button style="background:#a4a4a4;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-user" style="font-size:12px"></i>Účastníci<i class="fa-solid fa-chevron-down" style="font-size:9px;margin-left:auto"></i></button>
-                  <button style="background:#a4a4a4;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-user" style="font-size:12px"></i>Vytvořil<i class="fa-solid fa-chevron-down" style="font-size:9px;margin-left:auto"></i></button>
+                  <button style="background:#a6a6ad;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-magnifying-glass" style="font-size:12px"></i>Od</button>
+                  <button style="background:#a6a6ad;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-magnifying-glass" style="font-size:12px"></i>Do</button>
+                  <button style="background:#a6a6ad;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-user" style="font-size:12px"></i>Účastníci<i class="fa-solid fa-chevron-down" style="font-size:9px;margin-left:auto"></i></button>
+                  <button style="background:#a6a6ad;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-user" style="font-size:12px"></i>Vytvořil<i class="fa-solid fa-chevron-down" style="font-size:9px;margin-left:auto"></i></button>
                 </div>
                 <div style="display:flex;align-items:center;gap:16px;padding:8px 0 16px">
                   <div style="width:36px;height:36px;border-radius:50%;background:#1572e8;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0"><i class="fa-solid fa-plus" style="font-size:14px"></i></div>
@@ -3130,10 +3350,10 @@
             <sc-if value="{{ zam_showZapisy }}" hint-placeholder-val="{{ false }}">
               <div style="padding:16px 20px">
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap">
-                  <button style="background:#a4a4a4;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-magnifying-glass" style="font-size:12px"></i>Od</button>
-                  <button style="background:#a4a4a4;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-magnifying-glass" style="font-size:12px"></i>Do</button>
-                  <button style="background:#a4a4a4;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-user" style="font-size:12px"></i>Účastníci<i class="fa-solid fa-chevron-down" style="font-size:9px;margin-left:auto"></i></button>
-                  <button style="background:#a4a4a4;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-user" style="font-size:12px"></i>Vytvořil<i class="fa-solid fa-chevron-down" style="font-size:9px;margin-left:auto"></i></button>
+                  <button style="background:#a6a6ad;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-magnifying-glass" style="font-size:12px"></i>Od</button>
+                  <button style="background:#a6a6ad;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-magnifying-glass" style="font-size:12px"></i>Do</button>
+                  <button style="background:#a6a6ad;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-user" style="font-size:12px"></i>Účastníci<i class="fa-solid fa-chevron-down" style="font-size:9px;margin-left:auto"></i></button>
+                  <button style="background:#a6a6ad;border:1px solid transparent;border-radius:4px;height:30px;padding:5px 12px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:1" style-hover="background:#8a8a8a"><i class="fa-solid fa-user" style="font-size:12px"></i>Vytvořil<i class="fa-solid fa-chevron-down" style="font-size:9px;margin-left:auto"></i></button>
                 </div>
                 <div style="display:flex;align-items:center;gap:16px;padding:8px 0 16px">
                   <div style="width:36px;height:36px;border-radius:50%;background:#1572e8;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0"><i class="fa-solid fa-plus" style="font-size:14px"></i></div>
@@ -3273,6 +3493,92 @@
                 </div>
               </div>
             </sc-if>
+
+            <!-- §7.1.8 – záložka Onboarding, POSLEDNÍ v pásu, existuje JEN
+                 u modulu Zaměstnanec (Claude Design, Onboarding v2.dc.html,
+                 10. 9. 2026). Šablonové řádky („Pro všechny"/„Pro pracovní
+                 pozici") nejdou editovat/mazat odsud, jen zaškrtnout +
+                 poznámka + datum; zaměstnanecké řádky („+ VLASTNÍ …") jdou
+                 přidat/smazat a mají fialový štítek. -->
+            <sc-if value="{{ zam_showOnboarding }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:20px 28px 28px">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px">
+                  <div>
+                    <div style="font-size:17px;font-weight:800;color:#1e1b2e">Onboarding checklist</div>
+                    <div style="font-size:12.5px;color:#9aa2b0;margin-top:3px">{{ zam_onbSubtitleHtml }}</div>
+                  </div>
+                  <div class="zam-onb-pdfbtn"><i class="fa-solid fa-file-arrow-down" style="font-size:11px"></i>STÁHNOUT SOUHRN (PDF)</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+                  <span style="font-size:12.5px;font-weight:700;color:#4a5163;white-space:nowrap">{{ zam_onbProgressLabel }}</span>
+                  <div style="flex:1;height:6px;background:#ededf2;border-radius:3px;overflow:hidden"><div style="{{ zam_onbBarStyle }}"></div></div>
+                </div>
+
+                <sc-for list="{{ zam_onb_groups }}" as="g" hint-placeholder-count="3">
+                  <div class="zam-onb-group">
+                    <div class="zam-onb-group-head" sc-camel-on-click="{{ g.onToggle }}">
+                      <i class="fa-solid fa-{{ g.chevron }}" style="font-size:12px;color:#5a5478;cursor:pointer"></i>
+                      <span class="zam-onb-group-title" style="cursor:pointer">{{ g.title }}</span>
+                      <span class="zam-onb-count-pill">{{ g.count }}</span>
+                      <span class="zam-onb-chip" style="background:#00C853">{{ g.doneCount }} splněno</span>
+                      <span class="zam-onb-chip" style="background:#78788c">{{ g.openCount }} zbývá</span>
+                    </div>
+                    <sc-if value="{{ g.open }}" hint-placeholder-val="{{ true }}">
+                      <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="3">
+                        <div class="zam-onb-row">
+                          <sc-if value="{{ !r.isAktivita }}" hint-placeholder-val="{{ true }}">
+                            <div style="flex:1;min-width:0">
+                              <div class="zam-onb-row-title">{{ r.text }}</div>
+                              <sc-if value="{{ r.done }}" hint-placeholder-val="{{ false }}"><div class="zam-onb-row-meta">Splněno {{ r.doneDate }}</div></sc-if>
+                              <sc-if value="{{ r.poznamka }}" hint-placeholder-val="{{ false }}"><div class="zam-onb-row-note">{{ r.poznamka }}</div></sc-if>
+                              <sc-if value="{{ r.badge }}" hint-placeholder-val="{{ false }}"><div><span class="zam-onb-scope-badge" style="{{ r.badge.style }}"><i class="fa-solid fa-{{ r.badge.icon }}" style="font-size:9px"></i>{{ r.badge.label }}</span></div></sc-if>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+                              <sc-if value="{{ r.done }}" hint-placeholder-val="{{ false }}"><span class="zam-onb-pill done"><i class="fa-solid fa-check"></i>Splněno</span></sc-if>
+                              <sc-if value="{{ !r.done }}" hint-placeholder-val="{{ true }}"><span class="zam-onb-pill open"><i class="fa-regular fa-circle"></i>Nesplněno</span></sc-if>
+                              <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+                              <sc-if value="{{ r.deletable }}" hint-placeholder-val="{{ false }}"><i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i></sc-if>
+                            </div>
+                          </sc-if>
+                          <sc-if value="{{ r.isAktivita }}" hint-placeholder-val="{{ false }}">
+                            <div style="flex:1;min-width:0">
+                              <div class="zam-onb-row-title">{{ r.text }}</div>
+                              <div style="display:flex;align-items:center;gap:8px;margin-top:2px">
+                                <sc-if value="{{ r.doneDate }}" hint-placeholder-val="{{ false }}"><span class="zam-onb-row-meta">{{ r.doneDate }}</span></sc-if>
+                                <span class="zam-onb-typ-tag">Jednorázová</span>
+                              </div>
+                              <sc-if value="{{ r.badge }}" hint-placeholder-val="{{ false }}"><div><span class="zam-onb-scope-badge" style="{{ r.badge.style }}"><i class="fa-solid fa-{{ r.badge.icon }}" style="font-size:9px"></i>{{ r.badge.label }}</span></div></sc-if>
+                            </div>
+                            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:44px;flex-shrink:0">
+                              <div class="{{ r.aktCheckClass }}"><i class="fa-solid fa-check"></i></div>
+                              <sc-if value="{{ r.doneDate }}" hint-placeholder-val="{{ false }}"><div style="font-size:10px;color:#888">{{ r.doneDate }}</div></sc-if>
+                              <i class="fa-solid fa-ellipsis-vertical" style="color:#c5c0d8;font-size:13px;cursor:pointer"></i>
+                            </div>
+                          </sc-if>
+                        </div>
+                      </sc-for>
+                      <div class="zam-onb-addrow">
+                        <span sc-camel-on-click="{{ g.onAddPolozka }}"><i class="fa-solid fa-plus" style="font-size:10px;margin-right:5px"></i>VLASTNÍ POLOŽKA</span>
+                        <span sc-camel-on-click="{{ g.onAddAktivita }}"><i class="fa-solid fa-plus" style="font-size:10px;margin-right:5px"></i>VLASTNÍ AKTIVITA</span>
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+
+                <!-- Seznam směrnic (§3.5 zadání 27. 8. 2026) — readonly, bez POTVRDIT. -->
+                <div style="font-size:13px;font-weight:800;color:#2b2942;margin:22px 0 10px">Směrnice platné pro tohoto zaměstnance</div>
+                <div class="apt-panel">
+                  <sc-for list="{{ zam_onbSmernice }}" as="s" hint-placeholder-count="4">
+                    <div class="zam-onb-smernice-row">
+                      <i class="fa-solid fa-book" style="color:#1572e8;font-size:13px"></i>
+                      <span style="flex:1;min-width:0;font-size:13px;color:#2b2942">{{ s.name }}</span>
+                      <span class="apt-tag-grey" style="{{ s.scopeStyle }}">{{ s.scopeLabel }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+
             <sc-if value="{{ zam_showStub }}" hint-placeholder-val="{{ false }}">
               <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;height:200px;color:#aaa4bf">
                 <i class="fa-solid fa-screwdriver-wrench" style="font-size:28px;color:#d6d2e2"></i>
@@ -3782,6 +4088,8 @@
                 <div>
                   <div class="apt-f-label">Název pracovní pozice</div>
                   <div class="apt-f-input" style="max-width:300px">{{ pozSelName }}</div>
+                  <div class="apt-f-label" style="margin-top:18px">CZ-ISCO/Job code</div>
+                  <div class="apt-f-input" style="max-width:300px"></div>
                 </div>
                 <div>
                   <div class="apt-f-label">Krátký popis</div>
@@ -3907,9 +4215,25 @@
                     <div class="apt-btn-blue" style="padding:9px 22px" sc-camel-on-click="{{ pozKatAddKvalifikace }}">PŘIDAT</div>
                   </div>
                   <div class="apt-f-label" style="margin-top:18px">Přiřazené požadavky ke kvalifikaci</div>
-                  <sc-for list="{{ pozSel_kvalifikace }}" as="r" hint-placeholder-count="3">
-                    <div class="apt-list-row"><span>{{ r.name }}</span><i class="fa-solid fa-trash" sc-camel-on-click="{{ r.onDelete }}"></i></div>
+                  <sc-for list="{{ pozGroups_kvalifikace }}" as="g" hint-placeholder-count="3">
+                    <div style="margin-bottom:12px">
+                      <div style="display:flex;align-items:center;gap:8px;margin:0 0 6px">
+                        <i class="fa-solid {{ g.icon }}" style="font-size:11px;color:#9096a6;width:12px;text-align:center"></i>
+                        <span style="font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8a90a3;white-space:nowrap">{{ g.category }}</span>
+                        <span style="background:#eceff4;color:#6b7280;font-size:10px;font-weight:700;border-radius:4px;padding:1px 6px">{{ g.count }}</span>
+                        <div style="flex:1;height:1px;background:#e6e9f2"></div>
+                      </div>
+                      <sc-for list="{{ g.items }}" as="row" hint-placeholder-count="2">
+                        <div style="display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #ecedf3;border-radius:5px;padding:8px 13px;margin-bottom:5px;font-size:13px;color:#3f4457">
+                          <span style="flex:1;min-width:0;text-wrap:pretty">{{ row.name }}</span>
+                          <i class="fa-solid fa-trash" sc-camel-on-click="{{ row.onDelete }}" style="color:#7b8092;cursor:pointer;font-size:12px;flex-shrink:0"></i>
+                        </div>
+                      </sc-for>
+                    </div>
                   </sc-for>
+                  <sc-if value="{{ pozEmpty_kvalifikace }}" hint-placeholder-val="{{ false }}">
+                    <div class="apt-note">Zatím není přiřazen žádný požadavek.</div>
+                  </sc-if>
                 </div>
               </div>
             </sc-if>
@@ -3949,9 +4273,25 @@
                     <div class="apt-btn-blue" style="padding:9px 22px" sc-camel-on-click="{{ pozKatAddZpusobilost }}">PŘIDAT</div>
                   </div>
                   <div class="apt-f-label" style="margin-top:18px">Přiřazené požadavky ke způsobilosti</div>
-                  <sc-for list="{{ pozSel_zpusobilost }}" as="r" hint-placeholder-count="2">
-                    <div class="apt-list-row"><span>{{ r.name }}</span><i class="fa-solid fa-trash" sc-camel-on-click="{{ r.onDelete }}"></i></div>
+                  <sc-for list="{{ pozGroups_zpusobilost }}" as="g" hint-placeholder-count="3">
+                    <div style="margin-bottom:12px">
+                      <div style="display:flex;align-items:center;gap:8px;margin:0 0 6px">
+                        <i class="fa-solid {{ g.icon }}" style="font-size:11px;color:#9096a6;width:12px;text-align:center"></i>
+                        <span style="font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8a90a3;white-space:nowrap">{{ g.category }}</span>
+                        <span style="background:#eceff4;color:#6b7280;font-size:10px;font-weight:700;border-radius:4px;padding:1px 6px">{{ g.count }}</span>
+                        <div style="flex:1;height:1px;background:#e6e9f2"></div>
+                      </div>
+                      <sc-for list="{{ g.items }}" as="row" hint-placeholder-count="2">
+                        <div style="display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #ecedf3;border-radius:5px;padding:8px 13px;margin-bottom:5px;font-size:13px;color:#3f4457">
+                          <span style="flex:1;min-width:0;text-wrap:pretty">{{ row.name }}</span>
+                          <i class="fa-solid fa-trash" sc-camel-on-click="{{ row.onDelete }}" style="color:#7b8092;cursor:pointer;font-size:12px;flex-shrink:0"></i>
+                        </div>
+                      </sc-for>
+                    </div>
                   </sc-for>
+                  <sc-if value="{{ pozEmpty_zpusobilost }}" hint-placeholder-val="{{ false }}">
+                    <div class="apt-note">Zatím není přiřazen žádný požadavek.</div>
+                  </sc-if>
                 </div>
               </div>
             </sc-if>
@@ -3991,9 +4331,25 @@
                     <div class="apt-btn-blue" style="padding:9px 22px" sc-camel-on-click="{{ pozKatAddVybaveni }}">PŘIDAT</div>
                   </div>
                   <div class="apt-f-label" style="margin-top:18px">Přiřazené požadavky pracovních pozic</div>
-                  <sc-for list="{{ pozSel_vybaveni }}" as="r" hint-placeholder-count="10">
-                    <div class="apt-list-row"><span>{{ r.name }}</span><i class="fa-solid fa-trash" sc-camel-on-click="{{ r.onDelete }}"></i></div>
+                  <sc-for list="{{ pozGroups_vybaveni }}" as="g" hint-placeholder-count="3">
+                    <div style="margin-bottom:12px">
+                      <div style="display:flex;align-items:center;gap:8px;margin:0 0 6px">
+                        <i class="fa-solid {{ g.icon }}" style="font-size:11px;color:#9096a6;width:12px;text-align:center"></i>
+                        <span style="font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8a90a3;white-space:nowrap">{{ g.category }}</span>
+                        <span style="background:#eceff4;color:#6b7280;font-size:10px;font-weight:700;border-radius:4px;padding:1px 6px">{{ g.count }}</span>
+                        <div style="flex:1;height:1px;background:#e6e9f2"></div>
+                      </div>
+                      <sc-for list="{{ g.items }}" as="row" hint-placeholder-count="2">
+                        <div style="display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #ecedf3;border-radius:5px;padding:8px 13px;margin-bottom:5px;font-size:13px;color:#3f4457">
+                          <span style="flex:1;min-width:0;text-wrap:pretty">{{ row.name }}</span>
+                          <i class="fa-solid fa-trash" sc-camel-on-click="{{ row.onDelete }}" style="color:#7b8092;cursor:pointer;font-size:12px;flex-shrink:0"></i>
+                        </div>
+                      </sc-for>
+                    </div>
                   </sc-for>
+                  <sc-if value="{{ pozEmpty_vybaveni }}" hint-placeholder-val="{{ false }}">
+                    <div class="apt-note">Zatím není přiřazen žádný požadavek.</div>
+                  </sc-if>
                 </div>
               </div>
             </sc-if>
@@ -4036,9 +4392,25 @@
                     <div class="apt-btn-blue" style="padding:9px 22px" sc-camel-on-click="{{ pozKatAddRizika }}">PŘIDAT</div>
                   </div>
                   <div class="apt-f-label" style="margin-top:18px">Přiřazené požadavky k pracovišti</div>
-                  <sc-for list="{{ pozSel_rizikaReqs }}" as="r" hint-placeholder-count="2">
-                    <div class="apt-list-row"><span>{{ r.name }}</span><i class="fa-solid fa-trash" sc-camel-on-click="{{ r.onDelete }}"></i></div>
+                  <sc-for list="{{ pozGroups_rizikaReqs }}" as="g" hint-placeholder-count="2">
+                    <div style="margin-bottom:12px">
+                      <div style="display:flex;align-items:center;gap:8px;margin:0 0 6px">
+                        <i class="fa-solid {{ g.icon }}" style="font-size:11px;color:#9096a6;width:12px;text-align:center"></i>
+                        <span style="font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8a90a3;white-space:nowrap">{{ g.category }}</span>
+                        <span style="background:#eceff4;color:#6b7280;font-size:10px;font-weight:700;border-radius:4px;padding:1px 6px">{{ g.count }}</span>
+                        <div style="flex:1;height:1px;background:#e6e9f2"></div>
+                      </div>
+                      <sc-for list="{{ g.items }}" as="row" hint-placeholder-count="2">
+                        <div style="display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #ecedf3;border-radius:5px;padding:8px 13px;margin-bottom:5px;font-size:13px;color:#3f4457">
+                          <span style="flex:1;min-width:0;text-wrap:pretty">{{ row.name }}</span>
+                          <i class="fa-solid fa-trash" sc-camel-on-click="{{ row.onDelete }}" style="color:#7b8092;cursor:pointer;font-size:12px;flex-shrink:0"></i>
+                        </div>
+                      </sc-for>
+                    </div>
                   </sc-for>
+                  <sc-if value="{{ pozEmpty_rizikaReqs }}" hint-placeholder-val="{{ false }}">
+                    <div class="apt-note">Zatím není přiřazen žádný požadavek.</div>
+                  </sc-if>
                 </div>
               </div>
             </sc-if>
@@ -4089,6 +4461,121 @@
                     </sc-if>
                   </div>
                 </sc-for>
+              </div>
+
+              <!-- Přidělené směrnice a dokumenty — seznamy příjemců (§12), ve kterých
+                   je tato pracovní pozice, plus výběr dalších jen pro tuto pozici. -->
+              <div class="apt-panel">
+                <div class="apt-panel-head">
+                  <i class="fa-solid fa-file-lines" style="color:#4a7fe8;font-size:14px"></i>
+                  <span class="apt-panel-title">Přidělené směrnice a dokumenty</span>
+                  <span class="apt-count-pill">{{ pozOnbSmernCount }}</span>
+                  <div style="flex:1"></div>
+                  <div class="apt-btn-blue" sc-camel-on-click="{{ openSmernicePicker }}"><i class="fa-solid fa-plus" style="font-size:11px;margin-right:8px"></i>PŘIDAT</div>
+                </div>
+                <div style="padding:12px 18px 4px;font-size:13px;color:#7b8092">Seznamy příjemců, ve kterých je tato pracovní pozice. Zaměstnanci je při nástupu najdou v sekci „Směrnice k seznámení".</div>
+                <div style="padding:0 14px 14px">
+                  <div style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #ecedf4;border-radius:5px;padding:10px 13px;margin-bottom:6px;margin-top:8px">
+                    <i class="fa-solid fa-file-lines" style="color:#c5c0d8;font-size:13px;flex-shrink:0"></i>
+                    <div style="flex:1;min-width:0;font-size:13px;font-weight:600;color:#2b2540">Pracovní řád</div>
+                    <span style="display:inline-flex;align-items:center;gap:5px;background:#eceff1;color:#59676d;padding:4px 10px;border-radius:4px;font-size:10px;font-weight:600;white-space:nowrap"><i class="fa-solid fa-globe" style="font-size:9px"></i>Pro všechny</span>
+                    <span style="display:inline-block;background:#9096a6;color:#fff;font-size:10.5px;font-weight:700;border-radius:4px;padding:2px 8px;white-space:nowrap">Vyžaduje potvrzení</span>
+                    <span style="font-size:11.5px;color:#9096a6;white-space:nowrap">3 dokumenty</span>
+                    <i class="fa-solid fa-lock" title="Nastaveno pro všechny zaměstnance, odsud nelze měnit" style="color:#c5c9d4;font-size:11px;flex-shrink:0"></i>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #ecedf4;border-radius:5px;padding:10px 13px;margin-bottom:6px">
+                    <i class="fa-solid fa-file-lines" style="color:#c5c0d8;font-size:13px;flex-shrink:0"></i>
+                    <div style="flex:1;min-width:0;font-size:13px;font-weight:600;color:#2b2540">Etický kodex</div>
+                    <span style="display:inline-flex;align-items:center;gap:5px;background:#eceff1;color:#59676d;padding:4px 10px;border-radius:4px;font-size:10px;font-weight:600;white-space:nowrap"><i class="fa-solid fa-globe" style="font-size:9px"></i>Pro všechny</span>
+                    <span style="display:inline-block;background:#9096a6;color:#fff;font-size:10.5px;font-weight:700;border-radius:4px;padding:2px 8px;white-space:nowrap">Vyžaduje potvrzení</span>
+                    <span style="font-size:11.5px;color:#9096a6;white-space:nowrap">1 dokument</span>
+                    <i class="fa-solid fa-lock" title="Nastaveno pro všechny zaměstnance, odsud nelze měnit" style="color:#c5c9d4;font-size:11px;flex-shrink:0"></i>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #ecedf4;border-radius:5px;padding:10px 13px;margin-bottom:6px">
+                    <i class="fa-solid fa-file-lines" style="color:#c5c0d8;font-size:13px;flex-shrink:0"></i>
+                    <div style="flex:1;min-width:0;font-size:13px;font-weight:600;color:#2b2540">GDPR a ochrana osobních údajů</div>
+                    <span style="display:inline-flex;align-items:center;gap:5px;background:#eceff1;color:#59676d;padding:4px 10px;border-radius:4px;font-size:10px;font-weight:600;white-space:nowrap"><i class="fa-solid fa-globe" style="font-size:9px"></i>Pro všechny</span>
+                    <span style="display:inline-block;background:#9096a6;color:#fff;font-size:10.5px;font-weight:700;border-radius:4px;padding:2px 8px;white-space:nowrap">Vyžaduje potvrzení</span>
+                    <span style="font-size:11.5px;color:#9096a6;white-space:nowrap">2 dokumenty</span>
+                    <i class="fa-solid fa-lock" title="Nastaveno pro všechny zaměstnance, odsud nelze měnit" style="color:#c5c9d4;font-size:11px;flex-shrink:0"></i>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #ecedf4;border-radius:5px;padding:10px 13px;margin-bottom:6px">
+                    <i class="fa-solid fa-file-lines" style="color:#c5c0d8;font-size:13px;flex-shrink:0"></i>
+                    <div style="flex:1;min-width:0;font-size:13px;font-weight:600;color:#2b2540">IT směrnice</div>
+                    <span style="display:inline-flex;align-items:center;gap:5px;background:#eceff1;color:#59676d;padding:4px 10px;border-radius:4px;font-size:10px;font-weight:600;white-space:nowrap"><i class="fa-solid fa-globe" style="font-size:9px"></i>Pro všechny</span>
+                    <span style="display:inline-block;background:#9096a6;color:#fff;font-size:10.5px;font-weight:700;border-radius:4px;padding:2px 8px;white-space:nowrap">Pouze zveřejněno</span>
+                    <span style="font-size:11.5px;color:#9096a6;white-space:nowrap">4 dokumenty</span>
+                    <i class="fa-solid fa-lock" title="Nastaveno pro všechny zaměstnance, odsud nelze měnit" style="color:#c5c9d4;font-size:11px;flex-shrink:0"></i>
+                  </div>
+                  <sc-for list="{{ onbSmernice }}" as="r" hint-placeholder-count="1">
+                    <div style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #ecedf4;border-radius:5px;padding:10px 13px;margin-bottom:6px">
+                      <i class="fa-solid fa-file-lines" style="color:#c5c0d8;font-size:13px;flex-shrink:0"></i>
+                      <div style="flex:1;min-width:0;font-size:13px;font-weight:600;color:#2b2540">{{ r.name }}</div>
+                      <span style="display:inline-flex;align-items:center;gap:5px;background:#eef4fe;color:#1572e8;padding:4px 10px;border-radius:4px;font-size:10px;font-weight:600;white-space:nowrap"><i class="fa-solid fa-briefcase" style="font-size:9px"></i>Tato pozice</span>
+                      <span style="display:inline-block;background:#9096a6;color:#fff;font-size:10.5px;font-weight:700;border-radius:4px;padding:2px 8px;white-space:nowrap">{{ r.action }}</span>
+                      <span style="font-size:11.5px;color:#9096a6;white-space:nowrap">{{ r.docs }}</span>
+                      <i class="fa-solid fa-trash" sc-camel-on-click="{{ r.onRemove }}" title="Odebrat z této pozice" style="color:#7b8092;font-size:12px;cursor:pointer;flex-shrink:0"></i>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <!-- Přidělená školení — trénink naplánovaný zaměstnanci automaticky při
+                   nástupu na tuto pozici (odlišné od záložky „Školení" — tam jsou
+                   školení této pozice obecně, bez vazby na moment nástupu). -->
+              <div class="apt-panel">
+                <div class="apt-panel-head">
+                  <i class="fa-solid fa-chalkboard-user" style="color:#4a7fe8;font-size:14px"></i>
+                  <span class="apt-panel-title">Přidělená školení</span>
+                  <span class="apt-count-pill">{{ pozOnbSkolCount }}</span>
+                  <div style="flex:1"></div>
+                  <div class="apt-btn-blue" sc-camel-on-click="{{ openSkoleniPicker }}"><i class="fa-solid fa-plus" style="font-size:11px;margin-right:8px"></i>PŘIDAT</div>
+                </div>
+                <div style="padding:12px 18px 4px;font-size:13px;color:#7b8092">Školení, která se zaměstnanci na této pozici naplánují při nástupu.</div>
+                <div style="padding:0 14px 14px">
+                  <div style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #ecedf4;border-radius:5px;padding:10px 13px;margin-bottom:6px;margin-top:8px">
+                    <i class="fa-solid fa-chalkboard-user" style="color:#c5c0d8;font-size:13px;flex-shrink:0"></i>
+                    <div style="flex:1;min-width:0;font-size:13px;font-weight:600;color:#2b2540">Vstupní školení nového zaměstnance</div>
+                    <span style="display:inline-flex;align-items:center;gap:5px;background:#eceff1;color:#59676d;padding:4px 10px;border-radius:4px;font-size:10px;font-weight:600;white-space:nowrap"><i class="fa-solid fa-globe" style="font-size:9px"></i>Pro všechny</span>
+                    <span style="display:inline-block;background:#9096a6;color:#fff;font-size:10.5px;font-weight:700;border-radius:4px;padding:2px 8px;white-space:nowrap">Jednorázové</span>
+                    <span style="font-size:11.5px;color:#9096a6;white-space:nowrap">Den 1</span>
+                    <i class="fa-solid fa-lock" title="Nastaveno pro všechny zaměstnance, odsud nelze měnit" style="color:#c5c9d4;font-size:11px;flex-shrink:0"></i>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #ecedf4;border-radius:5px;padding:10px 13px;margin-bottom:6px">
+                    <i class="fa-solid fa-chalkboard-user" style="color:#c5c0d8;font-size:13px;flex-shrink:0"></i>
+                    <div style="flex:1;min-width:0;font-size:13px;font-weight:600;color:#2b2540">Školení BOZP a požární ochrany</div>
+                    <span style="display:inline-flex;align-items:center;gap:5px;background:#eceff1;color:#59676d;padding:4px 10px;border-radius:4px;font-size:10px;font-weight:600;white-space:nowrap"><i class="fa-solid fa-globe" style="font-size:9px"></i>Pro všechny</span>
+                    <span style="display:inline-block;background:#9096a6;color:#fff;font-size:10.5px;font-weight:700;border-radius:4px;padding:2px 8px;white-space:nowrap">Ročně</span>
+                    <span style="font-size:11.5px;color:#9096a6;white-space:nowrap">Den 1</span>
+                    <i class="fa-solid fa-lock" title="Nastaveno pro všechny zaměstnance, odsud nelze měnit" style="color:#c5c9d4;font-size:11px;flex-shrink:0"></i>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #ecedf4;border-radius:5px;padding:10px 13px;margin-bottom:6px">
+                    <i class="fa-solid fa-chalkboard-user" style="color:#c5c0d8;font-size:13px;flex-shrink:0"></i>
+                    <div style="flex:1;min-width:0;font-size:13px;font-weight:600;color:#2b2540">Školení první pomoci</div>
+                    <span style="display:inline-flex;align-items:center;gap:5px;background:#eceff1;color:#59676d;padding:4px 10px;border-radius:4px;font-size:10px;font-weight:600;white-space:nowrap"><i class="fa-solid fa-globe" style="font-size:9px"></i>Pro všechny</span>
+                    <span style="display:inline-block;background:#9096a6;color:#fff;font-size:10.5px;font-weight:700;border-radius:4px;padding:2px 8px;white-space:nowrap">Jednorázové</span>
+                    <span style="font-size:11.5px;color:#9096a6;white-space:nowrap">Do 30 dnů</span>
+                    <i class="fa-solid fa-lock" title="Nastaveno pro všechny zaměstnance, odsud nelze měnit" style="color:#c5c9d4;font-size:11px;flex-shrink:0"></i>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #ecedf4;border-radius:5px;padding:10px 13px;margin-bottom:6px">
+                    <i class="fa-solid fa-chalkboard-user" style="color:#c5c0d8;font-size:13px;flex-shrink:0"></i>
+                    <div style="flex:1;min-width:0;font-size:13px;font-weight:600;color:#2b2540">Školení GDPR</div>
+                    <span style="display:inline-flex;align-items:center;gap:5px;background:#eceff1;color:#59676d;padding:4px 10px;border-radius:4px;font-size:10px;font-weight:600;white-space:nowrap"><i class="fa-solid fa-globe" style="font-size:9px"></i>Pro všechny</span>
+                    <span style="display:inline-block;background:#9096a6;color:#fff;font-size:10.5px;font-weight:700;border-radius:4px;padding:2px 8px;white-space:nowrap">Ročně</span>
+                    <span style="font-size:11.5px;color:#9096a6;white-space:nowrap">Do 14 dnů</span>
+                    <i class="fa-solid fa-lock" title="Nastaveno pro všechny zaměstnance, odsud nelze měnit" style="color:#c5c9d4;font-size:11px;flex-shrink:0"></i>
+                  </div>
+                  <sc-for list="{{ onbSkoleni }}" as="r" hint-placeholder-count="1">
+                    <div style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #ecedf4;border-radius:5px;padding:10px 13px;margin-bottom:6px">
+                      <i class="fa-solid fa-chalkboard-user" style="color:#c5c0d8;font-size:13px;flex-shrink:0"></i>
+                      <div style="flex:1;min-width:0;font-size:13px;font-weight:600;color:#2b2540">{{ r.name }}</div>
+                      <span style="display:inline-flex;align-items:center;gap:5px;background:#eef4fe;color:#1572e8;padding:4px 10px;border-radius:4px;font-size:10px;font-weight:600;white-space:nowrap"><i class="fa-solid fa-briefcase" style="font-size:9px"></i>Tato pozice</span>
+                      <span style="display:inline-block;background:#9096a6;color:#fff;font-size:10.5px;font-weight:700;border-radius:4px;padding:2px 8px;white-space:nowrap">{{ r.freq }}</span>
+                      <span style="font-size:11.5px;color:#9096a6;white-space:nowrap">{{ r.due }}</span>
+                      <i class="fa-solid fa-trash" sc-camel-on-click="{{ r.onRemove }}" title="Odebrat z této pozice" style="color:#7b8092;font-size:12px;cursor:pointer;flex-shrink:0"></i>
+                    </div>
+                  </sc-for>
+                </div>
               </div>
             </sc-if>
 
@@ -4236,6 +4723,53 @@
 
           </div>
         </div>
+
+        <!-- Onboarding checklist — picker modal pro „Přidělené směrnice a
+             dokumenty" / „Přidělená školení" (§11.5, doplněno). Celoobrazovkový
+             overlay se scrollovatelným seznamem s vyhledáváním a toggle-výběrem,
+             NE <select>+PŘIDAT jako ostatní katalogové sekce v tomto modalu. -->
+        <sc-if value="{{ pozPickerOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:fixed;inset:0;background:rgba(20,22,30,.45);display:flex;align-items:center;justify-content:center;z-index:150">
+          <div style="width:min(720px,92vw);max-height:80vh;background:#fff;border-radius:12px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.35)">
+            <div style="flex-shrink:0;display:flex;align-items:center;padding:18px 24px 14px">
+              <div style="font-size:17px;font-weight:700;color:#3f4457;flex:1">{{ pozPickerTitle }}</div>
+              <div sc-camel-on-click="{{ closePozPicker }}" style="font-size:19px;color:#8a90a3;cursor:pointer;line-height:1">✕</div>
+            </div>
+            <div style="flex-shrink:0;padding:0 24px 14px">
+              <div style="display:inline-flex;align-items:center;gap:9px;background:#fff;border:1px solid #d9dde8;border-radius:6px;height:36px;padding:0 13px;width:100%;box-sizing:border-box">
+                <i class="fa-solid fa-magnifying-glass" style="font-size:12px;color:#9096a6"></i>
+                <input type="text" placeholder="{{ pozPickerPlaceholder }}" value="{{ pozPickerSearch }}" sc-camel-on-change="{{ onPozPickerSearch }}" style="flex:1;min-width:0;border:none;background:transparent;font-family:'Nunito',sans-serif;font-size:13px;color:#2b2540" style-focus="outline:none">
+              </div>
+              <div style="font-size:12.5px;color:#7b8092;margin-top:10px">{{ pozPickerHint }}</div>
+            </div>
+            <div style="flex:1;min-height:0;overflow-y:auto;padding:0 24px 8px">
+              <sc-for list="{{ pozPickerRows }}" as="p" hint-placeholder-count="6">
+                <div sc-camel-on-click="{{ p.onToggle }}" style="{{ p.style }}">
+                  <i class="fa-solid {{ p.icon }}" style="font-size:13px;color:#c5c0d8;flex-shrink:0"></i>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-size:13px;font-weight:600;color:#2b2540;text-wrap:pretty">{{ p.name }}</div>
+                    <div style="font-size:11.5px;color:#9096a6">{{ p.meta }}</div>
+                  </div>
+                  <sc-if value="{{ p.picked }}" hint-placeholder-val="{{ false }}">
+                    <i class="fa-solid fa-circle-check" style="font-size:15px;color:#1572e8;flex-shrink:0"></i>
+                  </sc-if>
+                  <sc-if value="{{ p.unpicked }}" hint-placeholder-val="{{ true }}">
+                    <i class="fa-regular fa-circle" style="font-size:15px;color:#cfd3de;flex-shrink:0"></i>
+                  </sc-if>
+                </div>
+              </sc-for>
+              <sc-if value="{{ pozPickerEmpty }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:22px 16px;text-align:center;font-size:13px;color:#9096a6">Nic neodpovídá hledání.</div>
+              </sc-if>
+            </div>
+            <div style="flex-shrink:0;display:flex;align-items:center;gap:12px;padding:14px 24px;border-top:1px solid #eeeff4">
+              <div style="flex:1;font-size:12.5px;color:#7b8092">{{ pozPickerCountLabel }}</div>
+              <div sc-camel-on-click="{{ closePozPicker }}" style="display:inline-flex;align-items:center;background:#1572e8;color:#fff;font-size:12px;font-weight:800;letter-spacing:.04em;padding:11px 30px;border-radius:999px;cursor:pointer;box-shadow:0 2px 6px rgba(21,114,232,.28)">HOTOVO</div>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+
         <div class="apt-modal-foot">
           <div class="apt-btn-grey"><i class="fa-solid fa-print" style="font-size:12px"></i>PŘEHLED PRACOVNÍ POZICE</div>
           <div class="apt-btn-grey"><i class="fa-solid fa-print" style="font-size:12px"></i>PODKLAD PRO INZERÁT</div>
@@ -4340,8 +4874,57 @@
               <div class="evx-savefile-link" style="margin-top:18px"><i class="fa-solid fa-download" style="font-size:12px"></i>Uložit nastavení evidence do souboru</div>
             </sc-if>
 
+            <!-- ONBOARDING CHECKLIST (§13.3) — JEN Zaměstnanci (evModule.extraTab).
+                 Zdroj: Claude Design, „Onboarding checklist umístění", soubor
+                 Onboarding v2.dc.html (10. 9. 2026). Ostatní obsahové bloky
+                 (Rozvoj zaměstnance apod.) jsou v modalu pracovní pozice —
+                 tenhle je jediný zdroj pravdy, needituje se odsud. -->
+            <sc-if value="{{ evShowOnboarding }}" hint-placeholder-val="{{ false }}">
+              <div class="apt-note" style="margin-bottom:18px">
+                <b>První verze k připomínkování.</b> Pro tuto sekci zatím není referenční screenshot — rozložení vychází z vizuálního jazyka modalu pracovní pozice.
+              </div>
+              <div class="apt-modal-h2" style="margin-bottom:8px">Onboarding checklist</div>
+              <div style="font-size:13px;color:#7b8092;margin-bottom:18px;max-width:760px">Evidence má jeden onboarding checklist. U každé položky a aktivity se určuje, jestli platí pro všechny zaměstnance, nebo jen pro vybranou pracovní pozici.</div>
+              <div class="apt-panel">
+                <div class="apt-panel-head">
+                  <i class="fa-solid fa-list-check" style="color:#1572e8;font-size:14px"></i>
+                  <span class="apt-panel-title">Fáze nástupu</span>
+                  <span class="apt-count-pill">{{ evOnbItemsTotal }} položek · {{ evOnbAktTotal }} aktivit</span>
+                </div>
+                <div style="padding:8px 18px 4px;font-size:12.5px;color:#9096a6">Fáze jsou společné pro položky checklistu i aktivity — v záznamu zaměstnance se podle nich obojí seskupí. Položka je jen splněno / nesplněno, aktivita se plánuje a hlídá. Pořadí lze měnit tažením.</div>
+                <sc-for list="{{ evOnb_groups }}" as="g" hint-placeholder-count="4">
+                  <div class="apt-group">
+                    <div class="apt-group-head" sc-camel-on-click="{{ g.onToggle }}" style="cursor:pointer">
+                      <i class="fa-solid fa-{{ g.chevron }}" style="font-size:11px;color:#7b8092;width:11px;text-align:center"></i>
+                      <span>{{ g.title }}</span><span class="apt-count-pill">{{ g.count }}</span>
+                    </div>
+                    <sc-if value="{{ g.open }}" hint-placeholder-val="{{ true }}">
+                      <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="5">
+                        <div style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:#fff;border-top:1px solid #f1f2f7">
+                          <i class="fa-solid fa-grip-vertical" style="color:#c3c7d4;font-size:12px;cursor:grab"></i>
+                          <sc-if value="{{ r.isAktivita }}" hint-placeholder-val="{{ false }}">
+                            <i class="fa-solid fa-calendar-check" style="color:#1572e8;font-size:12px"></i>
+                          </sc-if>
+                          <div style="flex:1;min-width:0;font-size:13px;color:#4a7fe8;cursor:pointer">{{ r.text }}</div>
+                          <span class="apt-tag-grey" style="{{ r.scopeStyle }}"><i class="fa-solid fa-{{ r.scopeIcon }}" style="font-size:9px;margin-right:5px"></i>{{ r.scopeLabel }}</span>
+                          <i class="fa-solid fa-pen" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+                          <i class="fa-solid fa-trash" style="color:#9096a6;font-size:12px;cursor:pointer"></i>
+                        </div>
+                      </sc-for>
+                      <!-- ⚠ v2 (10. 9. 2026): ŽÁDNÉ tlačítko „Přidat fázi" — jen
+                           řazení do existující fáze. -->
+                      <div style="display:flex;gap:22px;padding:10px 16px;background:#fff;border-top:1px solid #f1f2f7">
+                        <span style="color:#4a7fe8;font-size:12.5px;font-weight:700;cursor:pointer" sc-camel-on-click="{{ g.onAddPolozka }}"><i class="fa-solid fa-plus" style="font-size:10px;margin-right:5px"></i>POLOŽKA</span>
+                        <span style="color:#4a7fe8;font-size:12.5px;font-weight:700;cursor:pointer" sc-camel-on-click="{{ g.onAddAktivita }}"><i class="fa-solid fa-plus" style="font-size:10px;margin-right:5px"></i>AKTIVITA</span>
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
             <!-- OSTATNÍ ZÁLOŽKY — v prototypu zatím needitovatelný prázdný stav -->
-            <sc-if value="{{ !evShowZakladni }}" hint-placeholder-val="{{ false }}">
+            <sc-if value="{{ evShowOtherPlaceholder }}" hint-placeholder-val="{{ false }}">
               <div class="apt-modal-h2">{{ evActiveLabel }}</div>
               <div class="evx-empty-tab">
                 <i class="fa-solid fa-hammer"></i>
@@ -4355,6 +4938,68 @@
         <div class="apt-modal-foot">
           <div style="flex:1"></div>
           <div class="apt-btn-blue" sc-camel-on-click="{{ evEditClose }}">ULOŽIT</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ══════════════════════════════════════════════════════════
+       ONBOARDING CHECKLIST — modal „+ položka" / „+ aktivita" (§13.3/§7.1.8)
+       Sdílený jak z Editace evidence, tak z draweru Zaměstnance (Claude
+       Design, Onboarding v2.dc.html, 10. 9. 2026). Pole „Je pro" je
+       needitovatelné a zamčené na „Pouze pro tohoto zaměstnance", jen
+       když se modal otevřel z draweru (`onbModalLocked`) — z Editace
+       evidence zůstává výchozí volba „Pro všechny".
+       ══════════════════════════════════════════════════════════ -->
+  <sc-if value="{{ onbModalOpen }}" hint-placeholder-val="{{ false }}">
+    <div class="apt-modal-overlay" sc-camel-on-click="{{ onbModalClose }}">
+      <div class="apt-modal" style="width:min(520px,92vw);height:auto" sc-camel-on-click="{{ stopClick }}">
+        <div class="apt-modal-head">
+          <div class="apt-modal-title">{{ onbModalTitle }}</div>
+          <div class="apt-modal-close" sc-camel-on-click="{{ onbModalClose }}">✕</div>
+        </div>
+        <div style="padding:22px 26px 8px;display:flex;flex-direction:column;gap:16px">
+          <div>
+            <div class="apt-f-label">{{ onbModalTextLabel }}</div>
+            <input class="apt-f-input" style="width:100%;box-sizing:border-box" type="text" sc-camel-default-value="{{ onbModalText }}" sc-camel-on-change="{{ onbModalSetText }}">
+          </div>
+          <!-- v2 (10. 9. 2026): u aktivity zůstal viditelný jen typ „Jednorázová" — ostatní typy skryté. -->
+          <sc-if value="{{ onbModalIsAktivita }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div class="apt-f-label">Typ aktivity</div>
+              <div class="apt-f-input" style="color:#2b2540">Jednorázová</div>
+            </div>
+          </sc-if>
+          <div>
+            <div class="apt-f-label">Zařazení do fáze</div>
+            <select class="apt-native-select" sc-camel-default-value="{{ onbModalPhase }}" sc-camel-on-change="{{ onbModalSetPhase }}">
+              <sc-for list="{{ onbModalPhaseOptions }}" as="p" hint-placeholder-count="4">
+                <option value="{{ p.key }}">{{ p.title }}</option>
+              </sc-for>
+            </select>
+          </div>
+          <sc-if value="{{ onbModalIsAktivita }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div class="apt-f-label">Koho upozornit</div>
+              <input class="apt-f-input" style="width:100%;box-sizing:border-box" type="text" placeholder="Vyberte osobu nebo roli…" sc-camel-default-value="{{ onbModalNotify }}" sc-camel-on-change="{{ onbModalSetNotify }}">
+            </div>
+          </sc-if>
+          <div>
+            <div class="apt-f-label">Je pro</div>
+            <sc-if value="{{ onbModalLocked }}" hint-placeholder-val="{{ false }}">
+              <div class="apt-f-input" style="background:#f4f4f5;border-color:#e3e3e8;color:#7b1fa2;justify-content:space-between">
+                <span><i class="fa-solid fa-lock" style="font-size:11px;margin-right:7px;color:#b0aac8"></i>Pouze pro tohoto zaměstnance</span>
+              </div>
+            </sc-if>
+            <sc-if value="{{ !onbModalLocked }}" hint-placeholder-val="{{ true }}">
+              <div class="apt-f-select"><span>Pro všechny</span><i class="fa-solid fa-chevron-down" style="font-size:10px"></i></div>
+            </sc-if>
+          </div>
+        </div>
+        <div class="apt-modal-foot">
+          <div style="flex:1"></div>
+          <div class="apt-btn-grey" sc-camel-on-click="{{ onbModalClose }}">ZRUŠIT</div>
+          <div class="apt-btn-blue" sc-camel-on-click="{{ onbModalClose }}">ULOŽIT</div>
         </div>
       </div>
     </div>
@@ -4823,7 +5468,7 @@
           <nav class="adm-subcol">
             <div class="adm-sub-head" style="padding-bottom:12px">Role</div>
             <div class="adm-sub-search"><i class="fa-solid fa-magnifying-glass" style="color:#b0aac8;font-size:11px"></i><input placeholder="Vyhledání role …"></div>
-            <div class="adm-sub-new"><i class="fa-solid fa-plus"></i>Nová role</div>
+            <div class="adm-sub-new"><i class="fa-solid fa-plus"></i>NOVÁ ROLE</div>
             <div class="adm-sub-group" style="padding-top:0">
               <sc-for list="{{ adm_roleList }}" as="r" hint-placeholder-count="10">
                 <div class="adm-sub-nav-item {{ r.cls }}" sc-camel-on-click="{{ r.onClick }}"><span>{{ r.n }}</span><span class="adm-role-badge {{ r.badge }}">{{ r.label }}</span></div>
@@ -4878,7 +5523,7 @@
                   <div class="adm-tglwrap"><div class="{{ adm_tEn.cls }}" sc-camel-on-click="{{ adm_tEn.onClick }}"><div class="adm-knob"></div></div><span class="adm-tgl-word">{{ adm_tEn.word }}</span></div>
                 </div>
                 <div class="adm-msave" style="border-top:none;padding-top:6px;justify-content:flex-start">
-                  <button class="adm-mbtn adm-mbtn-primary">ULOŽIT</button>
+                  <div class="apt-btn-blue">ULOŽIT</div>
                 </div>
               </div>
             </div>
@@ -4890,8 +5535,8 @@
               <div class="adm-crumb">Administrace</div>
               <div class="adm-page-title" style="display:flex;align-items:center;gap:14px">
                 Seznam uživatelů
-                <span class="adm-btn-add"><i class="fa-solid fa-plus"></i>Vytvořit nového uživatele</span>
-                <span class="adm-btn-add" style="margin-left:auto"><i class="fa-solid fa-plus"></i>Vytvořit ze zaměstnanců</span>
+                <span class="adm-btn-add"><i class="fa-solid fa-plus"></i>VYTVOŘIT NOVÉHO UŽIVATELE</span>
+                <span class="adm-btn-outline" style="margin-left:auto"><i class="fa-solid fa-plus"></i>VYTVOŘIT ZE ZAMĚSTNANCŮ</span>
               </div>
               <div class="adm-stats-row">
                 <div class="adm-stat-block">
@@ -4957,10 +5602,10 @@
               <span class="adm-bulk-count">{{ adm_bulkCountLabel }}</span>
               <div class="adm-bulk-actions">
                 <sc-if value="{{ adm_bulkHasLicensed }}" hint-placeholder-val="{{ false }}">
-                  <button class="adm-remove"><i class="fa-solid fa-ban"></i> Odebrat licenci</button>
+                  <button class="adm-remove"><i class="fa-solid fa-ban"></i> ODEBRAT LICENCI</button>
                 </sc-if>
                 <sc-if value="{{ adm_bulkHasUnlicensed }}" hint-placeholder-val="{{ false }}">
-                  <button class="adm-assign"><i class="fa-solid fa-plus"></i> Přiřadit licenci: Aktivní zaměstnanec</button>
+                  <button class="adm-assign"><i class="fa-solid fa-plus"></i> PŘIŘADIT LICENCI: AKTIVNÍ ZAMĚSTNANEC</button>
                 </sc-if>
               </div>
             </div>
@@ -5141,6 +5786,37 @@
 
           </div>
         </div>
+
+        <sc-if value="{{ adm_fieldsModalOpen }}" hint-placeholder-val="{{ false }}">
+        <div class="adm-modal-back">
+          <div class="adm-modal">
+            <div class="adm-mhead">
+              <h3>O mně — viditelnost a úprava údajů</h3>
+              <i class="fa-solid fa-xmark adm-mclose" sc-camel-on-click="{{ adm_closeFieldsModal }}"></i>
+            </div>
+            <div class="adm-hint" style="margin-bottom:16px">Ukázkový formulář „O mně" tak, jak ho uvidí zaměstnanec s touto rolí. U každého údaje nastavíte, zda ho smí jen číst, nebo i upravovat — úprava jde vždy jen spolu se čtením.</div>
+            <sc-raw-table class="adm-fieldsperm">
+              <sc-raw-thead>
+                <sc-raw-tr><sc-raw-th></sc-raw-th><sc-raw-th>Pouze číst</sc-raw-th><sc-raw-th>Může i upravit</sc-raw-th></sc-raw-tr>
+              </sc-raw-thead>
+              <sc-raw-tbody>
+                <sc-for list="{{ adm_fieldsRows }}" as="fr" hint-placeholder-count="10">
+                  <sc-raw-tr>
+                    <sc-raw-td>{{ fr.label }}</sc-raw-td>
+                    <sc-raw-td><input type="checkbox" sc-camel-checked="{{ fr.read }}" sc-camel-on-change="{{ fr.onToggleRead }}"></sc-raw-td>
+                    <sc-raw-td><input type="checkbox" sc-camel-checked="{{ fr.write }}" sc-camel-on-change="{{ fr.onToggleWrite }}"></sc-raw-td>
+                  </sc-raw-tr>
+                </sc-for>
+              </sc-raw-tbody>
+            </sc-raw-table>
+            <div class="adm-msave">
+              <div class="apt-btn-grey" sc-camel-on-click="{{ adm_closeFieldsModal }}">ZRUŠIT</div>
+              <div class="apt-btn-blue" sc-camel-on-click="{{ adm_closeFieldsModal }}">ULOŽIT</div>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+
       </div>
       </sc-if>
 
@@ -5203,6 +5879,16 @@ class Component extends DCLogic {
   toggleZamGroup(key) {
     this.setState(s => ({ zamOpenGroups: { ...s.zamOpenGroups, [key]: !s.zamOpenGroups[key] } }));
   }
+  // Sdílený modal „+ položka"/„+ aktivita" Onboarding checklistu — otevírá
+  // se ze STEJNÉHO místa v Editaci evidence i v draweru Zaměstnance
+  // (§13.3/§7.1.8, Claude Design Onboarding v2.dc.html). `locked` = true
+  // jen z draweru — zamkne pole „Je pro" na „Pouze pro tohoto zaměstnance".
+  openOnbModal(kind, locked, phaseKey) {
+    this.setState({ onbModalOpen: true, onbModalKind: kind, onbModalLocked: !!locked, onbModalPhase: phaseKey || (this.EV_ONBOARD_PHASES[0] || {}).key, onbModalText: '', onbModalNotify: '' });
+  }
+  closeOnbModal() {
+    this.setState({ onbModalOpen: false });
+  }
   ZAM_PLAN_CHIP_BG = { ok: '#00C853', blizici: '#FFAB00', urgentni: '#EF5350' };
   state = {
     // ── ADMINISTRACE (ozubené kolečko u karty uživatele v sidebaru) ──
@@ -5216,6 +5902,7 @@ class Component extends DCLogic {
     adminPerm: {},                   // klíč = evidence -> přepis ADMIN_PERM_DEFAULTS
     adminPermInfoOpen: null,         // klíč "evidence|typ" otevřeného info-panelu, nebo null
     adminFieldsModalOpen: false,
+    adminFields: {},                 // klíč = pole formuláře "O mně" -> přepis ADMIN_FIELDS_DEFAULTS
     activeTab: 12,
     activeNav: 'domu',
     openKonvId: null,
@@ -5261,17 +5948,48 @@ class Component extends DCLogic {
     pozKatSel_zpusobilost: '',
     pozKatSel_vybaveni: '',
     pozKatSel_rizika: '',
+    // Onboarding checklist → jen-pro-tuto-pozici výběry (§11.5, doplněno):
+    // „Pro všechny" položky u směrnic i školení jsou pevný seznam přímo
+    // v markupu (stejně jako fáze nástupu). Přidávání navíc-jen-pro-tuhle-
+    // pozici jde přes celoobrazovkový picker modal (vyhledávání + toggle),
+    // ne přes <select>+PŘIDAT jako u ostatních katalogových sekcí —
+    // `pozPicker` drží, který picker je otevřený ('smernice'|'skoleni'|null).
+    pozSmernicePicked: ['Směrnice pro administrativní pracovníky'],
+    pozSkoleniPicked:  ['Excel středně pokročilý', 'Práce s ERP systémem'],
+    pozPicker: null,
+    pozPickerSearch: '',
     // Sbalitelné skupiny v modalu: klíč = `key` skupiny. Chybějící klíč
     // znamená OTEVŘENO (§11.5) — zavírá se až explicitním `false`.
     pozActOpen: {},
     pozDocOpen: {},
     pozOnbOpen: {},
-    // ── NASTAVENÍ SMĚRNIC → Seznamy příjemců (§12) ──
+    // ── NASTAVENÍ SMĚRNIC → Distribuční seznamy (§12, v2) ──
     // `nsmEdit` drží rozpracovaná data OBOU modalů (krok 1 „Vytvořit" i
     // editační „Upravit"), aby přechod POKRAČOVAT → editace nic neztratil.
     nsmCreateOpen: false,
     nsmEditOpen: false,
     nsmEdit: null,
+    // Aktivní záložka na hlavní stránce (nahrazuje dřívější stackované
+    // sekce) — výchozí „Pro všechny zaměstnance", stejné pořadí jako §12.1.
+    nsmActiveGroup: 'vsichni',
+    // Zdrojové evidence — ozubené kolečko vpravo od nadpisu (§12.13,
+    // podle finální verze uživatelova standalone exportu). Evidence,
+    // ze kterých je možné do distribučních seznamů vybírat dokumenty;
+    // `linked:true` = evidence už je zdrojem (má zapnutou řízenou
+    // dokumentaci), `false` = lze ji přidat přes „PŘIDAT DALŠÍ EVIDENCI".
+    nsmShowGear: false,
+    nsmEvidences: [
+      { key: 'smernice', name: 'Směrnice a předpisy', icon: 'fa-solid fa-file-contract', linked: true },
+      { key: 'pozice', name: 'Pracovní pozice', icon: 'fa-solid fa-id-badge', linked: true },
+      { key: 'zamestnanci', name: 'Zaměstnanci', icon: 'fa-solid fa-users', linked: true },
+      { key: 'skoleni', name: 'Školení', icon: 'fa-solid fa-graduation-cap', linked: false },
+      { key: 'vybaveni', name: 'Vybavení a technika', icon: 'fa-solid fa-screwdriver-wrench', linked: false },
+      { key: 'smlouvy', name: 'Smluvní dokumentace', icon: 'fa-solid fa-file-signature', linked: false },
+    ],
+    nsmEvidenceQuery: '',
+    nsmShowEvidenceDropdown: false,
+    nsmShowAddEvidenceConfirm: false,
+    nsmPendingEvidenceKey: null,
     // ── ŠKOLENÍ (Moje školení + Správa školení) ──
     // Osobní pohled („Moje školení") — design 1:1 dle standalone prototypu:
     // JEDNA plynulá stránka (dashboard → K vyplnění → Vyplněná → Procházet),
@@ -5328,7 +6046,21 @@ class Component extends DCLogic {
     evEditOpen: false,
     evEditTab: 'zakladni',
     evEditModuleKey: null,
-    evLang: 'cs'
+    evLang: 'cs',
+    // Onboarding checklist (§13.3 / §7.1.8) — sbalování fází v Editaci
+    // evidence i v draweru Zaměstnance jsou dva NEZÁVISLÉ bagy (jiná
+    // sada dat, jiný kontext), stejná konvence jako `pozOnbOpen` výše.
+    evOnbOpen: {},
+    zamOnbOpen: {},
+    // Sdílený modal „+ položka"/„+ aktivita" — `onbModalLocked` = true jen
+    // když se otevírá z draweru zaměstnance („Je pro" zamčené na „Pouze
+    // pro tohoto zaměstnance").
+    onbModalOpen: false,
+    onbModalKind: 'polozka',
+    onbModalLocked: false,
+    onbModalPhase: 'pred-nastupem',
+    onbModalText: '',
+    onbModalNotify: ''
   };
 
   // ── NASTAVENÍ ORGANIZACE — data ────────────────
@@ -5407,6 +6139,62 @@ class Component extends DCLogic {
     { name: 'Oprávnění na VZV',               category: 'Oprávnění',     usedIn: 2,  icon: 'truck-ramp-box' },
     { name: 'Školení BOZP pro vedoucí',       category: 'Školení',       usedIn: 5,  icon: 'helmet-safety' },
     { name: 'Vstupní lékařská prohlídka',     category: 'Zdravotní',     usedIn: 16, icon: 'stethoscope' }
+  ];
+
+  // Katalog pro 4 sekce „Požadavky na…" (kvalifikace/způsobilost/vybavení/
+  // rizika, §11.4) — STEJNÝ katalog pro všechny 4 <select>y (viz jejich
+  // shodné <optgroup> v markupu), jen s jiným už-přiřazeným výběrem.
+  // `groupPozSel()` z něj odvozuje kategorii/ikonu, aby se „Přiřazené
+  // požadavky…" pod výběrem zobrazovaly ROZDĚLENÉ podle kategorie (ikona +
+  // název kategorie + počet), ne jako jeden plochý seznam.
+  CATALOG = [
+    { category: 'Adaptace', items: ['aa'] },
+    { category: 'Aplikace a licence', items: ['Aptien', 'JIRA', 'SAP'] },
+    { category: 'Auta', items: ['Škoda Octavia'] },
+    { category: 'Fyzické předpoklady', items: ['Psaní na stroji'] },
+    { category: 'Klíče a vstupní karty', items: ['Klíč od budovy', 'Klíče od kanceláře'] },
+    { category: 'Ochranné prostředky', items: ['Firemní mikina'] },
+    { category: 'Oprávnění', items: ['Řidičský průkaz sk. B', 'Oprávnění na VZV'] },
+    { category: 'Počítače', items: ['PC s RAM 12gb+'] },
+    { category: 'Vybavení', items: ['Služební telefon'] },
+    { category: 'Zdravotní', items: ['Vstupní lékařská prohlídka'] },
+    { category: 'Znalosti a dovednosti', items: ['Anglický jazyk', 'Excel středně pokročilý', 'Německý jazyk', 'Znalost ERP systému'] },
+    { category: 'Školení', items: ['Školení BOZP pro vedoucí'] }
+  ];
+  CAT_ICON = {
+    'Adaptace': 'fa-seedling',
+    'Aplikace a licence': 'fa-laptop-code',
+    'Auta': 'fa-car',
+    'Fyzické předpoklady': 'fa-person-running',
+    'Klíče a vstupní karty': 'fa-key',
+    'Ochranné prostředky': 'fa-helmet-safety',
+    'Oprávnění': 'fa-id-card',
+    'Počítače': 'fa-laptop',
+    'Vybavení': 'fa-box',
+    'Zdravotní': 'fa-stethoscope',
+    'Znalosti a dovednosti': 'fa-graduation-cap',
+    'Školení': 'fa-chalkboard-user',
+    'Ostatní': 'fa-tag'
+  };
+
+  // Onboarding checklist (9. sekce modalu) — katalog pro picker modal u
+  // „Přidělené směrnice a dokumenty" / „Přidělená školení" (výběr jen pro
+  // tuhle pozici, viz `pozPicker`/`togglePozPicked`).
+  SMERNICE_CATALOG = [
+    { name: 'Směrnice pro administrativní pracovníky', action: 'Vyžaduje potvrzení', docs: '2 dokumenty', meta: 'Distribuční list · 2 dokumenty' },
+    { name: 'Pravidla práce s tiskovými zařízeními',    action: 'Pouze zveřejněno',   docs: '1 dokument',  meta: 'Distribuční list · 1 dokument' },
+    { name: 'Spisový a skartační řád',                  action: 'Vyžaduje potvrzení', docs: '3 dokumenty', meta: 'Distribuční list · 3 dokumenty' },
+    { name: 'Pravidla pro objednávky a fakturaci',      action: 'Vyžaduje potvrzení', docs: '2 dokumenty', meta: 'Distribuční list · 2 dokumenty' },
+    { name: 'Manuál pro práci s ERP systémem',          action: 'Pouze zveřejněno',   docs: '4 dokumenty', meta: 'Distribuční list · 4 dokumenty' },
+    { name: 'Pravidla home office',                     action: 'Vyžaduje potvrzení', docs: '1 dokument',  meta: 'Distribuční list · 1 dokument' }
+  ];
+  SKOLENI_CATALOG = [
+    { name: 'Excel středně pokročilý',            freq: 'Jednorázové', due: 'Do 30 dnů', meta: 'Katalog školení · Znalosti a dovednosti' },
+    { name: 'Práce s ERP systémem',                freq: 'Jednorázové', due: 'Do 30 dnů', meta: 'Katalog školení · Aplikace' },
+    { name: 'Spisová služba a archivace',          freq: 'Jednorázové', due: 'Do 60 dnů', meta: 'Katalog školení · Administrativa' },
+    { name: 'Anglický jazyk pro administrativu',   freq: 'Průběžné',    due: 'Do 90 dnů', meta: 'Katalog školení · Jazyky' },
+    { name: 'Komunikace a telefonní etiketa',      freq: 'Jednorázové', due: 'Do 30 dnů', meta: 'Katalog školení · Soft skills' },
+    { name: 'Školení BOZP pro vedoucí',            freq: 'Ročně',       due: 'Do 30 dnů', meta: 'Katalog školení · BOZP' }
   ];
 
   // Nastavení nadřízených (4. podzáložka)
@@ -5793,6 +6581,55 @@ class Component extends DCLogic {
     { name: 'Školení BOZP pro vedoucí' },
     { name: 'Vstupní školení nového zaměstnance' },
     { name: 'Školení první pomoci' }
+  ];
+
+  // ══════════════════════════════════════════════════════════════════════
+  //  EDITACE EVIDENCE → „Onboarding checklist" (§13.3) — Zdroj pravdy:
+  //  Claude Design, projekt „Onboarding checklist umístění", soubor
+  //  `Onboarding v2.dc.html` (10. 9. 2026). Evidence Zaměstnanci má JEDEN
+  //  sdílený onboarding checklist (ne víc pojmenovaných šablon podle
+  //  pozice/oddělení, jak počítal starší návrh z 27. 8. 2026 — nahrazeno).
+  //  Fáze jsou společné pro položky i aktivity (v draweru zaměstnance se
+  //  podle nich obojí seskupí, viz ZAM_ONBOARD_PHASES níže — nezávislý,
+  //  ilustrační dataset pro konkrétního zaměstnance). U KAŽDÉHO řádku
+  //  (`kind: 'polozka'|'aktivita'`) se určuje rozsah platnosti `scope`:
+  //  'vsichni' (pro všechny zaměstnance) nebo 'pozice' (jen pro vybranou
+  //  pracovní pozici, viz `pozice`). Layout vychází z vizuálního jazyka
+  //  modalu „Upravit pracovní pozici" (`.apt-panel`/`.apt-group`, stejně
+  //  jako POZ_ONBOARD_GROUPS výše), ale řádky tu NEJSOU zamčené — tohle
+  //  JE zdrojová definice, ne needitovatelný převzatý seznam.
+  //  ⚠ v2 (design 10. 9. 2026) oproti staršímu konceptu: ŽÁDNÉ tlačítko
+  //  „Přidat fázi" — fáze jsou pevná, předdefinovaná sada; do modalu
+  //  „+ položka"/„+ aktivita" jde jen řadit do EXISTUJÍCÍ fáze.
+  EV_ONBOARD_PHASES = [
+    { key: 'pred-nastupem', title: 'Před nástupem', rows: [
+      { key: 'e1', kind: 'polozka',  text: 'Podepsat pracovní smlouvu a předat kopii zaměstnanci', scope: 'vsichni' },
+      { key: 'e2', kind: 'polozka',  text: 'Zaslat vstupní dotazník a osobní údaje ke zpracování', scope: 'vsichni' },
+      { key: 'e3', kind: 'polozka',  text: 'Zřídit pracovní e-mail a přístupy do interních systémů', scope: 'vsichni' },
+      { key: 'e4', kind: 'polozka',  text: 'Připravit pracovní místo a techniku', scope: 'vsichni' },
+      { key: 'e5', kind: 'aktivita', text: 'Vstupní lékařská prohlídka', scope: 'vsichni' }
+    ]},
+    { key: 'prvni-den', title: 'První den', rows: [
+      { key: 'e6',  kind: 'polozka',  text: 'Předat notebook, mobilní telefon a přístupovou kartu', scope: 'vsichni' },
+      { key: 'e7',  kind: 'polozka',  text: 'Představit tým a nadřízeného', scope: 'vsichni' },
+      { key: 'e8',  kind: 'polozka',  text: 'Seznámit s pracovním řádem a BOZP', scope: 'vsichni' },
+      { key: 'e9',  kind: 'polozka',  text: 'Nastavit přístup do firemního intranetu', scope: 'vsichni' },
+      { key: 'e10', kind: 'aktivita', text: 'Uvítací pohovor s HR', scope: 'vsichni' }
+    ]},
+    { key: 'prvni-tyden', title: 'První týden', rows: [
+      { key: 'e11', kind: 'polozka',  text: 'Absolvovat vstupní školení BOZP', scope: 'vsichni' },
+      { key: 'e12', kind: 'polozka',  text: 'Nastudovat organizační strukturu firmy', scope: 'vsichni' },
+      { key: 'e13', kind: 'polozka',  text: 'Projít si interní směrnice', scope: 'vsichni' },
+      { key: 'e14', kind: 'aktivita', text: 'Schůzka s nadřízeným – shrnutí prvního týdne', scope: 'vsichni' },
+      { key: 'e15', kind: 'aktivita', text: 'Naplánovat úvodní školení IT bezpečnosti', scope: 'vsichni' },
+      { key: 'e16', kind: 'aktivita', text: 'Nastavit přístupy do docházkového systému', scope: 'pozice', pozice: 'Vedoucí útvaru hospodářské správy' }
+    ]},
+    { key: 'do-30-dnu', title: 'Do 30 dnů', rows: [
+      { key: 'e17', kind: 'polozka',  text: 'Vyplnit zpětnou vazbu na onboarding', scope: 'vsichni' },
+      { key: 'e18', kind: 'polozka',  text: 'Dokončit povinná online školení', scope: 'pozice', pozice: 'Vedoucí útvaru hospodářské správy' },
+      { key: 'e19', kind: 'aktivita', text: 'Hodnoticí pohovor po 30 dnech', scope: 'vsichni' },
+      { key: 'e20', kind: 'aktivita', text: 'Revize nastavení přístupových práv', scope: 'vsichni' }
+    ]}
   ];
 
   // ── SHARED ──────────────────────────────
@@ -6813,6 +7650,35 @@ class Component extends DCLogic {
     this.setState(s => ({ [key]: (s[key] || []).filter((_, i) => i !== idx) }));
   }
 
+  // Rozdělí už-přiřazené řádky dané sekce („Požadavky na…") podle kategorie
+  // z `this.CATALOG` — vrací skupiny (ikona + kategorie + počet + řádky)
+  // ve stejném pořadí, v jakém jsou kategorie v katalogu, plus „Ostatní" na
+  // konci pro položky, co v katalogu nejsou. `rows` už mají `onDelete`
+  // (viz volání níže v renderVals — stejné jako dřív u plochého seznamu).
+  groupPozSel(rows) {
+    const byCat = {};
+    rows.forEach(r => {
+      const cat = this.CATALOG.find(c => c.items.includes(r.name));
+      const key = cat ? cat.category : 'Ostatní';
+      (byCat[key] = byCat[key] || []).push(r);
+    });
+    return [...this.CATALOG.map(c => c.category), 'Ostatní'].filter(c => byCat[c]).map(c => ({
+      category: c,
+      count: byCat[c].length,
+      icon: this.CAT_ICON[c] || 'fa-tag',
+      items: byCat[c]
+    }));
+  }
+
+  // Onboarding checklist — picker modal pro „Přidělené směrnice a
+  // dokumenty" / „Přidělená školení" (§11.5, doplněno). `key` je
+  // 'pozSmernicePicked' | 'pozSkoleniPicked', `name` je název položky
+  // katalogu — klik na řádek v pickeru i koš u řádku „Tato pozice" volají
+  // totéž (toggle přidá/odebere).
+  togglePozPicked(key, name) {
+    this.setState(s => ({ [key]: s[key].includes(name) ? s[key].filter(x => x !== name) : [...s[key], name] }));
+  }
+
   toggleSidebar() { this.setState(s => ({ sidebarCollapsed: !s.sidebarCollapsed })); }
 
   mkNavIcon(m, collapsed, color) {
@@ -6890,6 +7756,23 @@ class Component extends DCLogic {
     volna_mista:  { name: 'Volná pracovní místa', on: true, level: 'opravnovat', exp: false, plany: false, zad: false, restrict: false, has_skupiny: false, has_kategorie: true, has_prilohy: false },
     akce_skoleni: { name: 'Akce a termíny školení', sublabel: '(Nahrazuje katalog školení)', on: true, level: 'opravnovat', exp: false, plany: false, zad: false, restrict: false, has_skupiny: false, has_kategorie: true, has_prilohy: false },
   };
+  // ── "O mně" — viditelnost/úprava jednotlivých údajů zaměstnance (ukázkový formulář) ──
+  ADMIN_FIELDS_DEFAULTS = [
+    { key: 'jmeno',      label: 'Jméno a příjmení',        read: true,  write: true  },
+    { key: 'narozeni',   label: 'Datum narození',          read: true,  write: false },
+    { key: 'rodnecislo', label: 'Rodné číslo',              read: false, write: false },
+    { key: 'email',      label: 'Osobní e-mail',            read: true,  write: true  },
+    { key: 'telefon',    label: 'Telefonní číslo',          read: true,  write: true  },
+    { key: 'adresa',     label: 'Adresa bydliště',          read: true,  write: false },
+    { key: 'ucet',       label: 'Bankovní účet',            read: false, write: false },
+    { key: 'pojistovna', label: 'Zdravotní pojišťovna',     read: true,  write: false },
+    { key: 'foto',       label: 'Fotografie profilu',       read: true,  write: true  },
+    { key: 'poznamka',   label: 'Poznámka k zaměstnanci',   read: false, write: false },
+  ];
+  admFieldState(key) {
+    const def = this.ADMIN_FIELDS_DEFAULTS.find(f => f.key === key);
+    return { ...def, ...(this.state.adminFields[key] || {}) };
+  }
   admAppOn(name) {
     const ov = this.state.adminAppToggles[name];
     if (ov !== undefined) return ov;
@@ -6934,8 +7817,20 @@ class Component extends DCLogic {
   admToggleInfo(key) {
     this.setState(s => ({ adminPermInfoOpen: s.adminPermInfoOpen === key ? null : key }));
   }
+  admToggleFieldRead(key) {
+    const cur = this.admFieldState(key);
+    const read = !cur.read;
+    // bez čtení nejde ani upravovat
+    this.setState({ adminFields: { ...this.state.adminFields, [key]: { ...cur, read, write: read ? cur.write : false } } });
+  }
+  admToggleFieldWrite(key) {
+    const cur = this.admFieldState(key);
+    const write = !cur.write;
+    // úprava vyžaduje i čtení
+    this.setState({ adminFields: { ...this.state.adminFields, [key]: { ...cur, write, read: write ? true : cur.read } } });
+  }
   adminRenderVals() {
-    const { adminOpen, adminRail, adminCustomToggles, adminRoleSel, adminUserPage, adminUserSel, adminPermInfoOpen, adminFieldsModalOpen } = this.state;
+    const { adminOpen, adminRail, adminCustomToggles, adminRoleSel, adminUserPage, adminUserSel, adminPermInfoOpen, adminFieldsModalOpen, adminFields } = this.state;
     const adm_showCustomizace = adminRail === 'customizace';
     const adm_showUzivatele = adminRail === 'uzivatele';
     const adm_showRole = adminRail === 'role';
@@ -7008,6 +7903,15 @@ class Component extends DCLogic {
     const adm_openFieldsModal = () => this.setState({ adminFieldsModalOpen: true });
     const adm_closeFieldsModal = () => this.setState({ adminFieldsModalOpen: false });
     const adm_fieldsModalOpen = adminFieldsModalOpen;
+    const adm_fieldsRows = this.ADMIN_FIELDS_DEFAULTS.map(f => {
+      const st = this.admFieldState(f.key);
+      return {
+        key: f.key, label: f.label,
+        read: st.read, write: st.write,
+        onToggleRead: () => this.admToggleFieldRead(f.key),
+        onToggleWrite: () => this.admToggleFieldWrite(f.key),
+      };
+    });
 
     // ── Role: evidence oprávnění (permission rows) ──
     const PERM_TITLE = { skupiny: 'Oprávnění ke skupinám', kategorie: 'Oprávnění ke kategoriím', prilohy: 'Oprávnění na přílohy' };
@@ -7069,7 +7973,7 @@ class Component extends DCLogic {
       adm_bulkBarVisible, adm_bulkHasLicensed, adm_bulkHasUnlicensed, adm_bulkCountLabel,
       adm_roleList, adm_roleTitle, adm_roleName, adm_isManagerRole,
       adm_empAppsA, adm_empAppsB, adm_oMne, adm_kolegove, adm_mgrApps,
-      adm_openFieldsModal, adm_closeFieldsModal, adm_fieldsModalOpen,
+      adm_openFieldsModal, adm_closeFieldsModal, adm_fieldsModalOpen, adm_fieldsRows,
       adm_mgmtOrgRows, adm_personalRows,
     };
   }
@@ -7079,8 +7983,11 @@ class Component extends DCLogic {
             orgTab, nadrRule, pozModalOpen, pozModalSection, pozIdx,
             pozSel_kvalifikace, pozSel_zpusobilost, pozSel_vybaveni, pozSel_rizikaReqs,
             pozKatSel_kvalifikace, pozKatSel_zpusobilost, pozKatSel_vybaveni, pozKatSel_rizika,
-            nsmCreateOpen, nsmEditOpen, nsmEdit,
+            pozSmernicePicked, pozSkoleniPicked, pozPicker, pozPickerSearch,
+            nsmCreateOpen, nsmEditOpen, nsmEdit, nsmActiveGroup,
+            nsmShowGear, nsmEvidences, nsmEvidenceQuery, nsmShowEvidenceDropdown, nsmShowAddEvidenceConfirm, nsmPendingEvidenceKey,
             evEditOpen, evEditTab, evEditModuleKey, evLang,
+            onbModalOpen, onbModalKind, onbModalLocked, onbModalText, onbModalNotify, onbModalPhase,
             skolRunId, skolRunQ, skolMyAnswers, skolMyDone, skolDoneId, skolMySaved,
             skolListFilter, skolEmpFilter, skolFormOpen, skolFormMode, skolForm, skolItemTab, skolSettingsOpen,
             skolDetailEditOpen, skolDesignOpen, skolDesignQuestions, skolDesignSelQ, skolDesignTab,
@@ -7496,7 +8403,10 @@ class Component extends DCLogic {
       { key: 'kalendar', label: 'Kalendář' },
       // §7.1.6 – nová záložka, existuje JEN u modulu Zaměstnanec
       { key: 'prac_zarazeni', label: 'Pracovní zařazení' },
-      { key: 'zapisy', label: 'Zápisy', badge: 4 }, { key: 'ukoly', label: 'Úkoly' }, { key: 'poznamky', label: 'Poznámky' }, { key: 'konverzace', label: 'Konverzace' }
+      { key: 'zapisy', label: 'Zápisy', badge: 4 }, { key: 'ukoly', label: 'Úkoly' }, { key: 'poznamky', label: 'Poznámky' }, { key: 'konverzace', label: 'Konverzace' },
+      // §7.1.8 – „Onboarding" jako úplně poslední záložka, existuje JEN u
+      // modulu Zaměstnanec (Claude Design, Onboarding v2.dc.html, 10. 9. 2026).
+      { key: 'onboarding', label: 'Onboarding' }
     ];
     // §7.1.6 – obsah záložky Pracovní zařazení (statická ukázková data FABIÁN Vladimír)
     // §7.1.6 – Nadřízený/Podřízení jsou App Kit „User Badge" (.userBadge.userBadge--standalone,
@@ -7527,6 +8437,46 @@ class Component extends DCLogic {
       orgJednotkaEmpty: true,
       uzivGroups: ['Přímo podřízení řediteli', 'Vedoucí hospodářské správy', 'Všichni zaměstnanci']
     };
+    // Onboarding checklist (poslední záložka, JEN u Zaměstnance, §7.1.8) —
+    // ilustrační instance pro FABIÁN Vladimír, NEZÁVISLÁ na EV_ONBOARD_PHASES
+    // (evidence-wide šablona výše) — stejná konvence jako ZAM_PLANY_GROUPS
+    // vs. POZ_ACT_GROUPS (drawer má vlastní ukázková data, ne 1:1 provázaná
+    // s ostatními moduly). `done`/`doneDate`/`poznamka` jsou stav U TOHOTO
+    // zaměstnance; `scope: 'zamestnanec'` = řádek přidaný přímo tady přes
+    // „+ vlastní položka"/„+ vlastní aktivita" (fialový štítek, jde smazat);
+    // `scope: 'pozice'` = zděděno z pozice zaměstnance (modrý štítek s
+    // aktovkou); `scope: 'vsichni'` = ze sdíleného checklistu, bez štítku.
+    const ZAM_ONBOARD_PHASES = [
+      { key: 'pred-nastupem', title: 'Před nástupem', rows: [
+        { key: 'z1', kind: 'polozka',  text: 'Podepsat pracovní smlouvu a předat kopii zaměstnanci', scope: 'vsichni', done: true, doneDate: '3. 8. 2026', poznamka: 'Originál založen do osobního spisu.' },
+        { key: 'z2', kind: 'polozka',  text: 'Zřídit pracovní e-mail a přístupy do interních systémů', scope: 'vsichni', done: false, poznamka: 'Čeká se na schválení přístupu do ekonomického modulu.' },
+        { key: 'z3', kind: 'aktivita', text: 'Vstupní lékařská prohlídka', scope: 'vsichni', done: true, doneDate: '31. 7. 2026' }
+      ]},
+      { key: 'prvni-den', title: 'První den', rows: [
+        { key: 'z4', kind: 'polozka',  text: 'Předat notebook, mobilní telefon a přístupovou kartu', scope: 'vsichni', done: true, doneDate: '3. 8. 2026', poznamka: 'Notebook DELL 5540, inv. č. 4021.' },
+        { key: 'z5', kind: 'polozka',  text: 'Představit tým a nadřízeného', scope: 'vsichni', done: true, doneDate: '3. 8. 2026' },
+        { key: 'z6', kind: 'polozka',  text: 'Seznámit s pracovním řádem a BOZP', scope: 'vsichni', done: false },
+        { key: 'z7', kind: 'polozka',  text: 'Nastavit přístup do firemního intranetu', scope: 'vsichni', done: false },
+        { key: 'z8', kind: 'polozka',  text: 'Podepsat interní směrnici o ochraně osobních údajů', scope: 'pozice', pozice: 'Vedoucí útvaru hospodářské správy', done: false },
+        { key: 'z9', kind: 'aktivita', text: 'Uvítací pohovor s HR', scope: 'vsichni', done: true, doneDate: '3. 8. 2026' }
+      ]},
+      { key: 'prvni-tyden', title: 'První týden', rows: [
+        { key: 'z10', kind: 'polozka',  text: 'Absolvovat vstupní školení BOZP', scope: 'vsichni', done: false },
+        { key: 'z11', kind: 'polozka',  text: 'Nastudovat organizační strukturu firmy', scope: 'vsichni', done: false },
+        { key: 'z12', kind: 'polozka',  text: 'Projít si interní směrnice', scope: 'vsichni', done: false },
+        { key: 'z13', kind: 'aktivita', text: 'Schůzka s nadřízeným – shrnutí prvního týdne', scope: 'vsichni', done: false },
+        { key: 'z14', kind: 'aktivita', text: 'Zajistit přístup do specifického interního nástroje pro tento tým', scope: 'zamestnanec', done: false }
+      ]}
+    ];
+    // Řádky, kde platí policy „Moje směrnice" — readonly přehled pod
+    // checklistem (§3.5 zadání), bez tlačítka POTVRDIT (to je jen na
+    // agendě zaměstnance samotného, ne v draweru HR/manažera).
+    const ZAM_ONBOARD_SMERNICE = [
+      { name: 'Pracovní řád', scope: 'vsichni' },
+      { name: 'Směrnice o ochraně osobních údajů (GDPR)', scope: 'vsichni' },
+      { name: 'BOZP a požární ochrana', scope: 'vsichni' },
+      { name: 'Kompetenční matice — vedoucí pracovníci', scope: 'pozice', pozice: 'Vedoucí útvaru hospodářské správy' }
+    ];
     const zam_zapisyRows = [
       { typ: 'Schůzka',   subject: 'ggggg',          od: '22.01.2026 09:34', do: '22.01.2026 09:49', participant: 'Karolína Fišerová', participantTime: '09:34 | 22.01.2026', creator: 'Karolína Fišerová', creatorTime: '09:34 | 22.01.2026', iconBg: '#7e57c2', iconClass: 'fa-solid fa-people-group' },
       { typ: 'Telefonát', subject: 'Telefonát',      od: '19.02.2023 22:55', do: '19.02.2023 23:10', participant: 'Karolína Fišerová', participantTime: '22:55 | 19.02.2023', creator: 'Karolína Fišerová', creatorTime: '22:55 | 19.02.2023', iconBg: '#43a047', iconClass: 'fa-solid fa-phone' },
@@ -7537,6 +8487,42 @@ class Component extends DCLogic {
       const on = zamItemTab === t.key;
       return { ...t, onClick: () => this.setState({ zamItemTab: t.key }), showBadge: !!t.badge, style: this.drawerTabStyle(on) };
     });
+    // §7.1.8 — záložka Onboarding (JEN Zaměstnanec). Skupiny = fáze (sdílené
+    // pro položky i aktivity, viz ZAM_ONBOARD_PHASES). Badge rozsahu se
+    // zobrazuje jen u NEvýchozích řádků („Pro všechny" nemá vlastní štítek,
+    // splývá s běžným vzhledem řádku — přesně podle designu 10. 9. 2026).
+    const zam_onbScopeBadge = (r) => {
+      if (r.scope === 'zamestnanec') return { label: 'Pouze pro tohoto zaměstnance', icon: 'user-lock', style: 'background:#f3e8fd;color:#7b1fa2' };
+      if (r.scope === 'pozice') return { label: 'Pro pracovní pozici: ' + r.pozice, icon: 'briefcase', style: 'background:#e8f0fd;color:#1565C0' };
+      return null;
+    };
+    const zam_onb_groups = ZAM_ONBOARD_PHASES.map(g => {
+      const open = this.state.zamOnbOpen[g.key] !== false;
+      const polozky = g.rows.filter(r => r.kind === 'polozka');
+      const doneCount = polozky.filter(r => r.done).length;
+      return {
+        ...g, open, chevron: open ? 'chevron-down' : 'chevron-right',
+        onToggle: () => this.togglePozGroup('zamOnbOpen', g.key),
+        count: g.rows.length,
+        doneCount, openCount: polozky.length - doneCount,
+        onAddPolozka: () => this.openOnbModal('polozka', true, g.key),
+        onAddAktivita: () => this.openOnbModal('aktivita', true, g.key),
+        rows: g.rows.map(r => {
+          const badge = zam_onbScopeBadge(r);
+          return { ...r, isAktivita: r.kind === 'aktivita', badge, deletable: r.scope === 'zamestnanec', aktCheckClass: r.done ? 'zam-onb-akt-check done' : 'zam-onb-akt-check' };
+        })
+      };
+    });
+    const zam_onbAllItems = ZAM_ONBOARD_PHASES.reduce((arr, g) => arr.concat(g.rows.filter(r => r.kind === 'polozka')), []);
+    const zam_onbTotal = zam_onbAllItems.length;
+    const zam_onbDone = zam_onbAllItems.filter(r => r.done).length;
+    const zam_onbPct = zam_onbTotal ? Math.round((zam_onbDone / zam_onbTotal) * 100) : 0;
+    const zam_onbPosition = zam_pracZarazeni.pozice;
+    const zam_onbSmernice = ZAM_ONBOARD_SMERNICE.map(s => ({
+      ...s,
+      scopeLabel: s.scope === 'pozice' ? ('Pro pozici: ' + s.pozice) : 'Pro všechny zaměstnance',
+      scopeStyle: s.scope === 'pozice' ? 'background:#eaf1fd;color:#1572e8' : 'background:#eef0f5;color:#7b8092'
+    }));
     const ZAM_PLANY_GROUPS = [
       { key: 'pred', name: 'Před nástupem zaměstnance', count: 10, chips: [{ label: '10 V pořádku', bg: '#00C853' }] },
       {
@@ -7656,9 +8642,15 @@ class Component extends DCLogic {
     const nadr_rows = this.NADR_ROWS.map(r => ({ ...r, avatarEl: this.mkAvatar(this.POZ_PEOPLE[r.user], 24) }));
 
     // ── NASTAVENÍ SMĚRNIC → Seznamy příjemců (§12) ──────────────
-    // Barva pruhu Splnění: v reálné appce jsou všechny dosavadní seznamy
-    // nízko rozpracované (0–13 %), proto jednotná teplá barva místo škály.
-    const NSM_BAR_COLOR = '#f2775d';
+    // Barva pruhu Splnění — škála podle % (kolo 9, §12.10, přesná funkce
+    // `barColor()` ze standalone exportu): 0 % šedá, <35 % červená,
+    // <67 % oranžová, jinak zelená.
+    const nsmBarColor = (pct) => {
+      if (pct <= 0) return '#ececec';
+      if (pct < 35) return '#EF5350';
+      if (pct < 67) return '#FF6D00';
+      return '#00C853';
+    };
     const mkNsmEditFromRow = (row, groupKey) => ({
       nazev: row.name || 'Nový seznam příjemců',
       popis: '',
@@ -7674,14 +8666,46 @@ class Component extends DCLogic {
       rows: g.rows.map(r => ({
         name: r.name || '—',
         action: r.action === 'zverejneno' ? 'Pouze zveřejněno' : 'Vyžaduje potvrzení',
+        badgeCls: 'nsm-badge ' + (r.action === 'zverejneno' ? 'nsm-badge-publish' : 'nsm-badge-confirm'),
+        badgeIcon: 'fa-solid ' + (r.action === 'zverejneno' ? 'fa-circle-info' : 'fa-circle-check'),
         deadline: r.deadline,
         confirmed: r.confirmed,
         pending: r.pending == null ? '---' : r.pending,
-        pctText: r.pct + ' %',
-        barStyle: 'width:' + Math.max(r.pct, 3) + '%;background:' + NSM_BAR_COLOR,
+        pctText: r.pct + '%',
+        barStyle: 'width:' + Math.max(r.pct, 3) + '%;background:' + nsmBarColor(r.pct),
         onOpen: () => this.setState({ nsmEditOpen: true, nsmEdit: mkNsmEditFromRow(r, g.key) })
       }))
     }));
+    // Záložky hlavní stránky (§12.1) — stejná data jako `nsm_groups`, jen
+    // vykreslené jako přepínatelné taby s počtem místo stackovaných sekcí.
+    // Pořadí je dané pořadím `NSM_GROUPS_DATA` (závazné, viz §12.1).
+    // Ikona + barva ikony podle skupiny (kolo 9, §12.10, ze standalone
+    // exportu) — barva se použije JEN u aktivní záložky, neaktivní je
+    // vždy šedá g60 (#878787).
+    const NSM_GROUP_ICONS = {
+      vsichni: { cls: 'fa-solid fa-users', color: '#1572e8' },
+      pozice: { cls: 'fa-solid fa-id-badge', color: '#304FFE' },
+      konkretni: { cls: 'fa-solid fa-user', color: '#00B8D4' }
+    };
+    const nsm_tabs = nsm_groups.map(g => {
+      const on = g.key === nsmActiveGroup;
+      const icon = NSM_GROUP_ICONS[g.key] || { cls: 'fa-solid fa-list', color: '#1572e8' };
+      return { key: g.key, title: g.title, count: g.rows.length, iconCls: icon.cls, iconColor: on ? icon.color : '#878787',
+        cls: 'nsm-tab' + (on ? ' active' : ''), onClick: () => this.setState({ nsmActiveGroup: g.key }) };
+    });
+    const nsm_active = nsm_groups.find(g => g.key === nsmActiveGroup) || nsm_groups[0];
+    // Zdrojové evidence — modal ozubeného kolečka (§12.13). Evidence
+    // s `linked:true` se vypisují v horní části modalu (se zelenou
+    // fajfkou), zbylé jde dohledat a přidat přes vyhledávací pole.
+    const nsmEvQ = (nsmEvidenceQuery || '').trim().toLowerCase();
+    const nsmLinkedEvidences = nsmEvidences.filter(ev => ev.linked);
+    const nsmAvailableEvidences = nsmEvidences
+      .filter(ev => !ev.linked && (!nsmEvQ || ev.name.toLowerCase().includes(nsmEvQ)))
+      .map(ev => ({ ...ev, onAdd: () => this.setState({ nsmPendingEvidenceKey: ev.key, nsmShowAddEvidenceConfirm: true, nsmShowGear: false, nsmEvidenceQuery: '', nsmShowEvidenceDropdown: false }) }));
+    const nsmHasAvailableEvidences = nsmEvidences.some(ev => !ev.linked);
+    const nsmNoEvidenceMatches = nsmHasAvailableEvidences && nsmAvailableEvidences.length === 0;
+    const nsmPendingEvidence = nsmEvidences.find(ev => ev.key === nsmPendingEvidenceKey);
+    const nsmPendingEvidenceName = nsmPendingEvidence ? nsmPendingEvidence.name : '';
     const nsmSetEdit = (patch) => this.setState({ nsmEdit: { ...(this.state.nsmEdit || {}), ...patch } });
     const nsm_prijemci_cards = this.NSM_PRIJEMCI_OPTIONS.map(o => {
       const on = !!nsmEdit && nsmEdit.prijemci === o.key;
@@ -7716,13 +8740,15 @@ class Component extends DCLogic {
     const evMeta = this.EV_MODULE_META[evModuleBase.label] || {};
     const evModule = { ...evModuleBase, ...evMeta };
     // Levé menu záložek: základní sada (EV_TAB_DEFS) + „Onboarding
-    // checklist" vložený hned za „Základní nastavení", ale JEN když
-    // evEdit.extraTab (zatím jen Zaměstnanci) — jinde ta záložka nedává
-    // smysl a neexistuje.
+    // checklist" vložený hned za „Plány aktivit" (dle designu Onboarding
+    // v2.dc.html, 10. 9. 2026 — dřívější umístění hned za „Základní
+    // nastavení" bylo nahrazeno, tematicky patří vedle Plánů aktivit),
+    // ale JEN když evEdit.extraTab (zatím jen Zaměstnanci) — jinde ta
+    // záložka nedává smysl a neexistuje.
     const evTabDefs = this.EV_TAB_DEFS.slice();
     if (evModule.extraTab) {
-      const zakIdx = evTabDefs.findIndex(t => t.key === 'zakladni');
-      evTabDefs.splice(zakIdx + 1, 0, { key: 'onboarding', label: 'Onboarding checklist' });
+      const planyIdx = evTabDefs.findIndex(t => t.key === 'plany');
+      evTabDefs.splice(planyIdx + 1, 0, { key: 'onboarding', label: 'Onboarding checklist' });
     }
     // Aktivní záložka = pevná indigová `#4b64f5` (přesně dle reálné appky
     // — JINÁ barva než `#4a7fe8` u „Upravit pracovní pozici" §11.5; obě
@@ -7733,6 +8759,29 @@ class Component extends DCLogic {
         style: 'background:' + (on ? '#4b64f5' : 'transparent') + ';color:' + (on ? '#fff' : '#2b2540') + ';font-weight:' + (on ? '700' : '500') };
     });
     const evShowZakladni = evEditTab === 'zakladni';
+    const evShowOnboarding = evEditTab === 'onboarding';
+    // „Onboarding checklist" v Editaci evidence (§13.3) — viz EV_ONBOARD_PHASES.
+    // Zdrojová definice (NEzamčeno, na rozdíl od pozSec_onboarding výše,
+    // který stejná data jen PŘEBÍRÁ needitovatelně na úrovni pracovní pozice).
+    const evOnb_groups = this.EV_ONBOARD_PHASES.map(g => {
+      const open = this.state.evOnbOpen[g.key] !== false;
+      return {
+        ...g, open, chevron: open ? 'chevron-down' : 'chevron-right',
+        onToggle: () => this.togglePozGroup('evOnbOpen', g.key),
+        count: g.rows.length,
+        onAddPolozka: () => this.openOnbModal('polozka', false, g.key),
+        onAddAktivita: () => this.openOnbModal('aktivita', false, g.key),
+        rows: g.rows.map(r => ({
+          ...r,
+          isAktivita: r.kind === 'aktivita',
+          scopeLabel: r.scope === 'pozice' ? ('Pro pozici: ' + r.pozice) : 'Pro všechny',
+          scopeIcon: r.scope === 'pozice' ? 'briefcase' : 'users',
+          scopeStyle: r.scope === 'pozice' ? 'background:#eaf1fd;color:#1572e8' : 'background:#eef0f5;color:#7b8092'
+        }))
+      };
+    });
+    const evOnbItemsTotal = this.EV_ONBOARD_PHASES.reduce((n, g) => n + g.rows.filter(r => r.kind === 'polozka').length, 0);
+    const evOnbAktTotal = this.EV_ONBOARD_PHASES.reduce((n, g) => n + g.rows.filter(r => r.kind === 'aktivita').length, 0);
     const evActiveDef = evTabDefs.find(t => t.key === evEditTab) || evTabDefs[0];
     const evActiveLabel = evActiveDef.label;
     const evLangCzActive = evLang === 'cs';
@@ -8295,8 +9344,13 @@ class Component extends DCLogic {
       poz_cards, kat_rows, nadr_options, nadr_rows, nadr_exCount: this.NADR_ROWS.length,
       // Seznamy příjemců (§12)
       showNastSm: isNastSm,
-      nsm_groups,
-      nsmOpenCreate: () => this.setState({ nsmCreateOpen: true, nsmEdit: { nazev: '', popis: '', zdrojNazev: '', zdrojSoubory: [], prijemci: 'vsichni', doruceni: 'potvrzeni', terminTyp: 'dny', pocetDni: 5 } }),
+      nsm_groups, nsm_tabs, nsm_active,
+      // Dvě tlačítka podle výsledné akce (viz Seznamy prijemcu v3.dc.html)
+      // — každé předvyplní `doruceni` v novém konceptu seznamu, ať se ten
+      // krok v editačním modalu (§12.3) nemusí volit znovu; zbytek dat je
+      // stejný prázdný koncept jako dřívější jednotné `nsmOpenCreate`.
+      nsmOpenCreatePotvrzeni: () => this.setState({ nsmCreateOpen: true, nsmEdit: { nazev: '', popis: '', zdrojNazev: '', zdrojSoubory: [], prijemci: 'vsichni', doruceni: 'potvrzeni', terminTyp: 'dny', pocetDni: 5 } }),
+      nsmOpenCreateZverejneni: () => this.setState({ nsmCreateOpen: true, nsmEdit: { nazev: '', popis: '', zdrojNazev: '', zdrojSoubory: [], prijemci: 'vsichni', doruceni: 'zverejneno', terminTyp: 'dny', pocetDni: 5 } }),
       nsmCreateOpen,
       nsmCreateClose: () => this.setState({ nsmCreateOpen: false }),
       // Zdroj krok 1 je v prototypu needitovatelné vyhledávací pole (bez
@@ -8317,6 +9371,22 @@ class Component extends DCLogic {
       // jen zobrazí už vložený zdroj místo prázdného placeholderu
       // (viz nsmStep1HasSource + markup modalu „Vytvořit").
       nsmEditZdrojUpravit: () => this.setState({ nsmEditOpen: false, nsmCreateOpen: true }),
+      // Zdrojové evidence — ozubené kolečko (§12.13)
+      nsmShowGear,
+      nsmToggleGear: () => this.setState(s => ({ nsmShowGear: !s.nsmShowGear, nsmEvidenceQuery: '', nsmShowEvidenceDropdown: false })),
+      nsmLinkedEvidences, nsmAvailableEvidences, nsmHasAvailableEvidences, nsmNoEvidenceMatches,
+      nsmEvidenceQuery,
+      nsmOnEvidenceSearch: (e) => this.setState({ nsmEvidenceQuery: e.target.value, nsmShowEvidenceDropdown: true }),
+      nsmShowEvidenceDropdown,
+      nsmOpenEvidenceDropdown: () => this.setState({ nsmShowEvidenceDropdown: true }),
+      nsmCloseEvidenceDropdown: () => this.setState({ nsmShowEvidenceDropdown: false }),
+      nsmShowAddEvidenceConfirm,
+      nsmPendingEvidenceName,
+      nsmCancelAddEvidence: () => this.setState({ nsmShowAddEvidenceConfirm: false, nsmPendingEvidenceKey: null, nsmShowGear: true }),
+      nsmConfirmAddEvidence: () => this.setState(s => ({
+        nsmEvidences: s.nsmEvidences.map(ev => ev.key === s.nsmPendingEvidenceKey ? { ...ev, linked: true } : ev),
+        nsmShowAddEvidenceConfirm: false, nsmPendingEvidenceKey: null, nsmShowGear: true,
+      })),
       // ── Editace evidence (§13) — generický modal „Nastavení evidence" ──
       // `openEvEdit(label)` je funkce (ne přímo hodnota) — volá se z pencil
       // ikony v toolbaru KAŽDÉ evidence: `sc-camel-on-click="{{ openEvEdit('Zaměstnanci') }}"`
@@ -8335,6 +9405,28 @@ class Component extends DCLogic {
       evLang, evLangCzActive, evLangCzStyle, evLangEnStyle, evActiveLabel,
       evSetLangCz: () => this.setState({ evLang: 'cs' }),
       evSetLangEn: () => this.setState({ evLang: 'en' }),
+      // „Onboarding checklist" (§13.3) — evShowOtherPlaceholder nahrazuje
+      // dřívější `!evShowZakladni`, aby placeholder needitovatelného stavu
+      // nepřekryl novou vypracovanou záložku.
+      evShowOnboarding,
+      evShowOtherPlaceholder: !evShowZakladni && !evShowOnboarding,
+      evOnb_groups, evOnbItemsTotal, evOnbAktTotal,
+      // Sdílený modal „+ položka"/„+ aktivita" (Onboarding checklist) —
+      // STEJNÝ z Editace evidence i z draweru Zaměstnance, jen `onbModalLocked`
+      // rozhoduje o poli „Je pro" (Claude Design, Onboarding v2.dc.html —
+      // odebráno tlačítko „Přidat fázi", u aktivity zůstal jen typ „Jednorázová").
+      onbModalOpen,
+      onbModalIsAktivita: onbModalKind === 'aktivita',
+      onbModalTitle: onbModalKind === 'aktivita' ? 'Nová aktivita' : 'Nová položka',
+      onbModalTextLabel: onbModalKind === 'aktivita' ? 'Název aktivity' : 'Text úkolu',
+      onbModalLocked,
+      onbModalText, onbModalNotify,
+      onbModalSetText: (e) => this.setState({ onbModalText: e.target.value }),
+      onbModalSetNotify: (e) => this.setState({ onbModalNotify: e.target.value }),
+      onbModalSetPhase: (e) => this.setState({ onbModalPhase: e.target.value }),
+      onbModalPhaseOptions: this.EV_ONBOARD_PHASES.map(g => ({ key: g.key, title: g.title })),
+      onbModalPhase,
+      onbModalClose: () => this.closeOnbModal(),
       // modal pracovní pozice (§11.5)
       pozModalOpen,
       pozModalClose: () => this.setState({ pozModalOpen: false }),
@@ -8349,6 +9441,17 @@ class Component extends DCLogic {
       pozSel_zpusobilost: pozSel_zpusobilost.map((r, i) => ({ ...r, onDelete: () => this.removePozSel('zpusobilost', i) })),
       pozSel_vybaveni:    pozSel_vybaveni.map((r, i) => ({ ...r, onDelete: () => this.removePozSel('vybaveni', i) })),
       pozSel_rizikaReqs:  pozSel_rizikaReqs.map((r, i) => ({ ...r, onDelete: () => this.removePozSel('rizikaReqs', i) })),
+      // „Přiřazené požadavky…" ROZDĚLENÉ podle kategorie z `this.CATALOG`
+      // (§11.4, doplněno) — dřív plochý seznam, teď skupiny s ikonou,
+      // názvem kategorie a počtem, přesně jako v referenci (`groupRows`).
+      pozGroups_kvalifikace: this.groupPozSel(pozSel_kvalifikace.map((r, i) => ({ ...r, onDelete: () => this.removePozSel('kvalifikace', i) }))),
+      pozGroups_zpusobilost: this.groupPozSel(pozSel_zpusobilost.map((r, i) => ({ ...r, onDelete: () => this.removePozSel('zpusobilost', i) }))),
+      pozGroups_vybaveni:    this.groupPozSel(pozSel_vybaveni.map((r, i) => ({ ...r, onDelete: () => this.removePozSel('vybaveni', i) }))),
+      pozGroups_rizikaReqs:  this.groupPozSel(pozSel_rizikaReqs.map((r, i) => ({ ...r, onDelete: () => this.removePozSel('rizikaReqs', i) }))),
+      pozEmpty_kvalifikace: pozSel_kvalifikace.length === 0,
+      pozEmpty_zpusobilost: pozSel_zpusobilost.length === 0,
+      pozEmpty_vybaveni:    pozSel_vybaveni.length === 0,
+      pozEmpty_rizikaReqs:  pozSel_rizikaReqs.length === 0,
       pozKatSel_kvalifikace, pozKatSel_zpusobilost, pozKatSel_vybaveni, pozKatSel_rizika,
       pozKatSetKvalifikace: (e) => this.setState({ pozKatSel_kvalifikace: e.target.value }),
       pozKatSetZpusobilost: (e) => this.setState({ pozKatSel_zpusobilost: e.target.value }),
@@ -8358,6 +9461,59 @@ class Component extends DCLogic {
       pozKatAddZpusobilost: () => this.addPozSel('zpusobilost', 'pozKatSel_zpusobilost'),
       pozKatAddVybaveni:    () => this.addPozSel('vybaveni', 'pozKatSel_vybaveni'),
       pozKatAddRizika:      () => this.addPozSel('rizikaReqs', 'pozKatSel_rizika'),
+      // Onboarding checklist — Přidělené směrnice a Přidělená školení: 4
+      // pevné „Pro všechny" položky jsou přímo v markupu (`forAll`), tohle
+      // je jen to, co je navíc jen pro tuhle pozici (`forPosition`) —
+      // přidává se přes celoobrazovkový picker modal (PŘIDAT v hlavičce
+      // panelu), ne přes <select>+PŘIDAT jako ostatní katalogové sekce.
+      ...(() => {
+        const onbSmernice = [
+          ...pozSmernicePicked.map(name => {
+            const c = this.SMERNICE_CATALOG.find(x => x.name === name) || { action: 'Vyžaduje potvrzení', docs: '' };
+            return { name, action: c.action, docs: c.docs, forPosition: true, onRemove: () => this.togglePozPicked('pozSmernicePicked', name) };
+          })
+        ];
+        const onbSkoleni = [
+          ...pozSkoleniPicked.map(name => {
+            const c = this.SKOLENI_CATALOG.find(x => x.name === name) || { freq: 'Jednorázové', due: '' };
+            return { name, freq: c.freq, due: c.due, forPosition: true, onRemove: () => this.togglePozPicked('pozSkoleniPicked', name) };
+          })
+        ];
+        const kind = pozPicker;
+        const isDoc = kind === 'smernice';
+        const catalog = isDoc ? this.SMERNICE_CATALOG : this.SKOLENI_CATALOG;
+        const pickedKey = isDoc ? 'pozSmernicePicked' : 'pozSkoleniPicked';
+        const picked = isDoc ? pozSmernicePicked : pozSkoleniPicked;
+        const q = (pozPickerSearch || '').trim().toLowerCase();
+        const pickerRows = kind ? catalog.filter(c => !q || c.name.toLowerCase().includes(q)).map(c => {
+          const isPicked = picked.includes(c.name);
+          return {
+            name: c.name, meta: c.meta, picked: isPicked, unpicked: !isPicked,
+            icon: isDoc ? 'fa-file-lines' : 'fa-chalkboard-user',
+            style: 'display:flex;align-items:center;gap:12px;padding:11px 13px;margin-bottom:6px;border-radius:6px;cursor:pointer;border:1px solid ' + (isPicked ? '#c7dcfa' : '#ecedf4') + ';background:' + (isPicked ? '#f4f8ff' : '#fff'),
+            onToggle: () => this.togglePozPicked(pickedKey, c.name)
+          };
+        }) : [];
+        return {
+          onbSmernice, onbSkoleni,
+          pozOnbSmernCount: 4 + pozSmernicePicked.length,
+          pozOnbSkolCount:  4 + pozSkoleniPicked.length,
+          openSmernicePicker: () => this.setState({ pozPicker: 'smernice', pozPickerSearch: '' }),
+          openSkoleniPicker:  () => this.setState({ pozPicker: 'skoleni', pozPickerSearch: '' }),
+          pozPickerOpen: !!kind,
+          pozPickerTitle: isDoc ? 'Přidat směrnici nebo distribuční list' : 'Přidat školení',
+          pozPickerPlaceholder: isDoc ? 'Vyhledat distribuční list' : 'Vyhledat školení',
+          pozPickerHint: isDoc
+            ? 'Seznamy příjemců dostupné pro tuto pracovní pozici. Vybrané se přidají jen k této pozici.'
+            : 'Školení z katalogu dostupná pro tuto pracovní pozici. Vybraná se naplánují jen zaměstnancům na této pozici.',
+          pozPickerSearch: pozPickerSearch || '',
+          onPozPickerSearch: (e) => this.setState({ pozPickerSearch: e.target.value }),
+          pozPickerRows: pickerRows,
+          pozPickerEmpty: kind ? pickerRows.length === 0 : false,
+          pozPickerCountLabel: kind ? (picked.length + ' vybráno pro tuto pozici') : '',
+          closePozPicker: () => this.setState({ pozPicker: null, pozPickerSearch: '' })
+        };
+      })(),
       poz_navPozice: mkPozNav('pozice'), poz_navPozadavky: mkPozNav('pozadavky'), poz_navNavazne: mkPozNav('navazne'),
       pozSec_zakladni:    pozModalSection === 'zakladni',
       pozSec_prirazeni:   pozModalSection === 'prirazeni',
@@ -8504,7 +9660,14 @@ class Component extends DCLogic {
       zam_showZapisy: zamItemTab === 'zapisy', zam_zapisyRows,
       // §7.1.6 – záložka Pracovní zařazení, existuje JEN u Zaměstnance
       zam_showPracZarazeni: zamItemTab === 'prac_zarazeni', zam_pz: zam_pracZarazeni,
-      zam_showStub: zamItemTab !== 'detaily' && zamItemTab !== 'konverzace' && zamItemTab !== 'plany' && zamItemTab !== 'zapisy' && zamItemTab !== 'prac_zarazeni',
+      // §7.1.8 — záložka Onboarding (JEN Zaměstnanec, poslední v pásu).
+      zam_showOnboarding: zamItemTab === 'onboarding',
+      zam_onb_groups, zam_onbTotal, zam_onbDone, zam_onbPct: zam_onbPct + ' %',
+      zam_onbProgressLabel: 'Splněno ' + zam_onbDone + ' z ' + zam_onbTotal,
+      zam_onbBarStyle: 'height:100%;background:#1572e8;width:' + zam_onbPct + '%;border-radius:3px;transition:width .3s',
+      zam_onbPosition, zam_onbSubtitleHtml: 'Položky pro všechny + položky pro pozici <b>' + zam_onbPosition + '</b>',
+      zam_onbSmernice,
+      zam_showStub: zamItemTab !== 'detaily' && zamItemTab !== 'konverzace' && zamItemTab !== 'plany' && zamItemTab !== 'zapisy' && zamItemTab !== 'prac_zarazeni' && zamItemTab !== 'onboarding',
       zam_activeItemTabLabel: (ZAM_ITEM_TABS.find(t => t.key === zamItemTab) || {}).label || '',
       // ── ŠKOLENÍ — Moje školení (osobní pohled, design 1:1 dle standalone
       //    prototypu — jedna plynulá stránka, běh vyplňování i „Dokončeno"

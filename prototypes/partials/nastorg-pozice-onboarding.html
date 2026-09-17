@@ -8,7 +8,10 @@
   APTIEN — MODAL „UPRAVIT PRACOVNÍ POZICI" / SEKCE „Onboarding checklist" · STATICKÝ BLOK
   ============================================================================
   Vlož CELÝ blok. NEREKONSTRUUJ ho. Obsah sekce:
-  NOVÁ sekce — fáze nástupu (např. „Před nástupem“, „První den“) jako SBALITELNÉ skupiny, každá s jednou aktivitou a seznamem položek k vyřízení.
+  fáze nástupu (např. „Před nástupem“, „První den“) jako SBALITELNÉ skupiny, každá s jednou aktivitou a seznamem položek k vyřízení; NOVĚ dále dva panely
+  „Přidělené směrnice a dokumenty“ a „Přidělená školení“ — každý s tlačítkem PŘIDAT (výběr + přidání jen pro tuto pozici) a plochým seznamem řádků: řádky
+  „Tato pozice“ (modrý štítek, mazatelné košem) jsou přidané jen pro tuto pozici, řádky „Pro všechny“ (šedý štítek, zamčené ikonou zámku) jsou převzaté z
+  nastavení platného pro všechny zaměstnance a odsud se nedají odebrat.
 
   Skladba celého okna je popsaná v Aptien-pravidla-pouziti-UI.md §11.5.
   Rám (hlavička · levá navigace 246px · patička) je u všech sekcí STEJNÝ —
@@ -216,6 +219,118 @@
 <div style="display: flex; gap: 22px; padding: 10px 16px 10px 40px; background: rgb(255, 255, 255); border-top: 1px solid rgb(241, 242, 247);">
 <span style="color: rgb(74, 127, 232); font-size: 12.5px; font-weight: 700; cursor: pointer;"><i class="fa-solid fa-plus" style="font-size: 10px; margin-right: 5px;"></i>POLOŽKA</span>
 <span style="color: rgb(74, 127, 232); font-size: 12.5px; font-weight: 700; cursor: pointer;"><i class="fa-solid fa-plus" style="font-size: 10px; margin-right: 5px;"></i>AKTIVITA</span>
+</div>
+</div>
+</div>
+<div class="apt-panel">
+<div class="apt-panel-head">
+<i class="fa-solid fa-file-lines" style="color: rgb(74, 127, 232); font-size: 14px;"></i>
+<span class="apt-panel-title">Přidělené směrnice a dokumenty</span>
+<span class="apt-count-pill">5</span>
+<div style="flex: 1 1 0%;"></div>
+<div style="display: inline-flex; align-items: center; gap: 8px; background: rgb(21, 114, 232); color: rgb(255, 255, 255); font-size: 12px; font-weight: 700; letter-spacing: 0.03em; padding: 9px 26px; border-radius: 999px; cursor: pointer; white-space: nowrap; box-shadow: rgba(21, 114, 232, 0.28) 0px 2px 6px;"><i class="fa-solid fa-plus" style="font-size: 11px;"></i>PŘIDAT</div>
+</div>
+<div style="padding: 12px 18px 8px; font-size: 13px; color: rgb(123, 128, 146);">Seznamy příjemců, ve kterých je tato pracovní pozice. Zaměstnanci je při nástupu najdou v sekci „Směrnice k seznámení".</div>
+<div style="padding: 0px 14px 16px;">
+<div style="background: rgb(255, 255, 255); border: 1px solid rgb(236, 237, 244); border-radius: 5px; padding: 10px 13px; margin-bottom: 6px; display: flex; align-items: center; gap: 12px;">
+<i class="fa-solid fa-file-lines" style="color: rgb(197, 192, 216); font-size: 13px; flex-shrink: 0;"></i>
+<div style="flex: 1 1 0%; min-width: 0px; font-size: 13px; font-weight: 600; color: rgb(43, 37, 64); text-wrap: pretty;">Pracovní řád</div>
+<span style="display: inline-flex; align-items: center; gap: 5px; background: rgb(236, 239, 241); color: rgb(89, 103, 109); padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: 600; white-space: nowrap; flex-shrink: 0;"><i class="fa-solid fa-globe" style="font-size: 9px;"></i>Pro všechny</span>
+<span style="display: inline-block; background: rgb(144, 150, 166); color: rgb(255, 255, 255); font-size: 10.5px; font-weight: 700; border-radius: 4px; padding: 2px 8px; white-space: nowrap; flex-shrink: 0;">Vyžaduje potvrzení</span>
+<span style="font-size: 11.5px; color: rgb(144, 150, 166); white-space: nowrap; flex-shrink: 0;">3 dokumenty</span>
+<i class="fa-solid fa-lock" title="Nastaveno pro všechny zaměstnance, odsud nelze měnit" style="color: rgb(197, 201, 212); font-size: 11px; flex-shrink: 0;"></i>
+</div>
+<div style="background: rgb(255, 255, 255); border: 1px solid rgb(236, 237, 244); border-radius: 5px; padding: 10px 13px; margin-bottom: 6px; display: flex; align-items: center; gap: 12px;">
+<i class="fa-solid fa-file-lines" style="color: rgb(197, 192, 216); font-size: 13px; flex-shrink: 0;"></i>
+<div style="flex: 1 1 0%; min-width: 0px; font-size: 13px; font-weight: 600; color: rgb(43, 37, 64); text-wrap: pretty;">Etický kodex</div>
+<span style="display: inline-flex; align-items: center; gap: 5px; background: rgb(236, 239, 241); color: rgb(89, 103, 109); padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: 600; white-space: nowrap; flex-shrink: 0;"><i class="fa-solid fa-globe" style="font-size: 9px;"></i>Pro všechny</span>
+<span style="display: inline-block; background: rgb(144, 150, 166); color: rgb(255, 255, 255); font-size: 10.5px; font-weight: 700; border-radius: 4px; padding: 2px 8px; white-space: nowrap; flex-shrink: 0;">Vyžaduje potvrzení</span>
+<span style="font-size: 11.5px; color: rgb(144, 150, 166); white-space: nowrap; flex-shrink: 0;">1 dokument</span>
+<i class="fa-solid fa-lock" title="Nastaveno pro všechny zaměstnance, odsud nelze měnit" style="color: rgb(197, 201, 212); font-size: 11px; flex-shrink: 0;"></i>
+</div>
+<div style="background: rgb(255, 255, 255); border: 1px solid rgb(236, 237, 244); border-radius: 5px; padding: 10px 13px; margin-bottom: 6px; display: flex; align-items: center; gap: 12px;">
+<i class="fa-solid fa-file-lines" style="color: rgb(197, 192, 216); font-size: 13px; flex-shrink: 0;"></i>
+<div style="flex: 1 1 0%; min-width: 0px; font-size: 13px; font-weight: 600; color: rgb(43, 37, 64); text-wrap: pretty;">GDPR a ochrana osobních údajů</div>
+<span style="display: inline-flex; align-items: center; gap: 5px; background: rgb(236, 239, 241); color: rgb(89, 103, 109); padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: 600; white-space: nowrap; flex-shrink: 0;"><i class="fa-solid fa-globe" style="font-size: 9px;"></i>Pro všechny</span>
+<span style="display: inline-block; background: rgb(144, 150, 166); color: rgb(255, 255, 255); font-size: 10.5px; font-weight: 700; border-radius: 4px; padding: 2px 8px; white-space: nowrap; flex-shrink: 0;">Vyžaduje potvrzení</span>
+<span style="font-size: 11.5px; color: rgb(144, 150, 166); white-space: nowrap; flex-shrink: 0;">2 dokumenty</span>
+<i class="fa-solid fa-lock" title="Nastaveno pro všechny zaměstnance, odsud nelze měnit" style="color: rgb(197, 201, 212); font-size: 11px; flex-shrink: 0;"></i>
+</div>
+<div style="background: rgb(255, 255, 255); border: 1px solid rgb(236, 237, 244); border-radius: 5px; padding: 10px 13px; margin-bottom: 6px; display: flex; align-items: center; gap: 12px;">
+<i class="fa-solid fa-file-lines" style="color: rgb(197, 192, 216); font-size: 13px; flex-shrink: 0;"></i>
+<div style="flex: 1 1 0%; min-width: 0px; font-size: 13px; font-weight: 600; color: rgb(43, 37, 64); text-wrap: pretty;">IT směrnice</div>
+<span style="display: inline-flex; align-items: center; gap: 5px; background: rgb(236, 239, 241); color: rgb(89, 103, 109); padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: 600; white-space: nowrap; flex-shrink: 0;"><i class="fa-solid fa-globe" style="font-size: 9px;"></i>Pro všechny</span>
+<span style="display: inline-block; background: rgb(144, 150, 166); color: rgb(255, 255, 255); font-size: 10.5px; font-weight: 700; border-radius: 4px; padding: 2px 8px; white-space: nowrap; flex-shrink: 0;">Pouze zveřejněno</span>
+<span style="font-size: 11.5px; color: rgb(144, 150, 166); white-space: nowrap; flex-shrink: 0;">4 dokumenty</span>
+<i class="fa-solid fa-lock" title="Nastaveno pro všechny zaměstnance, odsud nelze měnit" style="color: rgb(197, 201, 212); font-size: 11px; flex-shrink: 0;"></i>
+</div>
+<div style="background: rgb(255, 255, 255); border: 1px solid rgb(236, 237, 244); border-radius: 5px; padding: 10px 13px; margin-bottom: 6px; display: flex; align-items: center; gap: 12px;">
+<i class="fa-solid fa-file-lines" style="color: rgb(197, 192, 216); font-size: 13px; flex-shrink: 0;"></i>
+<div style="flex: 1 1 0%; min-width: 0px; font-size: 13px; font-weight: 600; color: rgb(43, 37, 64); text-wrap: pretty;">Směrnice pro administrativní pracovníky</div>
+<span style="display: inline-flex; align-items: center; gap: 5px; background: rgb(238, 244, 254); color: rgb(21, 114, 232); padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: 600; white-space: nowrap; flex-shrink: 0;"><i class="fa-solid fa-briefcase" style="font-size: 9px;"></i>Tato pozice</span>
+<span style="display: inline-block; background: rgb(144, 150, 166); color: rgb(255, 255, 255); font-size: 10.5px; font-weight: 700; border-radius: 4px; padding: 2px 8px; white-space: nowrap; flex-shrink: 0;">Vyžaduje potvrzení</span>
+<span style="font-size: 11.5px; color: rgb(144, 150, 166); white-space: nowrap; flex-shrink: 0;">2 dokumenty</span>
+<i class="fa-solid fa-trash" title="Odebrat z této pozice" style="color: rgb(123, 128, 146); font-size: 12px; cursor: pointer; flex-shrink: 0;"></i>
+</div>
+</div>
+</div>
+<div class="apt-panel" style="margin-bottom: 0;">
+<div class="apt-panel-head">
+<i class="fa-solid fa-chalkboard-user" style="color: rgb(74, 127, 232); font-size: 14px;"></i>
+<span class="apt-panel-title">Přidělená školení</span>
+<span class="apt-count-pill">6</span>
+<div style="flex: 1 1 0%;"></div>
+<div style="display: inline-flex; align-items: center; gap: 8px; background: rgb(21, 114, 232); color: rgb(255, 255, 255); font-size: 12px; font-weight: 700; letter-spacing: 0.03em; padding: 9px 26px; border-radius: 999px; cursor: pointer; white-space: nowrap; box-shadow: rgba(21, 114, 232, 0.28) 0px 2px 6px;"><i class="fa-solid fa-plus" style="font-size: 11px;"></i>PŘIDAT</div>
+</div>
+<div style="padding: 12px 18px 8px; font-size: 13px; color: rgb(123, 128, 146);">Školení, která se zaměstnanci na této pozici naplánují při nástupu.</div>
+<div style="padding: 0px 14px 16px;">
+<div style="background: rgb(255, 255, 255); border: 1px solid rgb(236, 237, 244); border-radius: 5px; padding: 10px 13px; margin-bottom: 6px; display: flex; align-items: center; gap: 12px;">
+<i class="fa-solid fa-chalkboard-user" style="color: rgb(197, 192, 216); font-size: 13px; flex-shrink: 0;"></i>
+<div style="flex: 1 1 0%; min-width: 0px; font-size: 13px; font-weight: 600; color: rgb(43, 37, 64); text-wrap: pretty;">Vstupní školení nového zaměstnance</div>
+<span style="display: inline-flex; align-items: center; gap: 5px; background: rgb(236, 239, 241); color: rgb(89, 103, 109); padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: 600; white-space: nowrap; flex-shrink: 0;"><i class="fa-solid fa-globe" style="font-size: 9px;"></i>Pro všechny</span>
+<span style="display: inline-block; background: rgb(144, 150, 166); color: rgb(255, 255, 255); font-size: 10.5px; font-weight: 700; border-radius: 4px; padding: 2px 8px; white-space: nowrap; flex-shrink: 0;">Jednorázové</span>
+<span style="font-size: 11.5px; color: rgb(144, 150, 166); white-space: nowrap; flex-shrink: 0;">Den 1</span>
+<i class="fa-solid fa-lock" title="Nastaveno pro všechny zaměstnance, odsud nelze měnit" style="color: rgb(197, 201, 212); font-size: 11px; flex-shrink: 0;"></i>
+</div>
+<div style="background: rgb(255, 255, 255); border: 1px solid rgb(236, 237, 244); border-radius: 5px; padding: 10px 13px; margin-bottom: 6px; display: flex; align-items: center; gap: 12px;">
+<i class="fa-solid fa-chalkboard-user" style="color: rgb(197, 192, 216); font-size: 13px; flex-shrink: 0;"></i>
+<div style="flex: 1 1 0%; min-width: 0px; font-size: 13px; font-weight: 600; color: rgb(43, 37, 64); text-wrap: pretty;">Školení BOZP a požární ochrany</div>
+<span style="display: inline-flex; align-items: center; gap: 5px; background: rgb(236, 239, 241); color: rgb(89, 103, 109); padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: 600; white-space: nowrap; flex-shrink: 0;"><i class="fa-solid fa-globe" style="font-size: 9px;"></i>Pro všechny</span>
+<span style="display: inline-block; background: rgb(144, 150, 166); color: rgb(255, 255, 255); font-size: 10.5px; font-weight: 700; border-radius: 4px; padding: 2px 8px; white-space: nowrap; flex-shrink: 0;">Ročně</span>
+<span style="font-size: 11.5px; color: rgb(144, 150, 166); white-space: nowrap; flex-shrink: 0;">Den 1</span>
+<i class="fa-solid fa-lock" title="Nastaveno pro všechny zaměstnance, odsud nelze měnit" style="color: rgb(197, 201, 212); font-size: 11px; flex-shrink: 0;"></i>
+</div>
+<div style="background: rgb(255, 255, 255); border: 1px solid rgb(236, 237, 244); border-radius: 5px; padding: 10px 13px; margin-bottom: 6px; display: flex; align-items: center; gap: 12px;">
+<i class="fa-solid fa-chalkboard-user" style="color: rgb(197, 192, 216); font-size: 13px; flex-shrink: 0;"></i>
+<div style="flex: 1 1 0%; min-width: 0px; font-size: 13px; font-weight: 600; color: rgb(43, 37, 64); text-wrap: pretty;">Školení první pomoci</div>
+<span style="display: inline-flex; align-items: center; gap: 5px; background: rgb(236, 239, 241); color: rgb(89, 103, 109); padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: 600; white-space: nowrap; flex-shrink: 0;"><i class="fa-solid fa-globe" style="font-size: 9px;"></i>Pro všechny</span>
+<span style="display: inline-block; background: rgb(144, 150, 166); color: rgb(255, 255, 255); font-size: 10.5px; font-weight: 700; border-radius: 4px; padding: 2px 8px; white-space: nowrap; flex-shrink: 0;">Jednorázové</span>
+<span style="font-size: 11.5px; color: rgb(144, 150, 166); white-space: nowrap; flex-shrink: 0;">Do 30 dnů</span>
+<i class="fa-solid fa-lock" title="Nastaveno pro všechny zaměstnance, odsud nelze měnit" style="color: rgb(197, 201, 212); font-size: 11px; flex-shrink: 0;"></i>
+</div>
+<div style="background: rgb(255, 255, 255); border: 1px solid rgb(236, 237, 244); border-radius: 5px; padding: 10px 13px; margin-bottom: 6px; display: flex; align-items: center; gap: 12px;">
+<i class="fa-solid fa-chalkboard-user" style="color: rgb(197, 192, 216); font-size: 13px; flex-shrink: 0;"></i>
+<div style="flex: 1 1 0%; min-width: 0px; font-size: 13px; font-weight: 600; color: rgb(43, 37, 64); text-wrap: pretty;">Školení GDPR</div>
+<span style="display: inline-flex; align-items: center; gap: 5px; background: rgb(236, 239, 241); color: rgb(89, 103, 109); padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: 600; white-space: nowrap; flex-shrink: 0;"><i class="fa-solid fa-globe" style="font-size: 9px;"></i>Pro všechny</span>
+<span style="display: inline-block; background: rgb(144, 150, 166); color: rgb(255, 255, 255); font-size: 10.5px; font-weight: 700; border-radius: 4px; padding: 2px 8px; white-space: nowrap; flex-shrink: 0;">Ročně</span>
+<span style="font-size: 11.5px; color: rgb(144, 150, 166); white-space: nowrap; flex-shrink: 0;">Do 14 dnů</span>
+<i class="fa-solid fa-lock" title="Nastaveno pro všechny zaměstnance, odsud nelze měnit" style="color: rgb(197, 201, 212); font-size: 11px; flex-shrink: 0;"></i>
+</div>
+<div style="background: rgb(255, 255, 255); border: 1px solid rgb(236, 237, 244); border-radius: 5px; padding: 10px 13px; margin-bottom: 6px; display: flex; align-items: center; gap: 12px;">
+<i class="fa-solid fa-chalkboard-user" style="color: rgb(197, 192, 216); font-size: 13px; flex-shrink: 0;"></i>
+<div style="flex: 1 1 0%; min-width: 0px; font-size: 13px; font-weight: 600; color: rgb(43, 37, 64); text-wrap: pretty;">Excel středně pokročilý</div>
+<span style="display: inline-flex; align-items: center; gap: 5px; background: rgb(238, 244, 254); color: rgb(21, 114, 232); padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: 600; white-space: nowrap; flex-shrink: 0;"><i class="fa-solid fa-briefcase" style="font-size: 9px;"></i>Tato pozice</span>
+<span style="display: inline-block; background: rgb(144, 150, 166); color: rgb(255, 255, 255); font-size: 10.5px; font-weight: 700; border-radius: 4px; padding: 2px 8px; white-space: nowrap; flex-shrink: 0;">Jednorázové</span>
+<span style="font-size: 11.5px; color: rgb(144, 150, 166); white-space: nowrap; flex-shrink: 0;">Do 30 dnů</span>
+<i class="fa-solid fa-trash" title="Odebrat z této pozice" style="color: rgb(123, 128, 146); font-size: 12px; cursor: pointer; flex-shrink: 0;"></i>
+</div>
+<div style="background: rgb(255, 255, 255); border: 1px solid rgb(236, 237, 244); border-radius: 5px; padding: 10px 13px; margin-bottom: 6px; display: flex; align-items: center; gap: 12px;">
+<i class="fa-solid fa-chalkboard-user" style="color: rgb(197, 192, 216); font-size: 13px; flex-shrink: 0;"></i>
+<div style="flex: 1 1 0%; min-width: 0px; font-size: 13px; font-weight: 600; color: rgb(43, 37, 64); text-wrap: pretty;">Práce s ERP systémem</div>
+<span style="display: inline-flex; align-items: center; gap: 5px; background: rgb(238, 244, 254); color: rgb(21, 114, 232); padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: 600; white-space: nowrap; flex-shrink: 0;"><i class="fa-solid fa-briefcase" style="font-size: 9px;"></i>Tato pozice</span>
+<span style="display: inline-block; background: rgb(144, 150, 166); color: rgb(255, 255, 255); font-size: 10.5px; font-weight: 700; border-radius: 4px; padding: 2px 8px; white-space: nowrap; flex-shrink: 0;">Jednorázové</span>
+<span style="font-size: 11.5px; color: rgb(144, 150, 166); white-space: nowrap; flex-shrink: 0;">Do 30 dnů</span>
+<i class="fa-solid fa-trash" title="Odebrat z této pozice" style="color: rgb(123, 128, 146); font-size: 12px; cursor: pointer; flex-shrink: 0;"></i>
 </div>
 </div>
 </div>
