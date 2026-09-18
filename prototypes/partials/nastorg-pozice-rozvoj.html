@@ -8,7 +8,7 @@
   APTIEN — MODAL „UPRAVIT PRACOVNÍ POZICI" / SEKCE „Rozvoj zaměstnance" · STATICKÝ BLOK
   ============================================================================
   Vlož CELÝ blok. NEREKONSTRUUJ ho. Obsah sekce:
-  přejmenováno z „Plánované aktivity“, obsah beze změny: panel „Pouze pro tuto pracovní pozici“ + převzaté aktivity ve SBALITELNÝCH skupinách (chevron-down = otevřeno, chevron-right = zavřeno).
+  panel „Pouze pro tuto pracovní pozici" (tlačítko PŘIDAT NOVOU AKTIVITU) + sbalitelné skupiny aktivit převzatých z nastavení zaměstnanců („Pro všechny zaměstnance", řádky aktivit s tagem periodicity).
 
   Skladba celého okna je popsaná v Aptien-pravidla-pouziti-UI.md §11.5.
   Rám (hlavička · levá navigace 246px · patička) je u všech sekcí STEJNÝ —
@@ -73,108 +73,137 @@
 </div>
 <div class="apt-modal-body">
 <div class="apt-modal-nav">
-<div class="apt-modal-nav-group">Pozice</div>
-<div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
-<i class="fa-solid fa-sliders" style="color: rgb(123, 128, 146);"></i>
-<span style="flex: 1 1 0%; min-width: 0px;">Základní info</span>
-</div>
-<div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
-<i class="fa-solid fa-users" style="color: rgb(123, 128, 146);"></i>
-<span style="flex: 1 1 0%; min-width: 0px;">Přiřazení zaměstnanci</span>
-</div>
-<div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
-<i class="fa-solid fa-sitemap" style="color: rgb(123, 128, 146);"></i>
-<span style="flex: 1 1 0%; min-width: 0px;">Organizační zařazení</span>
-</div>
-<div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
-<i class="fa-solid fa-list-check" style="color: rgb(123, 128, 146);"></i>
-<span style="flex: 1 1 0%; min-width: 0px;">Pracovní náplň</span>
-</div>
-<div class="apt-modal-nav-group">Požadavky</div>
-<div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
-<i class="fa-solid fa-graduation-cap" style="color: rgb(123, 128, 146);"></i>
-<span style="flex: 1 1 0%; min-width: 0px;">Požadavky na kvalifikaci</span>
-</div>
-<div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
-<i class="fa-solid fa-user-check" style="color: rgb(123, 128, 146);"></i>
-<span style="flex: 1 1 0%; min-width: 0px;">Požadavky na způsobilost</span>
-</div>
-<div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
-<i class="fa-solid fa-screwdriver-wrench" style="color: rgb(123, 128, 146);"></i>
-<span style="flex: 1 1 0%; min-width: 0px;">Vybavení, nástroje, systémy</span>
-</div>
-<div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
-<i class="fa-solid fa-triangle-exclamation" style="color: rgb(123, 128, 146);"></i>
-<span style="flex: 1 1 0%; min-width: 0px;">Pracoviště a rizika</span>
-</div>
-<div class="apt-modal-nav-group">Návazné</div>
-<div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
-<i class="fa-solid fa-clipboard-check" style="color: rgb(123, 128, 146);"></i>
-<span style="flex: 1 1 0%; min-width: 0px;">Onboarding checklist</span>
-<span style="font-size: 12px; font-weight: 600; color: rgb(164, 169, 186);">6</span>
-</div>
-<div class="apt-modal-nav-item" style="background: rgb(74, 127, 232); color: rgb(255, 255, 255); font-weight: 700;">
-<i class="fa-solid fa-calendar-check" style="color: rgb(255, 255, 255);"></i>
-<span style="flex: 1 1 0%; min-width: 0px;">Rozvoj zaměstnance</span>
-<span style="font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.85);">39</span>
-</div>
-<div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
-<i class="fa-solid fa-folder-open" style="color: rgb(123, 128, 146);"></i>
-<span style="flex: 1 1 0%; min-width: 0px;">Dokumenty</span>
-<span style="font-size: 12px; font-weight: 600; color: rgb(164, 169, 186);">11</span>
-</div>
-<div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
-<i class="fa-solid fa-chalkboard-user" style="color: rgb(123, 128, 146);"></i>
-<span style="flex: 1 1 0%; min-width: 0px;">Školení</span>
-<span style="font-size: 12px; font-weight: 600; color: rgb(164, 169, 186);"></span>
-</div>
-</div>
+            <div class="apt-modal-nav-group">Pozice</div>
+            
+              <div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
+                <i class="fa-solid fa-sliders" style="color: rgb(123, 128, 146);"></i>
+                <span style="flex: 1 1 0%; min-width: 0px;">Základní info</span>
+              </div>
+            
+              <div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
+                <i class="fa-solid fa-users" style="color: rgb(123, 128, 146);"></i>
+                <span style="flex: 1 1 0%; min-width: 0px;">Přiřazení zaměstnanci</span>
+              </div>
+            
+              <div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
+                <i class="fa-solid fa-sitemap" style="color: rgb(123, 128, 146);"></i>
+                <span style="flex: 1 1 0%; min-width: 0px;">Organizační zařazení</span>
+              </div>
+            
+              <div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
+                <i class="fa-solid fa-list-check" style="color: rgb(123, 128, 146);"></i>
+                <span style="flex: 1 1 0%; min-width: 0px;">Pracovní náplň</span>
+              </div>
+            
+            <div class="apt-modal-nav-group">Požadavky</div>
+            
+              <div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
+                <i class="fa-solid fa-graduation-cap" style="color: rgb(123, 128, 146);"></i>
+                <span style="flex: 1 1 0%; min-width: 0px;">Požadavky na kvalifikaci</span>
+              </div>
+            
+              <div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
+                <i class="fa-solid fa-user-check" style="color: rgb(123, 128, 146);"></i>
+                <span style="flex: 1 1 0%; min-width: 0px;">Požadavky na způsobilost</span>
+              </div>
+            
+              <div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
+                <i class="fa-solid fa-screwdriver-wrench" style="color: rgb(123, 128, 146);"></i>
+                <span style="flex: 1 1 0%; min-width: 0px;">Vybavení, nástroje, systémy</span>
+              </div>
+            
+              <div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
+                <i class="fa-solid fa-triangle-exclamation" style="color: rgb(123, 128, 146);"></i>
+                <span style="flex: 1 1 0%; min-width: 0px;">Pracoviště a rizika</span>
+              </div>
+            
+            <div class="apt-modal-nav-group">Návazné</div>
+            
+              <div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
+                <i class="fa-solid fa-clipboard-check" style="color: rgb(123, 128, 146);"></i>
+                <span style="flex: 1 1 0%; min-width: 0px;">Onboarding checklist</span>
+                <span style="font-size: 12px; font-weight: 600; color: rgb(164, 169, 186);">6</span>
+              </div>
+            
+              <div class="apt-modal-nav-item" style="background: rgb(74, 127, 232); color: rgb(255, 255, 255); font-weight: 700;">
+                <i class="fa-solid fa-calendar-check" style="color: rgb(255, 255, 255);"></i>
+                <span style="flex: 1 1 0%; min-width: 0px;">Rozvoj zaměstnance</span>
+                <span style="font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.85);">39</span>
+              </div>
+            
+              <div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
+                <i class="fa-solid fa-folder-open" style="color: rgb(123, 128, 146);"></i>
+                <span style="flex: 1 1 0%; min-width: 0px;">Dokumenty</span>
+                <span style="font-size: 12px; font-weight: 600; color: rgb(164, 169, 186);">11</span>
+              </div>
+            
+              <div class="apt-modal-nav-item" style="background: transparent; color: rgb(43, 37, 64); font-weight: 500;">
+                <i class="fa-solid fa-chalkboard-user" style="color: rgb(123, 128, 146);"></i>
+                <span style="flex: 1 1 0%; min-width: 0px;">Školení</span>
+                <span style="font-size: 12px; font-weight: 600; color: rgb(164, 169, 186);"></span>
+              </div>
+            
+          </div>
 <div class="apt-modal-content">
-<div class="apt-modal-h2">Rozvoj zaměstnance</div>
-<div class="apt-panel">
-<div class="apt-panel-head">
-<i class="fa-solid fa-user-group" style="color: rgb(74, 127, 232); font-size: 14px;"></i>
-<span class="apt-panel-title">Pouze pro tuto pracovní pozici</span>
-<div style="flex: 1 1 0%;"></div>
-<div class="apt-btn-blue">PŘIDAT NOVOU AKTIVITU</div>
-</div>
-<div style="padding: 14px 18px 18px;">
-<div style="font-size: 13px; color: rgb(123, 128, 146); margin-bottom: 12px;">Aktivity nastavené přímo pro tuto pracovní pozici.</div>
-<div class="apt-note">Pro tuto pracovní pozici zatím není vyžadována žádná plánovaná aktivita.</div>
-</div>
-</div>
-<div style="display: flex; align-items: center; gap: 12px; margin: 0px 0px 12px;">
-<span style="font-size: 10.5px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: rgb(164, 169, 186); white-space: nowrap;">Převzato z nastavení zaměstnanců</span>
-<div style="flex: 1 1 0%; height: 1px; background: rgb(230, 233, 242);"></div>
-</div>
-<div class="apt-panel" style="background: rgb(250, 251, 253);">
-<div class="apt-panel-head" style="background: rgb(242, 244, 249);">
-<i class="fa-solid fa-lock" style="color: rgb(123, 128, 146); font-size: 13px;"></i>
-<span class="apt-panel-title">Pro všechny zaměstnance</span>
-<span class="apt-count-pill">39</span>
-</div>
-<div style="padding: 12px 18px 4px; font-size: 13px; color: rgb(123, 128, 146);">Tyto aktivity platí pro každého zaměstnance bez ohledu na pracovní pozici. Odsud je nelze měnit.</div>
-<div class="apt-group">
-<div class="apt-group-head" style="cursor: pointer;">
-<i class="fa-solid fa-chevron-down" style="font-size: 11px; color: rgb(123, 128, 146); width: 11px; text-align: center;"></i>
-<span>Školení a osobní rozvoj</span><span class="apt-count-pill">3</span>
-</div>
-<div class="apt-act-row"><div class="apt-act-name">Pohovor se zaměstnacem</div><span class="apt-tag-grey">Ročně</span></div>
-<div class="apt-act-row"><div class="apt-act-name">Pravidelné školení BOZP</div><span class="apt-tag-grey">Ročně</span></div>
-<div class="apt-act-row"><div class="apt-act-name">Revize mzdy</div><span class="apt-tag-grey">Ročně</span></div>
-</div>
-<div class="apt-group">
-<div class="apt-group-head" style="cursor: pointer;">
-<i class="fa-solid fa-chevron-down" style="font-size: 11px; color: rgb(123, 128, 146); width: 11px; text-align: center;"></i>
-<span>před nástupem</span><span class="apt-count-pill">4</span>
-</div>
-<div class="apt-act-row"><div class="apt-act-name">Hlídání certifikátu</div><span class="apt-tag-grey">Nepravidelná</span></div>
-<div class="apt-act-row"><div class="apt-act-name">hlídání certifikátu 2</div><span class="apt-tag-grey">Nepravidelná</span></div>
-<div class="apt-act-row"><div class="apt-act-name">Mohu zadat do šablony odpovědnou osobu</div><span class="apt-tag-grey">Jednorázová</span></div>
-<div class="apt-act-row"><div class="apt-act-name">Vstupní lékařská prohlídka</div><span class="apt-tag-grey">Jednorázová</span></div>
-</div>
-</div>
-</div>
+
+              <div class="apt-modal-h2">Rozvoj zaměstnance</div>
+              <div class="apt-panel">
+                <div class="apt-panel-head">
+                  <i class="fa-solid fa-user-group" style="color: rgb(74, 127, 232); font-size: 14px;"></i>
+                  <span class="apt-panel-title">Pouze pro tuto pracovní pozici</span>
+                  <div style="flex: 1 1 0%;"></div>
+                  <div class="apt-btn-blue">PŘIDAT NOVOU AKTIVITU</div>
+                </div>
+                <div style="padding: 14px 18px 18px;">
+                  <div style="font-size: 13px; color: rgb(123, 128, 146); margin-bottom: 12px;">Aktivity nastavené přímo pro tuto pracovní pozici.</div>
+                  <div class="apt-note">Pro tuto pracovní pozici zatím není vyžadována žádná plánovaná aktivita.</div>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px; margin: 0px 0px 12px;">
+                <span style="font-size: 10.5px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: rgb(164, 169, 186); white-space: nowrap;">Převzato z nastavení zaměstnanců</span>
+                <div style="flex: 1 1 0%; height: 1px; background: rgb(230, 233, 242);"></div>
+              </div>
+              <div class="apt-panel" style="background: rgb(250, 251, 253);">
+                <div class="apt-panel-head" style="background: rgb(242, 244, 249);">
+                  <i class="fa-solid fa-lock" style="color: rgb(123, 128, 146); font-size: 13px;"></i>
+                  <span class="apt-panel-title">Pro všechny zaměstnance</span>
+                  <span class="apt-count-pill">39</span>
+                </div>
+                <div style="padding: 12px 18px 4px; font-size: 13px; color: rgb(123, 128, 146);">Tyto aktivity platí pro každého zaměstnance bez ohledu na pracovní pozici. Odsud je nelze měnit.</div>
+
+                  <div class="apt-group">
+                    <div class="apt-group-head" style="cursor: pointer;">
+                      <i class="fa-solid fa-chevron-down" style="font-size: 11px; color: rgb(123, 128, 146); width: 11px; text-align: center;"></i>
+                      <span>Školení a osobní rozvoj</span><span class="apt-count-pill">3</span>
+                    </div>
+
+                        <div class="apt-act-row"><div class="apt-act-name">Pohovor se zaměstnacem</div><span class="apt-tag-grey">Ročně</span></div>
+                      
+                        <div class="apt-act-row"><div class="apt-act-name">Pravidelné školení BOZP</div><span class="apt-tag-grey">Ročně</span></div>
+                      
+                        <div class="apt-act-row"><div class="apt-act-name">Revize mzdy</div><span class="apt-tag-grey">Ročně</span></div>
+
+                  </div>
+                
+                  <div class="apt-group">
+                    <div class="apt-group-head" style="cursor: pointer;">
+                      <i class="fa-solid fa-chevron-down" style="font-size: 11px; color: rgb(123, 128, 146); width: 11px; text-align: center;"></i>
+                      <span>před nástupem</span><span class="apt-count-pill">4</span>
+                    </div>
+
+                        <div class="apt-act-row"><div class="apt-act-name">Hlídání certifikátu</div><span class="apt-tag-grey">Nepravidelná</span></div>
+                      
+                        <div class="apt-act-row"><div class="apt-act-name">hlídání certifikátu 2</div><span class="apt-tag-grey">Nepravidelná</span></div>
+                      
+                        <div class="apt-act-row"><div class="apt-act-name">Mohu zadat do šablony odpovědnou osobu</div><span class="apt-tag-grey">Jednorázová</span></div>
+                      
+                        <div class="apt-act-row"><div class="apt-act-name">Vstupní lékařská prohlídka</div><span class="apt-tag-grey">Jednorázová</span></div>
+
+                  </div>
+                
+              </div>
+
+          </div>
 </div>
 <div class="apt-modal-foot">
 <div class="apt-btn-grey"><i class="fa-solid fa-print" style="font-size: 12px;"></i>PŘEHLED PRACOVNÍ POZICE</div>
