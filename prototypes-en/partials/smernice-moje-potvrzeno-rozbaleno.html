@@ -1,0 +1,364 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free). Řádek níže načte FA, aby se
+     vykreslily i při samostatném otevření souboru. V master prototypu se FA
+     načítá z jeho assetů, takže tam je tento <link> nadbytečný (neškodí). -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!--
+  APTIEN — MOJE SMĚRNICE / ČÁSTEČNĚ POTVRZENO + SEZNAM „POTVRZENO" ROZBALENÝ · STATICKÝ BLOK K DOSLOVNÉMU VLOŽENÍ
+  ==========================================================================
+  Shodný stav jako smernice-moje.html (5 z 17 = 29 %), ale uživatel
+  klikl na hlavičku skupiny „Confirmed (5)“ → seznam je rozbalený a
+  chevron je otočený nahoru. Řádky mají sloupec „Confirmed" s datem
+  a časem a šedou akci OPEN (žádné CONFIRM – už je potvrzeno).
+
+  PEVNÁ PRAVIDLA (viz Aptien-pravidla-pouziti-UI.md §6.5):
+  • % COMPLETED = počet POTVRZENÝCH / počet VŠECH přiřazených documents.
+    100 % nastane VÝHRADNĚ tehdy, když jsou potvrzené všechny dokumenty.
+    Procenta se NEVÁŽOU na termín potvrzení – dokument po termínu i bez
+    termínu se do jmenovatele i čitatele počítá stejně.
+  • Barva tlačítka CONFIRM a štítku se řídí VÝHRADNĚ termínem (§6.5.1):
+    po termínu #d9463e / zítra #FF6D00 / pozítří a dál #00C853 /
+    bez termínu #00C853 se štítkem „∞ No deadline". Nikdy ne vše červeně.
+  • Štítek je hranatý: border-radius 3px, padding 2px 6px, font-size 10px.
+  • Skupina „Confirmed" (sbalitelná) se zobrazuje jen tehdy, když ještě
+    něco zbývá potvrdit, a je VÝCHOZE ZAVŘENÁ. Ve stavu 100 % sbalitelná
+    skupina není – potvrzené dokumenty jsou rovnou rozbalený seznam.
+  Měň jen data. NEMĚŇ: logiku procent, barvy dle termínu, tvar štítku.
+-->
+<div style="flex:1;overflow-y:auto;padding:28px 32px 48px;background:#f5f6f7;font-family:'Nunito',sans-serif">
+  <div style="width:100%">
+    <div style="text-align:center;font-size:21.6px;font-weight:800;color:#2b2540;margin-bottom:4px">My Policies</div>
+    <div style="text-align:center;color:#9aa2b0;font-size:12px;margin-bottom:22px">Review and confirm your documents.</div>
+    <div style="background:#fff;border-radius:30px;padding:11px 22px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 10px rgba(0,0,0,.05);max-width:520px;margin:0 auto 28px;border:1px solid #ededf2;color:#9a93b5">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <span style="font-size:14px;color:#b0aac8">Search for a document or category</span>
+    </div>
+    <!-- HERO: 29 % splněno = 5 z 17 POTVRZENÝCH documents (nezávisí na termínu) -->
+    <div style="background:#fff;border-radius:14px;padding:22px 26px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 15px rgba(0,0,0,.04);margin-bottom:30px;border:1px solid #ededf2;gap:20px;flex-wrap:wrap">
+      <div style="flex:1">
+        <div style="font-size:18px;font-weight:800;color:#2b2540;margin-bottom:4px">You still have <span style="color:#1572e8">12</span> documents to confirm</div>
+        <div style="color:#9aa2b0;font-size:12px;margin-bottom:10px">Start with the most urgent ones at the top.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span style="background:#fde8e8;color:#d9463e;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:700;white-space:nowrap">7 overdue</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;min-width:150px">
+        <span style="font-size:30px;font-weight:800;color:#1572e8">29 %</span>
+        <span style="font-size:10px;text-transform:uppercase;color:#9aa2b0;font-weight:700;letter-spacing:.08em">COMPLETED</span>
+        <div style="width:150px;height:6px;background:#ededf2;border-radius:3px;overflow:hidden;margin:5px 0">
+          <div style="height:100%;background:#1572e8;width:29%;border-radius:3px;transition:width .3s"></div>
+        </div>
+        <span style="font-size:11.5px;color:#9aa2b0">5 of 17 confirmed</span>
+      </div>
+    </div>
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9aa2b0;font-weight:800;margin-bottom:14px">
+      Documents<span style="display:block;font-size:18px;text-transform:none;color:#2b2540;letter-spacing:0;margin-top:2px;font-weight:800">To confirm</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1px;background:#ededf2;border-radius:14px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,.04);margin-bottom:36px">
+      <!-- řádek to confirm · overdue -->
+      <div style="background:#fff;padding:16px 22px;display:flex;align-items:center;gap:16px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">Organizational Rules 2026</div>
+          <div style="font-size:12px;color:#9aa2b0">org_rad_2026.pdf <span style="color:#285828;font-weight:600">Regulations</span></div>
+        </div>
+        <div style="width:150px;flex-shrink:0">
+          <span style="display:block;font-size:10px;color:#9aa2b0;font-weight:600;text-transform:uppercase;letter-spacing:.07em">Deadline</span>
+          <span style="font-size:13px;font-weight:700;color:#2b2540">29.10.2025</span>
+        </div>
+        <div style="width:160px;flex-shrink:0"><span style="background:#fde8e8;color:#d9463e;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:700;white-space:nowrap">253 days overdue</span></div>
+        <div style="background:#d9463e;color:#fff;padding:9px 20px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0">CONFIRM</div>
+      </div>
+      <!-- řádek to confirm · overdue -->
+      <div style="background:#fff;padding:16px 22px;display:flex;align-items:center;gap:16px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">New documentation manual</div>
+          <div style="font-size:12px;color:#9aa2b0">manual.pptx <span style="color:#285828;font-weight:600">Regulations</span></div>
+        </div>
+        <div style="width:150px;flex-shrink:0">
+          <span style="display:block;font-size:10px;color:#9aa2b0;font-weight:600;text-transform:uppercase;letter-spacing:.07em">Deadline</span>
+          <span style="font-size:13px;font-weight:700;color:#2b2540">30.10.2025</span>
+        </div>
+        <div style="width:160px;flex-shrink:0"><span style="background:#fde8e8;color:#d9463e;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:700;white-space:nowrap">252 days overdue</span></div>
+        <div style="background:#d9463e;color:#fff;padding:9px 20px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0">CONFIRM</div>
+      </div>
+      <!-- řádek to confirm · overdue -->
+      <div style="background:#fff;padding:16px 22px;display:flex;align-items:center;gap:16px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">new pdf</div>
+          <div style="font-size:12px;color:#9aa2b0">dokument.pdf <span style="color:#285828;font-weight:600">Regulations</span></div>
+        </div>
+        <div style="width:150px;flex-shrink:0">
+          <span style="display:block;font-size:10px;color:#9aa2b0;font-weight:600;text-transform:uppercase;letter-spacing:.07em">Deadline</span>
+          <span style="font-size:13px;font-weight:700;color:#2b2540">13.06.2026</span>
+        </div>
+        <div style="width:160px;flex-shrink:0"><span style="background:#fde8e8;color:#d9463e;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:700;white-space:nowrap">26 days overdue</span></div>
+        <div style="background:#d9463e;color:#fff;padding:9px 20px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0">CONFIRM</div>
+      </div>
+      <!-- řádek to confirm · overdue -->
+      <div style="background:#fff;padding:16px 22px;display:flex;align-items:center;gap:16px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">New Regulation 2026</div>
+          <div style="font-size:12px;color:#9aa2b0">Invoice.pdf <span style="color:#285828;font-weight:600">Regulations</span></div>
+        </div>
+        <div style="width:150px;flex-shrink:0">
+          <span style="display:block;font-size:10px;color:#9aa2b0;font-weight:600;text-transform:uppercase;letter-spacing:.07em">Deadline</span>
+          <span style="font-size:13px;font-weight:700;color:#2b2540">17.06.2026</span>
+        </div>
+        <div style="width:160px;flex-shrink:0"><span style="background:#fde8e8;color:#d9463e;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:700;white-space:nowrap">22 days overdue</span></div>
+        <div style="background:#d9463e;color:#fff;padding:9px 20px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0">CONFIRM</div>
+      </div>
+      <!-- řádek to confirm · overdue -->
+      <div style="background:#fff;padding:16px 22px;display:flex;align-items:center;gap:16px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">document for everyone</div>
+          <div style="font-size:12px;color:#9aa2b0">invoice-2026.pdf <span style="color:#285828;font-weight:600">Regulations</span></div>
+        </div>
+        <div style="width:150px;flex-shrink:0">
+          <span style="display:block;font-size:10px;color:#9aa2b0;font-weight:600;text-transform:uppercase;letter-spacing:.07em">Deadline</span>
+          <span style="font-size:13px;font-weight:700;color:#2b2540">19.06.2026</span>
+        </div>
+        <div style="width:160px;flex-shrink:0"><span style="background:#fde8e8;color:#d9463e;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:700;white-space:nowrap">20 days overdue</span></div>
+        <div style="background:#d9463e;color:#fff;padding:9px 20px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0">CONFIRM</div>
+      </div>
+      <!-- řádek to confirm · overdue -->
+      <div style="background:#fff;padding:16px 22px;display:flex;align-items:center;gap:16px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">Job profile</div>
+          <div style="font-size:12px;color:#9aa2b0">pozice.png <span style="color:#285828;font-weight:600">Regulations</span></div>
+        </div>
+        <div style="width:150px;flex-shrink:0">
+          <span style="display:block;font-size:10px;color:#9aa2b0;font-weight:600;text-transform:uppercase;letter-spacing:.07em">Deadline</span>
+          <span style="font-size:13px;font-weight:700;color:#2b2540">19.06.2026</span>
+        </div>
+        <div style="width:160px;flex-shrink:0"><span style="background:#fde8e8;color:#d9463e;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:700;white-space:nowrap">20 days overdue</span></div>
+        <div style="background:#d9463e;color:#fff;padding:9px 20px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0">CONFIRM</div>
+      </div>
+      <!-- řádek to confirm · overdue -->
+      <div style="background:#fff;padding:16px 22px;display:flex;align-items:center;gap:16px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">Test for everyone 16-06</div>
+          <div style="font-size:12px;color:#9aa2b0">9.png <span style="color:#285828;font-weight:600">Regulations</span></div>
+        </div>
+        <div style="width:150px;flex-shrink:0">
+          <span style="display:block;font-size:10px;color:#9aa2b0;font-weight:600;text-transform:uppercase;letter-spacing:.07em">Deadline</span>
+          <span style="font-size:13px;font-weight:700;color:#2b2540">21.06.2026</span>
+        </div>
+        <div style="width:160px;flex-shrink:0"><span style="background:#fde8e8;color:#d9463e;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:700;white-space:nowrap">18 days overdue</span></div>
+        <div style="background:#d9463e;color:#fff;padding:9px 20px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0">CONFIRM</div>
+      </div>
+      <!-- řádek to confirm · soon -->
+      <div style="background:#fff;padding:16px 22px;display:flex;align-items:center;gap:16px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">KL Tor zireael</div>
+          <div style="font-size:12px;color:#9aa2b0">checklist.png <span style="color:#285828;font-weight:600">Regulations</span></div>
+        </div>
+        <div style="width:150px;flex-shrink:0">
+          <span style="display:block;font-size:10px;color:#9aa2b0;font-weight:600;text-transform:uppercase;letter-spacing:.07em">Deadline</span>
+          <span style="font-size:13px;font-weight:700;color:#2b2540">10.07.2026</span>
+        </div>
+        <div style="width:160px;flex-shrink:0"><span style="background:#fff3e0;color:#FF6D00;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:700;white-space:nowrap">in 1 day</span></div>
+        <div style="background:#FF6D00;color:#fff;padding:9px 20px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0">CONFIRM</div>
+      </div>
+      <!-- řádek to confirm · future -->
+      <div style="background:#fff;padding:16px 22px;display:flex;align-items:center;gap:16px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">Safety Policy 2026</div>
+          <div style="font-size:12px;color:#9aa2b0">bezpecnost.pdf <span style="color:#285828;font-weight:600">Regulations</span></div>
+        </div>
+        <div style="width:150px;flex-shrink:0">
+          <span style="display:block;font-size:10px;color:#9aa2b0;font-weight:600;text-transform:uppercase;letter-spacing:.07em">Deadline</span>
+          <span style="font-size:13px;font-weight:700;color:#2b2540">14.07.2026</span>
+        </div>
+        <div style="width:160px;flex-shrink:0"><span style="background:#e8f8ed;color:#2E7D32;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:700;white-space:nowrap">in 5 days</span></div>
+        <div style="background:#00C853;color:#fff;padding:9px 20px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0">CONFIRM</div>
+      </div>
+      <!-- řádek to confirm · future -->
+      <div style="background:#fff;padding:16px 22px;display:flex;align-items:center;gap:16px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">GDPR notice</div>
+          <div style="font-size:12px;color:#9aa2b0">gdpr.pdf <span style="color:#285828;font-weight:600">Regulations</span></div>
+        </div>
+        <div style="width:150px;flex-shrink:0">
+          <span style="display:block;font-size:10px;color:#9aa2b0;font-weight:600;text-transform:uppercase;letter-spacing:.07em">Deadline</span>
+          <span style="font-size:13px;font-weight:700;color:#2b2540">21.07.2026</span>
+        </div>
+        <div style="width:160px;flex-shrink:0"><span style="background:#e8f8ed;color:#2E7D32;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:700;white-space:nowrap">in 12 days</span></div>
+        <div style="background:#00C853;color:#fff;padding:9px 20px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0">CONFIRM</div>
+      </div>
+      <!-- řádek to confirm · noDeadline -->
+      <div style="background:#fff;padding:16px 22px;display:flex;align-items:center;gap:16px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">Tile component size test</div>
+          <div style="font-size:12px;color:#9aa2b0">portr.png <span style="color:#d9463e;font-weight:600">Fire Safety</span></div>
+        </div>
+        <div style="width:150px;flex-shrink:0">
+          <span style="display:block;font-size:10px;color:#9aa2b0;font-weight:600;text-transform:uppercase;letter-spacing:.07em">Deadline</span>
+          <span style="font-size:13px;font-weight:700;color:#2b2540">—</span>
+        </div>
+        <div style="width:160px;flex-shrink:0"><span style="background:#e8f8ed;color:#2E7D32;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:700;white-space:nowrap">∞&nbsp; No deadline</span></div>
+        <div style="background:#00C853;color:#fff;padding:9px 20px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0">CONFIRM</div>
+      </div>
+      <!-- řádek to confirm · noDeadline -->
+      <div style="background:#fff;padding:16px 22px;display:flex;align-items:center;gap:16px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">Code of Ethics</div>
+          <div style="font-size:12px;color:#9aa2b0">etika.pdf <span style="color:#285828;font-weight:600">Regulations</span></div>
+        </div>
+        <div style="width:150px;flex-shrink:0">
+          <span style="display:block;font-size:10px;color:#9aa2b0;font-weight:600;text-transform:uppercase;letter-spacing:.07em">Deadline</span>
+          <span style="font-size:13px;font-weight:700;color:#2b2540">—</span>
+        </div>
+        <div style="width:160px;flex-shrink:0"><span style="background:#e8f8ed;color:#2E7D32;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:700;white-space:nowrap">∞&nbsp; No deadline</span></div>
+        <div style="background:#00C853;color:#fff;padding:9px 20px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0">CONFIRM</div>
+      </div>
+    </div>
+    <!-- Skupina „Confirmed" — ROZBALENO. Zobrazuje se jen když ještě něco zbývá potvrdit. -->
+    <div style="border-radius:14px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,.04);margin-bottom:36px">
+      <div style="background:#fff;padding:15px 22px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none">
+        <i class="fa-solid fa-circle-check" style="color:#00C853;font-size:15px;flex-shrink:0"></i>
+        <span style="font-size:14px;font-weight:800;color:#2b2540">Confirmed</span>
+        <span style="background:#e8f8ed;color:#2E7D32;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:700;white-space:nowrap">5</span>
+        <div style="flex:1"></div>
+        <i class="fa-solid fa-chevron-up" style="color:#9aa2b0;font-size:13px;flex-shrink:0"></i>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1px;background:#ededf2;border-top:1px solid #ededf2">
+        <div style="background:#fff;padding:14px 22px;display:flex;align-items:center;gap:16px">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">Workplace Health & Safety</div>
+            <div style="font-size:12px;color:#9aa2b0">Dummy Policy 9.docx <span style="color:#d9463e;font-weight:600">Occupational Safety</span></div>
+          </div>
+          <div style="width:170px;flex-shrink:0">
+            <div style="font-size:10px;color:#9aa2b0;font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px">Confirmed</div>
+            <div style="font-size:13px;font-weight:700;color:#2b2540">09.07.2026 13:44</div>
+          </div>
+          <div style="font-size:12px;font-weight:700;color:#1572e8;cursor:pointer;flex-shrink:0;border:1.5px solid #d8d6e0;border-radius:999px;padding:6px 16px">OPEN</div>
+        </div>
+        <div style="background:#fff;padding:14px 22px;display:flex;align-items:center;gap:16px">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">SOP for XPR200</div>
+            <div style="font-size:12px;color:#9aa2b0">Dummy Certificate.docx <span style="color:#FF8F00;font-weight:600">Production</span></div>
+          </div>
+          <div style="width:170px;flex-shrink:0">
+            <div style="font-size:10px;color:#9aa2b0;font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px">Confirmed</div>
+            <div style="font-size:13px;font-weight:700;color:#2b2540">09.07.2026 13:44</div>
+          </div>
+          <div style="font-size:12px;font-weight:700;color:#1572e8;cursor:pointer;flex-shrink:0;border:1.5px solid #d8d6e0;border-radius:999px;padding:6px 16px">OPEN</div>
+        </div>
+        <div style="background:#fff;padding:14px 22px;display:flex;align-items:center;gap:16px">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">HR Policy</div>
+            <div style="font-size:12px;color:#9aa2b0">2021-07-15.png <span style="color:#d9463e;font-weight:600">Occupational Safety</span></div>
+          </div>
+          <div style="width:170px;flex-shrink:0">
+            <div style="font-size:10px;color:#9aa2b0;font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px">Confirmed</div>
+            <div style="font-size:13px;font-weight:700;color:#2b2540">09.07.2026 13:44</div>
+          </div>
+          <div style="font-size:12px;font-weight:700;color:#1572e8;cursor:pointer;flex-shrink:0;border:1.5px solid #d8d6e0;border-radius:999px;padding:6px 16px">OPEN</div>
+        </div>
+        <div style="background:#fff;padding:14px 22px;display:flex;align-items:center;gap:16px">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">Organizational Handbook</div>
+            <div style="font-size:12px;color:#9aa2b0">prirucka_2026.pdf <span style="color:#1a3a58;font-weight:600">Managerial</span></div>
+          </div>
+          <div style="width:170px;flex-shrink:0">
+            <div style="font-size:10px;color:#9aa2b0;font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px">Confirmed</div>
+            <div style="font-size:13px;font-weight:700;color:#2b2540">09.07.2026 13:44</div>
+          </div>
+          <div style="font-size:12px;font-weight:700;color:#1572e8;cursor:pointer;flex-shrink:0;border:1.5px solid #d8d6e0;border-radius:999px;padding:6px 16px">OPEN</div>
+        </div>
+        <div style="background:#fff;padding:14px 22px;display:flex;align-items:center;gap:16px">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:14px;font-weight:700;color:#2b2540;margin-bottom:3px">Dress policy</div>
+            <div style="font-size:12px;color:#9aa2b0">Dummy document.docx <span style="color:#d9463e;font-weight:600">Occupational Safety</span></div>
+          </div>
+          <div style="width:170px;flex-shrink:0">
+            <div style="font-size:10px;color:#9aa2b0;font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px">Confirmed</div>
+            <div style="font-size:13px;font-weight:700;color:#2b2540">09.07.2026 13:44</div>
+          </div>
+          <div style="font-size:12px;font-weight:700;color:#1572e8;cursor:pointer;flex-shrink:0;border:1.5px solid #d8d6e0;border-radius:999px;padding:6px 16px">OPEN</div>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9aa2b0;font-weight:800;margin-bottom:14px">
+      Browse<span style="display:block;font-size:18px;text-transform:none;color:#2b2540;letter-spacing:0;margin-top:2px;font-weight:800">All documents</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px">
+      <div style="background:#a8c4ec;border-radius:14px;padding:22px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;box-shadow:0 3px 10px rgba(0,0,0,.03);cursor:pointer;transition:transform .15s">
+        <div style="width:60px;height:60px;background:rgba(255,255,255,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:22px;flex-shrink:0">
+          <i class="fa-solid fa-scale-balanced" style="color:#2d5080"></i>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#2b2540;margin-bottom:5px;line-height:1.35;text-align:center">Physiotherapy standards</div>
+        <div style="font-size:11.5px;text-align:center;color:#7a7595"><span style="color:#1572e8;font-weight:700">1</span> to confirm</div>
+      </div>
+      <div style="background:#c2b4e2;border-radius:14px;padding:22px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;box-shadow:0 3px 10px rgba(0,0,0,.03);cursor:pointer;transition:transform .15s">
+        <div style="width:60px;height:60px;background:rgba(255,255,255,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:22px;flex-shrink:0">
+          <i class="fa-solid fa-circle-info" style="color:#4a2d80"></i>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#2b2540;margin-bottom:5px;line-height:1.35;text-align:center">IT Policy</div>
+        <div style="font-size:11.5px;text-align:center;color:#7a7595"><span style="color:#1572e8;font-weight:700">1</span> to confirm</div>
+      </div>
+      <div style="background:#b4bac8;border-radius:14px;padding:22px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;box-shadow:0 3px 10px rgba(0,0,0,.03);cursor:pointer;transition:transform .15s">
+        <div style="width:60px;height:60px;background:rgba(255,255,255,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:22px;flex-shrink:0">
+          <i class="fa-solid fa-users" style="color:#2a2f4a"></i>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#2b2540;margin-bottom:5px;line-height:1.35;text-align:center">Methodological Guidelines</div>
+        <div style="font-size:11.5px;text-align:center;color:#7a7595"><span style="color:#1572e8;font-weight:700">1</span> to confirm</div>
+      </div>
+      <div style="background:#b8d4b8;border-radius:14px;padding:22px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;box-shadow:0 3px 10px rgba(0,0,0,.03);cursor:pointer;transition:transform .15s">
+        <div style="width:60px;height:60px;background:rgba(255,255,255,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:22px;flex-shrink:0">
+          <i class="fa-solid fa-laptop" style="color:#285828"></i>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#2b2540;margin-bottom:5px;line-height:1.35;text-align:center">Regulations</div>
+        <div style="font-size:11.5px;text-align:center;color:#7a7595">9 documents</div>
+      </div>
+      <div style="background:#d0c8b4;border-radius:14px;padding:22px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;box-shadow:0 3px 10px rgba(0,0,0,.03);cursor:pointer;transition:transform .15s">
+        <div style="width:60px;height:60px;background:rgba(255,255,255,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:22px;flex-shrink:0">
+          <i class="fa-solid fa-building" style="color:#5a4a28"></i>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#2b2540;margin-bottom:5px;line-height:1.35;text-align:center">Director's Orders</div>
+        <div style="font-size:11.5px;text-align:center;color:#7a7595">2 documents</div>
+      </div>
+      <div style="background:#a8d0e0;border-radius:14px;padding:22px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;box-shadow:0 3px 10px rgba(0,0,0,.03);cursor:pointer;transition:transform .15s">
+        <div style="width:60px;height:60px;background:rgba(255,255,255,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:22px;flex-shrink:0">
+          <i class="fa-solid fa-bed" style="color:#1a5870"></i>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#2b2540;margin-bottom:5px;line-height:1.35;text-align:center">Nursing Care Standards</div>
+        <div style="font-size:11.5px;text-align:center;color:#7a7595">30 documents</div>
+      </div>
+      <div style="background:#d4b8cc;border-radius:14px;padding:22px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;box-shadow:0 3px 10px rgba(0,0,0,.03);cursor:pointer;transition:transform .15s">
+        <div style="width:60px;height:60px;background:rgba(255,255,255,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:22px;flex-shrink:0">
+          <i class="fa-solid fa-user" style="color:#6a2a5a"></i>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#2b2540;margin-bottom:5px;line-height:1.35;text-align:center">Professional Policies</div>
+        <div style="font-size:11.5px;text-align:center;color:#7a7595">8 documents</div>
+      </div>
+      <div style="background:#e0c0c0;border-radius:14px;padding:22px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;box-shadow:0 3px 10px rgba(0,0,0,.03);cursor:pointer;transition:transform .15s">
+        <div style="width:60px;height:60px;background:rgba(255,255,255,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:22px;flex-shrink:0">
+          <i class="fa-solid fa-chart-line" style="color:#802828"></i>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#2b2540;margin-bottom:5px;line-height:1.35;text-align:center">HR Policies</div>
+        <div style="font-size:11.5px;text-align:center;color:#7a7595">4 documents</div>
+      </div>
+      <div style="background:#c8c0e0;border-radius:14px;padding:22px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;box-shadow:0 3px 10px rgba(0,0,0,.03);cursor:pointer;transition:transform .15s">
+        <div style="width:60px;height:60px;background:rgba(255,255,255,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:22px;flex-shrink:0">
+          <i class="fa-solid fa-wrench" style="color:#3a2870"></i>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#2b2540;margin-bottom:5px;line-height:1.35;text-align:center">Technical Policies</div>
+        <div style="font-size:11.5px;text-align:center;color:#7a7595">13 documents</div>
+      </div>
+      <div style="background:#d4d0a8;border-radius:14px;padding:22px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;box-shadow:0 3px 10px rgba(0,0,0,.03);cursor:pointer;transition:transform .15s">
+        <div style="width:60px;height:60px;background:rgba(255,255,255,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:22px;flex-shrink:0">
+          <i class="fa-solid fa-coins" style="color:#585020"></i>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#2b2540;margin-bottom:5px;line-height:1.35;text-align:center">Financial Policies</div>
+        <div style="font-size:11.5px;text-align:center;color:#7a7595">2 documents</div>
+      </div>
+      <div style="background:#b4c8d8;border-radius:14px;padding:22px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;box-shadow:0 3px 10px rgba(0,0,0,.03);cursor:pointer;transition:transform .15s">
+        <div style="width:60px;height:60px;background:rgba(255,255,255,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:22px;flex-shrink:0">
+          <i class="fa-solid fa-briefcase" style="color:#1a3a58"></i>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#2b2540;margin-bottom:5px;line-height:1.35;text-align:center">Management Policies</div>
+        <div style="font-size:11.5px;text-align:center;color:#7a7595">9 documents</div>
+      </div>
+    </div>
+  </div>
+</div>

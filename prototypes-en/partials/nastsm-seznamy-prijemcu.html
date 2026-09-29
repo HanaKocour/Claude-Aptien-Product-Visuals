@@ -1,0 +1,159 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free) + Nunito. Řádky níže je načtou,
+     aby se blok vykreslil i při samostatném otevření souboru. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<!--
+  APTIEN — SETTINGS SMĚRNIC → DISTRIBUČNÍ SEZNAMY (hlavní stránka), v4
+  ================================================================
+  Zdroj pravdy: v1 byla reálná produkční aplikace (screenshoty 27. 8. 2026,
+  firma „Nerospec“). v3 (16. 9. 2026, kolo 7-8) přejmenovala na „Distribuční
+  listy“ + oranžový štítek podle uživatelova vlastního screenshotu. Tahle v4
+  (16. 9. 2026, kolo 9) VRACÍ nadpis na „Recipient Lists“ + štítek zpět
+  na modrý — podle autoritativního standalone HTML exportu z Claude Design
+  (`Distribucni listy v3 - standalone.html`, přesný `getComputedStyle`
+  výtah, ne odhad ze screenshotu — uživatel potvrdil, že tenhle soubor je
+  novější zdroj pravdy než screenshot z kola 7). Master prototyp
+  (`showNastSm`, sidebar `nastsm`) je zdroj pravdy pro chování — viz §12.10
+  v pravidlech pro plný výčet změn tohoto kola.
+
+  Skladba (pořadí je závazné), viz §12.1:
+    1. Drobečková navigace „Policy Settings › Recipient Lists“ +
+       nadpis „Recipient Lists“. Vpravo od nadpisu ozubené kolečko
+       „Source records“ (kolo 12, §12.13, podle FINÁLNÍ verze
+       standalone exportu) — v masteru otevírá modal se seznamem
+       evidencí, ze kterých je možné do distribučních seznamů vybírat
+       dokumenty; tady jen statický vzhled (bez interakce, viz
+       Aptien-aplikace-offline.html pro funkční modal + dotazující se
+       potvrzovací modal na přidání evidence).
+    2. Dvě tlačítka pro založení nového listu, obě s ikonou + (prostý
+       fa-plus) a textem PŘESNĚ podle standalone exportu (kolo 10 —
+       v kole 9 byl text ještě dočasně ponechaný z kola 8 „NOVÝ LIST: …“,
+       uživatelka si to pak rozmyslela a chtěla i text 1:1 podle
+       souboru, jen ikonu „+“ z kola 9 zachovat):
+       „+ NEW CONFIRMATION LIST“ (primární modré) a
+       „+ NEW PUBLICATION LIST“ (sekundární bílé).
+    3. Toolbar: View (tmavě šedý chip) + vyhledávací pole „Vyhledat
+       distribuční list“ + samostatný filtr „Document name“ — OBA jako
+       pilulka s BÍLÝM pozadím a světlým okrajem `#e3e6ea` (kolo 9: flat
+       výplň `#f2f5f7` bez okraje/stínu ze standalone exportu → kolo 11:
+       uživatelka chtěla bílé pozadí uvnitř pole, aby se pole samo
+       vizuálně zvýraznilo — tlačítko View zůstává beze změny).
+    4. Záložky s ikonou (users/id-badge/user, barevná JEN u aktivní) a
+       počtem v barevné pilulce, VŽDY v tomto pořadí (nahrazují dřívější
+       stackované sekce s nadpisy — na obrazovce je vidět vždy jen
+       aktivní záložka):
+       „For all employees“ → „For job profiles“ →
+       „For specific employees“
+    5. Grid aktivní záložky: Name (tmavý podtržený odkaz, NE modrý) ·
+       Distribution rules (barevný štítek NA JEDEN ŘÁDEK, `white-space:
+       nowrap` doplněno v kole 12/§12.13 — „Acknowledgment required“ MODRÝ
+       wash + fa-circle-check, „Published only“ šedý + fa-circle-info,
+       oba užší/hranatější tvar) · Event date ·
+       Confirmed on · Pending (podtržená čísla, šedá NE modrá) · Completion
+       (pruh + % — barva podle škály: 0 % šedá, <35 % červená, <67 %
+       oranžová, jinak zelená) · kebab menu
+
+  Klik na název řádku otevírá editační modal (viz
+  nastsm-upravit-seznam.html, §12.3). Tlačítka nahoře otevírají
+  modal „Select source“ (viz nastsm-vytvorit-krok1.html, §12.2) — jen
+  předvyplní jinou výchozí hodnotu pole Delivery method v kroku 2.
+
+  Tahle ukázka (jako ostatní `partials/nastsm-*.html`) je jen samostatná
+  needitovatelná vizuální ukázka — zobrazuje záložku „For everyone
+  zaměstnance“ jako aktivní (výchozí stav master prototypu). Skutečná
+  přepínatelnost živí jen master prototyp.
+
+  Prázdná skupina (zde „For specific employees“, viz nastsm-tab-empty
+  v master prototypu) má vlastní prázdný stav — NENÍ to jen tabulka bez
+  řádků, ale samostatný šedý box.
+
+  ⚠ NÁZVY ŘÁDKŮ jsou záměrně realistické obecné příklady (nejčastější
+  firemní směrnice — GDPR, BOZP, PO, kodex chování — a SOP vázané na
+  pracovní pozici), NE 1:1 kopie dat ze standalone exportu (ten obsahuje
+  živá produkční data konkrétního klienta včetně jednoho reálného jména
+  osoby a testovacích řádků „Libor pokus 3/4“ — uživatel na dotaz potvrdil
+  ponechat současný bezpečný ukázkový obsah a převzít jen VZHLED). Viz
+  master prototyp `NSM_GROUPS_DATA`.
+
+  Primární tlačítko („NEW CONFIRMATION LIST“/`EDIT SOURCE`/
+  `CONTINUE`/`SAVE`) má plnou barvu `#1572e8` (pravidla UI,
+  „Primární“ tlačítko) — NE světlejší `#4a7fe8`, který je jen výchozí
+  (needitovaný) odstín sdílené třídy `.apt-btn-blue` jinde v appce.
+-->
+<style>
+  body { font-family:'Nunito',sans-serif; }
+  .apt-btn-blue { display:inline-flex; align-items:center; gap:8px; background:#1572e8; color:#fff; font-size:12px; font-weight:700; letter-spacing:.03em; padding:11px 20px; border-radius:999px; cursor:pointer; white-space:nowrap; box-shadow:0 2px 6px rgba(21,114,232,.28); }
+  .apt-btn-blue:hover { background:#0f50a2; }
+  .nsm-btn-secondary { display:inline-flex; align-items:center; gap:8px; background:#fff; border:1.5px solid #ececec; color:#1a1a1a; font-size:12px; font-weight:700; letter-spacing:.03em; padding:10px 20px; border-radius:999px; cursor:pointer; white-space:nowrap; }
+  .nsm-btn-secondary:hover { border-color:#9096a6; background:#fafbfd; }
+  .nsm-toolbar-btn { display:inline-flex; align-items:center; gap:8px; background:#a4a4a4; border:none; border-radius:4px; height:23px; padding:0 16px; font-size:12px; font-weight:600; color:#fff; cursor:pointer; white-space:nowrap; }
+  .nsm-search { display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid #e3e6ea; border-radius:999px; padding:8px 14px; font-size:13px; color:#878787; width:320px; flex-shrink:0; }
+  .nsm-doc-filter { display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid #e3e6ea; border-radius:999px; padding:8px 14px; font-size:13px; color:#878787; width:320px; flex-shrink:0; }
+  .nsm-tabs { display:flex; align-items:flex-start; gap:0; }
+  .nsm-tab { display:flex; align-items:center; gap:8px; font-size:13px; cursor:pointer; height:44px; padding:0 20px; border-radius:10px 10px 0 0; box-sizing:border-box; }
+  .nsm-tab.active { background:#fff; color:#1572e8; font-weight:700; box-shadow:0 5px 20px rgba(0,0,0,.1); margin-bottom:-1px; }
+  .nsm-tab:not(.active) { color:#263238; font-weight:600; }
+  .nsm-tab-count { display:inline-flex; align-items:center; justify-content:center; min-width:20px; height:20px; font-size:10px; font-weight:700; padding:0 5px; border-radius:999px; background:#ececec; color:#878787; }
+  .nsm-tab.active .nsm-tab-count { background:#1572e8; color:#fff; }
+  .nsm-badge { display:inline-flex; align-items:center; justify-content:center; gap:6px; width:90px; padding:6px 12px; border-radius:4px; font-size:9px; font-weight:600; line-height:1; white-space:nowrap; }
+  .nsm-badge-confirm { background:rgba(21,114,232,.12); color:#1572e8; }
+  .nsm-badge-publish { background:#ececec; color:#878787; }
+  .nsm-table { background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 5px 20px rgba(0,0,0,.1); }
+  .nsm-table-row { display:grid; grid-template-columns:1.9fr 1.3fr 1fr .9fr .9fr 1.7fr 24px; gap:10px; align-items:center; padding:13px 18px; border-bottom:1px solid #ebedf2; font-size:13px; color:#565656; }
+  .nsm-table-row:last-child { border-bottom:none; }
+  .nsm-table-head { font-size:12px; font-weight:700; color:#1a1a1a; background:#fff; border-bottom:2px solid #ebedf2; }
+  .nsm-table-row.nsm-row:hover { background:#f7f9fd; }
+  .nsm-link { color:#1a1a1a; text-decoration:underline; cursor:pointer; font-weight:700; }
+  .nsm-num { color:#565656; text-decoration:underline; cursor:pointer; }
+  .nsm-progress-wrap { display:flex; align-items:center; gap:10px; }
+  .nsm-progress-track { width:120px; height:8px; border-radius:999px; background:#ececec; overflow:hidden; flex-shrink:0; }
+  .nsm-progress-fill { height:100%; border-radius:999px; }
+  .nsm-progress-pct { font-size:11px; font-weight:600; color:#878787; width:30px; flex-shrink:0; }
+  .nsm-kebab { color:#b1b2b3; cursor:pointer; font-size:14px; padding:4px 6px; }
+  /* Ozubené kolečko „Source records" (§12.13) — vpravo od nadpisu,
+     v masteru otevírá modal se seznamem evidencí, ze kterých je možné
+     do distribučních seznamů vybírat dokumenty. Tady jen statický
+     vzhled (viz Aptien-aplikace-offline.html pro funkční modal). */
+  .nsm-gear-btn { width:36px; height:36px; border-radius:999px; border:1.5px solid #ececec; background:#fff; color:#878787; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+</style>
+
+<div style="padding:26px 32px 48px;background:#f5f6f7">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px">
+    <div>
+      <div style="font-size:12.5px;color:#9096a6;margin-bottom:8px">Policy Settings <i class="fa-solid fa-chevron-right" style="font-size:9px;margin:0 6px"></i> Recipient Lists</div>
+      <div style="font-size:21.6px;font-weight:800;color:#1a1a1a">Recipient Lists</div>
+    </div>
+    <div style="position:relative;margin-top:2px">
+      <div class="nsm-gear-btn" title="Source records"><i class="fa-solid fa-gear"></i></div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px">
+    <div class="apt-btn-blue"><i class="fa-solid fa-plus" style="font-size:13px"></i>NEW CONFIRMATION LIST</div>
+    <div class="nsm-btn-secondary"><i class="fa-solid fa-plus" style="font-size:13px;color:#878787"></i>NEW PUBLICATION LIST</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px">
+    <div class="nsm-toolbar-btn"><i class="fa-solid fa-table-list" style="font-size:11px"></i>View<i class="fa-solid fa-chevron-down" style="font-size:8px;margin-left:4px"></i></div>
+    <div class="nsm-search"><i class="fa-solid fa-magnifying-glass" style="font-size:12px"></i>Search for a distribution list</div>
+    <div class="nsm-doc-filter"><i class="fa-regular fa-file-lines" style="font-size:12px"></i>Document name</div>
+  </div>
+
+  <div class="nsm-tabs">
+    <div class="nsm-tab active"><i class="fa-solid fa-users" style="font-size:13px;color:#1572e8"></i>For All Employees<span class="nsm-tab-count">7</span></div>
+    <div class="nsm-tab"><i class="fa-solid fa-id-badge" style="font-size:13px;color:#878787"></i>For Job Profiles<span class="nsm-tab-count">3</span></div>
+    <div class="nsm-tab"><i class="fa-solid fa-user" style="font-size:13px;color:#878787"></i>For Specific Employees<span class="nsm-tab-count">0</span></div>
+  </div>
+
+  <!-- Active záložka: For all employees -->
+  <div class="nsm-table" style="margin-top:0;border-radius:0 10px 10px 10px">
+    <div class="nsm-table-row nsm-table-head">
+      <div>Name</div><div>Employee Action</div><div>Action Deadline</div><div>Confirmed</div><div>Pending</div><div>Completion</div><div></div>
+    </div>
+    <div class="nsm-table-row nsm-row"><div><span class="nsm-link">Code of Conduct & Ethics</span></div><div><span class="nsm-badge nsm-badge-publish"><i class="fa-solid fa-circle-info"></i>Published only</span></div><div>---</div><div><span class="nsm-num">0</span></div><div>---</div><div class="nsm-progress-wrap"><div class="nsm-progress-track"><div class="nsm-progress-fill" style="width:0%;background:#ececec"></div></div><span class="nsm-progress-pct">0%</span></div><div><i class="fa-solid fa-ellipsis-vertical nsm-kebab"></i></div></div>
+    <div class="nsm-table-row nsm-row"><div><span class="nsm-link">GDPR – Personal Data Protection</span></div><div><span class="nsm-badge nsm-badge-publish"><i class="fa-solid fa-circle-info"></i>Published only</span></div><div>---</div><div><span class="nsm-num">0</span></div><div>---</div><div class="nsm-progress-wrap"><div class="nsm-progress-track"><div class="nsm-progress-fill" style="width:0%;background:#ececec"></div></div><span class="nsm-progress-pct">0%</span></div><div><i class="fa-solid fa-ellipsis-vertical nsm-kebab"></i></div></div>
+    <div class="nsm-table-row nsm-row"><div><span class="nsm-link">Occupational Health & Safety 2026</span></div><div><span class="nsm-badge nsm-badge-confirm"><i class="fa-solid fa-circle-check"></i>Acknowledgment required</span></div><div>In 5 days</div><div><span class="nsm-num">3</span></div><div><span class="nsm-num">292</span></div><div class="nsm-progress-wrap"><div class="nsm-progress-track"><div class="nsm-progress-fill" style="width:1%;background:#EF5350"></div></div><span class="nsm-progress-pct">1%</span></div><div><i class="fa-solid fa-ellipsis-vertical nsm-kebab"></i></div></div>
+    <div class="nsm-table-row nsm-row"><div><span class="nsm-link">Fire Protection & Evacuation Plan</span></div><div><span class="nsm-badge nsm-badge-confirm"><i class="fa-solid fa-circle-check"></i>Acknowledgment required</span></div><div>In 10 days</div><div><span class="nsm-num">5</span></div><div><span class="nsm-num">146</span></div><div class="nsm-progress-wrap"><div class="nsm-progress-track"><div class="nsm-progress-fill" style="width:3%;background:#EF5350"></div></div><span class="nsm-progress-pct">3%</span></div><div><i class="fa-solid fa-ellipsis-vertical nsm-kebab"></i></div></div>
+    <div class="nsm-table-row nsm-row"><div><span class="nsm-link">Code of Ethics & Whistleblowing</span></div><div><span class="nsm-badge nsm-badge-confirm"><i class="fa-solid fa-circle-check"></i>Acknowledgment required</span></div><div>No deadline</div><div><span class="nsm-num">1</span></div><div><span class="nsm-num">437</span></div><div class="nsm-progress-wrap"><div class="nsm-progress-track"><div class="nsm-progress-fill" style="width:0%;background:#ececec"></div></div><span class="nsm-progress-pct">0%</span></div><div><i class="fa-solid fa-ellipsis-vertical nsm-kebab"></i></div></div>
+    <div class="nsm-table-row nsm-row"><div><span class="nsm-link">Home Office & Remote Work</span></div><div><span class="nsm-badge nsm-badge-publish"><i class="fa-solid fa-circle-info"></i>Published only</span></div><div>---</div><div><span class="nsm-num">0</span></div><div>---</div><div class="nsm-progress-wrap"><div class="nsm-progress-track"><div class="nsm-progress-fill" style="width:0%;background:#ececec"></div></div><span class="nsm-progress-pct">0%</span></div><div><i class="fa-solid fa-ellipsis-vertical nsm-kebab"></i></div></div>
+    <div class="nsm-table-row nsm-row"><div><span class="nsm-link">Travel Expenses & Per Diems</span></div><div><span class="nsm-badge nsm-badge-confirm"><i class="fa-solid fa-circle-check"></i>Acknowledgment required</span></div><div>In 15 days</div><div><span class="nsm-num">7</span></div><div><span class="nsm-num">577</span></div><div class="nsm-progress-wrap"><div class="nsm-progress-track"><div class="nsm-progress-fill" style="width:1%;background:#EF5350"></div></div><span class="nsm-progress-pct">1%</span></div><div><i class="fa-solid fa-ellipsis-vertical nsm-kebab"></i></div></div>
+  </div>
+</div>

@@ -1,0 +1,269 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free). Řádek níže načte FA, aby se
+     vykreslily i při samostatném otevření souboru. V master prototypu se FA
+     načítá z jeho assetů, takže tam je tento <link> nadbytečný (neškodí). -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!--
+  APTIEN — EVIDENCE / POHLED „KALENDÁŘ" · AUDITY A KONTROLY · období 1 ROK
+  ==========================================================================
+  Při generování pohledu Calendar VLOŽ TENTO BLOK CELÝ. NEREKONSTRUUJ ho.
+  Skladba (pravidla §5.5):
+    navigační lišta (‹ › + název období + přepínač Day/Week/Month/1 Year)
+    → mřížka: sticky hlavička period, sticky levý sloupec položek,
+      řádek = položka evidence, buňka = svisle stohované pruhy + „+další: N".
+  BARVY PRUHŮ jsou PEVNÉ (role, ne dekorace) — neměň je a nepřebarvuj podle
+  modulu:
+    Plánované aktivity  modrá   #0091EA
+    Minutes              červená #EF5350
+    Události            fialová #6200EA
+  PŘEPÍNAČ OBDOBÍ i navigační šipky jsou TMAVĚ ŠEDÉ #424242 (výjimka z modré
+  §5 — přepínač období NENÍ view switcher). Active volba = INVERZE:
+  bílé pozadí + šedý text a lem; neaktivní = plná šedá + bílý text.
+  Značka „now" = svislá linka #FF3D00 + trojúhelník v hlavičce, umístěná
+  proporčně v aktuálním sloupci.
+  Měň jen data (názvy položek, texty a časy pruhů, období).
+  Toolbar patří NAD tento blok.
+  Audits & Inspections: převažují ZÁPISY (červená) a UDÁLOSTI (fialová);
+  modrá u periodických kontrol (čtvrtletní inventura, kalibrace).
+-->
+<div style="flex:1;display:flex;flex-direction:column;min-height:0;padding:0 20px 14px;font-family:'Nunito',sans-serif">
+<div style="flex-shrink:0;display:flex;align-items:center;gap:9px;padding:8px 0 10px">
+  <div style="width:29px;height:29px;border-radius:999px;background:#424242;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;flex-shrink:0"><i class="fa-solid fa-chevron-left"></i></div>
+  <div style="width:29px;height:29px;border-radius:999px;background:#424242;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;flex-shrink:0"><i class="fa-solid fa-chevron-right"></i></div>
+  <div style="flex:1;text-align:center;font-size:17px;font-weight:800;color:#1e1b2e;white-space:nowrap">2026</div>
+  <div style="display:flex;align-items:center;gap:6px;flex-shrink:0"><div style="padding:6px 15px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid #424242;background:#424242;color:#fff">Day</div><div style="padding:6px 15px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid #424242;background:#424242;color:#fff">Week</div><div style="padding:6px 15px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid #424242;background:#424242;color:#fff">Month</div><div style="padding:6px 15px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid #424242;background:#fff;color:#424242">1 Year</div></div>
+</div>
+<div style="flex:1;min-height:0;overflow:auto;background:#fff;border:1px solid #e4e2ed;border-radius:10px">
+  <div style="position:relative;min-width:1272px">
+    <!-- Značka „now": svislá linka #FF3D00 + trojúhelník v hlavičce -->
+    <div style="position:absolute;top:0;bottom:0;left:calc(240px + (100% - 240px) * 0.614023);width:2px;background:#FF3D00;z-index:1;pointer-events:none"></div>
+    <div style="position:absolute;top:0;left:calc(calc(240px + (100% - 240px) * 0.614023) - 4px);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid #FF3D00;z-index:4;pointer-events:none" title="now · 12. 8. 2026 10:30"></div>
+    <!-- hlavička period -->
+    <div style="display:flex;position:sticky;top:0;z-index:3;background:#fff;border-bottom:1px solid #e4e2ed">
+      <div style="position:sticky;left:0;z-index:5;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:8px 12px;font-size:11.5px;font-weight:700;color:#3d3a52;border-right:1px solid #e4e2ed">Audits & Inspections</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:11px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Jan</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:11px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Feb</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:11px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Mar</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:11px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Apr</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:11px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">May</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:11px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Jun</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:11px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Jul</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:11px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Aug</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:11px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Sep</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:11px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Oct</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:11px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Nov</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:11px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Dec</div>
+    </div>
+    <!-- řádky = položky evidence -->
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Health & Safety audit – production</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Audit record"><span style="display:none"></span>Audit record</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Audit deadline"><span style="display:none"></span>Audit deadline</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Audit dodavatele Metalux</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Supplier audit record"><span style="display:none"></span>Supplier audit record</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Follow-up inspection"><span style="display:none"></span>Follow-up inspection</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Audit GDPR</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Audit record"><span style="display:none"></span>Audit record</div><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Audit deadline"><span style="display:none"></span>Audit deadline</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Quality system audit</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Audit record"><span style="display:none"></span>Audit record</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Audit deadline"><span style="display:none"></span>Audit deadline</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">ISO 27001 surveillance audit</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Surveillance audit record"><span style="display:none"></span>Surveillance audit record</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Audit deadline"><span style="display:none"></span>Audit deadline</div><div style="font-size:10px;font-weight:700;color:#8b8698;padding:1px 5px 2px;cursor:pointer;white-space:nowrap">+more: 1</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Internal audit ISO 9001</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Audit record"><span style="display:none"></span>Audit record</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Audit deadline"><span style="display:none"></span>Audit deadline</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Repeat audit record"><span style="display:none"></span>Repeat audit record</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Internal warehouse audit</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Quarterly inventory"><span style="display:none"></span>Quarterly inventory</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Quarterly inventory"><span style="display:none"></span>Quarterly inventory</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Quarterly inventory"><span style="display:none"></span>Quarterly inventory</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Quarterly inventory"><span style="display:none"></span>Quarterly inventory</div></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Environmental Inspectorate inspection</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Inspection record"><span style="display:none"></span>Inspection record</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Hygiene station inspection</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Inspection record"><span style="display:none"></span>Inspection record</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Follow-up inspection"><span style="display:none"></span>Follow-up inspection</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Gauge inspection</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Gauge calibration"><span style="display:none"></span>Gauge calibration</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Gauge calibration"><span style="display:none"></span>Gauge calibration</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Kontrola OIP</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Inspection record"><span style="display:none"></span>Inspection record</div><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Inspection deadline"><span style="display:none"></span>Inspection deadline</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Fire safety inspection</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Inspection record"><span style="display:none"></span>Inspection record</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Inspection deadline"><span style="display:none"></span>Inspection deadline</div></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Recertifikace ISO 14001</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Recertification record"><span style="display:none"></span>Recertification record</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Audit deadline"><span style="display:none"></span>Audit deadline</div><div style="font-size:10px;font-weight:700;color:#8b8698;padding:1px 5px 2px;cursor:pointer;white-space:nowrap">+more: 2</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:240px;flex:0 0 240px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Revize elektro – hala A</div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Revision record"><span style="display:none"></span>Revision record</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Revision deadline"><span style="display:none"></span>Revision deadline</div></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:86px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+  </div>
+</div>
+</div>

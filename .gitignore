@@ -1,0 +1,4 @@
+# Linuxový symlink omylem vytvořený z Cowork VM — Windows ho neumí otevřít
+# a git na něm padá („Function not implemented“). EN soubory odkazují
+# přímo na ../prototypes/assets/, složka ani odkaz tu nemá být (viz CLAUDE.md).
+prototypes-en/assets

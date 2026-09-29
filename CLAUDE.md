@@ -7,6 +7,62 @@ a **aplikační (UI kit)** – ty ale slouží jen jako doplněk.
 
 ---
 
+## 🌐 Jazykové varianty: CS (výchozí) vs EN — ať se to nikdy neplete
+
+Tento kit existuje ve **dvou jazykových variantách**, které jsou úplně
+oddělené, ale strukturně 1:1 identické (stejný layout, stejné komponenty,
+stejná data — liší se jen jazyk textů v UI):
+
+| | Čeština (výchozí, zdroj pravdy) | Angličtina |
+|---|---|---|
+| Master prototypy | `prototypes/Aptien-aplikace-offline.html`, `prototypes/Aptien-mobil-intranet.html` | `prototypes-en/Aptien-aplikace-offline.html`, `prototypes-en/Aptien-mobil-intranet.html` |
+| Partialy k doslovnému vložení | `prototypes/partials/*.html` | `prototypes-en/partials/*.html` (stejné názvy souborů) |
+| Assets (fonty, ikony, JS) | `prototypes/assets/` | žádná vlastní složka — EN soubory odkazují přímo na `../prototypes/assets/` (mastery) a `../../prototypes/assets/` (partialy) |
+| Pravidla a reference (`.md`) | `prototypes/*.md` | jen česky — pravidla/dokumentace se nepřekládají, platí pro obě varianty |
+
+> ⛔ **Nikdy nemíchej CS a EN v jednom vizuálu.** Když zadání žádá EN
+> screenshot/prototyp, ber **všechny** partialy z `prototypes-en/partials/`
+> a master z `prototypes-en/…`. Když zadání nespecifikuje jazyk, **výchozí
+> je čeština** (`prototypes/`, `prototypes/partials/`).
+>
+> Poznej podle **cesty ke složce**, ne podle přípony souboru — název
+> souboru je v obou variantách stejný (`Aptien-aplikace-offline.html`,
+> `evidence-toolbar.html` …). `prototypes-en/` je **kompletní zrcadlo**
+> `prototypes/` — stejný tvar (mastery + `partials/`), jen jako
+> samostatný strom vedle něj. Assets jsou jen jednou, v `prototypes/assets/`. Liší se tedy vždy jen kořenová složka
+> (`prototypes-en/…` vs `prototypes/…`), nikdy název souboru.
+
+**Jak vznikla EN varianta:** strojový 1:1 překlad UI řetězců (menu, tlačítka,
+taby, popisky, ukázkový obsah) podle slovníku
+`prototypes/Aptien-EN-glossary.md` — struktura, DOM, CSS, JS logika,
+barvy i rozměry jsou bajtově shodné s CS předlohou, změnil se jen text.
+Osobní jména (Karolína Fišerová, Adéla Sládková…) a názvy fiktivních
+externích firem (Kovárna Kovy a Syn, Velké stavby a.s. …) zůstávají
+záměrně v původním znění — jsou to jen ukázková data, ne UI text.
+
+> **Když přidáváš/měníš text v CS master prototypu nebo v CS partialu,
+> promítni stejnou změnu i do EN protějšku** (a případně dopiš nový pár do
+> `Aptien-EN-glossary.md`), ať obě varianty zůstanou 1:1 synchronní.
+
+### Názvy evidencí (CS vs EN)
+
+V produkční aplikaci má administrátor plnou svobodu **přejmenovat název
+evidence** (ten, co vidí v horní liště a v Nastavení organizace) — jediná
+výjimka jsou vestavěné/uzamčené evidence (v Administraci → Organizers mají
+ikonu zámku: např. Employees, Contacts, Projects, Companies, Places &
+Storages, Business process catalog, Course catalog), jejichž název měnit
+nejde. V tomto kitu proto:
+
+- Referenční moduly (Zaměstnanci/Employees, Zakázky/Orders, Rizika/Risks,
+  Ochranné pomůcky/Protective Equipment, Audity a kontroly/Audits &
+  Inspections, Směrnice/Procedures & Policies…) mají v EN variantě název
+  podle **standardního anglického překladu z produkční appky** (ověřeno na
+  živé instanci) — ne podle volného doslovného překladu.
+- Pokud potřebuješ EN vizuál s **jiným, vlastním názvem evidence** (protože
+  si to tak admin v appce pojmenoval), stačí v EN partialu/master prototypu
+  přejmenovat jen tento jeden řetězec — zbytek (menu, tlačítka, barvy…)
+  zůstává podle EN předlohy beze změny.
+
 ## ⛔ ZÁKLADNÍ DIREKTIVA PRO GENEROVÁNÍ (čti první, platí vždy)
 
 **Vezmi layout odpovídajícího prototypu 1:1 a měň POUZE data.**
@@ -485,7 +541,7 @@ tab strip + sidebar):
 
 - `screenshots/` – syrové záběry aplikace
 - `mockups/` – desktop / mobil rámečky s vloženým UI
-- `prototypes/` – **závazné předlohy** UI (kopíruj 1:1, viz pravidlo výše)
+- `prototypes/` – **závazné předlohy** UI, čeština, výchozí zdroj pravdy (kopíruj 1:1, viz pravidlo výše)
   - `Aptien-aplikace-offline.html` – **master prototyp: desktop** (celá aplikace, čitelné HTML)
   - `Aptien-mobil-intranet.html` – **master prototyp: mobil / intranet** (zaměstnanecké zobrazení)
   - `item-drawer-prototyp.html` – **klikací ukázka vrstveného draweru** (přepínání Detaily / Souvislosti). ⛔ **NEBER z něj strukturu** – má vlastní `.kd-*` CSS, které se do generovaných obrazovek nehodí. Předlohou k vložení je `partials/item-drawer-stacked.html`.
@@ -496,6 +552,7 @@ tab strip + sidebar):
   - `Aptien-pravidla-screenshotu.md` – **formát výstupu vizuálů** (1920 × 1080, návrh na 1536 × 864 se zvětšením 1,25×), rozpočet obsahu a checklist
   - `Aptien-pravidla-anotovanych-vizualu.md` – pravidla pro anotační vrstvu nad vizuálem (viz `partials/anotace-vrstva.html`)
   - `Aptien-pravidla-kombinovanych-vizualu.md` – pravidla pro kombinované vizuály víc obrazovek najednou (viz `partials/combo-scena.html`)
+  - `Aptien-pravidla-kb-navodovych-obrazku.md` – **návodové obrázky do znalostní báze**: zvýraznění výhradně červeně `#FF0000` (rámeček 4 pt, rovné šipky, čísla kroků); modrá `#3D5AFE` jen na produktové stránky
   - `prompt-sablona-aptien.md` – šablona promptu pro zadání nového vizuálu
   - `partials/` – **hotové statické bloky k doslovnému vložení** (nerekonstruovat):
     `sidebar-menu-collapsed.html` (výchozí sbalené menu, jen ikony) /
@@ -545,5 +602,10 @@ tab strip + sidebar):
     (Administrace → Role → „O mně" – modal nastavení viditelnosti/úpravy
     polí)
   - `_archive/` – původní bundled prototypy (jen historická reference)
+  - `Aptien-EN-glossary.md` – **CS → EN slovník** UI řetězců použitý pro celé `prototypes-en/` (mastery i `partials/`) — dopisuj sem nové páry při každé změně textu v master prototypu nebo partialu
+- `prototypes-en/` – **EN protějšek celé `prototypes/`** — stejný tvar, samostatný strom (viz sekce *Jazykové varianty* výše):
+  - `Aptien-aplikace-offline.html`, `Aptien-mobil-intranet.html` – EN master prototypy
+  - `partials/` – EN protějšek `prototypes/partials/`, stejné názvy souborů
+  - **žádná složka `assets`** — EN mastery odkazují na `../prototypes/assets/…`, EN partialy na `../../prototypes/assets/…`. ⚠️ Nepoužívej symlink: na Windows se při otevření souboru přímo v Chrome (`file://`) neresolvuje, runtime JS se nenačte a prototyp se zobrazí jako rozsypané `{{ }}` bez interakce. Nový EN soubor = stejné cesty jako výše.
 - `profile-images/` – profilové obrázky person do avatarů (viz README uvnitř)
 - `files/` – zdrojové podklady, šablony rámečků

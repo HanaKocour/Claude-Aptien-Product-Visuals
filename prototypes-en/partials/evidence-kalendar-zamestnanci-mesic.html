@@ -1,0 +1,627 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free). Řádek níže načte FA, aby se
+     vykreslily i při samostatném otevření souboru. V master prototypu se FA
+     načítá z jeho assetů, takže tam je tento <link> nadbytečný (neškodí). -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!--
+  APTIEN — EVIDENCE / POHLED „KALENDÁŘ" · ZAMĚSTNANCI · období MĚSÍC (srpen 2026)
+  ==========================================================================
+  Při generování pohledu Calendar VLOŽ TENTO BLOK CELÝ. NEREKONSTRUUJ ho.
+  Skladba (pravidla §5.5):
+    navigační lišta (‹ › + název období + přepínač Day/Week/Month/1 Year)
+    → mřížka: sticky hlavička period, sticky levý sloupec položek,
+      řádek = položka evidence, buňka = svisle stohované pruhy + „+další: N".
+  BARVY PRUHŮ jsou PEVNÉ (role, ne dekorace) — neměň je a nepřebarvuj podle
+  modulu:
+    Plánované aktivity  modrá   #0091EA
+    Minutes              červená #EF5350
+    Události            fialová #6200EA
+  PŘEPÍNAČ OBDOBÍ i navigační šipky jsou TMAVĚ ŠEDÉ #424242 (výjimka z modré
+  §5 — přepínač období NENÍ view switcher). Active volba = INVERZE:
+  bílé pozadí + šedý text a lem; neaktivní = plná šedá + bílý text.
+  Značka „now" = svislá linka #FF3D00 + trojúhelník v hlavičce, umístěná
+  proporčně v aktuálním sloupci.
+  Měň jen data (názvy položek, texty a časy pruhů, období).
+  Toolbar patří NAD tento blok.
+  POZOR — Employees: v řádku se zobrazují NEJEN aktivity vázané na
+  položku (zaměstnance), ale i aktivity, kde je uživatel ÚČASTNÍK jiného
+  záznamu (např. „Internal audit ISO 9001 – participant"). Pruhy se nerozlišují.
+  Pohledy po dnech (Day / Week / Month): hlavička sloupce = písmeno dne
+  týdne + číslo dne s tečkou („S 12."). Pruh se NEROZTAHUJE přes víc days —
+  patří vždy do buňky svého dne a pruhy se v buňce stohují pod sebe.
+  Časované záznamy mají čas na začátku pruhu tučně („14:39 - 14:54 …").
+-->
+<div style="flex:1;display:flex;flex-direction:column;min-height:0;padding:0 20px 14px;font-family:'Nunito',sans-serif">
+<div style="flex-shrink:0;display:flex;align-items:center;gap:9px;padding:8px 0 10px">
+  <div style="width:29px;height:29px;border-radius:999px;background:#424242;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;flex-shrink:0"><i class="fa-solid fa-chevron-left"></i></div>
+  <div style="width:29px;height:29px;border-radius:999px;background:#424242;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;flex-shrink:0"><i class="fa-solid fa-chevron-right"></i></div>
+  <div style="flex:1;text-align:center;font-size:17px;font-weight:800;color:#1e1b2e;white-space:nowrap">Srpen 2026</div>
+  <div style="display:flex;align-items:center;gap:6px;flex-shrink:0"><div style="padding:6px 15px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid #424242;background:#424242;color:#fff">Day</div><div style="padding:6px 15px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid #424242;background:#424242;color:#fff">Week</div><div style="padding:6px 15px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid #424242;background:#fff;color:#424242">Month</div><div style="padding:6px 15px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid #424242;background:#424242;color:#fff">1 Year</div></div>
+</div>
+<div style="flex:1;min-height:0;overflow:auto;background:#fff;border:1px solid #e4e2ed;border-radius:10px">
+  <div style="position:relative;min-width:1273px">
+    <!-- Značka „now": svislá linka #FF3D00 + trojúhelník v hlavičce -->
+    <div style="position:absolute;top:0;bottom:0;left:calc(188px + (100% - 188px) * 0.368280);width:2px;background:#FF3D00;z-index:1;pointer-events:none"></div>
+    <div style="position:absolute;top:0;left:calc(calc(188px + (100% - 188px) * 0.368280) - 4px);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid #FF3D00;z-index:4;pointer-events:none" title="now · 12. 8. 2026 10:30"></div>
+    <!-- hlavička period -->
+    <div style="display:flex;position:sticky;top:0;z-index:3;background:#fff;border-bottom:1px solid #e4e2ed">
+      <div style="position:sticky;left:0;z-index:5;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:8px 12px;font-size:11.5px;font-weight:700;color:#3d3a52;border-right:1px solid #e4e2ed">Employees</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">S 1.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">N 2.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">P 3.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Tu 4.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">S 5.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Th 6.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">P 7.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">S 8.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">N 9.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">P 10.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Tu 11.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">S 12.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Th 13.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">P 14.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">S 15.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">N 16.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">P 17.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Tu 18.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">S 19.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Th 20.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">P 21.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">S 22.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">N 23.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">P 24.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Tu 25.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">S 26.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">Th 27.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">P 28.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">S 29.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">N 30.</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:8px 2px;text-align:center;white-space:nowrap;overflow:hidden;font-size:10px;font-weight:600;color:#6c757d;border-right:1px solid #eceaf3">P 31.</div>
+    </div>
+    <!-- řádky = položky evidence -->
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Adéla Sládková</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Keyboard repair"><span style="display:none"></span>Keyboard repair</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Aleš Coufal</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="9 - 12 Internal audit ISO 9001 – participant"><span style="font-weight:800;margin-right:4px">9 - 12</span>Internal audit ISO 9001 – participant</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Alena Štiková</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Regular Health & Safety Training"><span style="display:none"></span>Regular Health & Safety Training</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="9:15 Training record"><span style="font-weight:800;margin-right:4px">9:15</span>Training record</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Alexander Nagy</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="9:51 Exit interview"><span style="font-weight:800;margin-right:4px">9:51</span>Exit interview</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Handover of duties"><span style="display:none"></span>Handover of duties</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Cole Edwin Turner</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Crane Operator Training"><span style="display:none"></span>Crane Operator Training</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">David Hašek</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Hana Kocourová</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="9:49 Keyboard repair"><span style="font-weight:800;margin-right:4px">9:49</span>Keyboard repair</div><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="9:52 Meeting minutes"><span style="font-weight:800;margin-right:4px">9:52</span>Meeting minutes</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="14:39 - 14:54 Meeting minutes"><span style="font-weight:800;margin-right:4px">14:39 - 14:54</span>Meeting minutes</div><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="15 - 17 Meeting with supplier"><span style="font-weight:800;margin-right:4px">15 - 17</span>Meeting with supplier</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="8:30 Regular medical examination"><span style="font-weight:800;margin-right:4px">8:30</span>Regular Medical Examination</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Set a 30/60/90-day plan"><span style="display:none"></span>Set a 30/60/90-day plan</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Jan Doležal</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="11:15 Laptop handover"><span style="font-weight:800;margin-right:4px">11:15</span>Laptop handover</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Karolína Fišerová</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Initial Medical Examination"><span style="display:none"></span>Initial Medical Examination</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="13 - 14 Performance review"><span style="font-weight:800;margin-right:4px">13 - 14</span>Performance review</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Lucie Marešová</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Vaccination"><span style="display:none"></span>Vaccination</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Michal Král</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Daily line check"><span style="display:none"></span>Daily line check</div></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Ondřej Vávra</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Prepare salary statement"><span style="display:none"></span>Prepare salary statement</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Petra Nováková</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#6200EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="First Aid Training"><span style="display:none"></span>First Aid Training</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Radek Šimek</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Meeting minutes"><span style="display:none"></span>Meeting minutes</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Tereza Bláhová</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#EF5350;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="PPE handover"><span style="display:none"></span>PPE handover</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+    <div style="display:flex;min-height:28px">
+      <div style="position:sticky;left:0;z-index:2;background:#fff;width:188px;flex:0 0 188px;box-sizing:border-box;padding:6px 12px;font-size:12px;font-weight:600;color:#1e1b2e;border-right:1px solid #e4e2ed;border-bottom:1px solid #eeedf4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">Veronika Horáková</div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"><div style="background:#0091EA;color:#fff;font-size:10px;font-weight:600;line-height:1.2;padding:3px 5px;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:pointer" title="Regular Health & Safety Training"><span style="display:none"></span>Regular Health & Safety Training</div></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+      <div style="flex:1 1 0;min-width:35px;box-sizing:border-box;padding:4px 3px;border-bottom:1px solid #eeedf4;border-right:1px solid #f4f3f8;overflow:hidden"></div>
+    </div>
+  </div>
+</div>
+</div>

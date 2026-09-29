@@ -15,12 +15,31 @@
 
 Pro kombinované vizuály (combo scéna, kaskáda s anotací, „mobil v ruce" —
 viz `Aptien-pravidla-kombinovanych-vizualu.md` §4.1) existují v
-`prototypes/partials/` čtyři statické výřezy, jeden na obrazovku:
-`mobil-home.html`, `mobil-konverzace.html`, `mobil-chat.html`,
-`mobil-o-mne.html` (poslední se čtyřmi kartami rozbalenými — nejužitečnější
-stav pro skládání). Jsou to zmrazené 1:1 snímky bez `<script>`/state,
-stejná konvence jako desktopové partialy (`konverzace-list.html` /
-`konverzace-chat.html`). **Než se obrazovka mobilu bude znovu ručně
+`prototypes/partials/` statické výřezy, jeden na obrazovku / stav:
+
+| Partial | Obrazovka (`state.screen`) | Stav |
+|---|---|---|
+| `mobil-home.html` | `home` | — |
+| `mobil-konverzace.html` | `conversations` | — |
+| `mobil-chat.html` | `chat` | konverzace 0 |
+| `mobil-o-mne.html` | `omne` | všechny 4 karty rozbalené |
+| `mobil-smernice.html` | `smernice` | výchozí („Potvrzeno" sbalené) |
+| `mobil-smernice-rozbaleno.html` | `smernice` | „Potvrzeno" rozbalené |
+| `mobil-smernice-detail.html` | `smernice-detail` | seznam „K potvrzení" |
+| `mobil-skoleni.html` | `skoleni` | výchozí („Dokončeno" sbalené) |
+| `mobil-skoleni-rozbaleno.html` | `skoleni` | „Dokončeno" rozbalené |
+| `mobil-dokumenty.html` | `dokumenty` | kategorie |
+| `mobil-dokumenty-detail.html` | `dokumenty-detail` | kategorie *Návody a přístrojová dokumentace* |
+
+První čtyři vznikly 1. 9. 2026, zbylých sedm 29. 9. 2026 (vyrenderováno
+z master prototypu, pixelově ověřeno proti masteru). **EN protějšky se stejnými
+názvy jsou v `prototypes-en/partials/`** (vyrenderované z
+`prototypes-en/Aptien-mobil-intranet.html`). Jsou to zmrazené 1:1
+snímky bez `<script>`/state, stejná konvence jako desktopové partialy
+(`konverzace-list.html` / `konverzace-chat.html`). **Pro Claude Design /
+design system vždy skládej z partialů, ne z master souboru** — master je
+šablona se stavem (`<sc-if>`, `{{ … }}`), kterou generátor neumí
+vyrenderovat. **Než se obrazovka mobilu bude znovu ručně
 kopírovat ze `Aptien-mobil-intranet.html` do nové šablony, zkontroluj
 nejdřív, jestli partial už neexistuje** — dřív se to dělalo ručně (viz
 `sablony-vizualu/mobil-v-ruce.html`, komentář „verbatim z
@@ -44,7 +63,9 @@ se **neaktualizují automaticky** — je potřeba je ručně přegenerovat.
 
 ## 2. Obrazovky
 
-Mobilní intranet má čtyři hlavní obrazovky (`state.screen`):
+Mobilní intranet má tyto obrazovky (`state.screen`) — tabulka níže popisuje
+původní čtyři; `smernice`, `smernice-detail`, `skoleni`, `dokumenty` a
+`dokumenty-detail` viz partialy v §0:
 
 | Obrazovka | Obsah |
 |---|---|
@@ -67,7 +88,7 @@ viditelný zaměstnanci**:
 
 **Osobní / samoobsluha:**
 Moje upozornění · Úkoly · Moje žádanky · Konverzace · Schvalování ·
-O mně · Moje směrnice.
+O mně · Moje směrnice · Moje školení.
 
 **Firemní (publikované):**
 Nástěnka · Směrnice a dokumenty · Kolegové · Katalog školení.
@@ -75,6 +96,38 @@ Nástěnka · Směrnice a dokumenty · Kolegové · Katalog školení.
 **Externí odkazy:**
 odkazy na externí stránky / aplikace (např. *Facebook*) – jen prokliky
 ven, ne přihlášení.
+
+#### Dlaždice a ikony (závazné pořadí, zavedeno 29. 9. 2026)
+
+Mřížka 3 sloupce, pořadí zleva doprava, shora dolů. Ikona `#555` v bílém
+kruhu. Sloupec *Zdroj* říká, jak je ikona v prototypu vykreslená:
+**FA Free** = třída `fa-solid fa-…` (funguje z Free CDN), **inline SVG** =
+ikona je **FA Pro** a ve Free CDN neexistuje → v partialu/masteru je
+vložená jako `<svg>` (soubor v `Awesome-font-icons/`). **Při generování
+ji nikdy nenahrazuj FA třídou** — vykreslí se prázdný čtvereček (stejný
+problém jako u desktopového menu, viz `Aptien-menu-reference.md`).
+
+| # | Dlaždice (CS) | EN | Ikona | Zdroj | Pozn. |
+|---|---|---|---|---|---|
+| 1 | Moje upozornění | My notifications | `bell` | FA Free | badge **48** (červený) |
+| 2 | Úkoly | Tasks | `clipboard-check` | FA Free | |
+| 3 | Moje žádanky | My requests | `file-invoice` | FA Free | |
+| 4 | Konverzace | Conversations | `comments` | FA Free | |
+| 5 | Schvalování | For approval | `circle-check` | FA Free | |
+| 6 | O mně | My Profile | `user` | FA Free | |
+| 7 | Moje směrnice | My Policies | `books.svg` | inline SVG (Pro) | |
+| 8 | Moje školení | My Training | `graduation-cap` | FA Free | |
+| 9 | Směrnice a dokumenty | Policies & Resources | `book-open` | FA Free | |
+| 10 | Nástěnka | Announcements | `grid-horizontal.svg` | inline SVG (Pro) | |
+| 11 | Kolegové | Colleagues | `users.svg` | inline SVG | |
+| 12 | Katalog školení | Training courses | `book-open-reader.svg` | inline SVG (Pro) | |
+| 13 | Facebook | Facebook | písmeno „F" na zeleném kruhu | text | externí odkaz |
+| 14 | Google | Google | písmeno „G" (červené) | text | externí odkaz |
+| 15 | *(bez popisku)* | *(bez popisku)* | `camera` (fialový čtverec) | FA Free | externí aplikace |
+
+Ikony uvnitř obrazovek (karty kategorií, stavové ikony, tlačítka) jsou
+všechny FA Free — ověřeno proti balíčku `@fortawesome/fontawesome-free`
+6.5.0 pro všech 11 mobilních partialů.
 
 ### 2.3 Konverzace a chat
 

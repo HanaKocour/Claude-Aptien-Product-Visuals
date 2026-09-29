@@ -1,0 +1,333 @@
+<!-- Ikony tohoto bloku jsou Font Awesome (Free). Řádek níže načte FA, aby se
+     vykreslily i při samostatném otevření souboru. V master prototypu se FA
+     načítá z jeho assetů, takže tam je tento <link> nadbytečný (neškodí). -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!--
+  APTIEN — MOBILNÍ INTRANET / MOJE SMĚRNICE (POTVRZENO ROZBALENÉ) · STATICKÝ BLOK K DOSLOVNÉMU VLOŽENÍ
+  ====================================================================================
+  1:1 výřez obrazovky `smernice` (`state.screen === 'smernice'`) z master
+  prototypu `prototypes-en/Aptien-mobil-intranet.html`, vyrenderovaný
+  z prototypu 29. 9. 2026. Žádný `<script>`/state — jen zmrazený snímek pro
+  skládání kombinovaných vizuálů. Viz Aptien-mobil-intranet-pravidla.md §0.
+
+  Stav: smernConfirmedOpen = true — sekce „Potvrzeno" rozbalená se seznamem potvrzených dokumentů.
+  Rám: 390×844 px, bez bezelu telefonu (jen obsah obrazovky).
+  Skladba: jako mobil-smernice.html, ale karta „Potvrzeno" je rozbalená (zelené
+  ikony, „potvrzeno DD.MM.RRRR").
+  NEMĚŇ vzor karet a barvy — měň jen data (názvy, soubory, počty, termíny).
+
+  Sourozenecké: mobil-smernice.html, mobil-smernice-detail.html; ostatní mobilní partialy viz §0 pravidel.
+-->
+<div style="width: 390px; font-family: 'Nunito', sans-serif; flex: 1; display: flex; flex-direction: column; background: #f0f0f8; height: 844px;">
+  <div style="background: #111111; height: 56px; display: flex; align-items: center; padding: 0px 16px; gap: 12px; flex-shrink: 0; position: relative;">
+    <button style="background: none; border: none; cursor: pointer; padding: 6px; color: white;">
+      <i class="fa-solid fa-bars" style="font-size: 18px;"></i>
+    </button>
+    <div style="position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 9px;">
+      <svg width="24" height="26" viewBox="400.9 201.5 598.3 651.4" fill="white">
+        <path d="m 990.7,648.5 c -7.2,-17.3 -16.8,-33.3 -25.3,-50.4 -5,-10 -10,-20 -14.9,-29.9 -12.6,-25.3 -25.2,-50.6 -37.8,-75.8 -14,-28 -27.9,-56 -41.9,-83.9 -12.7,-25.4 -25.4,-50.8 -38,-76.2 -8.8,-17.6 -17.5,-35.2 -26.3,-52.7 -2.4,-4.9 -5,-9.7 -7.3,-14.7 -0.2,-0.3 -0.3,-0.7 -0.5,-1 -18.2,-37.9 -57.1,-62.4 -99.2,-62.4 -42.4,0 -80.2,23.7 -98.8,61.6 L 415.2,635 l -1.6,3.2 c -8.3,15.7 -12.7,33.5 -12.7,51.4 0,5.6 0.4,11.1 1.2,16.6 1.4,9 3.9,17.9 7.4,26.3 5.4,12.7 13,24.1 22.7,34 l 0.3,0.3 c 49.1,53.1 151.5,86.1 267.1,86.1 31.5,0 63,-2.4 94.1,-7.6 28,-4.7 55.6,-11.7 82.1,-21.7 22.9,-8.7 45.1,-19.6 64.9,-34 12.3,-9 24.7,-18 34.3,-30 8.6,-10.7 15.2,-22.9 19.2,-36 3.3,-10.6 5,-21.6 5,-32.7 0,-14.5 -2.8,-29 -8.5,-42.4 z M 786,352 l -11.4,22.8 -172.1,345 -6.4,12.9 c -15.7,31.1 -47.9,52.4 -85.2,52.4 -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-16.2 4,-31.4 11.1,-44.8 l 1.7,-3.4 183.8,-368.6 1.6,-3.3 c 15.5,-31.8 48.1,-53.6 85.8,-53.6 52.7,0 95.5,42.8 95.5,95.5 0.1,14.5 -3.1,28.3 -8.9,40.6 z m 103.3,434.4 c -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-52.7 42.8,-95.5 95.5,-95.5 52.7,0 95.5,42.8 95.5,95.5 0,52.7 -42.7,95.5 -95.5,95.5 z"></path>
+      </svg>
+      <span style="color: white; font-size: 20px; font-weight: 700; letter-spacing: -0.4px;">aptien</span>
+    </div>
+    <div style="margin-left: auto; display: flex; align-items: center; gap: 13px;">
+      <div style="width: 34px; height: 34px; border-radius: 50%; background: conic-gradient(#ff6b6b 0deg, #ffd93d 90deg, #6bcb77 180deg, #4d96ff 270deg, #ff6b6b 360deg); overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1.5px solid rgba(255, 255, 255, 0.25);">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="8" r="4" fill="rgba(0,0,0,.25)"></circle>
+          <ellipse cx="10" cy="18" rx="8" ry="5" fill="rgba(0,0,0,.2)"></ellipse>
+        </svg>
+      </div>
+      <i class="fa-solid fa-gear" style="color: white; font-size: 17px; cursor: pointer;"></i>
+    </div>
+  </div>
+  <div style="flex: 1; overflow-y: auto; background: #f0f0f8; padding-bottom: 24px;">
+    <div style="display: flex; align-items: center; gap: 8px; padding: 16px 16px 12px;">
+      <i class="fa-solid fa-house" style="color: #1572e8; font-size: 15px; cursor: pointer;"></i>
+      <i class="fa-solid fa-chevron-right" style="color: #cccccc; font-size: 10px;"></i>
+      <span style="color: #1a1a1a; font-size: 14px; font-weight: 600;">My Policies</span>
+    </div>
+    <div style="padding: 0px 16px 16px;">
+      <div style="background: white; border-radius: 999px; padding: 10px 16px; display: flex; align-items: center; gap: 10px; box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 4px;">
+        <i class="fa-solid fa-magnifying-glass" style="color: #b1b2b3; font-size: 14px;"></i>
+        <span style="font-size: 13px; color: #b1b2b3;">Search for a document or category</span>
+      </div>
+    </div>
+    <div style="margin: 0px 16px 14px; background: white; border-radius: 14px; padding: 18px; box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 6px; cursor: pointer;">
+      <div style="display: flex; align-items: flex-start; gap: 10px;">
+        <div style="flex: 1; min-width: 0px;">
+          <div style="font-size: 15px; font-weight: 800; color: #1a1a1a;">You still have 
+            <span style="color: #1572e8;">13</span> documents to confirm
+          </div>
+          <div style="font-size: 12px; color: #9aa0a6; margin-top: 3px;">22 of 35 confirmed · 63 %</div>
+        </div>
+        <i class="fa-solid fa-chevron-right" style="color: #c2c6cc; font-size: 13px; flex-shrink: 0; margin-top: 4px;"></i>
+      </div>
+      <div style="height: 6px; background: #ededf2; border-radius: 3px; overflow: hidden; margin: 12px 0px 10px;">
+        <div style="height: 100%; background: #1572e8; width: 63%; border-radius: 3px; transition: width 0.3s;"></div>
+      </div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <span style="background: #fde8e8; color: #d9463e; padding: 3px 8px; border-radius: 3px; font-size: 10px; font-weight: 700;">11 overdue</span>
+        <span style="background: #e8f8ed; color: #2e7d32; padding: 3px 8px; border-radius: 3px; font-size: 10px; font-weight: 700;">2 with no deadline</span>
+      </div>
+    </div>
+    <div style="margin: 0px 16px 14px; background: white; border-radius: 14px; box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 6px; overflow: hidden;">
+      <div style="display: flex; align-items: center; gap: 10px; padding: 14px 16px; cursor: pointer; user-select: none;">
+        <i class="fa-solid fa-circle-check" style="color: #00c853; font-size: 15px; flex-shrink: 0;"></i>
+        <span style="font-size: 14px; font-weight: 800; color: #1a1a1a;">Confirmed</span>
+        <span style="background: #e8f8ed; color: #2e7d32; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 3px;">22</span>
+        <div style="flex: 1;"></div>
+        <i class="fa-solid fa-chevron-down" style="color: #9aa0a6; font-size: 13px; flex-shrink: 0;"></i>
+      </div>
+      <div style="border-top: 1px solid #f2f2f2;">
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Workplace Health &amp; Safety</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Dummy Policy 9.docx · confirmed 09.07.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Dress policy</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Dummy document.docx · confirmed 09.07.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">SOP for XPR200</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Dummy Certificate.docx · confirmed 09.07.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">HR Policy</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">2021-07-15.png · confirmed 09.07.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Organizational Handbook</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">prirucka_2026.pdf · confirmed 09.07.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Code of Conduct</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">eticky_kodex_v2.pdf · confirmed 03.07.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Travel Expenses Policy</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">cestovni_nahrady.pdf · confirmed 03.07.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Home office rules</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">home_office.pdf · confirmed 28.06.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Whistleblowing — Reporting</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">oznameni.pdf · confirmed 28.06.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Personal Data Processing Principles</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">gdpr_zasady.pdf · confirmed 20.06.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Warehouse Operating Rules</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">sklad_rad.pdf · confirmed 20.06.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Crisis Plan</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">krizovy_plan.pdf · confirmed 15.06.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">VOC Policy</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">voc_smernice.pdf · confirmed 15.06.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Director's Instruction no. 4/2026</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">pokyn_4_2026.pdf · confirmed 10.06.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Work Rules</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">pracovni_rad.pdf · confirmed 10.06.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Quality Manual</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">manual_kvality.pdf · confirmed 02.06.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Complaint procedure</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">reklamace.pdf · confirmed 02.06.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Safety Data Sheet CHLS</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">bl_chls.pdf · confirmed 28.05.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Risk Assessment Methodology</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">hodnoceni_rizik.pdf · confirmed 28.05.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Forklift operation standard</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">vzv_standard.pdf · confirmed 20.05.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Internal Audit – Checklist</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">audit_checklist.pdf · confirmed 20.05.2026</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f7;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #e8f8ed; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-check" style="color: #2e7d32; font-size: 13px;"></i>
+          </div>
+          <div style="flex: 1; min-width: 0px;">
+            <div style="font-size: 13.5px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Supplier Code of Ethics</div>
+            <div style="font-size: 11.5px; color: #9aa0a6; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">eticky_dodavatel.pdf · confirmed 12.05.2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="padding: 4px 16px 10px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: #9aa0a6; font-weight: 800;">
+            Browse
+      <span style="display: block; font-size: 15px; text-transform: none; color: #1a1a1a; letter-spacing: 0px; margin-top: 2px; font-weight: 800;">All documents</span>
+    </div>
+    <div style="padding: 0px 16px;">
+      <div style="display: flex; align-items: center; gap: 14px; background: #b8bcc8; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; cursor: pointer;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 255, 255, 0.85); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <i class="fa-solid fa-gavel" style="color: #3a3f52; font-size: 17px;"></i>
+        </div>
+        <div style="flex: 1; min-width: 0px;">
+          <div style="font-size: 14px; font-weight: 700; color: #2b2540;">Regulation</div>
+          <div style="font-size: 12px; margin-top: 2px; color: #1572e8; font-weight: 600;">12 to confirm</div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 14px; background: #cabde8; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; cursor: pointer;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 255, 255, 0.85); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <i class="fa-solid fa-fire-extinguisher" style="color: #4a2d80; font-size: 17px;"></i>
+        </div>
+        <div style="flex: 1; min-width: 0px;">
+          <div style="font-size: 14px; font-weight: 700; color: #2b2540;">Fire Safety &amp; Health Protection</div>
+          <div style="font-size: 12px; margin-top: 2px; color: #5a5470; font-weight: 600;">1 document</div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 14px; background: #e4e2ea; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; cursor: pointer;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 255, 255, 0.85); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <i class="fa-solid fa-file-contract" style="color: #4a4660; font-size: 17px;"></i>
+        </div>
+        <div style="flex: 1; min-width: 0px;">
+          <div style="font-size: 14px; font-weight: 700; color: #2b2540;">Policy</div>
+          <div style="font-size: 12px; margin-top: 2px; color: #5a5470; font-weight: 600;">1 document</div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 14px; background: #e8dfa8; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; cursor: pointer;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 255, 255, 0.85); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <i class="fa-solid fa-diagram-project" style="color: #6b5c14; font-size: 17px;"></i>
+        </div>
+        <div style="flex: 1; min-width: 0px;">
+          <div style="font-size: 14px; font-weight: 700; color: #2b2540;">Work Procedure</div>
+          <div style="font-size: 12px; margin-top: 2px; color: #5a5470; font-weight: 600;">1 document</div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 14px; background: #e8c9a8; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; cursor: pointer;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 255, 255, 0.85); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <i class="fa-solid fa-certificate" style="color: #7a4a1e; font-size: 17px;"></i>
+        </div>
+        <div style="flex: 1; min-width: 0px;">
+          <div style="font-size: 14px; font-weight: 700; color: #2b2540;">Standard</div>
+          <div style="font-size: 12px; margin-top: 2px; color: #5a5470; font-weight: 600;">4 documents</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
