@@ -121,7 +121,7 @@ inline SVG, ty vyjdou vždy).
 - padding scény 56 px → využitelná plocha **1424 × 752**
 - sloupce: **520 + 168 + 736** (e-mail → aplikace) nebo
   **736 + 168 + 520** (aplikace → e-mail) — součet vždy **1424**
-- plocha scény `#f4f4f7`
+- plocha scény **bílá `#fff`** — ⛔ žádná šedá plocha, žádná zaoblená karta se stínem (3. 11. 2026)
 - horní lišta aplikace `#424242`, logo Aptienu `height:28px`, wordmark 19px/800
 
 **Jen pro scény toku:**
@@ -139,7 +139,7 @@ inline SVG, ty vyjdou vždy).
 
 **Jen pro nadpis + screenshot:**
 
-- bílá karta radius **28 px**, nikdy se nebarví
+- bílá karta s **rovnými rohy, bez stínu** (splývá s bílým pozadím), nikdy se nebarví
 - nadpis Nunito **900**, **60 px**, `#311B92`, na střed, max 2 řádky
 - snímek poměr ~**3:2**, radius 14 px, okraj `#e6e4ee`, orýznutý dole
 - rozpočet výšky panelu se tady **nepoužívá** — `render.js` ho přeskočí
@@ -242,3 +242,6 @@ z šablony celý `<div class="cv-prov">`.
   obsah musí mít vyšší z-index než fotka telefonu, jinak zůstane displej
   prázdný i při technicky správném DOM. Detaily, geometrie a checklist
   v `PRAVIDLA-mobil-v-ruce.md`.
+- **3. 11. 2026** — **bez šedé plochy, bez zaoblené karty a bez stínu karty.** Obrázek je celý bílý,
+  karta má rovné rohy (`border-radius:0`, `box-shadow:none`). Sjednoceno s šablonami web-obrázků
+  v `Claude-Aptien-Templates`. Stín pod screenshotem / panely aplikace zůstává.

@@ -45,7 +45,8 @@
   ⛔ Rám: `.cv-frame` 1920×1080 a `.cv-stage` 1536×864 se `scale(1.25)`.
      Sloupce **736 + 168 + 520 = 1424** — hlavní panel (Aptien) je VLEVO,
      protože o něm obrázek vypráví; notifikace je důsledek vpravo.
-  ⛔ Plocha scény `#f4f4f7` — jednolitá, nikdy gradient, nikdy barva modulu.
+  ⛔ Plocha scény bílá `#fff` — bez šedé plochy (3. 11. 2026), nikdy gradient,
+     nikdy barva modulu.
   ⛔ Konektor je vždy modrý `#1572e8`, šipka `#a8c4ea` přerušovaná,
      míří ZLEVA DOPRAVA (z aplikace do pošty).
   ⛔ Horní lišta aplikace `#424242`, logo Aptien `height:28px` (inline SVG
@@ -86,7 +87,7 @@
 <style>
   /* ---- tokeny scény (NEJSOU to app tokeny, platí jen pro rám) -------- */
   :root{
-    --cv-bg:#f4f4f7;          /* plocha scény – neutrální, NE fialová    */
+    --cv-bg:#fff;             /* plocha scény – neutrální, NE fialová    */
     --cv-line:#e4e2ed;        /* okraj panelu = jako karty v aplikaci    */
     --cv-muted:#8a84a0;       /* popiska nad panelem                     */
     --cv-accent:#1572e8;      /* JEDINÁ akcentová barva scény            */

@@ -37,7 +37,7 @@
   modrý text 700). NEDĚLEJ z nich pilulky — to je styl view switcheru.
 - ⛔ **Konektor je vždy modrý `#1572e8`**, nikdy barva modulu. Text pilulky
   max ~14 znaků, jinak přeteče sloupec.
-- ⛔ **Plocha scény `#f4f4f7`** — jednolitá, nikdy gradient, nikdy barva modulu.
+- ⛔ **Plocha scény bílá `#fff`** — žádná šedá plocha, nikdy gradient, nikdy barva modulu.
 - ⛔ **Zvýraznění e-mailu** = tint `#eef4fe` + `inset 3px 0 0 #1572e8`
   (stejné jako aktivní položka sidebaru). Žádná nová barva. Zvýrazni 1–2 řádky.
 - ⛔ **Do obrázku nepatří nadpis ani claim.** Smí tam být jen: 2 popisky,

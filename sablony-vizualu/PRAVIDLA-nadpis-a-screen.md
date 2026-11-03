@@ -21,7 +21,7 @@ Obrázek má **přesně dvě vrstvy** a nic víc:
 
 | Vrstva | Co to je | Kolik |
 |---|---|---|
-| **Bílá karta** | nese nadpis, radius 28 px | 1 |
+| **Bílá karta** | nese nadpis, rovné rohy, bez stínu (splývá s bílým pozadím) | 1 |
 | **Screenshot** | důkaz, orýznutý rámem nebo kartou | 1, u varianty C dva |
 
 ⛔ **Nic dalšího do obrázku nepatří** — žádná pilulka, popiska, šipka,
@@ -36,8 +36,8 @@ mockup). Jen nadpis a screenshot.
 |---|---|
 | Výstup | **1920 × 1080 px** (stejně jako celá složka) |
 | Návrhová vrstva | **1536 × 864** se `transform: scale(1.25)` |
-| Plocha za kartou | `#f4f4f7` |
-| Karta | `#fff`, radius **28 px**, stín `0 10px 34px rgba(30,27,46,.06)` |
+| Plocha za kartou | bílá `#fff` — ⛔ žádná šedá plocha |
+| Karta | `#fff`, **rovné rohy** (`radius 0`), **bez stínu** |
 
 ⛔ **Karta se nikdy nebarví** a nedostává gradient. Barvu do obrázku vnáší
 jen nadpis a samotný screenshot.
@@ -169,3 +169,6 @@ Tyhle obrázky se na stránce objevují **vedle sebe jako sada**. Proto:
 - **13. 8. 2026** — nadpis je **v obrázku**, na rozdíl od scén toku, kde je
   zakázaný. Jsou to dvě různé rodiny s opačným pravidlem — proto mají
   vlastní pravidla i vlastní prompt.
+- **3. 11. 2026** — **bez šedé plochy, bez zaoblené karty a bez stínu karty.** Obrázek je celý bílý,
+  karta má rovné rohy (`border-radius:0`, `box-shadow:none`). Sjednoceno s šablonami web-obrázků
+  v `Claude-Aptien-Templates`. Stín pod screenshotem / panely aplikace zůstává.

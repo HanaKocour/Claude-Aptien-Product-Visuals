@@ -46,7 +46,8 @@
   ⛔ CO SE NEMĚNÍ
   ────────────────────────────────────────────────────────────────────────
   ⛔ Rám `.hs-frame` 1920×1080 a `.hs-stage` 1536×864 se `scale(1.25)`.
-  ⛔ Plocha `#f4f4f7`, bílá karta radius 28px. Karta se nebarví.
+  ⛔ Celý obrázek je bílý: karta má rovné rohy, žádný stín a žádnou šedou
+     plochu kolem (3. 11. 2026). Karta se nebarví.
   ⛔ Nadpis: Nunito **900**, `60px/1.1`, barva `#311B92`, na střed.
      Nezmenšuj ho, aby se vešel delší text — zkrať text.
   ⛔ Screenshot má radius 14px, jemný okraj `#e6e4ee` a stín. Nenaklánět,
@@ -59,14 +60,14 @@
      šablony `email-do-aplikace.html` a `aplikace-do-emailu.html`.
 -->
 <style>
-  .hs-frame{width:1920px;height:1080px;overflow:hidden;position:relative;background:#f4f4f7}
+  .hs-frame{width:1920px;height:1080px;overflow:hidden;position:relative;background:#fff}
   .hs-stage{width:1536px;height:864px;transform:scale(1.25);transform-origin:top left;
-            position:relative;overflow:hidden;background:#f4f4f7;
+            position:relative;overflow:hidden;background:#fff;
             font-family:'Nunito',sans-serif;-webkit-font-smoothing:antialiased}
 
   /* bílá karta – nese nadpis; nikdy se nebarví */
-  .hs-card{position:absolute;background:#fff;border-radius:28px;
-           box-shadow:0 10px 34px rgba(30,27,46,.06);box-sizing:border-box;overflow:hidden}
+  .hs-card{position:absolute;background:#fff;border-radius:0;
+           box-shadow:none;box-sizing:border-box;overflow:hidden}
 
   /* nadpis – Nunito 900, brandová tmavá fialová */
   .hs-title{margin:0;font-family:'Nunito',sans-serif;font-weight:900;font-size:60px;

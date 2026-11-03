@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aptien – Školení ke směrnici: celý proces (prototyp)</title>
+<!--
+  APTIEN — TVORBA TESTU KE ŠKOLENÍ (klikací prototyp, v1 k připomínkování)
+  =========================================================================
+  Kontext: Aptien má zakoupený SurveyJS (Form Library + Creator + PDF + Dashboard).
+  Dnes se test dá postavit jen ručně v obecném editoru formulářů (20 typů
+  otázek, vzorce, skryté vlastnosti) nebo importem souboru. Prototyp ukazuje,
+  jak by tvorbu testu zjednodušila vrstva Aptienu NAD SurveyJS:
+
+    1. Online formuláře → nové tlačítko „Vytvořit test"
+    2. Úvodní volba: prázdný / vložit z textu / ze šablony / Aptík z dokumentu
+    3. Editor testu se 3 kroky: Obsah a otázky · Nastavení · Vyzkoušet
+       - jen 5 prvků, správná odpověď = klik na kolečko u odpovědi, body u otázky
+       - materiál = připojená směrnice / vlastní text / nic
+       - průběžná „Kontrola testu" (chybějící správné odpovědi apod.)
+    4. Nastavení = obyčejná pole (hranice úspěšnosti, čas, pokusy, certifikát…)
+    5. Vyzkoušet = průchod testem očima zaměstnance vč. výsledku a certifikátu
+    6. „Pro vývojáře" = živě generovaný SurveyJS JSON (stejný tvar jako
+       ověřený import do smaztest2022hanak, formulář „Ukázkový test – BOZP")
+
+  Vše je vanilla JS, žádná data se nikam neukládají. Fonty/ikony z CDN
+  (Nunito, Font Awesome 6 Free) stejně jako partials v tomto repozitáři.
+  Spec: skoleni-tvorba-testu-prototyp.spec.md
+-->
+<!--
+  APTIEN — ŠKOLENÍ KE SMĚRNICI: CELÝ PROCES (klikací prototyp, v1 k připomínkování, 7. 10. 2026)
+  Navazuje na skoleni-tvorba-testu-prototyp.html (editor testu je převzatý beze změny logiky).
+  Horní tmavá lišta „PROCES“ přepíná 6 kroků:
+    1 Správce · Směrnice – detail směrnice, nová záložka „Školení a test“
+    2 Správce · Test ke směrnici – editor (materiál = tato směrnice)
+    3 Správce · Distribuční list – nový způsob doručení „Potvrzení + test“
+    4 Zaměstnanec · Počítač – Moje směrnice → čtečka → potvrzení → test → výsledek → Potvrzeno
+    5 Zaměstnanec · Mobil – upozornění → test po otázkách → certifikát v „O mně“
+    6 Správce · Vyhodnocení – detail listu: stavy lidí, pokusy, úspěšnost otázek
+  Stav se mezi kroky přenáší (co uděláte v kroku 4, uvidíte v kroku 6).
+  Spec: skoleni-proces-smernice-prototyp.spec.md
+-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#1572e8; --primary-light:#5b9cef; --primary-dark:#0f50a2; --primary-wash:rgba(21,114,232,.08);
+  --topbar:#424242; --canvas:#f7f8fc; --ink:#1a1a1a; --title:#2b2540; --muted:#5b6070; --muted2:#8a90a3;
+  --line:#e2e5ef; --line2:#ecedf4; --green:#00C853; --green-dark:#00a344; --green-bg:#e6f9ee;
+  --amber:#FFA200; --amber-bg:#fff5e0; --red:#EF5350; --red-bg:#FEE8E8; --indigo:#4b64f5;
+  --zam:#f1c40f; --radius:10px; --shadow:0 0 10px rgba(0,0,0,.10); --shadow-pop:0 8px 28px rgba(0,0,0,.16);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:'Nunito',system-ui,sans-serif;color:var(--ink);font-size:14px;background:#f5f6f7;overflow:hidden}
+button{font-family:inherit}
+input,textarea,select{font-family:inherit;font-size:13.5px;color:var(--title)}
+.hidden{display:none!important}
+
+/* ---------- Aptien shell (pozadí za modalem) ---------- */
+.topbar{height:56px;background:var(--topbar);display:flex;align-items:center;padding:0 18px;gap:14px;color:#fff}
+.logo{font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo span{opacity:.75;font-weight:600;font-size:14px;margin-left:10px}
+.tabstrip{height:34px;background:var(--topbar);display:flex;align-items:flex-end;gap:4px;padding:0 14px}
+.tabstrip div{background:#fff;border-radius:6px 6px 0 0;padding:6px 14px;font-size:12.5px;font-weight:600}
+.shell-body{display:flex;height:calc(100% - 90px)}
+.shell-side{width:56px;background:#fff;border-right:1px solid #ededf2}
+.shell-main{flex:1;padding:18px}
+.shell-toolbar{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700;color:var(--title)}
+.shell-list{margin-top:14px;background:#fff;border-radius:10px;height:80%;box-shadow:var(--shadow-soft,0 0 10px rgba(0,0,0,.06))}
+
+/* ---------- Modal (Editace evidence – stejné třídy jako partial evx) ---------- */
+.overlay{position:fixed;inset:0;background:rgba(20,22,30,.55);display:flex;align-items:center;justify-content:center;z-index:10}
+.apt-modal{width:min(1180px,94vw);height:min(920px,92vh);background:#fff;border-radius:12px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.apt-modal-head{flex-shrink:0;display:flex;align-items:center;padding:18px 24px 14px}
+.apt-modal-title{font-size:19px;font-weight:700;color:#3f4457;flex:1}
+.x{font-size:19px;color:#8a90a3;cursor:pointer;line-height:1;border:0;background:none}
+.apt-modal-body{flex:1;min-height:0;display:flex}
+.apt-modal-nav{width:246px;flex-shrink:0;padding:0 14px 18px;overflow-y:auto}
+.nav-item{display:flex;align-items:center;padding:9px 12px;border-radius:8px;font-size:13.5px;margin-bottom:2px;color:var(--title);cursor:default}
+.nav-item.active{background:var(--indigo);color:#fff;font-weight:700}
+.apt-modal-content{flex:1;min-width:0;background:var(--canvas);padding:26px 30px 30px;overflow-y:auto}
+.card{background:#fff;border:1px solid var(--line2);border-radius:14px;padding:26px 30px;box-shadow:0 1px 3px rgba(20,22,40,.05)}
+.h2{font-size:19px;font-weight:600;color:var(--muted);margin:0 0 4px}
+.sub{font-size:12.5px;color:var(--muted2);margin-bottom:18px}
+
+/* Online formuláře – seznam */
+.create-row{display:flex;gap:44px;padding:6px 6px 24px;border-bottom:1px solid var(--line2);margin-bottom:22px}
+.create-btn{display:flex;flex-direction:column;align-items:center;gap:9px;font-size:12.5px;color:var(--title);cursor:pointer;background:none;border:0;position:relative}
+.create-btn .circle{width:46px;height:46px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 3px 10px rgba(21,114,232,.3);transition:transform .15s}
+.create-btn:hover .circle{transform:scale(1.07)}
+.create-btn.new .circle{background:linear-gradient(135deg,#1572e8,#5b9cef);outline:3px solid rgba(21,114,232,.18)}
+.badge-new{position:absolute;top:-6px;right:-14px;background:#FF3D00;color:#fff;font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:4px;letter-spacing:.04em}
+.forms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.form-card{border:1px solid var(--line2);border-radius:10px;background:#fff;overflow:hidden}
+.form-card-head{background:#f6f7fb;padding:10px 14px;font-weight:700;font-size:13px;color:var(--title);display:flex;align-items:center;gap:8px}
+.form-card-body{padding:12px 14px 14px;font-size:11.5px;color:var(--muted2);text-align:center;line-height:1.7}
+.form-card-actions{display:flex;justify-content:center;gap:8px;margin-top:8px}
+.ic-btn{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;background:#fff;cursor:pointer}
+.ic-btn.danger{color:var(--red)}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.03em}
+.chip-test{background:#e8f1fd;color:var(--primary)}
+.chip-draft{background:#fff3c4;color:#8a6d00}
+.chip-pub{background:var(--green-bg);color:var(--green-dark)}
+
+/* ---------- Úvodní volba ---------- */
+.start-modal{width:760px;background:#fff;border-radius:14px;box-shadow:var(--shadow-pop);padding:26px 28px}
+.start-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.start-opt{border:1.5px solid var(--line);border-radius:12px;padding:18px;cursor:pointer;display:flex;gap:14px;align-items:flex-start;background:#fff;text-align:left;transition:.15s}
+.start-opt:hover{border-color:var(--primary);background:var(--primary-wash)}
+.start-opt .ico{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.start-opt b{display:block;font-size:14.5px;color:var(--title);margin-bottom:4px}
+.start-opt span{font-size:12.5px;color:var(--muted);line-height:1.45}
+.ai-tag{display:inline-block;background:linear-gradient(135deg,#6200EA,#AA00FF);color:#fff;font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:4px;margin-left:6px;vertical-align:2px}
+
+/* ---------- Editor testu (celoobrazovkový modal) ---------- */
+.editor{position:fixed;inset:0;background:#fff;z-index:20;display:flex;flex-direction:column}
+.ed-head{height:58px;flex-shrink:0;display:flex;align-items:center;gap:14px;padding:0 18px;border-bottom:1px solid var(--line2)}
+.btn-back{background:var(--primary);color:#fff;border:0;border-radius:999px;font-size:11px;font-weight:800;padding:6px 12px;cursor:pointer}
+.ed-title{font-size:17px;font-weight:800;color:var(--title);border:1px solid transparent;border-radius:6px;padding:4px 8px;min-width:300px;background:none}
+.ed-title:hover{border-color:var(--line)}
+.ed-title:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(21,114,232,.15)}
+.steps{display:flex;gap:4px;margin:0 auto;background:#f1f3f8;border-radius:10px;padding:4px}
+.step{border:0;background:none;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:8px}
+.step .n{width:20px;height:20px;border-radius:50%;background:#dfe3ec;color:var(--muted);font-size:11px;display:inline-flex;align-items:center;justify-content:center}
+.step.active{background:#fff;color:var(--primary);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.step.active .n{background:var(--primary);color:#fff}
+.btn{border:0;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.03em;padding:9px 20px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.btn-blue{background:var(--primary);color:#fff;box-shadow:0 2px 6px rgba(21,114,232,.28)}
+.btn-blue:disabled{background:#b9c7da;box-shadow:none;cursor:not-allowed}
+.btn-ghost{background:#fff;color:var(--primary);border:1px solid #c9d9f5}
+.btn-green{background:var(--green-dark);color:#fff}
+.btn-sm{padding:6px 12px;font-size:11.5px}
+.ed-body{flex:1;min-height:0;display:flex;background:var(--canvas)}
+
+/* levý panel */
+.toolbox{width:250px;flex-shrink:0;background:#fff;border-right:1px solid var(--line2);padding:16px 14px;overflow-y:auto}
+.tb-label{font-size:10.5px;font-weight:800;color:var(--muted2);letter-spacing:.08em;text-transform:uppercase;margin:6px 4px 8px}
+.tb-item{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:8px;font-size:13.5px;color:var(--title);cursor:pointer;border:0;background:none;width:100%;text-align:left}
+.tb-item:hover{background:var(--primary-wash);color:var(--primary)}
+.tb-item i{width:18px;text-align:center;color:var(--primary)}
+.tb-sep{height:1px;background:var(--line2);margin:12px 4px}
+.tb-big{display:flex;align-items:center;gap:10px;width:100%;border:1.5px dashed #c9d9f5;background:#f7faff;border-radius:10px;padding:11px 12px;font-size:13px;font-weight:700;color:var(--primary);cursor:pointer;margin-bottom:8px;text-align:left}
+.tb-big.ai{border-color:#d9c6ff;background:#faf6ff;color:#6200EA}
+.tb-note{font-size:11.5px;color:var(--muted2);line-height:1.5;margin:10px 4px 0}
+
+/* plátno */
+.canvas{flex:1;min-width:0;overflow-y:auto;padding:24px 28px 80px}
+.canvas-inner{max-width:780px;margin:0 auto}
+.sec-title{font-size:12px;font-weight:800;color:var(--muted2);letter-spacing:.08em;text-transform:uppercase;margin:20px 0 10px;display:flex;align-items:center;gap:8px}
+.sec-title .count{background:#e6e9f2;color:var(--muted);border-radius:4px;padding:1px 6px;font-size:11px;letter-spacing:0}
+.mat-card{background:#fff;border:1px solid var(--line2);border-radius:12px;padding:18px 20px}
+.seg{display:inline-flex;background:#eef0f5;border:1px solid #e4e6ee;border-radius:8px;padding:3px;gap:2px}
+.seg button{border:0;background:none;padding:7px 14px;border-radius:6px;font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:6px}
+.seg button.on{background:#fff;color:var(--primary);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.doc-pick{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-top:14px;background:#fbfcff}
+.doc-ico{width:38px;height:38px;border-radius:8px;background:#e8f1fd;color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:16px}
+.rte{border:1px solid var(--line);border-radius:10px;margin-top:14px;overflow:hidden}
+.rte-bar{display:flex;gap:2px;padding:6px;border-bottom:1px solid var(--line2);background:#fafbfd}
+.rte-bar button{border:0;background:none;width:30px;height:28px;border-radius:6px;color:var(--muted);cursor:pointer}
+.rte-bar button:hover{background:#eef0f5}
+.rte-body{padding:12px 14px;min-height:120px;font-size:13.5px;line-height:1.55;outline:none}
+.rte-body h4{margin:.2em 0 .3em;font-size:14px}
+.rte-body p{margin:.3em 0}
+
+.q{background:#fff;border:1.5px solid var(--line2);border-radius:12px;padding:16px 18px 14px;margin-bottom:12px;position:relative;transition:border-color .15s}
+.q:hover{border-color:#d5dcec}
+.q.err{border-color:#f6b3b2}
+.q-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.q-num{width:26px;height:26px;border-radius:7px;background:#eef3fd;color:var(--primary);font-weight:800;font-size:12.5px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.q-type{font-size:11.5px;color:var(--muted2);font-weight:700;display:flex;align-items:center;gap:6px}
+.q-tools{margin-left:auto;display:flex;gap:4px;opacity:.55;transition:.15s}
+.q:hover .q-tools{opacity:1}
+.q-tools button{border:0;background:none;width:28px;height:28px;border-radius:6px;color:var(--muted);cursor:pointer}
+.q-tools button:hover{background:#f1f3f8;color:var(--title)}
+.q-title{width:100%;border:1px solid transparent;border-radius:8px;padding:7px 9px;font-size:15px;font-weight:700;color:var(--title);resize:none;background:#fafbfd;line-height:1.4}
+.q-title:focus,.a-input:focus{outline:none;border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(21,114,232,.12)}
+.q-title::placeholder,.a-input::placeholder{color:#b3b8c6;font-weight:600}
+.answers{margin:10px 0 4px}
+.a-row{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.mark{width:26px;height:26px;flex-shrink:0;border:2px solid #cfd5e3;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:transparent;font-size:12px;transition:.12s}
+.mark.radio{border-radius:50%}
+.mark.box{border-radius:6px}
+.mark:hover{border-color:var(--green)}
+.mark.on{background:var(--green);border-color:var(--green);color:#fff}
+.a-input{flex:1;border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:13.5px;background:#fff}
+.a-row.ok .a-input{border-color:#9be3b7;background:#f3fcf6}
+.a-del{border:0;background:none;color:#c3c8d4;cursor:pointer;width:24px}
+.a-del:hover{color:var(--red)}
+.add-a{border:0;background:none;color:var(--primary);font-weight:700;font-size:12.5px;cursor:pointer;padding:4px 0 4px 36px}
+.hint-correct{font-size:11.5px;color:var(--muted2);margin-left:36px}
+.bool-row{display:flex;gap:10px;margin:10px 0 4px}
+.bool-opt{flex:1;max-width:180px;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:700;color:var(--title);background:#fff}
+.bool-opt.on{border-color:var(--green);background:#f3fcf6}
+.bool-opt.on .mark{background:var(--green);border-color:var(--green);color:#fff}
+.q-foot{display:flex;align-items:center;gap:14px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line2);font-size:12.5px;color:var(--muted)}
+.pts{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.pts button{border:0;background:#f6f7fb;width:28px;height:28px;cursor:pointer;color:var(--muted);font-weight:800}
+.pts span{min-width:34px;text-align:center;font-weight:800;color:var(--title)}
+.q-err{color:var(--red);font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;margin-left:auto}
+.add-q-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.add-q-row button{border:1.5px dashed #c9d9f5;background:#fff;border-radius:10px;padding:10px 14px;font-weight:700;color:var(--primary);cursor:pointer;font-size:12.5px;display:flex;align-items:center;gap:7px}
+.img-ph{border:1.5px dashed var(--line);border-radius:10px;padding:26px;text-align:center;color:var(--muted2);font-size:12.5px;margin-top:6px}
+.empty-q{border:1.5px dashed #d5dcec;border-radius:12px;padding:30px;text-align:center;color:var(--muted);background:#fff}
+
+/* pravý panel – kontrola */
+.check{width:300px;flex-shrink:0;background:#fff;border-left:1px solid var(--line2);padding:18px 18px;overflow-y:auto}
+.check h3{font-size:14px;margin:0 0 12px;color:var(--title);display:flex;align-items:center;gap:8px}
+.stat-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.stat{background:#f7f8fc;border-radius:10px;padding:10px 12px}
+.stat b{display:block;font-size:20px;color:var(--title);font-weight:800}
+.stat span{font-size:11.5px;color:var(--muted2)}
+.pass-box{border:1px solid var(--line2);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12.5px;color:var(--muted)}
+.pass-box b{color:var(--title)}
+.meter{height:8px;background:#eef0f5;border-radius:99px;margin-top:8px;position:relative;overflow:hidden}
+.meter i{position:absolute;left:0;top:0;bottom:0;background:var(--primary);border-radius:99px}
+.issues{display:flex;flex-direction:column;gap:6px}
+.issue{display:flex;gap:9px;align-items:flex-start;font-size:12.5px;padding:9px 10px;border-radius:8px;cursor:pointer;line-height:1.4;border:0;text-align:left;width:100%}
+.issue.err{background:var(--red-bg);color:#b3261e}
+.issue.warn{background:var(--amber-bg);color:#8a5a00}
+.issue.ok{background:var(--green-bg);color:#06713a;cursor:default}
+.issue i{margin-top:2px}
+
+/* Nastavení */
+.set-wrap{flex:1;overflow-y:auto;padding:24px 28px 80px}
+.set-inner{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.set-card{background:#fff;border:1px solid var(--line2);border-radius:14px;padding:20px 24px}
+.set-card h3{margin:0 0 4px;font-size:15px;color:var(--title);display:flex;align-items:center;gap:9px}
+.set-card h3 i{color:var(--primary);width:18px}
+.set-card .sub{margin-bottom:14px}
+.f-row{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start;margin-bottom:14px}
+.f{display:flex;flex-direction:column;gap:6px;min-width:180px}
+.f label{font-size:12.5px;color:var(--muted)}
+.f input[type=text],.f input[type=number],.f select,.f textarea{border:1px solid var(--line);border-radius:6px;height:34px;padding:0 10px;background:#fff}
+.f textarea{height:auto;padding:8px 10px;min-height:60px;resize:vertical}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(21,114,232,.12)}
+.f small{font-size:11.5px;color:var(--muted2)}
+.toggle{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13.5px;color:var(--title);user-select:none}
+.toggle .sw{width:36px;height:20px;border-radius:99px;background:#cfd5e3;position:relative;transition:.15s;flex-shrink:0}
+.toggle .sw:after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.toggle.on .sw{background:var(--primary)}
+.toggle.on .sw:after{left:18px}
+.range-wrap{display:flex;align-items:center;gap:14px}
+.range-wrap input[type=range]{width:260px;accent-color:var(--primary)}
+.range-val{font-weight:800;color:var(--title);font-size:18px;min-width:56px}
+.radio-list{display:flex;flex-direction:column;gap:8px}
+.radio-opt{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;font-size:13px}
+.radio-opt.on{border-color:var(--primary);background:var(--primary-wash)}
+.radio-opt .dot{width:16px;height:16px;border-radius:50%;border:2px solid #cfd5e3;margin-top:2px;flex-shrink:0;position:relative}
+.radio-opt.on .dot{border-color:var(--primary)}
+.radio-opt.on .dot:after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--primary)}
+.radio-opt b{color:var(--title);display:block}
+.radio-opt span{color:var(--muted2);font-size:12px}
+.cert-row{display:flex;gap:22px;align-items:flex-start}
+.cert-thumb{width:250px;flex-shrink:0;aspect-ratio:1.414;border:1px solid var(--line);border-radius:6px;background:#fff;position:relative;overflow:hidden;font-size:7px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.cert-thumb .t{position:absolute;top:0;left:0;right:0;height:5px;background:#f8c513}
+.cert-thumb .b{position:absolute;bottom:0;left:0;right:0;height:5px;background:#1f2937}
+.cert-thumb h5{margin:22px 0 2px;font-size:15px;letter-spacing:.5px;color:#1f2937}
+.cert-thumb .nm{font-size:12px;font-weight:800;margin:10px 0 2px;color:#111}
+.cert-thumb .ln{width:110px;height:1px;background:#f8c513;margin:0 auto 8px}
+.cert-thumb .row3{display:flex;justify-content:space-around;margin-top:16px;color:#777}
+.cert-thumb .row3 b{display:block;color:#111;font-size:8px}
+.devbox{background:#1e2230;color:#cfe3ff;border-radius:10px;padding:14px 16px;font-family:ui-monospace,Consolas,monospace;font-size:11.5px;line-height:1.5;max-height:420px;overflow:auto;white-space:pre}
+.devnote{font-size:12px;color:var(--muted);margin:0 0 10px;line-height:1.5}
+details summary{cursor:pointer;font-weight:800;color:var(--title);font-size:14px;list-style:none;display:flex;align-items:center;gap:9px}
+details summary::-webkit-details-marker{display:none}
+
+/* Vyzkoušet */
+.try-wrap{flex:1;overflow-y:auto;padding:22px}
+.try-bar{max-width:820px;margin:0 auto 12px;display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--muted)}
+.try-frame{max-width:820px;margin:0 auto;background:#f3f3f3;border-radius:12px;border:1px solid var(--line);overflow:hidden;min-height:560px}
+.sv-head{background:#fff;padding:20px 28px;border-bottom:2px solid #19b394;display:flex;align-items:center}
+.sv-head h1{margin:0;font-size:24px;color:#19b394;font-weight:800}
+.sv-head p{margin:4px 0 0;color:#909090;font-size:13px}
+.sv-timer{margin-left:auto;width:64px;height:64px;border-radius:50%;border:3px solid #19b394;display:flex;align-items:center;justify-content:center;font-weight:800;color:#19b394;background:#fff;font-size:16px}
+.sv-timer.low{border-color:var(--red);color:var(--red)}
+.sv-progress{height:4px;background:#e0e0e0}
+.sv-progress i{display:block;height:100%;background:#19b394;transition:width .2s}
+.sv-page{max-width:640px;margin:0 auto;padding:26px 20px 30px}
+.sv-page h2{font-size:20px;margin:0 0 6px;color:#161616}
+.sv-desc{color:#909090;font-size:13px;margin-bottom:16px}
+.sv-q{background:#fff;border-radius:8px;padding:20px 22px;margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.sv-q .t{font-weight:700;margin-bottom:12px;color:#161616}
+.sv-q .t .req{color:#e60a3e}
+.sv-opt{display:flex;align-items:center;gap:12px;padding:7px 0;cursor:pointer;font-size:14px;color:#161616}
+.sv-opt .o{width:22px;height:22px;border:1px solid #c9c9c9;background:#f9f9f9;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.sv-opt .o.r{border-radius:50%}
+.sv-opt .o.c{border-radius:4px}
+.sv-opt.sel .o{border-color:#19b394}
+.sv-opt.sel .o.r:after{content:'';width:10px;height:10px;border-radius:50%;background:#19b394}
+.sv-opt.sel .o.c:after{content:'\2713';color:#19b394;font-weight:800;font-size:13px}
+.sv-opt.right{color:var(--green-dark);font-weight:700}
+.sv-opt.wrong{color:var(--red);text-decoration:line-through}
+.sv-bool{display:inline-flex;background:#f3f3f3;border-radius:99px;padding:3px}
+.sv-bool span{padding:8px 22px;border-radius:99px;cursor:pointer;color:#909090;font-weight:700}
+.sv-bool span.sel{background:#fff;color:#19b394;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.sv-btns{display:flex;gap:10px;margin-top:18px}
+.sv-btn{background:#fff;border:0;border-radius:4px;padding:12px 28px;font-weight:700;color:#19b394;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.15);font-size:14px}
+.sv-btn.main{background:#19b394;color:#fff}
+.sv-err{background:#fde6ea;color:#e60a3e;border-radius:6px;padding:8px 12px;font-size:12.5px;margin-bottom:10px}
+.sv-material{background:#fff;border-radius:8px;padding:18px 22px;box-shadow:0 1px 2px rgba(0,0,0,.12);margin-bottom:12px;line-height:1.55;font-size:14px}
+.sv-material h4{margin:.6em 0 .2em}
+.sv-doc{display:flex;gap:12px;align-items:center;background:#fff;border-radius:8px;padding:16px 18px;box-shadow:0 1px 2px rgba(0,0,0,.12);margin-bottom:12px}
+.result{text-align:center;padding:40px 20px}
+.result .big{font-size:46px}
+.result h2{margin:10px 0 6px;font-size:22px}
+.result .score{font-size:15px;color:#555}
+.review-q{background:#fff;border-radius:8px;padding:14px 18px;margin:10px auto;max-width:600px;text-align:left;box-shadow:0 1px 2px rgba(0,0,0,.1)}
+
+/* Vložit z textu / Aptík – dialogy */
+.dlg{width:min(1040px,94vw);max-height:90vh;background:#fff;border-radius:14px;box-shadow:var(--shadow-pop);display:flex;flex-direction:column;overflow:hidden}
+.dlg-head{padding:18px 22px 10px;display:flex;align-items:center;gap:10px}
+.dlg-head h3{margin:0;font-size:18px;color:var(--title);flex:1}
+.dlg-body{flex:1;min-height:0;display:flex;gap:18px;padding:6px 22px 18px;overflow:hidden}
+.dlg-foot{padding:14px 22px;border-top:1px solid var(--line2);display:flex;gap:10px;align-items:center}
+.paste-area{flex:1;display:flex;flex-direction:column;gap:8px;min-width:0}
+.paste-area textarea{flex:1;min-height:360px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-family:ui-monospace,Consolas,monospace;font-size:12.5px;line-height:1.55;resize:none}
+.paste-help{font-size:12px;color:var(--muted);background:#f7f8fc;border-radius:8px;padding:10px 12px;line-height:1.6}
+.paste-help code{background:#e8ebf3;border-radius:4px;padding:1px 5px;font-size:11.5px}
+.preview{flex:1;min-width:0;overflow-y:auto;background:var(--canvas);border-radius:10px;padding:12px}
+.pv-q{background:#fff;border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:13px}
+.pv-q b{color:var(--title)}
+.pv-a{display:flex;gap:7px;align-items:center;padding:2px 0;color:var(--muted)}
+.pv-a.ok{color:var(--green-dark);font-weight:700}
+.pv-warn{color:#b3261e;font-size:12px;font-weight:700;margin-top:4px}
+.ai-src{display:flex;flex-direction:column;gap:10px;width:360px;flex-shrink:0}
+.src-opt{display:flex;gap:10px;align-items:center;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer}
+.src-opt.on{border-color:#AA00FF;background:#faf6ff}
+.credit{font-size:12px;color:#6200EA;background:#f3ebff;border-radius:8px;padding:8px 10px}
+.spinner{width:42px;height:42px;border:4px solid #eadcff;border-top-color:#6200EA;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gen-q{display:flex;gap:10px;background:#fff;border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:13px}
+.gen-q input{margin-top:3px;accent-color:#6200EA}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#263238;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;z-index:100;box-shadow:var(--shadow-pop);display:flex;gap:9px;align-items:center}
+.cert-view{width:760px;aspect-ratio:1.414;background:#fff;position:relative;border-radius:4px;box-shadow:var(--shadow-pop);text-align:center;font-family:'DejaVu Sans',Verdana,sans-serif}
+.cert-view .t{position:absolute;top:0;left:0;right:0;height:14px;background:#f8c513}
+.cert-view .b{position:absolute;bottom:0;left:0;right:0;height:14px;background:#1f2937}
+.cert-view .in{position:absolute;inset:34px 26px 40px;border:1px solid #dde1e7}
+.cert-view h1{margin:56px 0 4px;font-size:40px;color:#1f2937;letter-spacing:1px}
+.cert-view .s{color:#727a85;font-size:15px}
+.cert-view .nm{font-size:28px;font-weight:800;margin:22px 0 6px}
+.cert-view .ln{width:320px;height:1.5px;background:#f8c513;margin:0 auto 18px}
+.cert-view .cr{font-size:18px;font-weight:800;margin-top:8px}
+.cert-view .r3{display:flex;justify-content:space-around;margin-top:46px;font-size:11px;color:#727a85}
+.cert-view .r3 b{display:block;color:#111;font-size:15px;margin-top:4px}
+
+/* ===== Procesní prototyp – doplňky ===== */
+body{background:#f5f6f7}
+.proc-bar{position:fixed;top:0;left:0;right:0;height:46px;background:#1e1b2e;color:#fff;display:flex;align-items:center;gap:6px;padding:0 14px;z-index:70;font-size:12.5px}
+.proc-bar .lbl{font-weight:800;letter-spacing:.08em;font-size:10.5px;color:#a9a3c9;margin-right:6px}
+.proc-step{border:0;background:none;color:#c9c4e3;font-weight:700;font-size:12.5px;padding:6px 10px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:7px;white-space:nowrap}
+.proc-step:hover{background:rgba(255,255,255,.07)}
+.proc-step .n{width:20px;height:20px;border-radius:50%;background:#3a3552;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
+.proc-step.on{background:#fff;color:#1e1b2e}
+.proc-step.on .n{background:var(--primary);color:#fff}
+.proc-step.done .n{background:var(--green-dark);color:#fff}
+.proc-step .role{font-size:9.5px;font-weight:800;letter-spacing:.05em;padding:1px 5px;border-radius:3px;background:#3a3552;color:#d9d4f2}
+.proc-step.on .role{background:#eef0ff;color:#4b64f5}
+.proc-step .role.emp{background:#0f5132;color:#b8f0cf}
+.proc-step.on .role.emp{background:#e6f9ee;color:#06713a}
+.proc-arrow{color:#55507a;font-size:10px}
+.proc-next{margin-left:auto;background:var(--primary);color:#fff;border:0;border-radius:999px;padding:7px 14px;font-weight:800;font-size:11.5px;cursor:pointer;white-space:nowrap}
+.proc-reset{background:none;border:1px solid #4a4566;color:#c9c4e3;border-radius:999px;padding:6px 12px;font-size:11.5px;cursor:pointer;margin-left:6px}
+
+.app{position:fixed;top:46px;left:0;right:0;bottom:0;display:flex;flex-direction:column}
+.editor{top:46px!important}
+.app .topbar{flex-shrink:0}
+.app .tabstrip{flex-shrink:0}
+.app-body{flex:1;min-height:0;display:flex}
+.side{width:56px;flex-shrink:0;background:#fff;border-right:1px solid #ededf2;display:flex;flex-direction:column;align-items:center;padding-top:10px;gap:4px}
+.side i{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#9a93b5;font-size:15px}
+.side i.on{background:rgba(21,114,232,.10);color:#1572e8}
+.app-main{flex:1;min-width:0;overflow-y:auto;background:var(--canvas)}
+.topbar .right{margin-left:auto;display:flex;align-items:center;gap:16px;font-size:15px;color:#ddd}
+.avatar{width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#fff;flex-shrink:0}
+.role-pill{font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px;background:#5a5a5a;color:#fff}
+
+/* hint (anotace) */
+.hint{position:fixed;left:72px;bottom:16px;max-width:420px;background:#fffbe6;border:1px solid #f5d76e;color:#5c4a00;border-radius:12px;padding:12px 14px 12px 40px;font-size:12.5px;line-height:1.5;box-shadow:0 6px 20px rgba(0,0,0,.12);z-index:35}
+.hint:before{content:'\f0eb';font-family:'Font Awesome 6 Free';font-weight:900;position:absolute;left:14px;top:12px;color:#d4a200;font-size:15px}
+.hint b{color:#3d3200}
+.hint .x{position:absolute;right:8px;top:6px;font-size:13px;color:#a08a2a}
+.hint-min{position:fixed;left:72px;bottom:16px;z-index:35;background:#fffbe6;border:1px solid #f5d76e;color:#8a6d00;border-radius:999px;padding:7px 12px;font-size:12px;font-weight:800;cursor:pointer}
+
+/* evidence Směrnice – tabulka + drawer */
+.ev-toolbar{display:flex;align-items:center;gap:12px;padding:16px 22px 10px}
+.ev-title{font-size:20px;font-weight:800;color:var(--title);display:flex;align-items:center;gap:10px}
+.ev-add{background:#1572e8;color:#fff;border:0;border-radius:999px;font-size:11.5px;font-weight:800;padding:7px 14px}
+.ev-table{margin:0 22px;background:#fff;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,.06);overflow:hidden}
+.ev-table table{width:100%;border-collapse:collapse;font-size:13px}
+.ev-table th{text-align:left;font-size:11.5px;color:#6b7280;font-weight:700;padding:11px 14px;border-bottom:1px solid #edeff5}
+.ev-table td{padding:11px 14px;border-bottom:1px solid #f1f2f6;color:var(--title)}
+.ev-table tr.sel td{background:#f3f8ff}
+.drawer{position:fixed;top:46px;right:0;bottom:0;width:min(1120px,78vw);background:#fff;box-shadow:-8px 0 30px rgba(0,0,0,.18);display:flex;z-index:30}
+.drawer-rail{width:38px;border-right:1px solid #eee;display:flex;flex-direction:column;align-items:center;padding-top:14px;gap:12px;color:#1572e8}
+.drawer-rail span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px;font-weight:800;color:#555}
+.drawer-main{flex:1;min-width:0;display:flex;flex-direction:column}
+.drawer-head{padding:22px 30px 0;display:flex;align-items:flex-start}
+.drawer-head h2{margin:0;font-size:26px;font-weight:600;color:#222}
+.drawer-tabs{display:flex;gap:4px;padding:18px 30px 0;border-bottom:1px solid #eee}
+.drawer-tabs button{border:0;background:none;padding:11px 16px;font-size:13px;font-weight:700;color:#333;border-radius:10px 10px 0 0;cursor:pointer;display:flex;align-items:center;gap:7px}
+.drawer-tabs button.on{background:#f7f8fc;color:#1572e8;box-shadow:0 -1px 0 #eee inset}
+.drawer-body{flex:1;min-height:0;display:flex}
+.drawer-content{flex:1;min-width:0;overflow-y:auto;background:#f7f8fc;padding:22px 26px}
+.drawer-actions{width:210px;border-left:1px solid #eee;padding:16px 14px;font-size:13px;color:#333}
+.drawer-actions div{display:flex;gap:10px;align-items:center;padding:7px 4px;color:#444}
+.drawer-actions i{width:16px;color:#888}
+.badge-blue{background:#1572e8;color:#fff;border-radius:99px;font-size:10px;font-weight:800;padding:1px 6px}
+.empty-test{background:#fff;border:1.5px dashed #c9d9f5;border-radius:14px;padding:30px;text-align:center}
+.empty-test .ic{width:56px;height:56px;border-radius:14px;background:#eef3fd;color:#1572e8;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 12px}
+.empty-test h3{margin:0 0 6px;color:var(--title)}
+.empty-test p{margin:0 auto 18px;max-width:520px;color:var(--muted);font-size:13.5px;line-height:1.5}
+.btn-ai{background:#6200EA;color:#fff}
+.sum-card{background:#fff;border:1px solid var(--line2);border-radius:14px;padding:20px 22px}
+.sum-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:16px 0}
+.sum-grid .stat b{font-size:17px}
+.callout{display:flex;gap:12px;align-items:center;border-radius:12px;padding:14px 16px;font-size:13px;margin-top:14px}
+.callout.blue{background:#eef4fe;color:#0f50a2}
+.callout.green{background:var(--green-bg);color:#06713a}
+.callout.amber{background:var(--amber-bg);color:#7a4f00}
+.callout i{font-size:18px}
+
+/* Distribuční listy */
+.nsm{padding:22px 40px}
+.crumb{font-size:12.5px;color:#9096a6;display:flex;gap:8px;align-items:center}
+.nsm h1{font-size:22px;margin:8px 0 14px;color:#1a1a1a}
+.nsm-tabs{display:flex;gap:4px;margin-top:20px}
+.nsm-tab{padding:12px 18px;font-size:13px;font-weight:700;color:#8a90a3;display:flex;gap:8px;align-items:center;border-radius:10px 10px 0 0}
+.nsm-tab.on{background:#fff;color:#1572e8;box-shadow:0 -2px 8px rgba(0,0,0,.04)}
+.nsm-tab .c{background:#eef0f5;color:#7b8092;border-radius:99px;font-size:10.5px;padding:1px 7px}
+.nsm-tab.on .c{background:#1572e8;color:#fff}
+.nsm-table{background:#fff;border-radius:0 10px 10px 10px;box-shadow:0 0 10px rgba(0,0,0,.06)}
+.nsm-table table{width:100%;border-collapse:collapse;font-size:13px}
+.nsm-table th{text-align:left;font-size:11.5px;color:#6b7280;font-weight:700;padding:14px 18px;border-bottom:1px solid #edeff5}
+.nsm-table td{padding:12px 18px;border-bottom:1px solid #f1f2f6}
+.nsm-table a{color:#1a1a1a;font-weight:700;text-decoration:underline;cursor:pointer}
+.nsm-table tr.hl td{background:#f6f9ff}
+.nsm-badge{display:inline-flex;align-items:center;justify-content:center;gap:5px;width:132px;font-size:10px;font-weight:600;padding:5px 6px;border-radius:4px;white-space:nowrap}
+.nsm-badge.conf{background:#e8f1fd;color:#1572e8}
+.nsm-badge.pub{background:#eef0f5;color:#7b8092}
+.nsm-badge.test{background:#efe9ff;color:#5b21b6}
+.bar{width:120px;height:6px;background:#e7e9f0;border-radius:99px;display:inline-block;vertical-align:middle;overflow:hidden;margin-right:8px}
+.bar i{display:block;height:100%;background:#f2775d}
+.bar.g i{background:var(--green)}
+.num-link{color:#1572e8;text-decoration:underline;cursor:pointer}
+.sel-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.sel-card{border:1.5px solid #e2e5ef;border-radius:8px;padding:12px 14px;position:relative;cursor:pointer;background:#fff}
+.sel-card.on{border-color:#1572e8;background:#f3f8ff}
+.sel-card.dis{opacity:.5;cursor:not-allowed}
+.sel-card .t{display:flex;gap:9px;align-items:flex-start;font-weight:800;font-size:13px;color:var(--title);padding-right:22px}
+.sel-card .t i{width:16px;margin-top:2px;color:#1572e8}
+.sel-card .d{margin-left:25px;font-size:12px;color:#8a90a3;margin-top:4px;line-height:1.45}
+.sel-card .ck{position:absolute;top:10px;right:10px;width:18px;height:18px;border-radius:50%;border:1.5px solid #c7cbd8;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff}
+.sel-card.on .ck{background:#1572e8;border-color:#1572e8}
+.sel-card .new{position:absolute;top:-8px;left:12px;background:#6200EA;color:#fff;font-size:9px;font-weight:800;padding:1px 6px;border-radius:4px}
+.sec{margin-bottom:22px}
+.sec-h{display:flex;align-items:center;font-weight:800;color:var(--title);font-size:14px;margin-bottom:10px}
+.src-box{background:#f7f8fc;border:1px solid #eceef4;border-radius:8px;padding:12px 14px;font-size:13px;line-height:1.9}
+.src-box b{display:inline-block;width:110px;color:#6b7280;font-weight:600}
+.test-pill{display:inline-flex;align-items:center;gap:6px;background:#efe9ff;color:#5b21b6;border-radius:4px;padding:2px 8px;font-weight:700;font-size:12px}
+.radios{display:flex;gap:22px;font-size:13px;margin:8px 0 12px}
+.radios span{display:flex;gap:7px;align-items:center;cursor:pointer}
+.radios i{color:#1572e8}
+
+/* Moje směrnice (zaměstnanec) */
+.ms{max-width:1180px;margin:0 auto;padding:26px 30px 60px}
+.ms h1{text-align:center;margin:0;font-size:22px;color:#2b2540}
+.ms .subt{text-align:center;color:#9096a6;font-size:13px;margin:4px 0 16px}
+.ms-search{max-width:560px;margin:0 auto 22px;background:#fff;border-radius:999px;padding:11px 20px;color:#a0a5b5;box-shadow:0 1px 6px rgba(0,0,0,.08);font-size:14px}
+.ms-hero{background:#fff;border-radius:14px;padding:22px 26px;display:flex;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.ms-hero.ok{background:linear-gradient(135deg,#00C853,#4dd987);color:#fff}
+.ms-hero h2{margin:0;font-size:18px;color:#2b2540}
+.ms-hero.ok h2{color:#fff}
+.ms-pct{margin-left:auto;text-align:center;width:160px}
+.ms-pct b{font-size:30px;color:#1572e8;display:block}
+.ms-hero.ok .ms-pct b{color:#fff}
+.ms-pct small{font-size:10px;font-weight:800;letter-spacing:.08em;color:#8a90a3}
+.ms-pct .pb{height:6px;background:#eef0f5;border-radius:99px;margin:6px 0 4px;overflow:hidden}
+.ms-pct .pb i{display:block;height:100%;background:#1572e8}
+.ms-sec{font-size:10.5px;font-weight:800;color:#8a90a3;letter-spacing:.08em;margin:26px 0 2px}
+.ms-h{font-size:17px;font-weight:800;color:#2b2540;margin-bottom:10px}
+.ms-list{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.ms-row{display:flex;align-items:center;gap:16px;padding:14px 22px;border-bottom:1px solid #f1f2f6}
+.ms-row .nm{flex:1;min-width:0}
+.ms-row .nm b{font-size:14px;color:#1a1a1a}
+.ms-row .nm div{font-size:12px;color:#8a90a3}
+.ms-row .nm .cat{color:#2E7D32;font-weight:700}
+.ms-row .term{width:120px;font-size:10px;font-weight:800;color:#8a90a3;letter-spacing:.06em}
+.ms-row .term b{display:block;font-size:13px;color:#1a1a1a;letter-spacing:0}
+.dl{font-size:10px;font-weight:700;padding:2px 6px;border-radius:3px;white-space:nowrap}
+.dl.red{background:#fde8e8;color:#d9463e}.dl.orange{background:#fff3e0;color:#FF6D00}.dl.green{background:#e8f8ed;color:#2E7D32}
+.ms-btn{border:0;border-radius:999px;color:#fff;font-weight:800;font-size:12px;padding:9px 18px;min-width:118px;cursor:pointer}
+.ms-btn.red{background:#d9463e}.ms-btn.orange{background:#FF6D00}.ms-btn.green{background:#00C853}
+.ms-btn.ghost{background:#fff;color:#1572e8;border:1px solid #c9d9f5}
+.test-tag{display:inline-flex;align-items:center;gap:5px;background:#efe9ff;color:#5b21b6;font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:3px;margin-left:8px;vertical-align:2px}
+.fail-tag{display:inline-flex;align-items:center;gap:5px;background:#fde8e8;color:#d9463e;font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:3px;margin-left:6px;vertical-align:2px}
+.conf-group{display:flex;align-items:center;gap:10px;padding:14px 22px;font-weight:800;color:#2b2540;cursor:pointer}
+.conf-group .c{background:#e8f8ed;color:#2E7D32;border-radius:4px;font-size:11px;padding:1px 7px}
+
+/* čtečka dokumentu */
+.reader{display:flex;height:100%}
+.reader-doc{flex:1;overflow-y:auto;background:#525659;padding:24px 0}
+.page{width:600px;height:780px;background:#fff;margin:0 auto 18px;box-shadow:0 2px 10px rgba(0,0,0,.4);padding:56px 60px;font-family:Georgia,serif;color:#333}
+.page h3{font-family:'Nunito';margin:0 0 14px;font-size:17px}
+.page .ln{height:7px;background:#e4e6ea;border-radius:3px;margin:10px 0}
+.reader-side{width:360px;background:#fff;border-left:1px solid #e5e7ee;padding:22px;display:flex;flex-direction:column;gap:14px}
+.steps-v{display:flex;flex-direction:column;gap:10px}
+.sv-step{display:flex;gap:12px;align-items:center;font-size:13.5px;color:var(--muted)}
+.sv-step .c{width:26px;height:26px;border-radius:50%;border:2px solid #d5dbe7;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0}
+.sv-step.on{color:var(--title);font-weight:800}
+.sv-step.on .c{border-color:#1572e8;color:#1572e8}
+.sv-step.ok .c{background:var(--green);border-color:var(--green);color:#fff}
+.read-prog{height:8px;background:#eef0f5;border-radius:99px;overflow:hidden}
+.read-prog i{display:block;height:100%;background:#1572e8;transition:width .2s}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--title);cursor:pointer;border:1.5px solid var(--line);border-radius:10px;padding:12px}
+.chk.dis{opacity:.45;cursor:not-allowed}
+.chk .b{width:20px;height:20px;border-radius:5px;border:2px solid #c7cbd8;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px}
+.chk.on{border-color:var(--green);background:#f3fcf6}
+.chk.on .b{background:var(--green);border-color:var(--green)}
+.emp .try-bar{display:none}
+.emp .try-wrap{padding:22px 22px 60px}
+
+/* mobil */
+.phones{display:flex;gap:34px;justify-content:center;padding:26px 20px 70px;flex-wrap:wrap}
+.phone-col{display:flex;flex-direction:column;align-items:center;gap:10px}
+.phone-cap{font-size:12.5px;font-weight:800;color:var(--muted);text-align:center;max-width:300px}
+.phone{width:320px;height:660px;border-radius:38px;background:#111;padding:10px;box-shadow:0 18px 40px rgba(0,0,0,.25)}
+.screen{width:100%;height:100%;border-radius:30px;overflow:hidden;background:#eef0f7;display:flex;flex-direction:column;position:relative}
+.m-top{background:#111;color:#fff;height:52px;display:flex;align-items:center;padding:0 16px;gap:10px;flex-shrink:0}
+.m-top .lg{font-weight:800;font-size:17px;margin:0 auto}
+.m-body{flex:1;overflow-y:auto;padding:12px}
+.m-crumb{font-size:13px;font-weight:800;color:#2b2540;margin:4px 2px 10px;display:flex;gap:8px;align-items:center}
+.m-card{background:#fff;border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.m-item{display:flex;gap:10px;align-items:center;padding:10px 4px;border-bottom:1px solid #f1f2f6}
+.m-item:last-child{border-bottom:0}
+.m-ic{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.m-item b{font-size:13px;display:block;color:#1a1a1a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+.m-item small{font-size:11px;color:#8a90a3}
+.m-btn{border:0;border-radius:999px;color:#fff;font-weight:800;font-size:10.5px;padding:7px 10px;white-space:nowrap}
+.push{position:absolute;top:58px;left:10px;right:10px;background:rgba(255,255,255,.97);border-radius:16px;padding:10px 12px;box-shadow:0 8px 24px rgba(0,0,0,.2);font-size:12px;display:flex;gap:10px;z-index:2}
+.push .ap{width:30px;height:30px;border-radius:8px;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0}
+.m-q{background:#fff;border-radius:14px;padding:16px}
+.m-opt{display:flex;gap:10px;align-items:center;border:1.5px solid #e5e7ee;border-radius:12px;padding:12px;margin-top:8px;font-size:13.5px;cursor:pointer}
+.m-opt.sel{border-color:#19b394;background:#effaf6}
+.m-opt .o{width:20px;height:20px;border-radius:50%;border:2px solid #c9c9c9;flex-shrink:0}
+.m-opt.sel .o{border:6px solid #19b394}
+.m-prog{display:flex;gap:4px;margin:4px 0 12px}
+.m-prog i{flex:1;height:4px;border-radius:99px;background:#d9dce6}
+.m-prog i.on{background:#19b394}
+.m-foot{padding:12px;background:#fff;display:flex;gap:8px;flex-shrink:0}
+.m-foot button{flex:1;border:0;border-radius:12px;padding:13px;font-weight:800;font-size:13px}
+
+/* vyhodnocení */
+.ev{padding:22px 34px 60px;max-width:1400px}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:16px 0}
+.kpi{background:#fff;border-radius:12px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.05);border-left:4px solid #ccc}
+.kpi b{font-size:24px;color:var(--title);display:block}
+.kpi span{font-size:12px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+.panel{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.05);padding:16px 18px}
+.panel h3{margin:0 0 12px;font-size:14.5px;color:var(--title);display:flex;align-items:center;gap:8px}
+.ptable{width:100%;border-collapse:collapse;font-size:13px}
+.ptable th{text-align:left;font-size:11px;color:#6b7280;padding:8px;border-bottom:1px solid #edeff5}
+.ptable td{padding:9px 8px;border-bottom:1px solid #f4f5f8;color:var(--title)}
+.st{font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:3px;white-space:nowrap}
+.st.ok{background:#e8f8ed;color:#2E7D32}.st.bad{background:#fde8e8;color:#d9463e}.st.run{background:#e8f1fd;color:#1572e8}.st.wait{background:#eef0f5;color:#7b8092}.st.late{background:#fff3e0;color:#c65600}
+.qrate{display:flex;align-items:center;gap:10px;font-size:12.5px;margin-bottom:10px}
+.qrate .q{flex:1;color:var(--title);border:0;padding:0;margin:0;background:none}
+.qrate .b{width:110px;height:8px;background:#fde8e8;border-radius:99px;overflow:hidden}
+.qrate .b i{display:block;height:100%;background:var(--green)}
+.filters{display:flex;gap:6px;margin-bottom:10px}
+.filters button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer}
+.filters button.on{background:#1572e8;border-color:#1572e8;color:#fff}
+tr.me td{background:#f3fcf6}
+
+.editor .doc-pick select{display:none}
+.editor .doc-pick:after{content:'\f023  navázáno na směrnici';font-family:'Font Awesome 6 Free','Nunito';font-weight:900;font-size:11.5px;color:#8a90a3}
+.phones{padding-top:14px}
+
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+/* =====================================================================
+   DATA
+   ===================================================================== */
+const DOCS = [
+  {id:'sm12', name:'Směrnice BOZP a PO', code:'SM-012', ver:'v3', pages:14, date:'1. 9. 2026'},
+  {id:'sm07', name:'Práce ve výškách', code:'SM-007', ver:'v2', pages:9, date:'12. 6. 2026'},
+  {id:'sm21', name:'Ochrana osobních údajů (GDPR)', code:'SM-021', ver:'v1', pages:11, date:'3. 3. 2026'},
+];
+let uid = 1; const nid = () => 'i' + (uid++);
+const Q = {
+  radio:(title='', choices=[], points=1) => ({id:nid(), type:'radio', title, points, choices: choices.map(c => typeof c==='string' ? {id:nid(), t:c.replace(/^\*\s*/,''), ok:c.startsWith('*')} : c)}),
+  checkbox:(title='', choices=[], points=1) => ({...Q.radio(title, choices, points), type:'checkbox'}),
+  bool:(title='', correct=null, points=1) => ({id:nid(), type:'bool', title, points, correct}),
+  content:(html='') => ({id:nid(), type:'content', html}),
+  image:() => ({id:nid(), type:'image'}),
+};
+const TYPES = {
+  radio:{label:'Jedna odpověď', icon:'fa-circle-dot'},
+  checkbox:{label:'Více odpovědí', icon:'fa-square-check'},
+  bool:{label:'Ano / Ne', icon:'fa-toggle-on'},
+  content:{label:'Text / obsah', icon:'fa-align-left'},
+  image:{label:'Obrázek', icon:'fa-image'},
+};
+const sampleBOZP = () => ({
+  title:'Školení BOZP a PO', desc:'Vstupní školení bezpečnosti práce a požární ochrany.',
+  material:{mode:'doc', docId:'sm12', text:''},
+  questions:[
+    Q.radio('Co musíte udělat jako první, když se kolega zraní?', ['Pokračovat v práci a úraz nahlásit na konci směny','*Poskytnout první pomoc a úraz neprodleně nahlásit nadřízenému','Říct o tom pouze jinému kolegovi','Vyfotit místo úrazu a vrátit se k práci'], 2),
+    Q.radio('Jaké je jednotné evropské číslo tísňového volání?', ['*112','150','155','158'], 1),
+    Q.radio('Co označuje bezpečnostní značka ve tvaru modrého kruhu?', ['*Příkaz','Zákaz','Výstrahu','Únikovou cestu'], 2),
+    Q.checkbox('Která pravidla platí při požárním poplachu?', ['*Opustit budovu nejkratší únikovou cestou','Použít výtah, je to rychlejší','*Shromáždit se na určeném shromaždišti','Vrátit se pro osobní věci'], 3),
+    Q.bool('Smím obsluhovat stroj, na který jsem nebyl/a proškolen/a, pokud mi ukáže kolega?', false, 1),
+    Q.radio('Kdy je potřeba nahlásit skoronehodu?', ['Nikdy, nic se nestalo','*Vždy – pomáhá to předcházet úrazům','Jen pokud vznikla škoda nad 10 000 Kč'], 1),
+  ],
+});
+const defaultSettings = () => ({pass:80, timeOn:true, minutes:5, shuffleQ:true, shuffleA:true, attempts:'3', wait:'24', review:'after_pass', cert:true, certTpl:'Certifikát o absolvování školení', certValid:'12', remind:'30', confirmRead:true});
+
+const S = {
+  view:'list',          // list | editor
+  startOpen:false, pasteOpen:false, aiOpen:false, certOpen:false,
+  tab:'obsah',          // obsah | nastaveni | vyzkouset
+  test:null, settings:defaultSettings(), status:'Koncept',
+  forms:[
+    {name:'Osobní dotazník', info:'Zveřejněný od: 25.03.2026<br>Počet odpovědí: 3'},
+    {name:'Osobní dotazník', info:'Zveřejněný od: 11.06.2026<br>Počet odpovědí: 0'},
+    {name:'formulář zaměstnanec', info:'Zveřejněný od: 08.07.2026<br>Počet odpovědí: 1'},
+  ],
+  paste:`Co musíte udělat jako první, když se kolega zraní? (2 b)
+Pokračovat v práci a nahlásit to na konci směny
+* Poskytnout první pomoc a úraz neprodleně nahlásit
+Říct to jen kolegovi
+
+Jaké je číslo tísňového volání?
+* 112
+150
+155
+
+Které věci patří do lékárničky? (2 b)
+* Obvazy
+* Rukavice
+Prášky na spaní
+
+Smím vypnout požární hlásič, když mě ruší?
+Ano
+* Ne`,
+  ai:{src:'sm07', count:6, phase:'pick', picked:{}}, // pick | loading | result
+  run:null,
+};
+
+/* =====================================================================
+   POMOCNÉ
+   ===================================================================== */
+const $app = document.getElementById('app');
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const scored = t => t.questions.filter(q => ['radio','checkbox','bool'].includes(q.type));
+const totalPts = t => scored(t).reduce((s,q) => s + (q.points||0), 0);
+const passPts = () => Math.ceil(totalPts(S.test) * S.settings.pass / 100);
+function toast(msg, icon='fa-circle-check'){
+  const el = document.createElement('div'); el.className='toast';
+  el.innerHTML = `<i class="fa-solid ${icon}" style="color:#7ee2a8"></i>${msg}`;
+  document.body.appendChild(el); setTimeout(() => el.remove(), 2600);
+}
+function issues(t){
+  const out = [];
+  if (!t.title.trim()) out.push({lvl:'err', msg:'Test nemá název.', q:null});
+  if (!scored(t).length) out.push({lvl:'err', msg:'Přidejte alespoň jednu otázku.', q:null});
+  scored(t).forEach(q => {
+    const n = numOf(q);
+    if (!q.title.trim()) out.push({lvl:'err', msg:`Otázka ${n} nemá znění.`, q:q.id});
+    if (q.type==='bool'){ if (q.correct===null) out.push({lvl:'err', msg:`Otázka ${n}: vyberte správnou odpověď (Ano / Ne).`, q:q.id}); return; }
+    const filled = q.choices.filter(c => c.t.trim());
+    if (filled.length < 2) out.push({lvl:'err', msg:`Otázka ${n}: doplňte alespoň 2 odpovědi.`, q:q.id});
+    if (!q.choices.some(c => c.ok)) out.push({lvl:'err', msg:`Otázka ${n}: označte správnou odpověď.`, q:q.id});
+    if (q.type==='radio' && q.choices.filter(c=>c.ok).length > 1) out.push({lvl:'err', msg:`Otázka ${n}: u „Jedna odpověď“ může být správná jen jedna.`, q:q.id});
+    if (q.choices.some(c => c.ok && !c.t.trim())) out.push({lvl:'warn', msg:`Otázka ${n}: správná odpověď je prázdná.`, q:q.id});
+  });
+  if (t.material.mode==='none') out.push({lvl:'warn', msg:'Test nemá školicí materiál – zaměstnanec půjde rovnou na otázky.', q:'mat'});
+  if (t.material.mode==='text' && !t.material.text.replace(/<[^>]+>/g,'').trim()) out.push({lvl:'warn', msg:'Materiál je prázdný.', q:'mat'});
+  if (scored(t).length && scored(t).length < 3) out.push({lvl:'warn', msg:'Méně než 3 otázky – zvažte doplnění.', q:null});
+  return out;
+}
+function numOf(q){ return scored(S.test).indexOf(q) + 1; }
+function findQ(id){ return S.test.questions.find(q => q.id===id); }
+
+/* =====================================================================
+   RENDER – kořen
+   ===================================================================== */
+function render(){
+  let h = '';
+  if (S.view==='list') h += renderList();
+  if (S.view==='editor') h += renderEditor();
+  if (S.startOpen) h += renderStart();
+  if (S.pasteOpen) h += renderPaste();
+  if (S.aiOpen) h += renderAI();
+  if (S.certOpen) h += renderCert();
+  $app.innerHTML = h;
+  if (S.view==='editor' && S.tab==='vyzkouset') startTimerIfNeeded();
+}
+
+/* ---------- 1) Editace evidence → Online formuláře ---------- */
+function renderList(){
+  const nav = ['Základní nastavení','Onboarding checklist','Kategorie','Stavy položek','Detaily','Přílohy','Plány aktivit','Vydávání','Náklady a spotřeba','Zápisy','Dashboard evidence','Založení položky','Pohledy na položky','Rychlé akce','Nastavení extranetu','Upozornění','PDF formuláře','Online formuláře'];
+  const testCard = S.savedTest ? `
+    <div class="form-card" style="border-color:#c9d9f5">
+      <div class="form-card-head"><span class="chip chip-test"><i class="fa-solid fa-graduation-cap"></i>TEST</span>${esc(S.savedTest.title)}</div>
+      <div class="form-card-body">${scored(S.savedTest).length} otázek · ${totalPts(S.savedTest)} bodů · hranice ${S.settings.pass} %<br>
+        <span class="chip ${S.status==='Zveřejněno'?'chip-pub':'chip-draft'}">${S.status.toUpperCase()}</span>
+        <div class="form-card-actions"><button class="ic-btn" data-a="openSaved" title="Upravit"><i class="fa-solid fa-pen"></i></button><button class="ic-btn" title="Výsledky"><i class="fa-solid fa-chart-simple"></i></button><button class="ic-btn" title="Duplikovat"><i class="fa-regular fa-copy"></i></button><button class="ic-btn danger" title="Odstranit"><i class="fa-regular fa-trash-can"></i></button></div>
+      </div></div>` : '';
+  return `<div class="overlay"><div class="apt-modal">
+    <div class="apt-modal-head"><div class="apt-modal-title">Editace evidence</div><button class="x">✕</button></div>
+    <div class="apt-modal-body">
+      <div class="apt-modal-nav">${nav.map(n => `<div class="nav-item ${n==='Online formuláře'?'active':''}">${n}</div>`).join('')}</div>
+      <div class="apt-modal-content"><div class="card">
+        <div class="h2">Online formuláře</div><div class="sub">Formuláře a testy k této evidenci</div>
+        <div class="create-row">
+          <button class="create-btn"><span class="circle"><i class="fa-solid fa-plus"></i></span>Vytvořit nový formulář</button>
+          <button class="create-btn new" data-a="openStart"><span class="badge-new">NOVÉ</span><span class="circle"><i class="fa-solid fa-graduation-cap"></i></span><b>Vytvořit test ke školení</b></button>
+          <button class="create-btn"><span class="circle"><i class="fa-solid fa-file-arrow-up"></i></span>Nahrát šablonu ze souboru</button>
+        </div>
+        <div style="font-weight:700;font-size:13px;color:var(--title);margin-bottom:12px">Vytvořené formuláře</div>
+        <div class="forms-grid">${testCard}${S.forms.map(f => `
+          <div class="form-card"><div class="form-card-head">${esc(f.name)}</div>
+          <div class="form-card-body">${f.info}<div class="form-card-actions"><button class="ic-btn"><i class="fa-solid fa-pen"></i></button><button class="ic-btn"><i class="fa-solid fa-eye-slash"></i></button><button class="ic-btn"><i class="fa-solid fa-file-export"></i></button><button class="ic-btn"><i class="fa-regular fa-copy"></i></button><button class="ic-btn danger"><i class="fa-regular fa-trash-can"></i></button></div></div></div>`).join('')}
+        </div>
+      </div></div>
+    </div></div></div>`;
+}
+
+/* ---------- 2) Úvodní volba ---------- */
+function renderStart(){
+  const opt = (a, ico, bg, col, title, txt, tag='') => `<button class="start-opt" data-a="${a}"><span class="ico" style="background:${bg};color:${col}"><i class="fa-solid ${ico}"></i></span><span><b>${title}${tag}</b><span>${txt}</span></span></button>`;
+  return `<div class="overlay" style="z-index:30"><div class="start-modal">
+    <div style="display:flex;align-items:center"><div style="font-size:19px;font-weight:800;color:var(--title);flex:1">Jak chcete test vytvořit?</div><button class="x" data-a="closeStart">✕</button></div>
+    <div class="sub" style="margin:4px 0 0">Vždy můžete otázky později upravit, přidat nebo smazat.</div>
+    <div class="start-grid">
+      ${opt('startBlank','fa-pen-ruler','#eef3fd','#1572e8','Začít od nuly','Prázdný test – otázky přidáte jednu po druhé.')}
+      ${opt('startPaste','fa-paste','#e6f9ee','#00a344','Vložit otázky z textu','Zkopírujte otázky z Wordu nebo Excelu, správné odpovědi označte hvězdičkou.')}
+      ${opt('startTemplate','fa-book-bookmark','#fff5e0','#c77700','Použít šablonu','Hotové testy z knihovny: BOZP a PO, GDPR, Práce ve výškách, Řidiči referenti…')}
+      ${opt('startAI','fa-wand-magic-sparkles','#f3ebff','#6200EA','Navrhnout z dokumentu','Aptík přečte směrnici a navrhne otázky i správné odpovědi. Vy je jen zkontrolujete.','<span class="ai-tag">AI</span>')}
+    </div></div></div>`;
+}
+
+/* ---------- 3) Editor ---------- */
+function renderEditor(){
+  const steps = [['obsah','Obsah a otázky'],['nastaveni','Nastavení'],['vyzkouset','Vyzkoušet']];
+  const iss = issues(S.test); const errs = iss.filter(i=>i.lvl==='err').length;
+  return `<div class="editor">
+    <div class="ed-head">
+      <button class="btn-back" data-a="backToList">ZPĚT</button>
+      <span class="chip chip-test"><i class="fa-solid fa-graduation-cap"></i>TEST</span>
+      <input class="ed-title" data-f="title" value="${esc(S.test.title)}" placeholder="Název testu">
+      <div class="steps">${steps.map(([k,l],i) => `<button class="step ${S.tab===k?'active':''}" data-a="tab" data-v="${k}"><span class="n">${i+1}</span>${l}</button>`).join('')}</div>
+      <span class="chip ${S.status==='Zveřejněno'?'chip-pub':'chip-draft'}" id="statusChip">${S.status.toUpperCase()}</span>
+      <button class="btn btn-ghost" data-a="save"><i class="fa-regular fa-floppy-disk"></i>ULOŽIT</button>
+      <button class="btn btn-blue" data-a="publish" ${errs?'disabled title="Nejdřív opravte chyby v Kontrole testu"':''} id="pubBtn"><i class="fa-solid fa-paper-plane"></i>ZVEŘEJNIT</button>
+    </div>
+    <div class="ed-body">
+      ${S.tab==='obsah' ? renderObsah() : S.tab==='nastaveni' ? renderNastaveni() : renderTry()}
+    </div></div>`;
+}
+
+function renderObsah(){
+  const t = S.test;
+  return `
+  <div class="toolbox">
+    <div class="tb-label">Rychle přidat</div>
+    <button class="tb-big" data-a="openPaste"><i class="fa-solid fa-paste"></i>Vložit otázky z textu</button>
+    <button class="tb-big ai" data-a="openAI"><i class="fa-solid fa-wand-magic-sparkles"></i>Aptík navrhne otázky</button>
+    <div class="tb-sep"></div>
+    <div class="tb-label">Prvky testu</div>
+    ${Object.entries(TYPES).map(([k,v]) => `<button class="tb-item" data-a="addQ" data-v="${k}"><i class="fa-solid ${v.icon}"></i>${v.label}</button>`).join('')}
+    <div class="tb-note"><i class="fa-solid fa-circle-info"></i> Oproti běžnému formuláři je tu jen 5 prvků. Body a vyhodnocení počítá Aptien sám.</div>
+  </div>
+  <div class="canvas"><div class="canvas-inner">
+    <div class="sec-title"><i class="fa-solid fa-book-open"></i>Školicí materiál</div>
+    ${renderMaterial(t)}
+    <div class="sec-title"><i class="fa-solid fa-list-check"></i>Otázky <span class="count">${scored(t).length}</span></div>
+    ${t.questions.length ? t.questions.map(renderQ).join('') : `<div class="empty-q"><i class="fa-regular fa-lightbulb" style="font-size:22px;color:var(--primary)"></i><p style="margin:8px 0 4px;font-weight:700;color:var(--title)">Zatím tu nejsou žádné otázky</p>Přidejte je vlevo, vložte z textu, nebo nechte Aptíka navrhnout.</div>`}
+    <div class="add-q-row">
+      <button data-a="addQ" data-v="radio"><i class="fa-solid fa-circle-dot"></i>Jedna odpověď</button>
+      <button data-a="addQ" data-v="checkbox"><i class="fa-solid fa-square-check"></i>Více odpovědí</button>
+      <button data-a="addQ" data-v="bool"><i class="fa-solid fa-toggle-on"></i>Ano / Ne</button>
+    </div>
+  </div></div>
+  <div class="check" id="checkPanel">${renderCheck()}</div>`;
+}
+
+function renderMaterial(t){
+  const m = t.material;
+  const seg = [['doc','fa-book','Připojit směrnici'],['text','fa-align-left','Napsat text'],['none','fa-ban','Bez materiálu']]
+    .map(([k,i,l]) => `<button class="${m.mode===k?'on':''}" data-a="matMode" data-v="${k}"><i class="fa-solid ${i}"></i>${l}</button>`).join('');
+  let body = '';
+  if (m.mode==='doc'){
+    const d = DOCS.find(x => x.id===m.docId) || DOCS[0];
+    body = `<div class="doc-pick"><span class="doc-ico"><i class="fa-solid fa-file-lines"></i></span>
+      <div style="flex:1"><div style="font-weight:800;color:var(--title)">${d.name} <span style="color:var(--muted2);font-weight:600">· ${d.code} ${d.ver}</span></div>
+      <div style="font-size:12px;color:var(--muted2)">Evidence Směrnice · ${d.pages} stran · platná od ${d.date}</div></div>
+      <select data-f="docId" style="border:1px solid var(--line);border-radius:6px;height:32px;padding:0 8px">${DOCS.map(x => `<option value="${x.id}" ${x.id===d.id?'selected':''}>${x.code} – ${x.name}</option>`).join('')}</select></div>
+      <label class="toggle ${S.settings.confirmRead?'on':''}" data-a="toggleSet" data-v="confirmRead" style="margin-top:12px"><span class="sw"></span>Před testem musí zaměstnanec potvrdit, že dokument přečetl</label>
+      <div style="font-size:11.5px;color:var(--muted2);margin-top:6px"><i class="fa-solid fa-rotate"></i> Když vyjde nová verze směrnice, Aptien nabídne test zkontrolovat.</div>`;
+  } else if (m.mode==='text'){
+    body = `<div class="rte"><div class="rte-bar">
+      <button title="Tučně"><i class="fa-solid fa-bold"></i></button><button title="Kurzíva"><i class="fa-solid fa-italic"></i></button><button title="Nadpis"><i class="fa-solid fa-heading"></i></button>
+      <button title="Seznam"><i class="fa-solid fa-list-ul"></i></button><button title="Odkaz"><i class="fa-solid fa-link"></i></button><button title="Obrázek"><i class="fa-regular fa-image"></i></button><button title="Video (YouTube / Vimeo)"><i class="fa-brands fa-youtube"></i></button></div>
+      <div class="rte-body" contenteditable="true" data-f="matText">${m.text || '<p style="color:#b3b8c6">Napište nebo vložte text školení…</p>'}</div></div>
+      <div style="font-size:11.5px;color:var(--muted2);margin-top:6px"><i class="fa-solid fa-shield-halved"></i> Běžný editor jako jinde v Aptienu – žádné HTML, obsah se při uložení čistí.</div>`;
+  } else {
+    body = `<div style="font-size:12.5px;color:var(--muted);margin-top:12px">Zaměstnanec uvidí rovnou otázky. Hodí se pro opakovací testy.</div>`;
+  }
+  return `<div class="mat-card" id="q-mat"><div class="seg">${seg}</div>${body}</div>`;
+}
+
+function renderQ(q){
+  const ty = TYPES[q.type];
+  const tools = `<div class="q-tools"><button data-a="moveQ" data-id="${q.id}" data-v="-1" title="Nahoru"><i class="fa-solid fa-arrow-up"></i></button><button data-a="moveQ" data-id="${q.id}" data-v="1" title="Dolů"><i class="fa-solid fa-arrow-down"></i></button><button data-a="dupQ" data-id="${q.id}" title="Duplikovat"><i class="fa-regular fa-copy"></i></button><button data-a="delQ" data-id="${q.id}" title="Smazat"><i class="fa-regular fa-trash-can"></i></button></div>`;
+  if (q.type==='content') return `<div class="q" id="q-${q.id}"><div class="q-head"><span class="q-num"><i class="fa-solid fa-align-left"></i></span><span class="q-type">TEXT MEZI OTÁZKAMI</span>${tools}</div>
+    <div class="rte" style="margin-top:0"><div class="rte-body" contenteditable="true" data-f="qHtml" data-id="${q.id}" style="min-height:60px">${q.html||'<p style="color:#b3b8c6">Vysvětlující text, např. úvod k další části testu…</p>'}</div></div></div>`;
+  if (q.type==='image') return `<div class="q" id="q-${q.id}"><div class="q-head"><span class="q-num"><i class="fa-solid fa-image"></i></span><span class="q-type">OBRÁZEK</span>${tools}</div><div class="img-ph"><i class="fa-solid fa-cloud-arrow-up" style="font-size:20px"></i><br>Přetáhněte obrázek sem nebo <a href="#" style="color:var(--primary)">vyberte soubor</a></div></div>`;
+  const myIss = issues(S.test).filter(i => i.q===q.id && i.lvl==='err');
+  let answers = '';
+  if (q.type==='bool'){
+    answers = `<div class="bool-row">${[[true,'Ano'],[false,'Ne']].map(([v,l]) => `<div class="bool-opt ${q.correct===v?'on':''}" data-a="boolSet" data-id="${q.id}" data-v="${v}"><span class="mark radio"><i class="fa-solid fa-check"></i></span>${l}</div>`).join('')}</div>
+      <div class="hint-correct" style="margin-left:0">Klikněte na správnou odpověď.</div>`;
+  } else {
+    const cls = q.type==='radio' ? 'radio' : 'box';
+    answers = `<div class="answers">${q.choices.map(c => `
+      <div class="a-row ${c.ok?'ok':''}"><span class="mark ${cls} ${c.ok?'on':''}" data-a="toggleOk" data-id="${q.id}" data-c="${c.id}" title="Označit jako správnou"><i class="fa-solid fa-check"></i></span>
+      <input class="a-input" data-f="aText" data-id="${q.id}" data-c="${c.id}" value="${esc(c.t)}" placeholder="Odpověď">
+      <button class="a-del" data-a="delA" data-id="${q.id}" data-c="${c.id}" title="Smazat odpověď"><i class="fa-solid fa-xmark"></i></button></div>`).join('')}
+      <button class="add-a" data-a="addA" data-id="${q.id}">+ Přidat odpověď</button>
+      <div class="hint-correct">${q.type==='radio' ? 'Správnou odpověď označíte kliknutím na kolečko.' : 'Označte všechny správné odpovědi. Body se dávají jen za úplně správnou kombinaci.'}</div></div>`;
+  }
+  return `<div class="q ${myIss.length?'err':''}" id="q-${q.id}">
+    <div class="q-head"><span class="q-num">${numOf(q)}</span><span class="q-type"><i class="fa-solid ${ty.icon}"></i>${ty.label.toUpperCase()}</span>${tools}</div>
+    <textarea class="q-title" rows="1" data-f="qTitle" data-id="${q.id}" placeholder="Napište otázku…">${esc(q.title)}</textarea>
+    ${answers}
+    <div class="q-foot">Body za správnou odpověď <span class="pts"><button data-a="pts" data-id="${q.id}" data-v="-1">−</button><span>${q.points}</span><button data-a="pts" data-id="${q.id}" data-v="1">+</button></span>
+      ${myIss.length ? `<span class="q-err"><i class="fa-solid fa-circle-exclamation"></i>${esc(myIss[0].msg.replace(/^Otázka \d+: /,''))}</span>` : ''}</div>
+  </div>`;
+}
+
+function renderCheck(){
+  const t = S.test, iss = issues(t), tp = totalPts(t), pp = passPts();
+  const errs = iss.filter(i=>i.lvl==='err'), warns = iss.filter(i=>i.lvl==='warn');
+  return `<h3><i class="fa-solid fa-clipboard-check" style="color:var(--primary)"></i>Kontrola testu</h3>
+    <div class="stat-row"><div class="stat"><b>${scored(t).length}</b><span>otázek</span></div><div class="stat"><b>${tp}</b><span>bodů celkem</span></div></div>
+    <div class="pass-box">Pro složení je potřeba <b>${pp} z ${tp} bodů</b> (${S.settings.pass} %)<div class="meter"><i style="width:${S.settings.pass}%"></i></div>
+      <div style="margin-top:8px">${S.settings.timeOn ? `<i class="fa-regular fa-clock"></i> ${S.settings.minutes} min` : '<i class="fa-regular fa-clock"></i> bez časového limitu'} · <i class="fa-solid fa-rotate-right"></i> ${S.settings.attempts==='0'?'neomezeně pokusů':S.settings.attempts+' pokusy'}</div>
+      <a href="#" data-a="tab" data-v="nastaveni" style="color:var(--primary);font-weight:700;display:inline-block;margin-top:6px">Upravit nastavení →</a></div>
+    <div class="issues">${!errs.length && !warns.length ? `<div class="issue ok"><i class="fa-solid fa-circle-check"></i>Test je připravený ke zveřejnění.</div>` : ''}
+      ${errs.map(i => `<button class="issue err" data-a="jump" data-v="${i.q||''}"><i class="fa-solid fa-circle-exclamation"></i>${esc(i.msg)}</button>`).join('')}
+      ${warns.map(i => `<button class="issue warn" data-a="jump" data-v="${i.q||''}"><i class="fa-solid fa-triangle-exclamation"></i>${esc(i.msg)}</button>`).join('')}
+      ${!errs.length && warns.length ? `<div class="issue ok"><i class="fa-solid fa-circle-check"></i>Bez chyb – upozornění zveřejnění neblokují.</div>` : ''}
+    </div>`;
+}
+function refreshCheck(){
+  const p = document.getElementById('checkPanel'); if (p) p.innerHTML = renderCheck();
+  const pub = document.getElementById('pubBtn'); if (pub) pub.disabled = issues(S.test).some(i=>i.lvl==='err');
+  // obrys otázek s chybou bez překreslení (kvůli fokusu)
+  S.test.questions.forEach(q => { const el = document.getElementById('q-'+q.id); if (!el) return;
+    el.classList.toggle('err', issues(S.test).some(i => i.q===q.id && i.lvl==='err')); });
+}
+
+/* ---------- 4) Nastavení ---------- */
+function renderNastaveni(){
+  const s = S.settings, tp = totalPts(S.test);
+  const tg = (k, label) => `<label class="toggle ${s[k]?'on':''}" data-a="toggleSet" data-v="${k}"><span class="sw"></span>${label}</label>`;
+  const sel = (k, opts) => `<select data-f="set" data-k="${k}">${opts.map(([v,l]) => `<option value="${v}" ${String(s[k])===String(v)?'selected':''}>${l}</option>`).join('')}</select>`;
+  const ro = (v, b, sp) => `<div class="radio-opt ${s.review===v?'on':''}" data-a="review" data-v="${v}"><span class="dot"></span><span><b>${b}</b><span>${sp}</span></span></div>`;
+  return `<div class="set-wrap"><div class="set-inner">
+    <div class="set-card"><h3><i class="fa-solid fa-circle-info"></i>Základní údaje</h3><div class="sub">Co zaměstnanec uvidí na úvodní stránce testu.</div>
+      <div class="f-row"><div class="f" style="flex:1"><label>Název testu</label><input type="text" data-f="title" value="${esc(S.test.title)}"></div></div>
+      <div class="f-row"><div class="f" style="flex:1"><label>Krátký popis</label><textarea data-f="desc">${esc(S.test.desc)}</textarea></div></div></div>
+
+    <div class="set-card"><h3><i class="fa-solid fa-bullseye"></i>Vyhodnocení</h3><div class="sub">Body se počítají automaticky z bodů u otázek. Žádné vzorce.</div>
+      <div class="f"><label>Hranice úspěšnosti</label><div class="range-wrap"><input type="range" min="50" max="100" step="5" value="${s.pass}" data-f="pass"><span class="range-val" id="passVal">${s.pass} %</span>
+        <span style="font-size:13px;color:var(--muted)" id="passTxt">= alespoň <b>${passPts()} z ${tp}</b> bodů</span></div></div></div>
+
+    <div class="set-card"><h3><i class="fa-regular fa-clock"></i>Průběh testu</h3><div class="sub">Časový limit a pořadí otázek.</div>
+      <div class="f-row" style="align-items:center">${tg('timeOn','Časový limit na otázky')}
+        <div class="f" style="min-width:120px;${s.timeOn?'':'opacity:.4;pointer-events:none'}"><div style="display:flex;align-items:center;gap:8px"><input type="number" min="1" max="120" value="${s.minutes}" data-f="set" data-k="minutes" style="width:70px"> minut</div></div></div>
+      <div class="f-row">${tg('shuffleQ','Míchat pořadí otázek')}${tg('shuffleA','Míchat pořadí odpovědí')}</div>
+      <div style="font-size:11.5px;color:var(--muted2)">Materiál se do časového limitu nepočítá – čas běží až od první otázky.</div></div>
+
+    <div class="set-card"><h3><i class="fa-solid fa-rotate-right"></i>Opakované pokusy</h3><div class="sub">Pokusy a jejich historii eviduje Aptien u zaměstnance.</div>
+      <div class="f-row"><div class="f"><label>Počet pokusů</label>${sel('attempts',[['1','1 pokus'],['2','2 pokusy'],['3','3 pokusy'],['5','5 pokusů'],['0','Neomezeně']])}</div>
+        <div class="f"><label>Další pokus nejdříve za</label>${sel('wait',[['0','hned'],['1','1 hodinu'],['24','24 hodin'],['168','týden']])}</div>
+        <div class="f"><label>Po vyčerpání pokusů</label>${sel('after',[['mgr','upozornit nadřízeného'],['hr','upozornit personalistu'],['none','nic nedělat']])}</div></div></div>
+
+    <div class="set-card"><h3><i class="fa-solid fa-flag-checkered"></i>Po dokončení zobrazit</h3><div class="sub">Co zaměstnanec uvidí po odeslání testu.</div>
+      <div class="radio-list">${ro('result','Jen výsledek','Body a informaci, jestli test složil.')}${ro('after_pass','Výsledek + správné odpovědi až po složení','Doporučeno – správné odpovědi se neprozradí mezi pokusy.')}${ro('always','Výsledek + správné odpovědi vždy','Vhodné pro procvičovací testy.')}</div></div>
+
+    <div class="set-card"><h3><i class="fa-solid fa-award"></i>Certifikát a platnost</h3><div class="sub">Po složení Aptien vystaví certifikát a uloží ho zaměstnanci do příloh.</div>
+      <div style="margin-bottom:14px">${tg('cert','Vystavit certifikát po úspěšném složení')}</div>
+      <div class="cert-row" style="${s.cert?'':'opacity:.4;pointer-events:none'}">
+        <div class="cert-thumb"><div class="t"></div><h5>CERTIFIKÁT</h5><div>o absolvování školení</div><div class="nm">Jana Nováková</div><div class="ln"></div><div style="font-weight:800;font-size:9px">${esc(S.test.title)}</div><div class="row3"><span>Datum<b>6. 10. 2026</b></span><span>Výsledek<b>${passPts()}/${tp} b.</b></span><span>Platnost<b>${s.certValid==='0'?'—':'6. 10. '+(2026+Math.round(s.certValid/12))}</b></span></div><div class="b"></div></div>
+        <div style="flex:1">
+          <div class="f-row"><div class="f" style="flex:1"><label>Šablona certifikátu</label>${sel('certTpl',[['Certifikát o absolvování školení','Certifikát o absolvování školení (výchozí)'],['Osvědčení BOZP','Osvědčení BOZP – firemní hlavičkový papír']])}<small>Šablony se spravují v PDF formulářích.</small></div></div>
+          <div class="f-row"><div class="f"><label>Platnost školení</label>${sel('certValid',[['12','12 měsíců'],['24','24 měsíců'],['36','36 měsíců'],['0','Bez omezení']])}</div>
+            <div class="f"><label>Připomenout opakování</label>${sel('remind',[['14','14 dní předem'],['30','30 dní předem'],['60','60 dní předem']])}</div></div>
+        </div></div></div>
+
+    <div class="set-card"><details><summary><i class="fa-solid fa-code" style="color:var(--muted2)"></i>Pro vývojáře: co Aptien vygeneruje pro SurveyJS <i class="fa-solid fa-chevron-down" style="font-size:11px;color:var(--muted2)"></i></summary>
+      <p class="devnote" style="margin-top:12px">Autor nic z tohoto nevidí. Aptien z otázek a nastavení sestaví <code>formJson</code> pro SurveyJS (stejný tvar jako ověřený import „Ukázkový test – BOZP“ v testovací instanci). Správné odpovědi a body si Aptien drží i na serveru a před odesláním zaměstnanci je z JSON odstraní; výsledek přepočítá sám. Pokusy, platnost a certifikát jsou nastavení Aptienu mimo SurveyJS (<code>aptienTest</code>).</p>
+      <div class="devbox">${esc(JSON.stringify(buildJSON(), null, 2))}</div></details></div>
+  </div></div>`;
+}
+
+/* ---------- 5) Vyzkoušet ---------- */
+function newRun(){
+  let qs = scored(S.test).map(q => ({...q, choices: q.choices ? [...q.choices] : undefined}));
+  if (S.settings.shuffleQ) qs = shuffle(qs);
+  if (S.settings.shuffleA) qs.forEach(q => { if (q.choices) q.choices = shuffle(q.choices); });
+  const pages = ['start']; if (S.test.material.mode!=='none') pages.push('material'); pages.push('test');
+  return {page:0, pages, answers:{}, read:false, err:'', qs, left:S.settings.minutes*60, done:false, attempt:(S.run?.attempt||0)+1};
+}
+function shuffle(a){ a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function scoreRun(r){
+  let pts = 0, ok = 0;
+  r.qs.forEach(q => { const a = r.answers[q.id]; let good = false;
+    if (q.type==='bool') good = a === q.correct;
+    else if (q.type==='radio') good = a && q.choices.find(c=>c.id===a)?.ok;
+    else { const want = q.choices.filter(c=>c.ok).map(c=>c.id).sort().join(); good = Array.isArray(a) && [...a].sort().join()===want; }
+    if (good){ pts += q.points; ok++; } });
+  return {pts, ok, passed: pts >= passPts()};
+}
+function renderTry(){
+  if (!S.run) S.run = newRun();
+  const r = S.run, t = S.test, pg = r.pages[r.page];
+  const prog = r.done ? 100 : Math.round(r.page / (r.pages.length) * 100);
+  let inner = '';
+  if (r.done){
+    const sc = scoreRun(r), tp = totalPts(t);
+    const showRev = S.settings.review==='always' || (S.settings.review==='after_pass' && sc.passed);
+    inner = `<div class="result"><div class="big">${sc.passed?'🎉':'📘'}</div>
+      <h2>${sc.passed ? 'Gratulujeme, test jste složil/a' : 'Tentokrát to nevyšlo'}</h2>
+      <div class="score">Získali jste <b>${sc.pts} z ${tp} bodů</b> (potřeba ${passPts()}) · správně ${sc.ok} z ${r.qs.length} otázek</div>
+      <div style="margin-top:18px;display:flex;gap:10px;justify-content:center">
+        ${sc.passed && S.settings.cert ? `<button class="sv-btn main" data-a="showCert" data-v="${sc.pts}"><i class="fa-solid fa-award"></i> Stáhnout certifikát</button>` : ''}
+        ${!sc.passed ? (S.settings.attempts!=='0' && r.attempt >= +S.settings.attempts ? `<div class="sv-err">Vyčerpali jste všechny pokusy (${S.settings.attempts}). Aptien upozornil nadřízeného.</div>` : `<button class="sv-btn main" data-a="retry">Zkusit znovu${S.settings.wait!=='0'?' (v reálu za '+({1:'1 hodinu',24:'24 hodin',168:'týden'}[S.settings.wait])+')':''}</button>`) : ''}
+      </div>
+      <div style="font-size:12px;color:#999;margin-top:8px">Pokus ${r.attempt}${S.settings.attempts!=='0'?' z '+S.settings.attempts:''} · výsledek se uloží k zaměstnanci do „Školení a rozvoj“</div>
+      ${showRev ? `<div style="margin-top:22px;font-weight:800">Správné odpovědi</div>${r.qs.map((q,i) => `<div class="review-q"><b>${i+1}. ${esc(q.title)}</b>${q.type==='bool' ? [true,false].map(v => `<div class="sv-opt ${v===q.correct?'right':(r.answers[q.id]===v?'wrong':'')}">${v?'Ano':'Ne'}${v===q.correct?' ✓':''}</div>`).join('') : q.choices.map(c => { const sel = q.type==='radio' ? r.answers[q.id]===c.id : (r.answers[q.id]||[]).includes(c.id); return `<div class="sv-opt ${c.ok?'right':(sel?'wrong':'')}">${esc(c.t)}${c.ok?' ✓':''}</div>`; }).join('')}</div>`).join('')}`
+        : (S.settings.review!=='result' && !sc.passed ? `<div style="margin-top:18px;font-size:12.5px;color:#888">Správné odpovědi uvidíte po úspěšném složení testu.</div>` : '')}
+    </div>`;
+  } else if (pg==='start'){
+    inner = `<div class="sv-page"><h2>${esc(t.title)}</h2><div class="sv-desc">${esc(t.desc)}</div>
+      <div class="sv-q"><ul style="margin:0;padding-left:18px;line-height:1.9">
+        ${t.material.mode!=='none' ? '<li>Nejdřív si projdete <b>školicí materiál</b>.</li>' : ''}
+        <li><b>${r.qs.length} otázek</b>${S.settings.timeOn ? `, na vyplnění máte <b>${S.settings.minutes} minut</b>` : ''}.</li>
+        <li>Pro složení potřebujete <b>${passPts()} z ${totalPts(t)} bodů</b> (${S.settings.pass} %).</li>
+        <li>Počet pokusů: <b>${S.settings.attempts==='0'?'neomezeně':S.settings.attempts}</b>.</li></ul></div>
+      <div class="sv-btns"><button class="sv-btn main" data-a="runNext">Začít školení</button></div></div>`;
+  } else if (pg==='material'){
+    const m = t.material, d = DOCS.find(x=>x.id===m.docId)||DOCS[0];
+    inner = `<div class="sv-page"><h2>Školicí materiál</h2>${r.err?`<div class="sv-err">${r.err}</div>`:''}
+      ${m.mode==='doc' ? `<div class="sv-doc"><span class="doc-ico"><i class="fa-solid fa-file-pdf"></i></span><div style="flex:1"><b>${d.name}</b><div style="font-size:12px;color:#888">${d.code} ${d.ver} · ${d.pages} stran</div></div><button class="sv-btn">Otevřít dokument</button></div>` : `<div class="sv-material">${m.text}</div>`}
+      ${S.settings.confirmRead || m.mode==='text' ? `<div class="sv-q"><div class="t">Potvrzuji, že jsem se seznámil/a se školicím materiálem. <span class="req">*</span></div><div class="sv-bool"><span class="${r.read===false?'':''}" data-a="runRead" data-v="0">Ne</span><span class="${r.read?'sel':''}" data-a="runRead" data-v="1">Ano</span></div></div>` : ''}
+      <div class="sv-btns"><button class="sv-btn" data-a="runPrev">Předchozí</button><button class="sv-btn main" data-a="runNext">Pokračovat na test</button></div></div>`;
+  } else {
+    inner = `<div class="sv-page"><h2>Kontrolní test</h2>${r.err?`<div class="sv-err">${r.err}</div>`:''}
+      ${r.qs.map((q,i) => `<div class="sv-q" id="rq-${q.id}"><div class="t">${i+1}. ${esc(q.title)} <span class="req">*</span></div>
+        ${q.type==='bool' ? `<div class="sv-bool">${[[true,'Ano'],[false,'Ne']].map(([v,l]) => `<span class="${r.answers[q.id]===v?'sel':''}" data-a="runAns" data-id="${q.id}" data-v="${v}">${l}</span>`).join('')}</div>`
+          : q.choices.filter(c=>c.t.trim()).map(c => { const sel = q.type==='radio' ? r.answers[q.id]===c.id : (r.answers[q.id]||[]).includes(c.id);
+              return `<div class="sv-opt ${sel?'sel':''}" data-a="runAns" data-id="${q.id}" data-c="${c.id}"><span class="o ${q.type==='radio'?'r':'c'}"></span>${esc(c.t)}</div>`; }).join('')}
+      </div>`).join('')}
+      <div class="sv-btns">${r.pages.length>2?'<button class="sv-btn" data-a="runPrev">Předchozí</button>':''}<button class="sv-btn main" data-a="runFinish">Odeslat test</button></div></div>`;
+  }
+  const timer = (!r.done && pg==='test' && S.settings.timeOn) ? `<div class="sv-timer ${r.left<60?'low':''}" id="svTimer">${fmt(r.left)}</div>` : '';
+  return `<div class="try-wrap">
+    <div class="try-bar"><i class="fa-solid fa-eye"></i>Takhle test uvidí zaměstnanec (náhled se neukládá).<span style="flex:1"></span><button class="btn btn-ghost btn-sm" data-a="retryFresh"><i class="fa-solid fa-rotate-left"></i>Začít znovu</button></div>
+    <div class="try-frame">
+      <div class="sv-head"><div><h1>${esc(t.title)}</h1><p>${esc(t.desc)}</p></div>${timer}</div>
+      <div class="sv-progress"><i style="width:${prog}%"></i></div>${inner}</div></div>`;
+}
+const fmt = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+let timerId = null;
+function startTimerIfNeeded(){
+  clearInterval(timerId);
+  const r = S.run; if (!r || r.done || r.pages[r.page]!=='test' || !S.settings.timeOn) return;
+  timerId = setInterval(() => { r.left--; const el = document.getElementById('svTimer');
+    if (el){ el.textContent = fmt(r.left); el.classList.toggle('low', r.left<60); }
+    if (r.left<=0){ clearInterval(timerId); r.done = true; toast('Čas vypršel – test se odeslal automaticky','fa-clock'); render(); } }, 1000);
+}
+
+/* ---------- Vložit z textu ---------- */
+function parsePaste(txt){
+  const blocks = txt.replace(/\r/g,'').split(/\n\s*\n/).map(b => b.split('\n').map(l=>l.trim()).filter(Boolean)).filter(b => b.length);
+  return blocks.map(lines => {
+    let title = lines[0], points = 1;
+    const m = title.match(/\((\d+)\s*b(od(y|ů)?)?\.?\)\s*$/i); if (m){ points = +m[1]; title = title.slice(0, m.index).trim(); }
+    const ans = lines.slice(1).map(l => ({t:l.replace(/^[-–•]\s*/,'').replace(/^\*\s*/,'').trim(), ok:/^[-–•]?\s*\*/.test(l)}));
+    const lower = ans.map(a => a.t.toLowerCase());
+    let q;
+    if (ans.length===2 && lower.includes('ano') && lower.includes('ne')) q = Q.bool(title, ans.find(a=>a.ok) ? ans.find(a=>a.ok).t.toLowerCase()==='ano' : null, points);
+    else { const nOk = ans.filter(a=>a.ok).length; q = (nOk>1 ? Q.checkbox : Q.radio)(title, ans.map(a => ({id:nid(), t:a.t, ok:a.ok})), points); }
+    q._warn = !ans.length ? 'Chybí odpovědi' : (q.type==='bool' ? (q.correct===null?'Není označena správná odpověď':'') : (!ans.some(a=>a.ok)?'Není označena správná odpověď':''));
+    return q;
+  });
+}
+function renderPasteBody(){
+  const qs = parsePaste(S.paste);
+  return `<div style="font-size:12px;font-weight:800;color:var(--muted2);margin:2px 0 8px;letter-spacing:.06em">NÁHLED – ${qs.length} ${qs.length===1?'OTÁZKA':qs.length<5?'OTÁZKY':'OTÁZEK'}</div>` +
+    qs.map((q,i) => `<div class="pv-q"><b>${i+1}. ${esc(q.title)}</b> <span style="font-size:11px;color:var(--muted2)">· ${TYPES[q.type].label} · ${q.points} b.</span>
+      ${q.type==='bool' ? [true,false].map(v => `<div class="pv-a ${q.correct===v?'ok':''}"><i class="fa-${q.correct===v?'solid fa-circle-check':'regular fa-circle'}"></i>${v?'Ano':'Ne'}</div>`).join('')
+        : q.choices.map(c => `<div class="pv-a ${c.ok?'ok':''}"><i class="fa-${c.ok?'solid fa-circle-check':'regular fa-circle'}"></i>${esc(c.t)}</div>`).join('')}
+      ${q._warn?`<div class="pv-warn"><i class="fa-solid fa-triangle-exclamation"></i> ${q._warn} – půjde doplnit v editoru</div>`:''}</div>`).join('');
+}
+function renderPaste(){
+  const n = parsePaste(S.paste).length;
+  return `<div class="overlay" style="z-index:40"><div class="dlg">
+    <div class="dlg-head"><i class="fa-solid fa-paste" style="color:var(--green-dark);font-size:18px"></i><h3>Vložit otázky z textu</h3><button class="x" data-a="closePaste">✕</button></div>
+    <div class="dlg-body">
+      <div class="paste-area">
+        <div class="paste-help"><b>Jak psát:</b> otázka na první řádek, pod ni odpovědi. Správnou odpověď označte <code>*</code> na začátku. Mezi otázkami nechte prázdný řádek. Body můžete napsat za otázku: <code>(2 b)</code>. Dvě odpovědi „Ano“ a „Ne“ se převedou na otázku Ano / Ne, víc hvězdiček na „Více odpovědí“.</div>
+        <textarea id="pasteTa" data-f="paste" spellcheck="false">${esc(S.paste)}</textarea>
+      </div>
+      <div class="preview" id="pastePv">${renderPasteBody()}</div>
+    </div>
+    <div class="dlg-foot"><span style="font-size:12px;color:var(--muted)"><i class="fa-regular fa-file-excel"></i> Funguje i vložení dvou sloupců z Excelu (otázka | odpověď).</span><span style="flex:1"></span>
+      <button class="btn btn-ghost" data-a="closePaste">ZRUŠIT</button><button class="btn btn-blue" data-a="doPaste" id="pasteBtn">PŘIDAT ${n} ${n===1?'OTÁZKU':n<5?'OTÁZKY':'OTÁZEK'}</button></div>
+  </div></div>`;
+}
+
+/* ---------- Aptík navrhne ---------- */
+const AI_RESULT = {
+  sm07: [
+    Q.radio('Od jaké výšky musí být pracovník chráněn proti pádu?', ['Od 0,5 m','*Od 1,5 m','Od 3 m','Až od 5 m'], 1),
+    Q.checkbox('Co musíte zkontrolovat před použitím postroje?', ['*Neporušené popruhy a švy','*Funkční karabiny a přezky','Barvu postroje','*Datum poslední kontroly'], 2),
+    Q.bool('Smím pracovat ve výškách sám, bez druhé osoby na dohled?', false, 1),
+    Q.radio('Kdy se nesmí pracovat na venkovním lešení?', ['Při teplotě pod 15 °C','*Při rychlosti větru nad 8 m/s nebo bouřce','V pátek odpoledne'], 1),
+    Q.radio('Kdo smí sestavovat lešení?', ['Kdokoli z party','*Jen proškolená osoba s oprávněním','Stavbyvedoucí'], 1),
+    Q.bool('Je nutné ohlásit použití žebříku vyššího než 5 m?', true, 1),
+  ],
+};
+function renderAI(){
+  const a = S.ai; let body = '';
+  if (a.phase==='pick') body = `
+    <div class="ai-src"><div style="font-weight:800;color:var(--title)">Z čeho má Aptík vycházet?</div>
+      ${DOCS.map(d => `<div class="src-opt ${a.src===d.id?'on':''}" data-a="aiSrc" data-v="${d.id}"><i class="fa-solid fa-file-lines" style="color:#6200EA"></i><div><b style="font-size:13px">${d.name}</b><div style="font-size:11.5px;color:var(--muted2)">${d.code} ${d.ver} · ${d.pages} stran</div></div></div>`).join('')}
+      <div class="src-opt"><i class="fa-solid fa-upload" style="color:#6200EA"></i><div><b style="font-size:13px">Nahrát vlastní soubor</b><div style="font-size:11.5px;color:var(--muted2)">PDF, Word, PowerPoint</div></div></div></div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:16px;padding-left:8px">
+      <div class="f"><label>Kolik otázek navrhnout</label><div class="range-wrap"><input type="range" min="3" max="15" value="${a.count}" data-f="aiCount" style="accent-color:#6200EA"><span class="range-val" id="aiCountVal">${a.count}</span></div></div>
+      <label class="toggle on" style="pointer-events:none"><span class="sw" style="background:#AA00FF"></span>Kombinovat typy otázek (jedna / více odpovědí, Ano / Ne)</label>
+      <label class="toggle on" style="pointer-events:none"><span class="sw" style="background:#AA00FF"></span>Navrhnout i body podle obtížnosti</label>
+      <div class="credit"><i class="fa-solid fa-coins"></i> Návrh stojí <b>2 kredity</b> · zbývá vám 148 kreditů</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.5"><i class="fa-solid fa-user-check"></i> Aptík otázky jen navrhne. Do testu se dostanou až ty, které potvrdíte, a vždy je můžete upravit.</div></div>`;
+  else if (a.phase==='loading') body = `<div style="flex:1;text-align:center;padding:80px 0;color:var(--muted)"><div class="spinner"></div><b style="color:#6200EA">Aptík čte „${(DOCS.find(d=>d.id===a.src)||DOCS[0]).name}“…</b><div style="margin-top:6px;font-size:12.5px">Hledá klíčová pravidla a sestavuje otázky</div></div>`;
+  else body = `<div style="flex:1;overflow-y:auto">${(AI_RESULT[a.src]||AI_RESULT.sm07).slice(0,a.count).map(q => `
+      <label class="gen-q"><input type="checkbox" ${a.picked[q.id]!==false?'checked':''} data-a="aiPick" data-v="${q.id}"><div style="flex:1"><b style="color:var(--title)">${esc(q.title)}</b> <span style="font-size:11px;color:var(--muted2)">· ${TYPES[q.type].label} · ${q.points} b.</span>
+        ${q.type==='bool' ? `<div class="pv-a ok"><i class="fa-solid fa-circle-check"></i>${q.correct?'Ano':'Ne'}</div>` : q.choices.map(c => `<div class="pv-a ${c.ok?'ok':''}"><i class="fa-${c.ok?'solid fa-circle-check':'regular fa-circle'}"></i>${esc(c.t)}</div>`).join('')}
+        <div style="font-size:11px;color:#8a72b8;margin-top:4px"><i class="fa-solid fa-quote-left"></i> zdroj: kap. ${2+((q.title.length)%5)}, str. ${1+(q.title.length%8)}</div></div></label>`).join('')}</div>`;
+  const foot = a.phase==='pick' ? `<span style="flex:1"></span><button class="btn btn-ghost" data-a="closeAI">ZRUŠIT</button><button class="btn" style="background:#6200EA;color:#fff" data-a="aiGo"><i class="fa-solid fa-wand-magic-sparkles"></i>NAVRHNOUT OTÁZKY</button>`
+    : a.phase==='result' ? `<span style="font-size:12px;color:var(--muted)">Zkontrolujte návrhy. Odškrtnuté se nepřidají.</span><span style="flex:1"></span><button class="btn btn-ghost" data-a="aiBack">ZKUSIT JINAK</button><button class="btn" style="background:#6200EA;color:#fff" data-a="aiAdd">PŘIDAT VYBRANÉ</button>` : '';
+  return `<div class="overlay" style="z-index:40"><div class="dlg" style="width:min(900px,94vw)">
+    <div class="dlg-head"><i class="fa-solid fa-wand-magic-sparkles" style="color:#6200EA;font-size:18px"></i><h3>Aptík navrhne otázky z dokumentu <span class="ai-tag">AI</span></h3><button class="x" data-a="closeAI">✕</button></div>
+    <div class="dlg-body" style="min-height:380px">${body}</div><div class="dlg-foot">${foot}</div></div></div>`;
+}
+
+/* ---------- Certifikát (náhled) ---------- */
+function renderCert(){
+  const v = S.settings.certValid, tp = totalPts(S.test);
+  return `<div class="overlay" style="z-index:50" data-a="closeCert"><div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+    <div class="cert-view"><div class="t"></div><div class="in"></div>
+      <h1>CERTIFIKÁT</h1><div class="s">o absolvování školení</div><div class="s" style="margin-top:28px;font-size:13px">Tímto potvrzujeme, že</div>
+      <div class="nm">${esc(S.empName||'Jana Nováková')}</div><div class="ln"></div><div class="s" style="font-size:13px">úspěšně absolvoval/a školení</div><div class="cr">${esc(S.test.title)}</div>
+      <div class="r3"><span>Datum absolvování<b>7. 10. 2026</b></span><span>Výsledek<b>${S.certPts} / ${tp} bodů</b></span><span>Platnost do<b>${v==='0'?'bez omezení':'7. 10. '+(2026+Math.round(v/12))}</b></span></div>
+      <div style="position:absolute;left:52px;bottom:52px;font-size:10px;color:#999">Vydáno systémem Aptien</div><div style="position:absolute;right:52px;bottom:52px;font-size:10px;font-weight:800">Č. certifikátu: SK-2026-000128</div><div class="b"></div></div>
+    <div style="color:#fff;font-size:12.5px;background:rgba(0,0,0,.55);padding:7px 14px;border-radius:8px"><i class="fa-solid fa-paperclip"></i> PDF se zároveň uložilo zaměstnanci do příloh · klikněte kamkoli pro zavření</div></div></div>`;
+}
+
+/* ---------- SurveyJS JSON (pro vývojáře) ---------- */
+function buildJSON(){
+  const t = S.test, s = S.settings, qs = scored(t); const name = q => 'q' + (qs.indexOf(q)+1);
+  const pages = [{name:'uvod', elements:[{type:'html', name:'uvod_text', html:'(generuje Aptien z nastavení)'}]}];
+  if (t.material.mode!=='none'){
+    const els = t.material.mode==='doc' ? [{type:'aptiendocument', name:'material', documentId:t.material.docId}] : [{type:'aptiencontent', name:'material', html:'(vyčištěný text z editoru)'}];
+    if (s.confirmRead || t.material.mode==='text') els.push({type:'boolean', name:'precteno', title:'Potvrzuji, že jsem se seznámil/a se školicím materiálem.', isRequired:true, validators:[{type:'expression', expression:'{precteno} = true'}]});
+    pages.push({name:'material', elements:els});
+  }
+  const els = t.questions.filter(q => q.type!=='image').map(q => {
+    if (q.type==='content') return {type:'aptiencontent', name:'obsah_'+q.id, html:'…'};
+    const b = {type: q.type==='bool' ? 'boolean' : q.type==='radio' ? 'radiogroup' : 'checkbox', name:name(q), title:q.title, isRequired:true, points:q.points};
+    if (q.type==='bool'){ b.labelTrue='Ano'; b.labelFalse='Ne'; b.correctAnswer=q.correct; }
+    else { b.choices = q.choices.map((c,i) => ({value:String.fromCharCode(97+i), text:c.t})); if (s.shuffleA) b.choicesOrder='random';
+      const okv = q.choices.map((c,i)=>c.ok?String.fromCharCode(97+i):null).filter(Boolean); b.correctAnswer = q.type==='radio' ? okv[0] : okv; }
+    return b; });
+  const testPage = {name:'test', elements:els}; if (s.timeOn) testPage.timeLimit = s.minutes*60; if (s.shuffleQ) testPage.questionOrder='random';
+  pages.push(testPage);
+  const expr = qs.map(q => { const n = name(q);
+    if (q.type==='bool') return `iif({${n}} = ${q.correct}, ${q.points}, 0)`;
+    const v = q.choices.map((c,i)=>({v:String.fromCharCode(97+i), ok:c.ok}));
+    if (q.type==='radio') return `iif({${n}} = '${(v.find(x=>x.ok)||{}).v}', ${q.points}, 0)`;
+    const ok = v.filter(x=>x.ok).map(x=>`'${x.v}'`), bad = v.filter(x=>!x.ok).map(x=>` and {${n}} notcontains '${x.v}'`).join('');
+    return `iif({${n}} allof [${ok.join(', ')}]${bad}, ${q.points}, 0)`; }).join(' + ') || '0';
+  return {
+    formJson:{locale:'cs', title:t.title, description:t.desc, firstPageIsStartPage:true, startSurveyText:'Začít školení', completeText:'Odeslat test', showProgressBar:true, showTimer:s.timeOn, timerInfoMode:'page', pages,
+      calculatedValues:[{name:'body', expression:expr, includeIntoResult:true},{name:'body_max', expression:String(totalPts(t)), includeIntoResult:true},{name:'uspech', expression:`iif({body} >= ${passPts()}, 'ano', 'ne')`, includeIntoResult:true}],
+      completedHtmlOnCondition:[{expression:`{body} >= ${passPts()}`, html:'(stránka „složil/a“ – generuje Aptien)'},{expression:`{body} < ${passPts()}`, html:'(stránka „nesložil/a“)'}]},
+    aptienTest:{passPercent:s.pass, attempts:+s.attempts||null, waitHours:+s.wait, review:s.review, certificate:s.cert?{template:s.certTpl, validMonths:+s.certValid||null, remindDays:+s.remind}:null, material:t.material.mode==='doc'?{documentId:t.material.docId, requireRead:s.confirmRead}:t.material.mode}
+  };
+}
+
+/* =====================================================================
+   UDÁLOSTI
+   ===================================================================== */
+const ACT = {
+  openStart(){ S.startOpen = true; },
+  closeStart(){ S.startOpen = false; },
+  startBlank(){ openEditor({title:'Nový test', desc:'', material:{mode:'doc', docId:'sm12', text:''}, questions:[Q.radio('', ['','',''])]}); },
+  startTemplate(){ openEditor(sampleBOZP()); toast('Načtena šablona „Školení BOZP a PO“ z knihovny','fa-book-bookmark'); },
+  startPaste(){ openEditor({title:'Nový test', desc:'', material:{mode:'none', docId:'sm12', text:''}, questions:[]}); S.pasteOpen = true; },
+  startAI(){ openEditor({title:'Práce ve výškách', desc:'Školení pro práci ve výškách a nad volnou hloubkou.', material:{mode:'doc', docId:'sm07', text:''}, questions:[]}); S.aiOpen = true; S.ai = {src:'sm07', count:6, phase:'pick', picked:{}}; },
+  openSaved(){ S.view='editor'; S.tab='obsah'; S.test = JSON.parse(JSON.stringify(S.savedTest)); S.run=null; },
+  backToList(){ S.view='list'; clearInterval(timerId); },
+  tab(el){ S.tab = el.dataset.v; if (S.tab==='vyzkouset') S.run = newRun(); else clearInterval(timerId); },
+  save(){ S.savedTest = JSON.parse(JSON.stringify(S.test)); toast('Test uložen jako koncept'); return 'noRender'; },
+  publish(){ S.status='Zveřejněno'; S.savedTest = JSON.parse(JSON.stringify(S.test)); toast('Test zveřejněn – můžete ho přiřadit v plánech školení','fa-paper-plane'); },
+  addQ(el){ const k = el.dataset.v; const q = k==='radio' ? Q.radio('',['','','']) : k==='checkbox' ? Q.checkbox('',['','','']) : k==='bool' ? Q.bool('') : k==='content' ? Q.content() : Q.image();
+    S.test.questions.push(q); S._scrollTo = q.id; },
+  delQ(el){ S.test.questions = S.test.questions.filter(q => q.id!==el.dataset.id); },
+  dupQ(el){ const i = S.test.questions.findIndex(q=>q.id===el.dataset.id); const c = JSON.parse(JSON.stringify(S.test.questions[i])); c.id = nid(); (c.choices||[]).forEach(x=>x.id=nid()); S.test.questions.splice(i+1,0,c); },
+  moveQ(el){ const a = S.test.questions, i = a.findIndex(q=>q.id===el.dataset.id), j = i + +el.dataset.v; if (j<0||j>=a.length) return 'noRender'; [a[i],a[j]]=[a[j],a[i]]; },
+  toggleOk(el){ const q = findQ(el.dataset.id); const c = q.choices.find(x=>x.id===el.dataset.c);
+    if (q.type==='radio'){ q.choices.forEach(x => x.ok = x===c ? !x.ok : false); } else c.ok = !c.ok; },
+  delA(el){ const q = findQ(el.dataset.id); q.choices = q.choices.filter(c=>c.id!==el.dataset.c); },
+  addA(el){ const q = findQ(el.dataset.id); const c = {id:nid(), t:'', ok:false}; q.choices.push(c); S._focus = c.id; },
+  boolSet(el){ const q = findQ(el.dataset.id); q.correct = el.dataset.v==='true'; },
+  pts(el){ const q = findQ(el.dataset.id); q.points = Math.max(1, Math.min(10, q.points + +el.dataset.v)); },
+  matMode(el){ S.test.material.mode = el.dataset.v; if (el.dataset.v==='text' && !S.test.material.text) S.test.material.text = '<h4>1. Pracovní úraz</h4><p>Při úrazu nejprve <b>poskytněte první pomoc</b> a úraz neprodleně nahlaste nadřízenému.</p><h4>2. Tísňová volání</h4><p>Jednotné evropské číslo je <b>112</b>.</p>'; },
+  toggleSet(el){ const k = el.dataset.v; S.settings[k] = !S.settings[k]; },
+  review(el){ S.settings.review = el.dataset.v; },
+  jump(el){ const id = el.dataset.v; if (!id) return 'noRender'; const t = document.getElementById(id==='mat'?'q-mat':'q-'+id); if (t){ t.scrollIntoView({behavior:'smooth', block:'center'}); t.animate([{boxShadow:'0 0 0 4px rgba(239,83,80,.35)'},{boxShadow:'0 0 0 0 rgba(239,83,80,0)'}],{duration:1200}); } return 'noRender'; },
+  openPaste(){ S.pasteOpen = true; }, closePaste(){ S.pasteOpen = false; },
+  doPaste(){ const qs = parsePaste(S.paste).map(q => { delete q._warn; return q; }); S.test.questions.push(...qs); S.pasteOpen = false; toast(`Přidáno ${qs.length} otázek z textu`); },
+  openAI(){ S.aiOpen = true; S.ai = {src:S.test.material.docId||'sm07', count:6, phase:'pick', picked:{}}; }, closeAI(){ S.aiOpen = false; },
+  aiSrc(el){ S.ai.src = el.dataset.v; },
+  aiGo(){ S.ai.phase='loading'; setTimeout(() => { S.ai.phase='result'; render(); }, 1600); },
+  aiBack(){ S.ai.phase='pick'; },
+  aiPick(el){ S.ai.picked[el.dataset.v] = el.checked; return 'noRender'; },
+  aiAdd(){ const src = (AI_RESULT[S.ai.src]||AI_RESULT.sm07).slice(0,S.ai.count).filter(q => S.ai.picked[q.id]!==false);
+    const copies = src.map(q => { const c = JSON.parse(JSON.stringify(q)); c.id = nid(); (c.choices||[]).forEach(x=>x.id=nid()); return c; });
+    S.test.questions.push(...copies); S.aiOpen = false; toast(`Aptík přidal ${copies.length} otázek – zkontrolujte je`,'fa-wand-magic-sparkles'); },
+  runNext(){ const r = S.run, pg = r.pages[r.page];
+    if (pg==='material' && (S.settings.confirmRead || S.test.material.mode==='text') && !r.read){ r.err = 'Pro pokračování potvrďte, že jste se s materiálem seznámil/a.'; return; }
+    r.err=''; r.page++; },
+  runPrev(){ S.run.err=''; S.run.page--; },
+  runRead(el){ S.run.read = el.dataset.v==='1'; S.run.err=''; },
+  runAns(el){ const r = S.run, q = r.qs.find(x=>x.id===el.dataset.id);
+    if (q.type==='bool') r.answers[q.id] = el.dataset.v==='true';
+    else if (q.type==='radio') r.answers[q.id] = el.dataset.c;
+    else { const a = r.answers[q.id] || []; r.answers[q.id] = a.includes(el.dataset.c) ? a.filter(x=>x!==el.dataset.c) : [...a, el.dataset.c]; }
+    const scroll = document.querySelector('.try-wrap')?.scrollTop; S._keepScroll = scroll; },
+  runFinish(){ const r = S.run; const miss = r.qs.filter(q => r.answers[q.id]===undefined || (Array.isArray(r.answers[q.id]) && !r.answers[q.id].length));
+    if (miss.length){ r.err = `Odpovězte prosím na všechny otázky (chybí ${miss.length}).`; S._keepScroll = 0; return; }
+    r.done = true; clearInterval(timerId); },
+  retry(){ S.run = (S.step==='zampc') ? empRun() : newRun(); }, retryFresh(){ S.run = null; S.run = newRun(); },
+  showCert(el){ S.certOpen = true; S.certPts = el.dataset.v; }, closeCert(){ S.certOpen = false; },
+};
+function openEditor(test){ S.test = test; S.view='editor'; S.tab='obsah'; S.startOpen=false; S.run=null; S.status='Koncept'; }
+
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-a]'); if (!el) return;
+  if (el.tagName==='A') e.preventDefault();
+  if (el.dataset.a==='aiPick') { ACT.aiPick(el); return; }
+  const fn = ACT[el.dataset.a]; if (!fn) return;
+  const res = fn(el); if (res==='noRender') return;
+  render(); afterRender();
+});
+function afterRender(){
+  if (S._scrollTo){ const t = document.getElementById('q-'+S._scrollTo); if (t){ t.scrollIntoView({behavior:'smooth', block:'center'}); t.querySelector('textarea')?.focus({preventScroll:true}); } S._scrollTo=null; }
+  if (S._focus){ document.querySelector(`[data-c="${S._focus}"].a-input`)?.focus(); S._focus=null; }
+  if (S._keepScroll!==undefined){ const w = document.querySelector('.try-wrap'); if (w) w.scrollTop = S._keepScroll; S._keepScroll = undefined; }
+  document.querySelectorAll('.q-title').forEach(autoGrow);
+}
+function autoGrow(t){ t.style.height='auto'; t.style.height = t.scrollHeight + 'px'; }
+
+document.addEventListener('input', e => {
+  const el = e.target, f = el.dataset.f; if (!f) return;
+  if (f==='title'){ S.test.title = el.value; document.querySelectorAll('[data-f="title"]').forEach(x => { if (x!==el) x.value = el.value; }); }
+  else if (f==='desc') S.test.desc = el.value;
+  else if (f==='qTitle'){ findQ(el.dataset.id).title = el.value; autoGrow(el); }
+  else if (f==='aText'){ findQ(el.dataset.id).choices.find(c=>c.id===el.dataset.c).t = el.value; }
+  else if (f==='matText') S.test.material.text = el.innerHTML;
+  else if (f==='qHtml') findQ(el.dataset.id).html = el.innerHTML;
+  else if (f==='pass'){ S.settings.pass = +el.value; document.getElementById('passVal').textContent = el.value+' %'; document.getElementById('passTxt').innerHTML = `= alespoň <b>${passPts()} z ${totalPts(S.test)}</b> bodů`; return; }
+  else if (f==='paste'){ S.paste = el.value; document.getElementById('pastePv').innerHTML = renderPasteBody(); const n = parsePaste(S.paste).length; document.getElementById('pasteBtn').textContent = `PŘIDAT ${n} ${n===1?'OTÁZKU':n<5?'OTÁZKY':'OTÁZEK'}`; return; }
+  else if (f==='aiCount'){ S.ai.count = +el.value; document.getElementById('aiCountVal').textContent = el.value; return; }
+  else if (f==='set'){ S.settings[el.dataset.k] = el.type==='number' ? Math.max(1, +el.value||1) : el.value; if (el.tagName==='SELECT'){ render(); afterRender(); } return; }
+  else if (f==='docId'){ S.test.material.docId = el.value; render(); afterRender(); return; }
+  refreshCheck();
+});
+document.addEventListener('change', e => { const el = e.target; if (el.dataset.f==='set' && el.type==='number'){ render(); afterRender(); } });
+document.addEventListener('focusin', e => { const el = e.target; if (el.isContentEditable && el.querySelector('p[style]') && el.innerText.startsWith('Napište')) el.innerHTML = '<p><br></p>'; });
+
+
+</script>
+<script>
+/* =====================================================================
+   PROCESNÍ VRSTVA: Směrnice → Test → Distribuční list → Zaměstnanec → Vyhodnocení
+   Navazuje na editor testu výše (funkce renderObsah, renderNastaveni, renderTry…).
+   ===================================================================== */
+DOCS[0].name = 'Bezpečnost práce (BOZP) 2026'; DOCS[0].code = 'SM-012'; DOCS[0].ver = 'v3'; DOCS[0].pages = 4;
+AI_RESULT.sm12 = sampleBOZP().questions;
+
+const PSTEPS = [
+  {k:'smernice',  role:'SPRÁVCE', t:'Směrnice'},
+  {k:'editor',    role:'SPRÁVCE', t:'Test ke směrnici'},
+  {k:'distribuce',role:'SPRÁVCE', t:'Distribuční list'},
+  {k:'zampc',     role:'ZAMĚSTNANEC', t:'Počítač'},
+  {k:'zammobil',  role:'ZAMĚSTNANEC', t:'Mobil'},
+  {k:'vyhodnoceni',role:'SPRÁVCE', t:'Vyhodnocení'},
+];
+const HINTS = {
+  smernice:'<b>Test patří ke směrnici.</b> V detailu směrnice přibyla záložka <b>Školení a test</b>. Test se vytváří přímo tady, takže materiálem je automaticky tato směrnice (a její aktuální verze).',
+  editor:'<b>Editor testu</b> – stejný jako v předchozím prototypu. Materiál je napevno tato směrnice. Zkuste Aptíka, vložení z textu, nebo krok <b>Vyzkoušet</b>. Tlačítkem <b>ZPĚT</b> se vrátíte do směrnice.',
+  distribuce:'<b>Rozeslání řeší distribuční list</b>, ne test. Ve „Způsobu doručení“ přibyla třetí volba <b>Potvrzení + test</b> – aktivní jen u dokumentu, který má test. Klikněte na název <b>Bezpečnost práce (BOZP) 2026</b>.',
+  zampc:'<b>Zaměstnankyně Karolína</b> v „Moje směrnice“. Dokument s testem má štítek TEST a tlačítko <b>PŘEČÍST A TEST</b> (barva podle termínu jako dnes). Splněno = přečteno, potvrzeno <i>a</i> test složen.',
+  zammobil:'<b>Na mobilu</b> to samé v intranetu: upozornění → Moje směrnice → jedna otázka na obrazovku → výsledek a certifikát. Klikejte v telefonech.',
+  vyhodnoceni:'<b>Vyhodnocení</b> = detail distribučního listu (klik na číslo „Splnění“). Kdo složil, kdo vyčerpal pokusy, které otázky lidé kazí (SurveyJS Dashboard). Karolína je zvýrazněná podle toho, jak jste test prošli.',
+};
+const EMPS = [
+  ['Karolína Fišerová','Personalistka','#AA00FF'],['Pavel Obezřetný','Vedoucí výroby','#2962FF'],['Tomáš Novák','Operátor linky','#00B8D4'],
+  ['Lucie Malá','Skladnice','#C51162'],['Martin Dvořák','Technik údržby','#FF6D00'],['Eva Horáková','Účetní','#00C853'],
+  ['Jan Procházka','Řidič','#304FFE'],['Petra Černá','Operátorka linky','#DD2C00'],['Radek Kučera','Elektrikář','#00BFA5'],
+  ['Jitka Veselá','Asistentka','#FFAB00'],['Ondřej Marek','Skladník','#6200EA'],['Hana Pokorná','Kvalita','#0091EA'],
+];
+const EMP_STATE = [null,['ok',1,10,'2. 10.'],['ok',2,8,'3. 10.'],['bad',3,5,'4. 10.'],['run',1,null,''],['ok',1,9,'1. 10.'],['wait',0,null,''],['late',0,null,''],['ok',1,10,'30. 9.'],['wait',0,null,''],['bad',1,6,'5. 10.'],['ok',1,8,'2. 10.']];
+Object.assign(S, {
+  step:'smernice', drawerTab:'test', hintOpen:true, visited:{smernice:true},
+  testExists:false, distMode:'potvrzeni', distModal:false, distPrijemci:'vsichni', distTermin:'dny', distRenew:true,
+  emp:{state:'todo', sub:'list', readPct:0, read:false, attempts:0, pts:null, confOpen:false},
+  mob:{push:true, q:0, ans:{}, done:false},
+  evFilter:'all', empName:'Karolína Fišerová',
+});
+S.settings.confirmRead = true;
+
+/* ---------- kořenový render ---------- */
+function render(){
+  clearInterval(timerId);
+  const st = S.step; S.visited[st] = true;
+  let h = renderProcBar();
+  if (st==='editor'){ h += renderEditor(); }
+  else h += `<div class="app">${renderShell()}</div>`;
+  if (S.startOpen) h += renderStart();
+  if (S.pasteOpen) h += renderPaste();
+  if (S.aiOpen) h += renderAI();
+  if (S.certOpen) h += renderCert();
+  if (S.distModal) h += renderDistModal();
+  h += S.hintOpen ? `<div class="hint"><button class="x" data-a="hintToggle">✕</button>${HINTS[st]}</div>` : `<button class="hint-min" data-a="hintToggle"><i class="fa-regular fa-lightbulb"></i> Co tu vidím?</button>`;
+  $app.innerHTML = h;
+  if ((st==='editor' && S.tab==='vyzkouset') || (st==='zampc' && S.emp.sub==='test')) startTimerIfNeeded();
+}
+function renderProcBar(){
+  const i = PSTEPS.findIndex(s=>s.k===S.step);
+  return `<div class="proc-bar"><span class="lbl">PROCES</span>${PSTEPS.map((s,j) => `${j?'<i class="fa-solid fa-chevron-right proc-arrow"></i>':''}<button class="proc-step ${s.k===S.step?'on':''} ${S.visited[s.k]&&s.k!==S.step?'done':''}" data-a="goStep" data-v="${s.k}"><span class="n">${S.visited[s.k]&&s.k!==S.step?'<i class="fa-solid fa-check" style="font-size:9px"></i>':j+1}</span><span class="role ${s.role==='ZAMĚSTNANEC'?'emp':''}">${s.role}</span>${s.t}</button>`).join('')}
+    ${i<PSTEPS.length-1 ? `<button class="proc-next" data-a="goStep" data-v="${PSTEPS[i+1].k}">Další krok →</button>` : ''}<button class="proc-reset" data-a="resetAll" title="Začít celý proces znovu"><i class="fa-solid fa-rotate-left"></i></button></div>`;
+}
+function renderShell(){
+  const st = S.step, emp = st==='zampc';
+  const tabs = emp ? '' : `<div class="tabstrip"><div style="color:#c9a300">Zaměstnanci</div><div style="color:#E91E63">Rizika</div><div style="${st==='smernice'?'background:#1572e8;color:#fff;font-weight:800':'color:#1572e8'}">Směrnice</div><div style="color:#FF8F00">Certifikáty</div><div style="color:#37474F">Smlouvy</div></div>`;
+  const sideOn = st==='smernice' ? 'docs' : (st==='distribuce'||st==='vyhodnoceni') ? 'nastsm' : st==='zampc' ? 'moje' : '';
+  const side = [['fa-house-chimney',''],['fa-bell',''],['fa-calendar-days',''],['fa-clipboard-check',''],['fa-book','moje'],['fa-grip-lines',''],['fa-book-open','docs'],['fa-book-open-reader',''],['fa-gears','nastsm'],['fa-sitemap','']]
+    .map(([ic,k]) => `<i class="fa-solid ${ic} ${k&&k===sideOn?'on':''}"></i>`).join('');
+  const who = emp ? `<span class="avatar" style="background:#AA00FF">KF</span><span style="font-size:13px;color:#fff">Karolína Fišerová</span>` : `<span class="role-pill">Správce směrnic</span><span class="avatar" style="background:#2962FF">HH</span>`;
+  let main = '';
+  if (st==='smernice') main = renderSmerniceEv();
+  else if (st==='distribuce') main = renderDistribuce();
+  else if (st==='zampc') main = renderZamPC();
+  else if (st==='zammobil') main = renderMobil();
+  else if (st==='vyhodnoceni') main = renderVyhodnoceni();
+  if (st==='zammobil') return `<div class="app-body"><div class="app-main" id="mainScroll" style="background:linear-gradient(180deg,#e9ecf5,#f7f8fc)"><div style="text-align:center;padding:18px 0 0;font-weight:800;color:var(--title);font-size:16px"><span class="avatar" style="background:#AA00FF;width:26px;height:26px;font-size:10px;vertical-align:middle">KF</span> Karolína Fišerová · mobilní intranet Aptien</div>${main}</div></div>`;
+  return `<div class="topbar"><div class="logo">aptien<span>Nerospec</span></div><div class="right"><i class="fa-solid fa-magnifying-glass"></i><i class="fa-solid fa-bell"></i>${who}</div></div>${tabs}
+    <div class="app-body">${st==='zammobil'?'':`<div class="side">${side}</div>`}<div class="app-main ${emp?'emp':''}" id="mainScroll">${main}</div></div>`;
+}
+
+/* ---------- 1) Směrnice: evidence + drawer se záložkou „Školení a test“ ---------- */
+function renderSmerniceEv(){
+  const rows = [['Bezpečnost práce (BOZP) 2026','BOZP','v3','1. 9. 2026'],['Požární ochrana a evakuační plán','PO','v2','15. 6. 2026'],['Kodex chování a etika','Compliance','v4','1. 1. 2026'],['GDPR – Ochrana osobních údajů','Compliance','v1','3. 3. 2026'],['SOP – Obsluha vysokozdvižného vozíku','Výroba','v2','20. 5. 2026'],['SOP – Práce ve výškách','Výroba','v2','12. 6. 2026'],['Cestovní náhrady a diety','Ekonomika','v5','1. 2. 2026']];
+  const list = `<div class="ev-toolbar"><div class="ev-title"><i class="fa-solid fa-book-open" style="color:#1572e8"></i>Směrnice <i class="fa-solid fa-pen" style="font-size:12px;color:#aaa"></i></div><button class="ev-add">+ PŘIDAT SMĚRNICI</button></div>
+    <div class="ev-table"><table><tr><th>Název</th><th>Kategorie</th><th>Verze</th><th>Platná od</th><th>Test</th></tr>${rows.map((r,i) => `<tr class="${i===0?'sel':''}"><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${i===0 && S.testExists ? '<span class="chip chip-test"><i class="fa-solid fa-graduation-cap"></i>TEST</span>' : i===1 ? '<span class="chip chip-test"><i class="fa-solid fa-graduation-cap"></i>TEST</span>' : '<span style="color:#ccc">—</span>'}</td></tr>`).join('')}</table></div>`;
+  const tabs = [['detaily','Detaily'],['prilohy','Přílohy'],['test','Školení a test'],['distr','Distribuce'],['souv','Souvislosti'],['hist','Historie verzí']];
+  let body = '';
+  if (S.drawerTab==='test') body = S.testExists ? renderTestSummary() : `<div class="empty-test"><div class="ic"><i class="fa-solid fa-graduation-cap"></i></div><h3>K této směrnici zatím není test</h3>
+      <p>Zaměstnanci teď směrnici jen potvrzují. Přidejte krátký test a ověříte, že ji opravdu pochopili. Test se napojí na tuto směrnici – zaměstnanec ji přečte a hned na ni odpoví.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="btn btn-ai" data-a="smAI"><i class="fa-solid fa-wand-magic-sparkles"></i>APTÍK NAVRHNE TEST Z TÉTO SMĚRNICE</button><button class="btn btn-ghost" data-a="smBlank"><i class="fa-solid fa-pen-ruler"></i>VYTVOŘIT RUČNĚ</button><button class="btn btn-ghost" data-a="smPaste"><i class="fa-solid fa-paste"></i>VLOŽIT Z TEXTU</button><button class="btn btn-ghost" data-a="smTpl"><i class="fa-solid fa-book-bookmark"></i>ZE ŠABLONY</button></div></div>`;
+  else if (S.drawerTab==='distr') body = `<div class="sum-card"><b>Distribuční listy s tímto dokumentem</b><div style="margin-top:12px;display:flex;align-items:center;gap:14px;font-size:13px"><a class="num-link" data-a="goStep" data-v="distribuce">Bezpečnost práce (BOZP) 2026</a> ${badgeFor(S.distMode)}<span style="color:var(--muted)">Pro všechny zaměstnance · 437 příjemců</span></div></div>`;
+  else body = `<div class="sum-card" style="color:var(--muted)"><i class="fa-solid fa-hammer"></i> Obsah této záložky není předmětem prototypu.</div>`;
+  return list + `<div class="drawer"><div class="drawer-rail"><i class="fa-solid fa-book-open"></i><span>Bezpečnost práce (BOZP) 2026</span></div><div class="drawer-main">
+    <div class="drawer-head"><div><h2>Bezpečnost práce (BOZP) 2026</h2><div style="margin-top:8px;display:flex;gap:8px"><span class="chip" style="background:#eef0f5;color:#555">BOZP</span><span class="chip" style="background:#eef0f5;color:#555">VERZE v3 · platná od 1. 9. 2026</span></div></div><button class="x" style="margin-left:auto" title="Zavřít">✕</button></div>
+    <div class="drawer-tabs">${tabs.map(([k,l]) => `<button class="${S.drawerTab===k?'on':''}" data-a="drTab" data-v="${k}">${k==='test'?'<i class="fa-solid fa-graduation-cap"></i>':''}${l}${k==='test'&&!S.testExists?' <span class="badge-new" style="position:static">NOVÉ</span>':''}${k==='test'&&S.testExists?' <span class="badge-blue">1</span>':''}</button>`).join('')}</div>
+    <div class="drawer-body"><div class="drawer-content">${body}</div>
+      <div class="drawer-actions"><div><i class="fa-regular fa-star"></i>Oblíbená</div><div><i class="fa-solid fa-share-nodes"></i>Rozeslat k potvrzení</div><div><i class="fa-solid fa-list"></i>Online formuláře</div><div><i class="fa-solid fa-eye"></i>Náhled</div><div><i class="fa-solid fa-lock"></i>Oprávnění</div><div><i class="fa-solid fa-clock-rotate-left"></i>Historie změn</div></div></div>
+  </div></div>`;
+}
+function renderTestSummary(){
+  const t = S.test, s = S.settings;
+  const st = (v,l) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`;
+  return `<div class="sum-card"><div style="display:flex;align-items:center;gap:10px"><span class="chip chip-test"><i class="fa-solid fa-graduation-cap"></i>TEST</span><b style="font-size:16px;color:var(--title)">${esc(t.title)}</b><span class="chip ${S.status==='Zveřejněno'?'chip-pub':'chip-draft'}">${S.status.toUpperCase()}</span>
+      <span style="margin-left:auto;display:flex;gap:8px"><button class="btn btn-ghost btn-sm" data-a="smEdit" data-v="obsah"><i class="fa-solid fa-pen"></i>UPRAVIT</button><button class="btn btn-ghost btn-sm" data-a="smEdit" data-v="vyzkouset"><i class="fa-solid fa-eye"></i>VYZKOUŠET</button></span></div>
+    <div class="sum-grid">${st(scored(t).length,'otázek')}${st(totalPts(t),'bodů')}${st(s.pass+' %','hranice ('+passPts()+' b.)')}${st(s.timeOn?s.minutes+' min':'bez limitu','čas')}${st(s.attempts==='0'?'∞':s.attempts,'pokusy')}${st(s.cert?s.certValid+' měs.':'—','certifikát')}</div>
+    <div style="font-size:12.5px;color:var(--muted)"><i class="fa-solid fa-link"></i> Školicí materiál: <b>tato směrnice (v3)</b> · zaměstnanec musí potvrdit přečtení před testem</div>
+    <div style="font-size:12.5px;color:var(--muted);margin-top:6px"><i class="fa-solid fa-code-branch"></i> Až nahrajete verzi v4, Aptien se zeptá: <i>„Test byl k verzi v3. Zkontrolovat otázky?“</i> a nabídne Aptíkovi porovnat změny.</div></div>
+    ${S.distMode==='test' ? `<div class="callout green"><i class="fa-solid fa-circle-check"></i><div>Test je součástí rozesílání v listu <b>Bezpečnost práce (BOZP) 2026</b> (pro všechny zaměstnance, 437 lidí).</div><button class="btn btn-ghost btn-sm" style="margin-left:auto" data-a="goStep" data-v="distribuce">OTEVŘÍT LIST</button></div>`
+      : `<div class="callout amber"><i class="fa-solid fa-triangle-exclamation"></i><div><b>Test zatím nikdo nedostane.</b> Směrnice se rozesílá v listu „Bezpečnost práce (BOZP) 2026“ jen k potvrzení. Přepněte způsob doručení na <b>Potvrzení + test</b>.</div><button class="btn btn-blue btn-sm" style="margin-left:auto" data-a="openDist">NASTAVIT ROZESLÁNÍ</button></div>`}`;
+}
+
+/* ---------- 3) Distribuční listy ---------- */
+function badgeFor(m){ return m==='test' ? '<span class="nsm-badge test"><i class="fa-solid fa-graduation-cap"></i>Potvrzení + test</span>' : m==='pub' ? '<span class="nsm-badge pub"><i class="fa-solid fa-circle-info"></i>Pouze zveřejněno</span>' : '<span class="nsm-badge conf"><i class="fa-solid fa-circle-check"></i>Vyžaduje potvrzení</span>'; }
+function distStats(){ // pro řádek BOZP
+  const me = S.emp.state==='passed' ? 1 : 0;
+  return S.distMode==='test' ? {done:5+me, wait:432-me, pct:Math.round((5+me)/437*100*10)/10} : {done:3, wait:292, pct:1};
+}
+function renderDistribuce(){
+  const d = distStats();
+  const rows = [['Kodex chování a etika','pub','---',0,'---',0],['GDPR – Ochrana osobních údajů','pub','---',0,'---',0],['Bezpečnost práce (BOZP) 2026',S.distMode,'Za 5 dní',d.done,d.wait,d.pct],['Požární ochrana a evakuační plán','test','Za 10 dní',5,146,3],['Etický kodex a whistleblowing','conf','Bez termínu',1,437,0],['Home office a práce na dálku','pub','---',0,'---',0],['Cestovní náhrady a diety','conf','Za 15 dní',7,577,1]];
+  return `<div class="nsm"><div class="crumb">Nastavení směrnic <i class="fa-solid fa-chevron-right" style="font-size:9px"></i> Distribuční listy</div><h1>Distribuční listy</h1>
+    <div style="display:flex;gap:10px"><button class="btn btn-blue"><i class="fa-solid fa-circle-check"></i>POTVRZENÍ OD ZAMĚSTNANCE</button><button class="btn" style="background:#fff;border:1px solid #e2e4ea;color:#1a1a1a"><i class="fa-solid fa-circle-info" style="color:#9096a6"></i>ZVEŘEJNĚNO NA PORTÁLE</button></div>
+    <div class="nsm-tabs"><div class="nsm-tab on"><i class="fa-solid fa-users"></i>Pro všechny zaměstnance <span class="c">7</span></div><div class="nsm-tab"><i class="fa-solid fa-id-badge"></i>Pro pracovní pozice <span class="c">3</span></div><div class="nsm-tab"><i class="fa-solid fa-user"></i>Pro konkrétní zaměstnance <span class="c">0</span></div></div>
+    <div class="nsm-table"><table><tr><th>Název</th><th>Pravidla distribuce</th><th>Termín akce</th><th>Potvrzeno / složeno</th><th>Čeká</th><th>Splnění</th><th></th></tr>
+    ${rows.map(r => { const bozp = r[0].startsWith('Bezpečnost');
+      return `<tr class="${bozp?'hl':''}"><td><a ${bozp?'data-a="openDist"':''}>${r[0]}</a></td><td>${badgeFor(r[1])}</td><td>${r[2]}</td><td><span class="num-link" ${bozp?'data-a="goStep" data-v="vyhodnoceni"':''}>${r[3]}</span></td><td>${r[4]==='---'?'---':`<span class="num-link">${r[4]}</span>`}</td>
+      <td><span class="bar ${r[1]==='test'?'g':''}"><i style="width:${Math.max(r[5],r[5]?2:0)}%"></i></span>${String(r[5]).replace('.',',')} %${bozp?` <a class="num-link" style="font-size:11.5px;margin-left:6px" data-a="goStep" data-v="vyhodnoceni">detail</a>`:''}</td><td style="color:#999"><i class="fa-solid fa-ellipsis-vertical"></i></td></tr>`; }).join('')}
+    </table></div>
+    <div style="font-size:12px;color:var(--muted);margin-top:10px"><i class="fa-solid fa-circle-info"></i> U listů „Potvrzení + test“ se do <b>Splnění</b> počítají jen zaměstnanci, kteří test <b>složili</b>.</div></div>`;
+}
+function renderDistModal(){
+  const hasTest = S.testExists;
+  const card = (grp, v, ic, t, d, extra='') => { const on = (grp==='p'?S.distPrijemci:S.distMode)===v; const dis = v==='test' && !hasTest;
+    return `<div class="sel-card ${on?'on':''} ${dis?'dis':''}" data-a="${dis?'':grp==='p'?'distP':'distM'}" data-v="${v}">${extra}<div class="t"><i class="fa-solid ${ic}"></i>${t}</div><div class="d">${d}</div><span class="ck">${on?'<i class="fa-solid fa-check"></i>':''}</span></div>`; };
+  const t = S.test;
+  return `<div class="overlay" style="z-index:40"><div class="apt-modal" style="width:min(980px,94vw)">
+    <div class="apt-modal-head"><div class="apt-modal-title">Upravit seznam příjemců</div><button class="x" data-a="closeDist">✕</button></div>
+    <div style="background:#eef4fe;color:#1572e8;text-align:center;font-weight:800;padding:10px;font-size:13.5px"><i class="fa-solid fa-gear"></i> Nastavení seznamu příjemců</div>
+    <div style="flex:1;overflow-y:auto;padding:22px 28px">
+      <div class="sec"><div class="sec-h">1. Informace o zdroji<button class="btn btn-blue btn-sm" style="margin-left:auto"><i class="fa-solid fa-pen"></i>UPRAVIT ZDROJ</button></div>
+        <div class="src-box"><div><b>Typ zdroje:</b>Dokument nebo manuál</div><div><b>Název:</b>Bezpečnost práce (BOZP) 2026 · v3</div><div><b>Soubory:</b><i class="fa-solid fa-file-pdf" style="color:#e53935"></i> bozp_2026_v3.pdf</div>
+        <div><b>Test:</b>${hasTest ? `<span class="test-pill"><i class="fa-solid fa-graduation-cap"></i>${esc(t.title)} · ${scored(t).length} otázek · hranice ${S.settings.pass} %</span>` : '<span style="color:#9096a6">k dokumentu není test – <a class="num-link" data-a="closeDistGo">vytvořit u směrnice</a></span>'}</div></div></div>
+      <div class="sec"><div class="sec-h">2. Příjemci</div><div class="sel-cards">${card('p','konkretni','fa-user-group','Konkrétní zaměstnanci a skupiny','Vyberete jednotlivce nebo skupiny.')}${card('p','pozice','fa-id-badge','Pracovní pozice','Všichni na vybraných pozicích, i noví nástupci.')}${card('p','vsichni','fa-users','Pro všechny zaměstnance','Celá firma – 437 zaměstnanců.')}</div></div>
+      <div class="sec"><div class="sec-h">3. Způsob doručení</div><div class="sel-cards">${card('m','potvrzeni','fa-circle-check','Vyžaduje potvrzení','Zaměstnanec dokument přečte a potvrdí.')}${card('m','test','fa-graduation-cap','Potvrzení + test','Přečte, potvrdí a složí test k dokumentu. Splněno až po úspěšném testu.','<span class="new">NOVÉ</span>')}${card('m','pub','fa-circle-info','Pouze zveřejněno','Dokument je jen dostupný na portálu.')}</div>
+        ${S.distMode!=='pub' ? `<div style="margin-top:16px;font-weight:800;font-size:13px;color:var(--title)">Termín ${S.distMode==='test'?'splnění (potvrzení + test)':'potvrzení'}</div>
+          <div class="radios">${[['datum','fa-calendar','Konkrétní datum'],['dny','fa-hashtag','Počet dnů na potvrzení'],['bez','fa-infinity','Bez termínu']].map(([v,ic,l]) => `<span data-a="distT" data-v="${v}"><i class="fa-${S.distTermin===v?'solid fa-circle-dot':'regular fa-circle'}"></i><i class="fa-solid ${ic}" style="color:#9096a6"></i>${l}</span>`).join('')}</div>
+          ${S.distTermin==='dny'?'<div class="f" style="max-width:220px"><label>Počet dnů na potvrzení</label><input type="text" value="5"></div>':S.distTermin==='datum'?'<div class="f" style="max-width:220px"><label>Konkrétní datum</label><input type="text" value="12.10.2026"></div>':''}` : ''}
+        ${S.distMode==='test' ? `<div class="callout blue" style="margin-top:16px;align-items:flex-start"><i class="fa-solid fa-graduation-cap"></i><div style="flex:1"><b>Pravidla testu se přebírají z testu u směrnice</b> – ${S.settings.attempts==='0'?'neomezeně':S.settings.attempts} pokusy, odstup ${S.settings.wait} h, ${S.settings.timeOn?S.settings.minutes+' min':'bez časového limitu'}, certifikát ${S.settings.cert?'na '+S.settings.certValid+' měsíců':'ne'}. <a class="num-link" data-a="closeDistEdit">Upravit test</a>
+            <label class="toggle ${S.distRenew?'on':''}" data-a="distRenew" style="margin-top:10px;color:#0f50a2"><span class="sw"></span>Po vypršení certifikátu (${S.settings.certValid} měs.) rozeslat znovu automaticky</label>
+            <div style="margin-top:8px;font-size:12.5px"><i class="fa-solid fa-circle-info"></i> 3 zaměstnanci, kteří už dokument potvrdili, dostanou výzvu <b>jen k testu</b>.</div></div></div>` : ''}</div>
+      <div class="sec"><div class="sec-h">4. Základní informace</div><div class="f-row"><div class="f" style="flex:1"><label>Název*</label><input type="text" value="Bezpečnost práce (BOZP) 2026"></div></div><div class="f"><label>Popis</label><textarea placeholder="Zde si můžete napsat bližší popis k listu"></textarea></div></div>
+    </div>
+    <div class="apt-modal-foot" style="display:flex;padding:14px 24px;border-top:1px solid #eeeff4"><span style="flex:1"></span><button class="btn btn-blue" data-a="saveDist"><i class="fa-solid fa-floppy-disk"></i>ULOŽIT</button></div>
+  </div></div>`;
+}
+
+/* ---------- 4) Zaměstnanec – počítač ---------- */
+function msDocs(){
+  const e = S.emp, testOn = S.distMode==='test' && S.testExists;
+  const todo = [
+    {n:'Etický kodex a whistleblowing', f:'eticky_kodex.pdf', cat:'Compliance', term:'—', dl:['green','∞ Bez termínu'], btn:'green'},
+    {n:'Cestovní náhrady a diety', f:'cestovni_nahrady_2026.pdf', cat:'Ekonomika', term:'08.10.2026', dl:['orange','za 1 den'], btn:'orange'},
+  ];
+  const bozp = {n:'Bezpečnost práce (BOZP) 2026', f:'bozp_2026_v3.pdf', cat:'BOZP', term:'12.10.2026', dl:['green','za 5 dní'], btn:'green', test:testOn, bozp:true};
+  const done = [{n:'Kodex chování a etika', f:'kodex.pdf', when:'12.09.2026 08:14'},{n:'GDPR – Ochrana osobních údajů', f:'gdpr.pdf', when:'02.09.2026 13:40'},{n:'Home office a práce na dálku', f:'home_office.pdf', when:'28.08.2026 10:05'}];
+  if (e.state==='passed' || (!testOn && e.state==='confirmed')) done.unshift({n:bozp.n, f:bozp.f, when:'07.10.2026 '+(new Date().toTimeString().slice(0,5)), passed:e.state==='passed'});
+  else todo.unshift(bozp);
+  return {todo, done};
+}
+function renderZamPC(){
+  const e = S.emp;
+  if (e.sub==='reader') return renderReader();
+  if (e.sub==='test') return `<div style="max-width:880px;margin:0 auto;padding:16px 0 0 0"><div class="crumb" style="padding:0 22px"><a class="num-link" data-a="empBack">Moje směrnice</a> <i class="fa-solid fa-chevron-right" style="font-size:9px"></i> Bezpečnost práce (BOZP) 2026 <i class="fa-solid fa-chevron-right" style="font-size:9px"></i> Test</div>${renderTry()}
+    ${S.run && S.run.done ? `<div style="text-align:center;margin:-30px 0 40px"><button class="btn btn-blue" data-a="empFinish"><i class="fa-solid fa-arrow-left"></i>ZPĚT NA MOJE SMĚRNICE</button></div>` : ''}</div>`;
+  const {todo, done} = msDocs(), total = todo.length + done.length, pct = Math.round(done.length/total*100);
+  const row = d => `<div class="ms-row"><div class="nm"><b>${d.n}</b>${d.test?'<span class="test-tag"><i class="fa-solid fa-graduation-cap"></i>TEST · '+scored(S.test).length+' otázek · ~'+(S.settings.timeOn?S.settings.minutes:5)+' min</span>':''}${d.bozp && e.state==='failed' ? `<span class="fail-tag"><i class="fa-solid fa-xmark"></i>Test nesložen · pokus ${e.attempts} z ${S.settings.attempts}</span>`:''}${d.bozp && e.state==='confirmed' && d.test ? '<span class="fail-tag" style="background:#e8f1fd;color:#1572e8"><i class="fa-solid fa-check"></i>Přečteno – zbývá test</span>':''}<div>${d.f} <span class="cat">${d.cat}</span></div></div>
+      <div class="term">TERMÍN<b>${d.term}</b></div><div style="width:120px"><span class="dl ${d.dl[0]}">${d.dl[1]}</span></div>
+      <button class="ms-btn ${d.btn}" ${d.bozp?'data-a="empOpen"':''}>${d.test ? (e.state==='failed'?'ZKUSIT ZNOVU': e.state==='confirmed'?'POKRAČOVAT V TESTU':'PŘEČÍST A TEST') : 'POTVRDIT'}</button></div>`;
+  const drow = d => `<div class="ms-row"><div class="nm"><b>${d.n}</b>${d.passed?`<span class="test-tag" style="background:#e8f8ed;color:#2E7D32"><i class="fa-solid fa-award"></i>Test složen ${e.pts}/${totalPts(S.test)} b.</span>`:''}<div>${d.f}</div></div><div class="term" style="width:200px">POTVRZENO<b>${d.when}</b></div>${d.passed&&S.settings.cert?`<button class="ms-btn ghost" data-a="showCert" data-v="${e.pts}"><i class="fa-solid fa-award"></i> CERTIFIKÁT</button>`:''}<button class="ms-btn ghost">OTEVŘÍT</button></div>`;
+  return `<div class="ms"><h1>Moje směrnice</h1><div class="subt">Zkontrolujte a potvrďte své dokumenty.</div><div class="ms-search"><i class="fa-solid fa-magnifying-glass"></i>&nbsp; Vyhledejte dokument nebo kategorii</div>
+    <div class="ms-hero ${todo.length?'':'ok'}"><div><h2>${todo.length ? `Zbývá vám potvrdit <span style="color:#1572e8">${todo.length}</span> ${todo.length===1?'dokument':'dokumenty'}` : 'Máte splněno!'}</h2><div style="font-size:12.5px;color:#9096a6;margin-top:4px">${todo.length?'Začněte těmi nejnaléhavějšími nahoře.':'Všechny dokumenty jsou potvrzené.'}</div></div>
+      <div class="ms-pct"><b>${pct} %</b><small>SPLNĚNO</small><div class="pb"><i style="width:${pct}%"></i></div><div style="font-size:11.5px;color:#8a90a3">${done.length} z ${total} potvrzeno</div></div></div>
+    <div class="ms-sec">DOKUMENTY</div><div class="ms-h">K potvrzení</div><div class="ms-list">${todo.map(row).join('')}</div>
+    <div class="ms-list" style="margin-top:12px"><div class="conf-group" data-a="empConf"><i class="fa-solid fa-circle-check" style="color:#00C853"></i>Potvrzeno <span class="c">${done.length}</span><i class="fa-solid fa-chevron-${e.confOpen?'up':'down'}" style="margin-left:auto;color:#999"></i></div>${e.confOpen?done.map(drow).join(''):''}</div></div>`;
+}
+function renderReader(){
+  const e = S.emp, testOn = S.distMode==='test' && S.testExists;
+  const pages = ['1. Úvod a rozsah','2. Pracovní úraz a první pomoc','3. Bezpečnostní značení','4. Požární poplach a evakuace'];
+  const step = (n, l, st) => `<div class="sv-step ${st}"><span class="c">${st==='ok'?'<i class="fa-solid fa-check"></i>':n}</span>${l}</div>`;
+  return `<div class="reader"><div class="reader-doc" id="readerDoc">${pages.map((p,i) => `<div class="page"><h3>${p}</h3>${Array.from({length:22},(_,j)=>`<div class="ln" style="width:${60+((i*7+j*13)%40)}%"></div>`).join('')}<div style="text-align:right;font-size:11px;color:#999;margin-top:30px">SM-012 v3 · strana ${i+1}/4</div></div>`).join('')}</div>
+    <div class="reader-side"><div class="crumb"><a class="num-link" data-a="empBack">Moje směrnice</a> <i class="fa-solid fa-chevron-right" style="font-size:9px"></i> Dokument</div>
+      <div style="font-size:18px;font-weight:800;color:var(--title)">Bezpečnost práce (BOZP) 2026</div><div style="font-size:12.5px;color:var(--muted);margin-top:-8px">bozp_2026_v3.pdf · termín 12. 10. 2026</div>
+      <div class="steps-v">${step(1,'Přečíst dokument', e.readPct>=100?'ok':'on')}${step(2,'Potvrdit seznámení', e.read?'ok':e.readPct>=100?'on':'')}${testOn?step(3,`Složit test (${scored(S.test).length} otázek)`, ''):''}</div>
+      <div><div style="font-size:12px;color:var(--muted);margin-bottom:6px">Přečteno <b id="readPctTxt">${e.readPct}</b> %</div><div class="read-prog"><i id="readPctBar" style="width:${e.readPct}%"></i></div>
+        ${e.readPct<100?'<button class="btn btn-ghost btn-sm" style="margin-top:8px" data-a="empSkip">Přeskočit na konec (pro ukázku)</button>':''}</div>
+      <div class="chk ${e.readPct<100?'dis':''} ${e.read?'on':''}" ${e.readPct>=100?'data-a="empRead"':''}><span class="b">${e.read?'<i class="fa-solid fa-check"></i>':''}</span><span>Potvrzuji, že jsem se se směrnicí seznámil/a a porozuměl/a jí.</span></div>
+      <div style="font-size:11.5px;color:var(--muted2)">Potvrzení je možné až po dočtení celého dokumentu.</div>
+      <div style="margin-top:auto">${testOn ? `<button class="btn btn-blue" style="width:100%;justify-content:center" data-a="empToTest" ${e.read?'':'disabled'}>POKRAČOVAT NA TEST <i class="fa-solid fa-arrow-right"></i></button><div style="font-size:11.5px;color:var(--muted2);margin-top:8px;text-align:center">Pro splnění je potřeba ${passPts()} z ${totalPts(S.test)} bodů · pokusy: ${S.settings.attempts==='0'?'neomezeně':S.settings.attempts}</div>`
+        : `<button class="btn btn-blue" style="width:100%;justify-content:center" data-a="empConfirmOnly" ${e.read?'':'disabled'}>POTVRDIT</button>`}</div></div></div>`;
+}
+
+/* ---------- 5) Zaměstnanec – mobil ---------- */
+function renderMobil(){
+  const qs = scored(S.test), m = S.mob, passed = S.emp.state==='passed';
+  const top = `<div class="m-top"><i class="fa-solid fa-bars"></i><span class="lg">aptien</span><span class="avatar" style="background:#AA00FF;width:26px;height:26px;font-size:10px">KF</span></div>`;
+  const ph1 = `<div class="phone"><div class="screen">${top}${m.push && !passed ? `<div class="push" data-a="mobPush"><span class="ap">a</span><div><b>Aptien · Nová směrnice k prostudování</b><br>Bezpečnost práce (BOZP) 2026 – přečtěte a složte test do 12. 10.</div></div>`:''}
+    <div class="m-body"><div class="m-crumb"><i class="fa-solid fa-house" style="color:#1572e8"></i><i class="fa-solid fa-chevron-right" style="font-size:9px;color:#aaa"></i>Moje směrnice</div>
+      <div class="m-card"><b style="font-size:14px">Zbývá vám potvrdit <span style="color:#1572e8">${passed?2:3}</span> dokumenty</b><div style="height:6px;background:#eef0f5;border-radius:99px;margin-top:8px;overflow:hidden"><i style="display:block;height:100%;width:${passed?67:50}%;background:#1572e8"></i></div><div style="font-size:11px;color:#8a90a3;margin-top:4px">${passed?4:3} z 6 potvrzeno</div></div>
+      <div class="m-card">${passed?'':`<div class="m-item"><span class="m-ic" style="background:#efe9ff;color:#5b21b6"><i class="fa-solid fa-graduation-cap"></i></span><div style="flex:1;min-width:0"><b>Bezpečnost práce (BOZP)…</b><small>Test · ${qs.length} otázek</small></div><div style="text-align:right"><span class="dl green">za 5 dní</span><br><button class="m-btn" style="background:#00C853;margin-top:4px" data-a="mobStart">PŘEČÍST A TEST</button></div></div>`}
+        <div class="m-item"><span class="m-ic" style="background:#fff3e0;color:#FF6D00"><i class="fa-solid fa-file-lines"></i></span><div style="flex:1;min-width:0"><b>Cestovní náhrady a diety</b><small>cestovni_nahrady.pdf</small></div><div style="text-align:right"><span class="dl orange">za 1 den</span><br><button class="m-btn" style="background:#FF6D00;margin-top:4px">POTVRDIT</button></div></div>
+        <div class="m-item"><span class="m-ic" style="background:#e8f8ed;color:#2E7D32"><i class="fa-solid fa-file-lines"></i></span><div style="flex:1;min-width:0"><b>Etický kodex a whistl…</b><small>eticky_kodex.pdf</small></div><div style="text-align:right"><span class="dl green">∞ Bez termínu</span><br><button class="m-btn" style="background:#00C853;margin-top:4px">POTVRDIT</button></div></div></div>
+      ${passed?'<div class="m-card" style="display:flex;gap:10px;align-items:center"><i class="fa-solid fa-award" style="color:#f8c513;font-size:20px"></i><div style="font-size:12.5px"><b>BOZP 2026 – test složen</b><br>Certifikát platný do 7. 10. 2027</div></div>':''}
+    </div></div></div>`;
+  const q = qs[m.q] || qs[0];
+  let ph2;
+  if (!q) ph2 = `<div class="phone"><div class="screen">${top}<div class="m-body">Test nemá otázky.</div></div></div>`;
+  else if (m.done){
+    const ok = qs.filter(x => mobCorrect(x)).length, pts = qs.filter(x=>mobCorrect(x)).reduce((s,x)=>s+x.points,0), pass = pts >= passPts();
+    ph2 = `<div class="phone"><div class="screen">${top}<div class="m-body" style="text-align:center;padding-top:40px"><div style="font-size:52px">${pass?'🎉':'📘'}</div><b style="font-size:18px">${pass?'Test složen!':'Tentokrát to nevyšlo'}</b><div style="font-size:13px;color:#555;margin:8px 0 18px">${pts} z ${totalPts(S.test)} bodů · ${ok}/${qs.length} správně</div>
+      ${pass?'<div class="m-card" style="text-align:left;display:flex;gap:10px;align-items:center"><i class="fa-solid fa-award" style="color:#f8c513;font-size:24px"></i><div style="font-size:12.5px"><b>Certifikát</b><br>Uložen v „O mně → Školení“</div></div>':'<div class="m-card" style="font-size:12.5px">Další pokus za 24 hodin. Zbývají 2 pokusy.</div>'}</div>
+      <div class="m-foot"><button style="background:#19b394;color:#fff" data-a="mobReset">${pass?'HOTOVO':'ROZUMÍM'}</button></div></div></div>`;
+  } else {
+    const a = m.ans[q.id];
+    const opts = q.type==='bool' ? [[true,'Ano'],[false,'Ne']].map(([v,l]) => `<div class="m-opt ${a===v?'sel':''}" data-a="mobAns" data-v="${v}"><span class="o"></span>${l}</div>`).join('')
+      : q.choices.filter(c=>c.t.trim()).map(c => { const sel = q.type==='radio' ? a===c.id : (a||[]).includes(c.id); return `<div class="m-opt ${sel?'sel':''}" data-a="mobAns" data-c="${c.id}"><span class="o" style="${q.type==='checkbox'?'border-radius:5px':''}"></span>${esc(c.t)}</div>`; }).join('');
+    ph2 = `<div class="phone"><div class="screen"><div class="m-top" style="background:#fff;color:#111;border-bottom:1px solid #eee"><i class="fa-solid fa-xmark" data-a="mobReset"></i><span class="lg" style="font-size:14px">Test BOZP 2026</span><span style="font-weight:800;color:#19b394;font-size:13px"><i class="fa-regular fa-clock"></i> 4:${String(52-m.q*7).padStart(2,'0')}</span></div>
+      <div class="m-body"><div class="m-prog">${qs.map((x,i)=>`<i class="${i<=m.q?'on':''}"></i>`).join('')}</div><div style="font-size:11.5px;color:#8a90a3;font-weight:800">OTÁZKA ${m.q+1} Z ${qs.length}${q.type==='checkbox'?' · VÍCE ODPOVĚDÍ':''}</div>
+        <div class="m-q" style="margin-top:8px"><b style="font-size:15px;line-height:1.35;display:block">${esc(q.title)}</b>${opts}</div></div>
+      <div class="m-foot">${m.q>0?'<button style="background:#eef0f5;color:#555" data-a="mobPrev">Zpět</button>':''}<button style="background:#19b394;color:#fff" data-a="mobNext">${m.q===qs.length-1?'ODESLAT':'DALŠÍ'}</button></div></div></div>`;
+  }
+  const ph3 = `<div class="phone"><div class="screen">${top}<div class="m-body"><div class="m-crumb"><i class="fa-solid fa-house" style="color:#1572e8"></i><i class="fa-solid fa-chevron-right" style="font-size:9px;color:#aaa"></i>O mně · Školení</div>
+      <div class="m-card"><b style="font-size:13px">Moje certifikáty</b>${[['Bezpečnost práce (BOZP) 2026', passed ? '7. 10. 2027':null],['Požární ochrana 2026','15. 6. 2027'],['Řidič referent','1. 3. 2027']].filter(c=>c[1]).map(c => `<div class="m-item"><span class="m-ic" style="background:#fff8e1;color:#e0a800"><i class="fa-solid fa-award"></i></span><div style="flex:1;min-width:0"><b>${c[0]}</b><small>platný do ${c[1]}</small></div><i class="fa-solid fa-download" style="color:#1572e8"></i></div>`).join('')}</div>
+      <div class="m-card" style="font-size:12px;color:#666"><i class="fa-solid fa-bell" style="color:#FF6D00"></i> 30 dní před koncem platnosti přijde připomínka a školení se rozešle znovu.</div></div></div></div>`;
+  return `<div class="phones"><div class="phone-col">${ph1}<div class="phone-cap">1 · Upozornění a Moje směrnice<br><span style="font-weight:600">klikněte na PŘEČÍST A TEST</span></div></div>
+    <div class="phone-col">${ph2}<div class="phone-cap">2 · Test – jedna otázka na obrazovku<br><span style="font-weight:600">(dokument se otevře před první otázkou, zde zkráceno)</span></div></div>
+    <div class="phone-col">${ph3}<div class="phone-cap">3 · Certifikát v profilu „O mně“</div></div></div>`;
+}
+function mobCorrect(q){ const a = S.mob.ans[q.id];
+  if (q.type==='bool') return a===q.correct; if (q.type==='radio') return !!q.choices.find(c=>c.id===a&&c.ok);
+  return Array.isArray(a) && [...a].sort().join()===q.choices.filter(c=>c.ok).map(c=>c.id).sort().join(); }
+
+/* ---------- 6) Vyhodnocení ---------- */
+function renderVyhodnoceni(){
+  const e = S.emp, me = e.state==='passed' ? ['ok',e.attempts,e.pts,'7. 10.'] : e.state==='failed' ? ['bad',e.attempts,e.pts,'7. 10.'] : e.state==='confirmed' ? ['run',0,null,''] : ['wait',0,null,''];
+  const data = EMPS.map((p,i) => ({p, s: i===0 ? me : EMP_STATE[i]}));
+  const lbl = {ok:'SLOŽENO', bad:'NESLOŽENO', run:'ROZPRACOVÁNO', wait:'NEZAHÁJENO', late:'PO TERMÍNU'};
+  const extra = {ok:268, bad:21, run:37, wait:96, late:3}; // zbytek ze 437
+  const cnt = k => data.filter(d=>d.s[0]===k).length + extra[k];
+  const kp = (k,col,l) => `<div class="kpi" style="border-left-color:${col}"><b>${cnt(k)}</b><span>${l}</span></div>`;
+  const f = S.evFilter, shown = data.filter(d => f==='all' || d.s[0]===f);
+  const qs = scored(S.test), rates = [94,97,59,71,88,91,83,76,90,64];
+  const fb = (k,l) => `<button class="${f===k?'on':''}" data-a="evF" data-v="${k}">${l}</button>`;
+  if (S.distMode!=='test') return `<div class="ev"><div class="crumb">Nastavení směrnic › Distribuční listy › Bezpečnost práce (BOZP) 2026</div><div class="callout amber" style="margin-top:20px"><i class="fa-solid fa-triangle-exclamation"></i><div>List zatím rozesílá dokument jen k potvrzení – vyhodnocení testu tu bude, až v kroku 3 nastavíte <b>Potvrzení + test</b>.</div><button class="btn btn-blue btn-sm" style="margin-left:auto" data-a="goStep" data-v="distribuce">KROK 3</button></div></div>`;
+  return `<div class="ev"><div class="crumb">Nastavení směrnic <i class="fa-solid fa-chevron-right" style="font-size:9px"></i> <a class="num-link" data-a="goStep" data-v="distribuce">Distribuční listy</a> <i class="fa-solid fa-chevron-right" style="font-size:9px"></i> Bezpečnost práce (BOZP) 2026</div>
+    <div style="display:flex;align-items:center;gap:12px;margin-top:8px"><h1 style="margin:0;font-size:22px">Bezpečnost práce (BOZP) 2026</h1>${badgeFor('test')}<span style="color:var(--muted);font-size:13px">437 příjemců · termín 12. 10. 2026</span>
+      <span style="margin-left:auto;display:flex;gap:8px"><button class="btn btn-ghost btn-sm"><i class="fa-regular fa-file-excel"></i>EXPORT</button><button class="btn btn-blue btn-sm" data-a="remind"><i class="fa-solid fa-bell"></i>PŘIPOMENOUT ČEKAJÍCÍM (${cnt('wait')+cnt('run')+cnt('late')})</button></span></div>
+    <div class="kpis">${kp('ok','#00C853','složilo test')}${kp('bad','#EF5350','nesložilo – vyčerpané pokusy')}${kp('run','#1572e8','rozpracováno / další pokus')}${kp('wait','#B1B2B3','zatím nezahájilo')}${kp('late','#FF6D00','po termínu')}</div>
+    <div class="two"><div class="panel"><h3><i class="fa-solid fa-users" style="color:#1572e8"></i>Zaměstnanci <span style="font-weight:600;color:var(--muted2);font-size:12px">(ukázka 12 ze 437)</span></h3>
+      <div class="filters">${fb('all','Všichni')}${fb('ok','Složeno')}${fb('bad','Nesloženo')}${fb('run','Rozpracováno')}${fb('wait','Nezahájeno')}</div>
+      <table class="ptable"><tr><th>Zaměstnanec</th><th>Stav</th><th>Pokusy</th><th>Body</th><th>Dokončeno</th><th>Certifikát do</th><th></th></tr>
+      ${shown.map(d => `<tr class="${d.p[0]===S.empName?'me':''}"><td><span style="display:flex;align-items:center;gap:8px"><span class="avatar" style="background:${d.p[2]};width:26px;height:26px;font-size:10px">${d.p[0].split(' ').map(x=>x[0]).join('')}</span><span><b>${d.p[0]}</b><br><span style="font-size:11px;color:var(--muted2)">${d.p[1]}</span></span></span></td>
+        <td><span class="st ${d.s[0]}">${lbl[d.s[0]]}</span></td><td>${d.s[1]||'—'}${d.s[1]?' / '+S.settings.attempts:''}</td><td>${d.s[2]!=null?d.s[2]+' / '+totalPts(S.test):'—'}</td><td>${d.s[3]||'—'}</td><td>${d.s[0]==='ok'?'7. 10. 2027':'—'}</td>
+        <td>${d.s[0]==='bad'?'<button class="btn btn-ghost btn-sm" data-a="extraTry">POVOLIT POKUS</button>':d.s[0]==='ok'?'<i class="fa-solid fa-award" style="color:#e0a800"></i>':'<i class="fa-solid fa-ellipsis-vertical" style="color:#aaa"></i>'}</td></tr>`).join('')}</table></div>
+      <div class="panel"><h3><i class="fa-solid fa-chart-simple" style="color:#1572e8"></i>Úspěšnost otázek</h3><div style="font-size:12px;color:var(--muted);margin:-6px 0 12px">Kolik % zaměstnanců odpovědělo správně · z odpovědí v SurveyJS (Dashboard)</div>
+        ${qs.map((q,i) => ({q, r:rates[i%rates.length]})).sort((a,b)=>a.r-b.r).map(({q,r}) => `<div class="qrate"><span class="q">${esc(q.title.length>52?q.title.slice(0,50)+'…':q.title)}</span><span class="b"><i style="width:${r}%"></i></span><b style="width:38px;text-align:right;color:${r<70?'#d9463e':'var(--title)'}">${r} %</b></div>`).join('')}
+        <div class="callout amber" style="font-size:12.5px"><i class="fa-solid fa-lightbulb"></i><div>Otázku <b>„${esc((qs.map((q,i)=>({q,r:rates[i%rates.length]})).sort((a,b)=>a.r-b.r)[0]||{q:{title:''}}).q.title)}“</b> kazí 4 z 10 lidí. Možná je nejasná, nebo ji směrnice nevysvětluje dost.</div></div></div></div></div>`;
+}
+
+/* ---------- akce ---------- */
+Object.assign(ACT, {
+  hintToggle(){ S.hintOpen = !S.hintOpen; },
+  goStep(el){ const k = el.dataset.v;
+    if (k==='editor' && !S.testExists){ S.test = {title:'Školení BOZP 2026', desc:'Test ke směrnici Bezpečnost práce (BOZP) 2026.', material:{mode:'doc', docId:'sm12', text:''}, questions:[]}; S.tab='obsah'; }
+    if (k==='editor') S.run = null;
+    if (k==='zampc'){ S.emp.sub = S.emp.sub==='test' && S.run && !S.run.done ? 'test' : (S.emp.sub==='test'?'list':S.emp.sub); }
+    S.step = k; S.distModal = false; S.aiOpen = false; S.pasteOpen = false; S.certOpen = false;
+    const m = document.getElementById('mainScroll'); if (m) m.scrollTop = 0; },
+  resetAll(){ location.reload(); return 'noRender'; },
+  drTab(el){ S.drawerTab = el.dataset.v; },
+  smAI(){ smNewTest(); S.aiOpen = true; S.ai = {src:'sm12', count:6, phase:'pick', picked:{}}; },
+  smBlank(){ smNewTest(); S.test.questions = [Q.radio('',['','',''])]; },
+  smPaste(){ smNewTest(); S.pasteOpen = true; },
+  smTpl(){ smNewTest(); S.test.questions = sampleBOZP().questions; toast('Načtena šablona „Školení BOZP a PO“','fa-book-bookmark'); },
+  smEdit(el){ S.step = 'editor'; S.tab = el.dataset.v; S.run = el.dataset.v==='vyzkouset' ? newRun() : null; },
+  backToList(){ if (scored(S.test).length){ S.testExists = true; if (S.status!=='Zveřejněno') S.status = 'Koncept'; } S.step = 'smernice'; S.drawerTab = 'test'; S.run = null; },
+  publish(){ S.status = 'Zveřejněno'; S.testExists = true; toast('Test zveřejněn – teď ho zařaďte do distribučního listu','fa-paper-plane'); S.step='smernice'; S.drawerTab='test'; },
+  openDist(){ S.distModal = true; if (S.step!=='distribuce'){ S.step = 'distribuce'; } if (S.testExists) S.distMode = S.distMode==='pub'?'pub':'test'; },
+  closeDist(){ S.distModal = false; },
+  closeDistGo(){ S.distModal = false; S.step = 'smernice'; S.drawerTab = 'test'; },
+  closeDistEdit(){ S.distModal = false; S.step = 'editor'; S.tab = 'nastaveni'; },
+  distP(el){ S.distPrijemci = el.dataset.v; }, distM(el){ S.distMode = el.dataset.v; }, distT(el){ S.distTermin = el.dataset.v; },
+  distRenew(){ S.distRenew = !S.distRenew; },
+  saveDist(){ S.distModal = false; if (S.status!=='Zveřejněno' && S.distMode==='test') S.status = 'Zveřejněno';
+    toast(S.distMode==='test' ? 'Uloženo – 437 zaměstnancům přišlo upozornění: přečíst a složit test' : 'Uloženo', 'fa-paper-plane'); },
+  empOpen(){ if (S.emp.state==='confirmed' || S.emp.state==='failed'){ S.emp.sub='test'; S.run = empRun(); } else { S.emp.sub = 'reader'; } },
+  empBack(){ S.emp.sub = 'list'; },
+  empSkip(){ S.emp.readPct = 100; },
+  empRead(){ S.emp.read = !S.emp.read; },
+  empToTest(){ S.emp.state = 'confirmed'; S.emp.sub = 'test'; S.run = empRun(); },
+  empConfirmOnly(){ S.emp.state = 'confirmed'; S.emp.sub = 'list'; toast('Dokument potvrzen'); },
+  empFinish(){ const sc = scoreRun(S.run); S.emp.attempts = S.run.attempt; S.emp.pts = sc.pts; S.emp.state = sc.passed ? 'passed' : 'failed'; S.emp.sub = 'list'; S.emp.confOpen = sc.passed;
+    toast(sc.passed ? 'Splněno – dokument se přesunul do Potvrzeno' : 'Test nesložen – můžete to zkusit znovu', sc.passed?'fa-circle-check':'fa-circle-info'); },
+  empConf(){ S.emp.confOpen = !S.emp.confOpen; },
+  mobPush(){ S.mob.push = false; },
+  mobStart(){ S.mob = {push:false, q:0, ans:{}, done:false}; toast('Na telefonu se teď otevře dokument, po potvrzení test →','fa-mobile-screen'); },
+  mobAns(el){ const q = scored(S.test)[S.mob.q];
+    if (q.type==='bool') S.mob.ans[q.id] = el.dataset.v==='true'; else if (q.type==='radio') S.mob.ans[q.id] = el.dataset.c;
+    else { const a = S.mob.ans[q.id]||[]; S.mob.ans[q.id] = a.includes(el.dataset.c) ? a.filter(x=>x!==el.dataset.c) : [...a, el.dataset.c]; } },
+  mobNext(){ const qs = scored(S.test); if (S.mob.q < qs.length-1) S.mob.q++; else S.mob.done = true; },
+  mobPrev(){ if (S.mob.q>0) S.mob.q--; },
+  mobReset(){ S.mob = {push:false, q:0, ans:{}, done:false}; },
+  evF(el){ S.evFilter = el.dataset.v; },
+  remind(){ toast('Připomínka odeslána 136 zaměstnancům (push + e-mail)','fa-bell'); return 'noRender'; },
+  extraTry(){ toast('Zaměstnanci byl povolen další pokus','fa-rotate-right'); return 'noRender'; },
+  showCert(el){ S.certOpen = true; S.certPts = el.dataset.v; },
+});
+function smNewTest(){
+  S.test = {title:'Školení BOZP 2026', desc:'Test ke směrnici Bezpečnost práce (BOZP) 2026.', material:{mode:'doc', docId:'sm12', text:''}, questions:[]};
+  S.step = 'editor'; S.tab = 'obsah'; S.run = null; S.status = 'Koncept';
+}
+function empRun(){ const r = newRun(); r.pages = ['start','test']; return r; }
+
+/* čtení dokumentu – posuvník */
+document.addEventListener('scroll', e => {
+  if (e.target.id !== 'readerDoc' || S.emp.readPct>=100) return;
+  const el = e.target, p = Math.min(100, Math.round((el.scrollTop + el.clientHeight) / el.scrollHeight * 100));
+  if (p > S.emp.readPct){ S.emp.readPct = p; const t = document.getElementById('readPctTxt'), b = document.getElementById('readPctBar'); if (t) t.textContent = p; if (b) b.style.width = p+'%';
+    if (p>=100){ render(); afterRender(); } }
+}, true);
+
+/* start */
+S.test = {title:'Školení BOZP 2026', desc:'', material:{mode:'doc', docId:'sm12', text:''}, questions:[]};
+render();
+
+</script>
+</body>
+</html>

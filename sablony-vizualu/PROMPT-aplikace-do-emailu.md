@@ -42,7 +42,7 @@
   Nenahrazuj ho ikonou (`fa-bolt`) a nezmenšuj.
 - ⛔ **Item tabs jsou složkové taby**, ne pilulky.
 - ⛔ **Konektor je vždy modrý `#1572e8`**, text pilulky max ~14 znaků.
-- ⛔ **Plocha scény `#f4f4f7`** — jednolitá, nikdy gradient, nikdy barva modulu.
+- ⛔ **Plocha scény bílá `#fff`** — žádná šedá plocha, nikdy gradient, nikdy barva modulu.
 - ⛔ **Barva modulu (`c800`)** se objeví jen na ikoně názvu v kartě.
   Odkazy, tlačítka a taby jsou vždy defaultní modré `#1572e8`.
 - ⛔ **Do obrázku nepatří nadpis ani claim** — jen 2 popisky, 1 pilulka

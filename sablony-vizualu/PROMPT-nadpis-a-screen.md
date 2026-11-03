@@ -39,7 +39,8 @@
 - ⛔ **Neposouvej snímek do minusu vlevo** — uřízlo by to logo Aptienu.
 - ⛔ **Snímek nenaklánět**, bez perspektivy, bez rámečku notebooku/telefonu,
   radius zůstává 14 px.
-- ⛔ **Karta se nebarví** a nedostává gradient. Plocha zůstává `#f4f4f7`.
+- ⛔ **Karta se nebarví** a nedostává gradient. Celý obrázek je bílý: žádná šedá
+  plocha, karta s rovnými rohy a bez stínu.
 - ⛔ **Nic dalšího do obrázku nepatří** — žádná pilulka, popiska, šipka,
   jiskra, ikona ani druhý text.
 - ⛔ **U varianty C je přední snímek vždy vlevo a níž** a snímky jsou dva
