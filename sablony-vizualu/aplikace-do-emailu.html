@@ -22,7 +22,7 @@
   1. Zkopíruj tento soubor pod novým názvem (např. `revize-upozorneni.html`).
   2. Přepiš jen to, co je označené  ✏️ MĚŇ.
   3. Vyrenderuj:  node render.js revize-upozorneni.html
-     → PNG přesně 1920 × 1080 px.
+     → PNG přesně 1820 × 980 px.
   Prompt k vyplnění: `PROMPT-aplikace-do-emailu.md`.
 
   ────────────────────────────────────────────────────────────────────────
@@ -42,7 +42,7 @@
   ────────────────────────────────────────────────────────────────────────
   ⛔ CO SE NEMĚNÍ
   ────────────────────────────────────────────────────────────────────────
-  ⛔ Rám: `.cv-frame` 1920×1080 a `.cv-stage` 1536×864 se `scale(1.25)`.
+  ⛔ Rám: `.cv-frame` 1820×980 a `.cv-stage` 1536×864 se `scale(1.25)`.
      Sloupce **736 + 168 + 520 = 1424** — hlavní panel (Aptien) je VLEVO,
      protože o něm obrázek vypráví; notifikace je důsledek vpravo.
   ⛔ Plocha scény bílá `#fff` — bez šedé plochy (3. 11. 2026), nikdy gradient,
@@ -95,9 +95,12 @@
     --cv-shadow:0 10px 30px rgba(30,27,46,.12);
   }
 
-  /* ---- rám 1920×1080 (viz Aptien-pravidla-screenshotu.md) ----------- */
-  .cv-frame{width:1920px;height:1080px;overflow:hidden;position:relative;background:var(--cv-bg)}
-  .cv-stage{width:1536px;height:864px;transform:scale(1.25);transform-origin:top left;
+  /* ---- rám 1820×980 (viz Aptien-pravidla-screenshotu.md) ----------- */
+  .cv-frame{width:1820px;height:980px;overflow:hidden;position:relative;background:var(--cv-bg)}
+  /* FORMÁT 3. 11. 2026: výstup 1820 × 980 (web, produktové stránky). Návrhová vrstva
+     zůstává 1536 × 864, jen se posune o -40 návrhových px (= -50 px) a vnější
+     okraj 40 px se ořízne. Viz FORMATY.md v kořeni repozitáře. */
+  .cv-stage{width:1536px;height:864px;transform:translate(-50px,-50px) scale(1.25);transform-origin:top left;
             background:var(--cv-bg);font-family:'Nunito',sans-serif;-webkit-font-smoothing:antialiased}
   /* padding 56 → využitelná plocha 1424 × 752 CSS px.
      Panely mají zaplnit 70–90 % výšky (≥ 530 px). Když je panel nižší,

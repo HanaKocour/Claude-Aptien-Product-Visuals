@@ -67,7 +67,7 @@ ukaž počet na tabu Přílohy.
 
 ## KONTROLA PŘED DOKONČENÍM (měř, neodhaduj)
 
-- [ ] Soubor je přesně **1920 × 1080 px** (`render.js` spadne, když ne).
+- [ ] Soubor je přesně **1820 × 980 px** (`render.js` spadne, když ne).
 - [ ] `render.js` nehlásí přetečení ani výšku panelu mimo **70–90 %**.
 - [ ] Předmět e-mailu = název položky, znak za znak.
 - [ ] Odesílatel je `no-reply@aptien.com`, e-mail má tlačítko do aplikace.

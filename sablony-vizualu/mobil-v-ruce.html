@@ -50,7 +50,7 @@
 
   ⛔ CO SE NEMĚNÍ (viz PRAVIDLA-mobil-v-ruce.md pro plné zdůvodnění)
   ────────────────────────────────────────────────────────────────────────
-  ⛔ Rám 1920×1080, stage 1536×864 @ scale(1.25) — STEJNÉ jako `screenshot-standard.md`.
+  ⛔ Rám 1820×980, stage 1536×864 @ scale(1.18490) — STEJNÉ jako `screenshot-standard.md`.
      Na rozdíl od „scén toku" tahle šablona NEMÁ padding 56px ani neutrální
      plochu — stage JE celá obrazovka aplikace (topbar + sidebar + obsah),
      přesně jako běžný screenshot. Telefon a šipka jsou navrstvené NAD ní.
@@ -106,8 +106,11 @@
   .aptien-sb-collapsed { scrollbar-width: none; -ms-overflow-style: none; }
   .aptien-sb-collapsed::-webkit-scrollbar { width: 0; height: 0; }
 
-  .cv-frame{width:1920px;height:1080px;overflow:hidden;position:relative;background:#e9e8ee}
-  .cv-stage{width:1536px;height:864px;transform:scale(1.25);transform-origin:top left;
+  .cv-frame{width:1820px;height:980px;overflow:hidden;position:relative;background:#e9e8ee}
+  /* FORMÁT 3. 11. 2026: výstup 1820 × 980 (web, produktové stránky). Celá obrazovka
+     aplikace 1536 × 864 se zmenší na šířku 1820 (scale 1820/1536 = 1.18490) a dole
+     se ořízne ~37 návrhových px. Viz FORMATY.md v kořeni repozitáře. */
+  .cv-stage{width:1536px;height:864px;transform:scale(1.18490);transform-origin:top left;
             background:#fff;font-family:'Nunito',sans-serif;-webkit-font-smoothing:antialiased;
             position:relative;overflow:hidden;display:flex;flex-direction:column}
 

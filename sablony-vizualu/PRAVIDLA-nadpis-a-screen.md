@@ -34,7 +34,7 @@ mockup). Jen nadpis a screenshot.
 
 | Parametr | Hodnota |
 |---|---|
-| Výstup | **1920 × 1080 px** (stejně jako celá složka) |
+| Výstup | **1820 × 980 px**, na web @2x 3640 × 1960 (viz `../FORMATY.md`) |
 | Návrhová vrstva | **1536 × 864** se `transform: scale(1.25)` |
 | Plocha za kartou | bílá `#fff` — ⛔ žádná šedá plocha |
 | Karta | `#fff`, **rovné rohy** (`radius 0`), **bez stínu** |
@@ -90,7 +90,7 @@ zakomentovaný blok `<div class="hs-shot hs-shot-live">`. Odkomentuj ho,
 `<img>` smaž a vlož dovnitř UI z `prototypes/partials/`. Použij, když chceš
 vždy aktuální design a ostré písmo místo přeškálovaného snímku.
 
-`ukazka-screen.png` ve složce je **jen zástupný snímek** pro referenční
+`assets/ukazka-screen.png` je **jen zástupný snímek** pro referenční
 výstupy — do produkčního obrázku ho nedávej.
 
 ---
@@ -140,7 +140,7 @@ Tyhle obrázky se na stránce objevují **vedle sebe jako sada**. Proto:
 
 ## 7. Checklist před odevzdáním
 
-1. Soubor je přesně **1920 × 1080 px** (`render.js` spadne, když ne).
+1. Soubor je přesně **1820 × 980 px** (`render.js` spadne, když ne).
 2. Nadpis je Nunito **900**, **60 px**, `#311B92`, na střed, max 2 řádky.
 3. Nadpis pojmenovává oblast, ne akci ani claim; bez tečky.
 4. Snímek má poměr ~3:2, světlé pozadí, radius 14 px, jemný okraj a stín.
@@ -172,3 +172,5 @@ Tyhle obrázky se na stránce objevují **vedle sebe jako sada**. Proto:
 - **3. 11. 2026** — **bez šedé plochy, bez zaoblené karty a bez stínu karty.** Obrázek je celý bílý,
   karta má rovné rohy (`border-radius:0`, `box-shadow:none`). Sjednoceno s šablonami web-obrázků
   v `Claude-Aptien-Templates`. Stín pod screenshotem / panely aplikace zůstává.
+- **3. 11. 2026** — **rozměr 1820 × 980** (na web @2x 3640 × 1960) místo 1920 × 1080, jednotně pro
+  všechny marketingové/produktové obrázky v obou repozitářích. Zdroj pravdy: `../FORMATY.md`.

@@ -48,7 +48,7 @@
 - ⛔ **Název v pilulce = doslova název záznamu ve spine.** Ne parafráze.
 - ⛔ **Závoj je bílý 35 %.** Žádné blur, ztmavení, gradient ani spotlight.
 - ⛔ **Nezmenšuj písmo**, aby se dlouhá pilulka vešla — zkrať název záznamu.
-- ⛔ **Neměň rozměr.** Vždy 1920 × 1080; návrhová vrstva 1536 × 864 se
+- ⛔ **Neměň rozměr.** Vždy 1820 × 980 (na web @2x 3640 × 1960, viz `../FORMATY.md`); návrhová vrstva 1536 × 864 se
   `scale(1.25)`. Nikdy vložený a doškálovaný PNG.
 
 ---

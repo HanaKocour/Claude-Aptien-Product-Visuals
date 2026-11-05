@@ -42,7 +42,7 @@
   (stejné jako aktivní položka sidebaru). Žádná nová barva. Zvýrazni 1–2 řádky.
 - ⛔ **Do obrázku nepatří nadpis ani claim.** Smí tam být jen: 2 popisky,
   1 pilulka konektoru a data v UI. Text je na webu vedle obrázku.
-- ⛔ **Sloupce 520 + 168 + 736 = 1424**, rám 1920 × 1080, vrstva 1536 × 864
+- ⛔ **Sloupce 520 + 168 + 736 = 1424**, rám 1820 × 980, vrstva 1536 × 864
   se `scale(1.25)`. Na geometrii nesahej.
 
 ---
@@ -60,7 +60,7 @@ v e-mailu a popis, který říká, odkud se vzala („staženo z e-mailu").
 
 ## KONTROLA PŘED DOKONČENÍM (měř, neodhaduj)
 
-- [ ] Soubor je přesně **1920 × 1080 px** (`render.js` to ověří a spadne, když ne).
+- [ ] Soubor je přesně **1820 × 980 px** (`render.js` to ověří a spadne, když ne).
 - [ ] `render.js` nehlásí přetečení ani výšku panelu mimo **70–90 %**.
 - [ ] Název položky = předmět zvýrazněného e-mailu, znak za znak.
 - [ ] Příloha má v e-mailu i v záznamu stejný název souboru.

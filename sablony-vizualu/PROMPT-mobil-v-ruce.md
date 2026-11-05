@@ -37,7 +37,7 @@
    `✏️ MĚŇ`** v hlavičce souboru (ZÁZNAM, KONVERZACE obě, SEZNAM VLEVO).
    Rozměry, CSS, geometrii telefonu, akční sloupec ani konektor neměň.
 5. Vyrenderuj: `node render.js <soubor>.html`
-6. **Přečti výstup renderu** (musí hlásit přesně 1920 × 1080 px).
+6. **Přečti výstup renderu** (musí hlásit přesně 1820 × 980 px).
 7. **Ověř přes Playwright (nespoléhej na oči ani na `render.js`):**
    - z-index: `.cv-phone-screen` má vyšší z-index než `.cv-phone-img`
      (jinak zůstane displej prázdný bílý, i když je obsah v DOM správně).
@@ -107,7 +107,7 @@ DRUHÉHO zařízení (kde je viděn očima toho druhého) vlevo a šedě.
 
 ## KONTROLA PŘED DOKONČENÍM (měř i koukej, neodhaduj)
 
-- [ ] Soubor je přesně **1920 × 1080 px** (`render.js` spadne, když ne).
+- [ ] Soubor je přesně **1820 × 980 px** (`render.js` spadne, když ne).
 - [ ] **Změřeno (Playwright), ne odhadnuto:** `.cv-phone-screen` má vyšší
       `z-index` než `.cv-phone-img`.
 - [ ] **Změřeno:** počet `<div` a `</div>` v souboru sedí.

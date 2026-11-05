@@ -45,7 +45,7 @@
   jiskra, ikona ani druhý text.
 - ⛔ **U varianty C je přední snímek vždy vlevo a níž** a snímky jsou dva
   RŮZNÉ.
-- ⛔ **Neměň rozměr.** Vždy 1920 × 1080; návrhová vrstva 1536 × 864 se
+- ⛔ **Neměň rozměr.** Vždy 1820 × 980 (na web @2x 3640 × 1960, viz `../FORMATY.md`); návrhová vrstva 1536 × 864 se
   `scale(1.25)`.
 
 ---
@@ -131,5 +131,5 @@ zadní karta přístroje.
 | `priklad-nadpis-screen-s-okraji.png` | B |
 | `priklad-nadpis-dva-screeny.png` | C |
 
-Ve všech třech je `ukazka-screen.png` jako zástupný snímek — v produkčním
+Ve všech třech je `assets/ukazka-screen.png` jako zástupný snímek — v produkčním
 obrázku ho vyměň za skutečný.

@@ -189,6 +189,23 @@ data. Nic nerekonstruuj."*
 
 ---
 
+## 📐 Formáty hotových obrázků podle použití (zdroj pravdy: `FORMATY.md`)
+
+Hotový obrázek má vždy jeden z předem daných rozměrů – podle toho, kam jde:
+
+| Použití | Rozměr | Na web nahrát |
+|---|---|---|
+| **Web – produktové / marketingové stránky** | **1820 × 980 px**, bílá karta bez okraje a stínu | **@2x 3640 × 1960** |
+| **KB – články znalostní báze** | **šířka 1700 px**, výška podle obsahu (16 : 9 / 3 : 2 / 4 : 3) | 1700 px |
+| sociální sítě, bannery | podle `Claude-Aptien-Banners` | — |
+
+⛔ Šablony, screenshoty, výřezy UI a další komponenty se **skládají do těchto
+rámů** – rám se nikdy nepřizpůsobuje komponentě. Screenshot 1920 × 1080 popsaný
+níže je pracovní komponenta (náhled prototypu), ne hotový obrázek na web ani do KB.
+Detaily (miniatura vs. rozkliknutí, ostrost, čitelnost v KB): **`FORMATY.md`**.
+
+---
+
 ## 🖼 Formát výstupu screenshotů (platí pro každý vizuál)
 
 **Každý generovaný náhled / screenshot má rozměr přesně 1920 × 1080 px.

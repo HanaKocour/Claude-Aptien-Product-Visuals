@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<title>Základ – pozadí a písmo</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<!--
+  ŠABLONA VIZUÁLU · RODINA C „ZÁKLAD“ · pozadí a písmo
+  ==========================================================================
+  Převzato z vizuálu „Aptien — Vydávání klíčů v7“ (aptien_klic_v7.html, 3. 11. 2026):
+  jen ZÁKLAD – dělené pozadí, dekorativní pružina, logo, nadpis,
+  podnadpis a pružina dole vlevo. Obsah vpravo (mockupy, screen, fotky) je prázdný
+  slot `.zk-obsah`, do kterého se skládají komponenty.
+
+  Formát: web – produktové stránky (viz Claude-Aptien-Product-Visuals/FORMATY.md)
+  Rám 1820 × 980, vrstva 1456 × 784 se scale(1.25). Na web @2x:
+     SCALE=2 node ../render.js zaklad-pozadi-a-pismo.html vystup@2x.png
+
+  ✏️ CO SE MĚNÍ (vše v DATA dole)
+  ✏️ motiv      – "svetly" (bílá + #F5F3FF) | "sky" (Sky #6200EA) | "midnight" (Midnight #1A0050)
+  ✏️ nadpis     – 2–3 řádky [text, "" | "akcent"]; poslední řádek dostane tečku.
+                  "akcent" = zvýrazněný řádek v barvě motivu (světlý #6200EA, sky #DDD0FF,
+                  midnight #B388FF)
+  ✏️ tecka      – "" = barva motivu (světlý a midnight Magenta #E602FF, sky Amber #FFA200)
+  ✏️ podnadpis  – 1–2 řádky, max ~90 znaků
+  ✏️ dekorace   – true/false: pružina v pravém horním rohu (7 % krytí)
+  ✏️ obsah      – {typ:"prazdne"} nebo {typ:"obrazek", src:"…"}; jinak vlož
+                  vlastní HTML do .zk-obsah (mockup notebooku, telefon, fotka…)
+
+  ⛔ CO SE NEMĚNÍ
+  ⛔ Pozadí: vlevo bílá #FFFFFF (sloupec 540 návrhových px), vpravo jednolitá
+     #F5F3FF. Obrázek nemá zaoblené rohy ani stín – je to rovnou plocha.
+  ⛔ Písmo jen Nunito: nadpis 900 / 60 px / -1.5 px, barva #1A0050, zvýrazněný
+     řádek #6200EA; podnadpis 600 / 20 px #5A4070.
+  ⛔ Nadpis se nezmenšuje – zkrať text (max 3 řádky po ~11 znacích).
+  ⛔ Pružina dole vlevo (výška 34 px) – 6 článků a kolečko v pevném pořadí barev:
+     #3CC47C #00B4B4 #6200EA #1A0050 #E602FF #FFA200, kolečko #FFCD00.
+-->
+<style>
+  body{margin:0;background:#dedde4}
+  .zk-frame{width:1820px;height:980px;overflow:hidden;position:relative;background:var(--bg-l);
+            --bg-l:#FFFFFF;--bg-r:#F5F3FF;--ink:#1A0050;--akcent:#6200EA;--sub:#5A4070;--tecka:#E602FF;
+            --shot-line:#e6e4ee;--shot-shadow:rgba(98,0,234,.18);--ph-line:#cfc6f2;--ph-text:#9D8FD0}
+  /* motiv „sky“ – primární barva Sky #6200EA */
+  .zk-frame.m-sky{--bg-l:#6200EA;--bg-r:#5300C7;--ink:#FFFFFF;--akcent:#DDD0FF;--sub:#EDE6FF;--tecka:#FFA200;
+            --shot-line:rgba(255,255,255,.18);--shot-shadow:rgba(20,0,60,.45);--ph-line:rgba(255,255,255,.4);--ph-text:rgba(255,255,255,.75)}
+  /* motiv „midnight“ – Midnight #1A0050 */
+  .zk-frame.m-midnight{--bg-l:#1A0050;--bg-r:#240A63;--ink:#FFFFFF;--akcent:#B388FF;--sub:#C9BDF2;--tecka:#E602FF;
+            --shot-line:rgba(255,255,255,.14);--shot-shadow:rgba(0,0,0,.5);--ph-line:rgba(255,255,255,.3);--ph-text:rgba(255,255,255,.65)}
+  .m-sky .zk-dek path,.m-sky .zk-dek circle,.m-midnight .zk-dek path,.m-midnight .zk-dek circle{fill:#fff}
+  .m-sky .zk-logo path,.m-midnight .zk-logo path{fill:#fff}
+  .m-sky .zk-logo path:first-child,.m-midnight .zk-logo path:first-child{fill:rgba(255,255,255,.35)}
+  .m-sky .zk-logo path:nth-child(2),.m-midnight .zk-logo path:nth-child(2){fill:rgba(255,255,255,.7)}
+  .m-sky .zk-logo path:nth-child(3),.m-midnight .zk-logo path:nth-child(3){fill:#FFA200}
+  .m-sky .zk-pruzina .f,.m-midnight .zk-pruzina .f{stroke:rgba(255,255,255,.4);stroke-width:1.2px;vector-effect:non-scaling-stroke}
+  .m-sky .zk-pruzina .b,.m-midnight .zk-pruzina .b{fill-opacity:.4}
+  .zk-stage{width:1456px;height:784px;transform:scale(1.25);transform-origin:top left;position:relative;overflow:hidden;
+            background:var(--bg-l);font-family:'Nunito',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+  .zk-panel{position:absolute;left:540px;top:0;right:0;bottom:0;background:var(--bg-r)}
+  .zk-dek{position:absolute;left:0;top:0;width:1456px;height:784px;pointer-events:none}
+  .zk-logo{position:absolute;left:56px;top:48px;display:flex;align-items:center;gap:9px;font-weight:900;font-size:21px;color:var(--ink)}
+  .zk-h1{position:absolute;left:56px;top:136px;width:470px;margin:0;font-weight:900;font-size:60px;line-height:1.1;letter-spacing:-1.5px}
+  .zk-h1 span{display:block}
+  .zk-sub{position:absolute;left:56px;width:440px;font-weight:600;font-size:20px;line-height:1.4;color:var(--sub)}
+  .zk-pruzina{position:absolute;left:56px;bottom:34px;height:34px;width:auto;overflow:visible}
+  .zk-obsah{position:absolute;left:580px;top:56px;right:48px;bottom:56px;display:flex;align-items:center;justify-content:center}
+  .zk-obsah img.screen{max-width:100%;max-height:100%;border-radius:12px;border:1px solid var(--shot-line);box-shadow:0 10px 30px var(--shot-shadow)}
+  .zk-prazdne{width:100%;height:100%;border:2px dashed var(--ph-line);border-radius:16px;display:flex;align-items:center;justify-content:center;
+              color:var(--ph-text);font-weight:700;font-size:18px}
+</style>
+</head>
+<body>
+<section class="zk-frame" id="vizual"><div class="zk-stage">
+  <div class="zk-panel"></div>
+  <svg class="zk-dek" id="dek" viewBox="0 0 1456 784"><g transform="translate(1160,-60) rotate(10) scale(1.4)" opacity="0.07">
+    <path d="M0 60.2C0 26.9 26.9 0 60.2 0L243.8 0C277.1 0 304 26.9 304 60.2 304 93.4 277.1 120.4 243.8 120.4L60.2 120.4C26.9 120.4 0 93.4 0 60.2Z" fill="#1A0050" transform="matrix(-0.453 -0.892 -0.892 0.453 314 253)"/>
+    <path d="M0 60.2C0 26.9 26.9 0 60.2 0L243.8 0C277.1 0 304 26.9 304 60.2 304 93.4 277.1 120.4 243.8 120.4L60.2 120.4C26.9 120.4 0 93.4 0 60.2Z" fill="#6200EA" transform="matrix(-0.453 -0.892 -0.892 0.453 483 253)"/>
+    <path d="M0 60.2C0 26.9 26.9 0 60.2 0L243.8 0C277.1 0 304 26.9 304 60.2 304 93.4 277.1 120.4 243.8 120.4L60.2 120.4C26.9 120.4 0 93.4 0 60.2Z" fill="#E602FF" transform="matrix(-0.453 -0.892 -0.892 0.453 652 253)"/>
+    <path d="M0 60.2C0 26.9 26.9 0 60.2 0L243.8 0C277.1 0 304 26.9 304 60.2 304 93.4 277.1 120.4 243.8 120.4L60.2 120.4C26.9 120.4 0 93.4 0 60.2Z" fill="#FFA200" transform="matrix(-0.453 -0.892 -0.892 0.453 821 253)"/>
+    <path d="M34.6 281.2C4.9 266.2-6.9 230 8.2 200.3L91.4 36.6C106.4 6.9 142.6-4.9 172.3 10.2 201.9 25.2 213.8 61.5 198.7 91.1L115.5 254.8C100.5 284.5 64.2 296.3 34.6 281.2Z" fill="#1A0050"/>
+    <path d="M203.3 281.2C173.7 266.2 161.9 230 176.9 200.3L260.1 36.6C275.2 6.9 311.4-4.9 341 10.2 370.7 25.2 382.5 61.5 367.4 91.1L284.3 254.8C269.2 284.5 233 296.3 203.3 281.2Z" fill="#6200EA"/>
+    <path d="M372.1 281.2C342.5 266.2 330.6 230 345.7 200.3L428.9 36.6C443.9 6.9 480.2-4.9 509.8 10.2 539.4 25.2 551.3 61.5 536.2 91.1L453 254.8C438 284.5 401.7 296.3 372.1 281.2Z" fill="#E602FF"/>
+    <path d="M540.8 281.2C511.2 266.2 499.4 230 514.4 200.3L597.6 36.6C612.7 6.9 648.9-4.9 678.6 10.2 708.2 25.2 720 61.5 704.9 91.1L621.8 254.8C606.7 284.5 570.5 296.3 540.8 281.2Z" fill="#FFA200"/>
+    <circle cx="751.5" cy="223" r="68.5" fill="#FFA200"/>
+  </g></svg>
+  <div class="zk-logo"><svg width="34" height="37" viewBox="82 875 898 981">
+      <path d="M965.707 1557.94C974.249 1576.76 979 1597.66 979 1619.66 979 1659.27 963.654 1695.26 938.553 1722.02L937.864 1722.78C867.129 1801.66 712.488 1853 533.09 1853 355.61 1853 202.348 1802.75 130.609 1725.28L130.339 1724.95C117.062 1711.56 106.302 1695.66 98.8239 1678.04 94.0283 1666.75 90.5816 1654.76 88.6934 1642.27 87.5694 1634.89 87 1627.34 87 1619.65 87 1594.27 93.324 1570.38 104.474 1549.44L107.111 1544.13 395.743 966.156 398.276 961.066C422.628 911.294 473.805 877 533 877 592.555 877 644.002 911.698 668.174 961.964L670.677 967.054 965.258 1556.94 965.707 1557.94Z" fill="#EDE8FF"/>
+      <path d="M293.317 789.697 563.066 248.957 580.859 213.285C589.927 193.968 595 172.391 595 149.632 595 66.9903 528.004 0 445.356 0 386.247 0 335.143 34.2657 310.826 84.0331L308.297 89.1358 20.0822 666.879 17.4485 672.191C6.31488 693.125 0 717.006 0 742.368 0 825.01 66.9957 892 149.644 892 208.11 892 258.6 858.632 283.246 809.927L293.317 789.697Z" fill="#9D46FF" transform="matrix(-1 0 0 1 978 878)"/>
+      <path d="M978 1619.5C978 1702.07 911.067 1769 828.5 1769 745.933 1769 679 1702.07 679 1619.5 679 1536.93 745.933 1470 828.5 1470 911.067 1470 978 1536.93 978 1619.5Z" fill="#FFA200"/>
+      <path d="M380.81 1666.7 651.012 1125.96 668.835 1090.29C677.919 1070.97 683 1049.39 683 1026.63 683 943.99 615.892 877 533.104 877 473.896 877 422.706 911.266 398.348 961.033L395.815 966.136 107.116 1543.88 104.478 1549.19C93.3255 1570.12 87 1594.01 87 1619.37 87 1702.01 154.108 1769 236.896 1769 295.46 1769 346.035 1735.63 370.723 1686.93L380.81 1666.7Z" fill="#6200EA"/>
+    </svg>aptien</div>
+  <h1 class="zk-h1" id="h1"></h1>
+  <div class="zk-sub" id="sub"></div>
+  <svg class="zk-pruzina" viewBox="0 0 1160 293" aria-hidden="true"><path class="b" d="M0 60.1939C0 26.9497 26.9497 0 60.1939 0L243.827 0C277.071 0 304.02 26.9497 304.02 60.1939 304.02 93.4381 277.07 120.388 243.826 120.388L60.1939 120.388C26.9497 120.388 0 93.4378 0 60.1936Z" fill="#3CC47C" fill-opacity="0.28" transform="matrix(-0.452962 -0.89153 -0.89153 0.452962 313.98 252.96)"/><path class="b" d="M0 60.1939C0 26.9497 26.9497 0 60.1939 0L243.827 0C277.071 0 304.02 26.9497 304.02 60.1939 304.02 93.4381 277.07 120.388 243.826 120.388L60.1939 120.388C26.9497 120.388 0 93.4378 0 60.1936Z" fill="#00B4B4" fill-opacity="0.28" transform="matrix(-0.452962 -0.89153 -0.89153 0.452962 482.74 252.96)"/><path class="b" d="M0 60.1939C0 26.9497 26.9497 0 60.1939 0L243.827 0C277.071 0 304.02 26.9497 304.02 60.1939 304.02 93.4381 277.07 120.388 243.826 120.388L60.1939 120.388C26.9497 120.388 0 93.4378 0 60.1936Z" fill="#6200EA" fill-opacity="0.28" transform="matrix(-0.452962 -0.89153 -0.89153 0.452962 651.49 252.96)"/><path class="b" d="M0 60.1939C0 26.9497 26.9497 0 60.1939 0L243.827 0C277.071 0 304.02 26.9497 304.02 60.1939 304.02 93.4381 277.07 120.388 243.826 120.388L60.1939 120.388C26.9497 120.388 0 93.4378 0 60.1936Z" fill="#1A0050" fill-opacity="0.28" transform="matrix(-0.452962 -0.89153 -0.89153 0.452962 820.25 252.96)"/><path class="b" d="M0 60.1939C0 26.9497 26.9497 0 60.1939 0L243.827 0C277.071 0 304.02 26.9497 304.02 60.1939 304.02 93.4381 277.07 120.388 243.826 120.388L60.1939 120.388C26.9497 120.388 0 93.4378 0 60.1936Z" fill="#E602FF" fill-opacity="0.28" transform="matrix(-0.452962 -0.89153 -0.89153 0.452962 989.00 252.96)"/><path class="b" d="M0 60.1939C0 26.9497 26.9497 0 60.1939 0L243.827 0C277.071 0 304.02 26.9497 304.02 60.1939 304.02 93.4381 277.07 120.388 243.826 120.388L60.1939 120.388C26.9497 120.388 0 93.4378 0 60.1936Z" fill="#FFA200" fill-opacity="0.28" transform="matrix(-0.452962 -0.89153 -0.89153 0.452962 1157.76 252.96)"/><path class="f" d="M34.58 281.23C4.94 266.17-6.88 229.94 8.18 200.3L91.36 36.58C106.42 6.95 142.65-4.87 172.29 10.18 201.93 25.24 213.75 61.48 198.69 91.12L115.51 254.83C100.45 284.47 64.22 296.29 34.58 281.23Z" fill="#3CC47C" transform="translate(0.00 0)"/><path class="f" d="M34.58 281.23C4.94 266.17-6.88 229.94 8.18 200.3L91.36 36.58C106.42 6.95 142.65-4.87 172.29 10.18 201.93 25.24 213.75 61.48 198.69 91.12L115.51 254.83C100.45 284.47 64.22 296.29 34.58 281.23Z" fill="#00B4B4" transform="translate(168.75 0)"/><path class="f" d="M34.58 281.23C4.94 266.17-6.88 229.94 8.18 200.3L91.36 36.58C106.42 6.95 142.65-4.87 172.29 10.18 201.93 25.24 213.75 61.48 198.69 91.12L115.51 254.83C100.45 284.47 64.22 296.29 34.58 281.23Z" fill="#6200EA" transform="translate(337.51 0)"/><path class="f" d="M34.58 281.23C4.94 266.17-6.88 229.94 8.18 200.3L91.36 36.58C106.42 6.95 142.65-4.87 172.29 10.18 201.93 25.24 213.75 61.48 198.69 91.12L115.51 254.83C100.45 284.47 64.22 296.29 34.58 281.23Z" fill="#1A0050" transform="translate(506.26 0)"/><path class="f" d="M34.58 281.23C4.94 266.17-6.88 229.94 8.18 200.3L91.36 36.58C106.42 6.95 142.65-4.87 172.29 10.18 201.93 25.24 213.75 61.48 198.69 91.12L115.51 254.83C100.45 284.47 64.22 296.29 34.58 281.23Z" fill="#E602FF" transform="translate(675.02 0)"/><path class="f" d="M34.58 281.23C4.94 266.17-6.88 229.94 8.18 200.3L91.36 36.58C106.42 6.95 142.65-4.87 172.29 10.18 201.93 25.24 213.75 61.48 198.69 91.12L115.51 254.83C100.45 284.47 64.22 296.29 34.58 281.23Z" fill="#FFA200" transform="translate(843.77 0)"/><circle class="f" cx="1089.01" cy="223" r="68.5" fill="#FFCD00"/></svg>
+  <div class="zk-obsah" id="obsah"></div>
+</div></section>
+<script>
+/* ✏️ MĚŇ — jen tento objekt */
+const DATA = {
+  "motiv": "sky",
+  "nadpis": [
+    [
+      "Směrnice",
+      ""
+    ],
+    [
+      "dojde správným",
+      ""
+    ],
+    [
+      "lidem",
+      "akcent"
+    ]
+  ],
+  "tecka": "",
+  "podnadpis": "Aptien rozešle novou verzi podle distribučního seznamu a hlídá potvrzení.",
+  "dekorace": true,
+  "obsah": {
+    "typ": "obrazek",
+    "src": "../assets/ukazka-screen.png"
+  }
+};
+/* ⛔ odsud dál neměnit */
+const $=id=>document.getElementById(id);
+const M=DATA.motiv||'svetly'; if(M!=='svetly') document.getElementById('vizual').classList.add('m-'+M);
+const barva=b=>!b?'var(--ink)':(b==='akcent'||b==='#6200EA')?'var(--akcent)':b;
+$('h1').innerHTML=DATA.nadpis.map((r,i)=>`<span style="color:${barva(r[1])}">${r[0]}${i===DATA.nadpis.length-1?`<b style="color:${DATA.tecka||'var(--tecka)'}">.</b>`:''}</span>`).join('');
+$('sub').textContent=DATA.podnadpis;
+$('sub').style.top=(136+$('h1').offsetHeight+22)+'px';
+if(!DATA.dekorace) $('dek').remove();
+const O=DATA.obsah||{typ:'prazdne'};
+if(O.typ==='obrazek') $('obsah').innerHTML=`<img class="screen" src="${O.src}" alt="">`;
+else if(O.typ==='prazdne') $('obsah').innerHTML='<div class="zk-prazdne">Sem patří obsah: screen, mockup notebooku a telefonu, fotka</div>';
+</script>
+</body>
+</html>

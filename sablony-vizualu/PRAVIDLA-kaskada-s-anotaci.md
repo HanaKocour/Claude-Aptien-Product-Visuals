@@ -61,7 +61,7 @@ kam se dívat:
 ## 2. Anatomie
 
 ```
-┌─ rám 1920 × 1080 ─────────────────────────────────────────┐
+┌─ rám 1820 × 980 ──────────────────────────────────────────┐
 │ ┌─ vrstva 1536 × 864, scale(1.25) ──────────────────────┐ │
 │ │  horní lišta + tab strip (nikdy pod závojem)          │ │
 │ │ ┌──────┬──┬──┬──┬──┬────────────────────────────────┐ │ │
@@ -192,7 +192,7 @@ informace, které ucho pilulka popisuje.
 ## 8. Render
 
 Platí `../prototypes/Aptien-pravidla-screenshotu.md`: návrh 1536 × 864,
-`scale(1.25)`, výstup přesně 1920 × 1080. Rám má `id="vizual"`, takže
+`scale(1.25)` (ve výstupu zmenšená na `scale(1.18490)`), výstup přesně 1820 × 980. Rám má `id="vizual"`, takže
 `node render.js kaskada-s-anotaci.html` udělá PNG přes element.
 
 **UI pod anotací — dvě cesty:**
@@ -208,7 +208,7 @@ Platí `../prototypes/Aptien-pravidla-screenshotu.md`: návrh 1536 × 864,
 
 ## 9. Checklist před odevzdáním
 
-1. Soubor je přesně **1920 × 1080 px**, vnitřní vrstva 1536 × 864 se `scale(1.25)`.
+1. Soubor je přesně **1820 × 980 px** (@2x 3640 × 1960), vnitřní vrstva 1536 × 864 se `scale(1.18490)`, dole oříznutá.
 2. UI je z partialů, ne překreslené; PNG (cesta B) je vložený 1:1.
 3. Z každého překrytého draweru je vidět **jen spine 38 px** s ikonou a
    otočeným názvem.
@@ -249,3 +249,5 @@ Platí `../prototypes/Aptien-pravidla-screenshotu.md`: návrh 1536 × 864,
 - **18. 8. 2026** — krok pilulek byl v první verzi 39–40 px odměřených z
   obrázku. **Opraveno na 38 px** = skutečná šířka spine v
   `item-drawer-stacked.html`; jinak se svody rozjedou.
+- **3. 11. 2026** — **rozměr 1820 × 980** (na web @2x 3640 × 1960) místo 1920 × 1080, jednotně pro
+  všechny marketingové/produktové obrázky v obou repozitářích. Zdroj pravdy: `../FORMATY.md`.

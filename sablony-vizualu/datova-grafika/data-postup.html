@@ -8,8 +8,8 @@
 <!--
   ŠABLONA VIZUÁLU · RODINA „DATOVÁ GRAFIKA" · Postup v krocích
   ==========================================================================
-  Zdroj grafického jazyka: „Aptien pictures template - 2026.pptx"
-  (slide 64 „Postup", slide 68 „Základní nastavení → Přizpůsobení → Vývoj na míru"). Paleta = „Paleta 2025" z prezentace (slide 2).
+  Tvary a skladba: „Aptien pictures template - 2026.pptx"
+  (slide 64 „Postup", slide 68 „Základní nastavení → Přizpůsobení → Vývoj na míru"). Barvy, fonty a logo = Claude-Aptien-Brand-Manual (aptien_brand_brief.md).
 
   TOHLE NENÍ PROTOTYP UI. Šablona říká, jak vypadá OBRÁZEK. Vzhled je
   hotový a zmrazený — měníš JEN objekt `DATA` v <script> dole.
@@ -17,7 +17,7 @@
   JAK POUŽÍT
   1. Zkopíruj soubor pod novým názvem (např. `nis2-postup.html`).
   2. Přepiš jen hodnoty v `const DATA = {…}`  (✏️ MĚŇ).
-  3. node render.js nis2-postup.html   → PNG přesně 1920 × 1080.
+  3. node render.js nis2-postup.html   → PNG přesně 1820 × 980.
 
   ✏️ CO SE MĚNÍ (vše v DATA)
   ✏️ nadpis, podnadpis, zdroj
@@ -25,11 +25,12 @@
                     lhuta je nepovinná (chip s číslem / termínem)
 
   ⛔ CO SE NEMĚNÍ
-  ⛔ Rám `.dg-frame` 1920×1080, `.dg-stage` 1536×864 se `scale(1.25)`.
-  ⛔ Celý obrázek je bílý: karta s rovnými rohy, bez stínu a bez šedé plochy (3. 11. 2026).
-  ⛔ Nadpis Nunito 900 / 60 px (stejně jako rodina „nadpis + screenshot“) / `#311B92`, max 2 řádky. Nezmenšuj — zkrať text.
+  ⛔ Rám `.dg-frame` 1820×980 = rovnou bílá karta: rovné rohy, bez šedé plochy
+     a bez stínu (rozhodnuto 3. 11. 2026). `.dg-stage` 1456×784 se `scale(1.25)`.
+  ⛔ Karta je vždy bílá — nikdy se nebarví.
+  ⛔ Nadpis Nunito 900 / 60 px, Midnight `#1A0050`, za ním Amber tečka (brand detail), max 2 řádky. Nezmenšuj — zkrať text.
   ⛔ Popisky grafiky Poppins (jako v pptx), čísla Nunito 900.
-  ⛔ Barvy jen z palety `--c1…--c6` v pevném pořadí; nové barvy nezaváděj.
+  ⛔ Barvy jen z brand palety `--c1…--c6` v pevném pořadí; nové barvy nezaváděj.
   ⛔ Žádné konfety, tahy štětcem, jiskry ani gradientové pozadí plochy
      (zamítnuto 12. 8. 2026 v sablony-vizualu/README.md).
   ⛔ Fakta (lhůty, čísla) vždy s řádkem `zdroj` — bez zdroje číslo nepublikuj.
@@ -38,31 +39,30 @@
 <style>
   :root{
     /* Paleta 2025 (pptx, slide 2) — pořadí je pevné */
-    --c1:#7602FF;  /* Deep Purple A400 — hlavní */
-    --c2:#00B8D4;  /* Cyan A700 */
-    --c3:#00C853;  /* Green A700 */
-    --c4:#FFAB00;  /* Amber A700 */
-    --c5:#E602FF;  /* Purple A400 */
-    --c6:#1A237E;  /* Indigo 900 */
-    --ink:#280A66; /* tmavá pro text grafiky */
+    --c1:#6200EA;  /* Sky — hlavní */
+    --c2:#00B4B4;  /* Teal */
+    --c3:#1DB87A;  /* Emerald */
+    --c4:#FFA200;  /* Amber */
+    --c5:#E602FF;  /* Magenta */
+    --c6:#3660FF;  /* Blue */
+    --ink:#1A0050; /* Midnight — text */
     --muted:#7D90A6;
-    --title:#311B92;
-    --step:#3D5AFE;/* Indigo A400 — čísla kroků (pptx slide 64) */
-    --bg:#fff;
+    --title:#1A0050;
+    --step:#3660FF;/* Blue — čísla kroků */
+    --bg:#f4f4f7;
   }
   body{margin:0;background:#dedde4}
-  .dg-frame{width:1920px;height:1080px;overflow:hidden;position:relative;background:var(--bg)}
-  .dg-stage{width:1536px;height:864px;transform:scale(1.25);transform-origin:top left;position:relative;
-            background:var(--bg);font-family:'Poppins',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
-  .dg-card{position:absolute;left:40px;top:40px;width:1456px;height:784px;box-sizing:border-box;background:#fff;
+  .dg-frame{width:1820px;height:980px;overflow:hidden;position:relative;background:#fff}
+  .dg-stage{width:1456px;height:784px;transform:scale(1.25);transform-origin:top left;position:relative;
+            background:#fff;font-family:'Poppins',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+  .dg-card{position:absolute;left:0;top:0;width:1456px;height:784px;box-sizing:border-box;background:#fff;
            border-radius:0;box-shadow:none;padding:52px 64px;overflow:hidden}
   .dg-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:60px;line-height:1.08;letter-spacing:-.015em;
             color:var(--title);margin:0;max-width:1100px}
+  .dg-title:after{content:"";display:inline-block;width:.2em;height:.2em;border-radius:50%;background:#FFA200;margin-left:.08em;vertical-align:baseline}
   .dg-sub{font-size:20px;font-weight:500;color:#5b5675;margin-top:12px;max-width:1000px;line-height:1.5}
   .dg-src{position:absolute;right:170px;bottom:30px;text-align:right;font-size:12px;font-weight:500;color:var(--muted)}
-  .dg-logo{position:absolute;right:56px;bottom:26px;display:flex;align-items:center;gap:6px;color:#1e1b2e;
-           font-family:'Nunito',sans-serif;font-weight:800;font-size:15px}
-  .dg-logo svg{width:15px;height:16px}
+  .dg-logo{position:absolute;right:56px;bottom:24px;height:24px}
   .ps{position:absolute;left:64px;right:64px;top:262px;display:flex;align-items:stretch;gap:0}
   .ps-col{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;position:relative}
   .ps-n{width:46px;height:46px;border-radius:50%;background:var(--step);color:#fff;font-weight:800;font-size:19px;
@@ -81,7 +81,7 @@
   <div class="dg-sub" id="s"></div>
   <div class="ps" id="ps"></div>
   <div class="dg-src" id="src"></div>
-  <div class="dg-logo">© <svg viewBox="0 0 598.3 651.4"><g transform="translate(-400.9,-201.5)"><path fill="#1e1b2e" d="m 990.7,648.5 c -7.2,-17.3 -16.8,-33.3 -25.3,-50.4 -5,-10 -10,-20 -14.9,-29.9 -12.6,-25.3 -25.2,-50.6 -37.8,-75.8 -14,-28 -27.9,-56 -41.9,-83.9 -12.7,-25.4 -25.4,-50.8 -38,-76.2 -8.8,-17.6 -17.5,-35.2 -26.3,-52.7 -2.4,-4.9 -5,-9.7 -7.3,-14.7 -0.2,-0.3 -0.3,-0.7 -0.5,-1 -18.2,-37.9 -57.1,-62.4 -99.2,-62.4 -42.4,0 -80.2,23.7 -98.8,61.6 L 415.2,635 l -1.6,3.2 c -8.3,15.7 -12.7,33.5 -12.7,51.4 0,5.6 0.4,11.1 1.2,16.6 1.4,9 3.9,17.9 7.4,26.3 5.4,12.7 13,24.1 22.7,34 l 0.3,0.3 c 49.1,53.1 151.5,86.1 267.1,86.1 31.5,0 63,-2.4 94.1,-7.6 28,-4.7 55.6,-11.7 82.1,-21.7 22.9,-8.7 45.1,-19.6 64.9,-34 12.3,-9 24.7,-18 34.3,-30 8.6,-10.7 15.2,-22.9 19.2,-36 3.3,-10.6 5,-21.6 5,-32.7 0,-14.5 -2.8,-29 -8.5,-42.4 z M 786,352 l -11.4,22.8 -172.1,345 -6.4,12.9 c -15.7,31.1 -47.9,52.4 -85.2,52.4 -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-16.2 4,-31.4 11.1,-44.8 l 1.7,-3.4 183.8,-368.6 1.6,-3.3 c 15.5,-31.8 48.1,-53.6 85.8,-53.6 52.7,0 95.5,42.8 95.5,95.5 0.1,14.5 -3.1,28.3 -8.9,40.6 z m 103.3,434.4 c -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-52.7 42.8,-95.5 95.5,-95.5 52.7,0 95.5,42.8 95.5,95.5 0,52.7 -42.7,95.5 -95.5,95.5 z"/></g></svg>aptien</div>
+  <img class="dg-logo" src="../assets/aptien-logo.png" alt="aptien">
 </div></div></section>
 <script>
 /* ✏️ MĚŇ — jen tento objekt */
@@ -119,8 +119,8 @@ const DATA = {
 /* ⛔ odsud dál neměnit */
 const $=id=>document.getElementById(id);
 const PAL=['var(--c1)','var(--c2)','var(--c3)','var(--c4)','var(--c5)','var(--c6)'];
-const HEX=['#7602FF','#00B8D4','#00C853','#FFAB00','#E602FF','#1A237E'];
-const TINT=['#f1e8ff','#e3f8fb','#e3f9ec','#fff5e0','#fde6ff','#e6e8f5'];
+const HEX=['#6200EA','#00B4B4','#1DB87A','#FFA200','#E602FF','#3660FF'];
+const TINT=['#F5F3FF','#e0f6f6','#e4f7ef','#fff4e0','#fde6ff','#e8edff'];
 $('t').textContent=DATA.nadpis; $('s').textContent=DATA.podnadpis||''; if(!DATA.podnadpis) $('s').remove();
 $('src').textContent=DATA.zdroj?('Zdroj: '+DATA.zdroj):'';
 DATA.kroky.forEach((k,i,a)=>{$('ps').insertAdjacentHTML('beforeend',`<div class="ps-col">

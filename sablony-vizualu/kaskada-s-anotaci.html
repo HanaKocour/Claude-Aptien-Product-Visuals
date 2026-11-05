@@ -27,7 +27,7 @@
   ──────────────────────────────────────────────────────────────────
   1. Zkopíruj tento soubor pod novým názvem.
   2. Přepiš jen to, co je označené  ✏️ MĚŇ.
-  3. Vyrenderuj:  node render.js <soubor>.html   → PNG 1920 × 1080 px.
+  3. Vyrenderuj:  node render.js <soubor>.html   → PNG 1820 × 980.
 
   ✏️ TAB STRIP    – aktivní záložka + její barva
   ✏️ SEZNAM       – název evidence a řádky (blok z `evidence-list.html`)
@@ -68,7 +68,7 @@
   ──────────────────────────────────────────────────────────────────
   ⛔ CO SE NEMĚNÍ
   ──────────────────────────────────────────────────────────────────
-  ⛔ Rám `.an-frame` 1920×1080 a `.an-stage` 1536×864 se `scale(1.25)`.
+  ⛔ Rám `.an-frame` 1820×980 a `.an-stage` 1536×864 se `scale(1.25)`.
   ⛔ Paleta anotace fialová → modrá → zelená → červená. Nikdy barvy
      modulů (`c800`) ani akční modrá `#1572e8` — anotace by splynula s UI.
   ⛔ Nejvýš 4 pilulky, nejvýš 1 štítek, nejvýš 1 stavová pilulka.
@@ -83,8 +83,11 @@
 -->
 <style>
   /* ════ RÁM ═══════════════════════════════════════════════════════════ */
-  .an-frame{width:1920px;height:1080px;overflow:hidden;position:relative;background:#fff}
-  .an-stage{width:1536px;height:864px;transform:scale(1.25);transform-origin:top left;
+  .an-frame{width:1820px;height:980px;overflow:hidden;position:relative;background:#fff}
+  /* FORMÁT 3. 11. 2026: výstup 1820 × 980 (web, produktové stránky). Celá obrazovka
+     aplikace 1536 × 864 se zmenší na šířku 1820 (scale 1820/1536 = 1.18490) a dole
+     se ořízne ~37 návrhových px. Viz FORMATY.md v kořeni repozitáře. */
+  .an-stage{width:1536px;height:864px;transform:scale(1.18490);transform-origin:top left;
             position:relative;overflow:hidden;background:#f9f9fb;
             font-family:'Nunito',sans-serif;-webkit-font-smoothing:antialiased}
   .an-app{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden}

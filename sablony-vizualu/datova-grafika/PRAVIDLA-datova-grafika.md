@@ -18,7 +18,7 @@ z `Aptien pictures template - 2026.pptx`.
 
 1. Zkopíruj šablonu pod novým názvem (`nis2-lhuty-incidentu.html`).
 2. Přepiš **jen objekt `const DATA = {…}`** v `<script>` dole. Vzhled se nemění.
-3. `node ../render.js nis2-lhuty-incidentu.html` → PNG 1920 × 1080.
+3. `node ../render.js nis2-lhuty-incidentu.html` → PNG 1820 × 980 (@2x: `SCALE=2`).
 
 ## Čitelnost v miniatuře (hlavní pravidlo rodiny)
 
@@ -37,9 +37,9 @@ ve dvou vrstvách:
 
 ## Pevná pravidla
 
-- Rám 1920 × 1080, vrstva 1536 × 864 se `scale(1.25)`, `id="vizual"` — jako celá složka.
+- Rám 1820 × 980, vrstva 1536 × 864 se `scale(1.25)` posunutá o −40 px, `id="vizual"` — jako celá složka (viz `../../FORMATY.md`).
 - Celý obrázek je bílý: karta s rovnými rohy, bez stínu a bez šedé plochy (3. 11. 2026). Karta se nebarví.
-- ⚠️ Aktuální verze téhle rodiny žije v `Claude-Aptien-Templates/visuals/web-obrazky/` (výstup 1820 × 980, jen karta). Tahle kopie zůstává jen kvůli historii.
+- Šablony generuje `../build/gen.py`. Společná pravidla rodin A, B, C: `../PRAVIDLA-web-obrazky.md`.
 - Nadpis Nunito 900 / 60 px / `#311B92` — stejně jako rodina „nadpis + screenshot".
 - Popisky Poppins (jako pptx), velká čísla Nunito 900.
 - Barvy jen z **Palety 2025** v pevném pořadí: `#7602FF` → `#00B8D4` → `#00C853`

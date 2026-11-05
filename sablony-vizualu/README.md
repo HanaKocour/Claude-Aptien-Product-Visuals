@@ -19,7 +19,7 @@ rodinách a mají odlišné pravidlo o textu:
 | Odpovídá na otázku | Jak vypadá **aplikace**? | Jak vypadá **obrázek**? |
 | Co je zdroj pravdy | design systém Aptienu | tato šablona |
 | Co se mění | data v pohledu | jen data ve scéně |
-| Výstup | náhled obrazovky | PNG 1920 × 1080 na web |
+| Výstup | náhled obrazovky | PNG 1820 × 980, na web @2x 3640 × 1960 |
 
 Šablona **spotřebovává** prototyp: panel s aplikací je výřez skutečného UI
 vloženého z `prototypes/partials/`. Vzhled scény (plocha, panely, konektor,
@@ -48,8 +48,14 @@ do sekce *Historie rozhodnutí* níže.
 | `mobil-v-ruce.html` | šablona **mobil v ruce** (vyplněná jako stavba: fotka základové desky poslaná z terénu) |
 | `PRAVIDLA-mobil-v-ruce.md` | pravidla rodiny „mobil v ruce" |
 | `PROMPT-mobil-v-ruce.md` | prompt k ní |
-| `render.js` | render šablony do PNG 1920 × 1080 + kontroly |
-| `ukazka-screen.png` | **zástupný** snímek aplikace pro referenční výstupy |
+| `datova-grafika/` | rodina **A · datová grafika** (lhůty, postup, cyklus, seznam, před/po, screen + čísla) |
+| `ui-a-data/` | rodina **B · UI + data** (výřez UI vlevo, datový panel vpravo; motivy světlý, Sky, Midnight) |
+| `zaklad/` | rodina **C · základ** (dělené pozadí, velký nadpis, volný slot pro obsah) |
+| `PRAVIDLA-web-obrazky.md` | pravidla rodin A, B, C (čitelnost v miniatuře, zdroje hodnot) |
+| `build/` | generátory rodin A a B (`gen.py`, `gen_ui.py`) |
+| `assets/` | logo a zástupný screenshot pro šablony |
+| `render.js` | render šablony do PNG 1820 × 980 (`SCALE=2` → @2x 3640 × 1960) + kontroly |
+| `assets/ukazka-screen.png` | **zástupný** snímek aplikace pro referenční výstupy |
 | `priklad-*.png` | referenční výstupy — takhle to má vypadat |
 
 ### Kterou šablonu vzít
@@ -117,7 +123,9 @@ inline SVG, ty vyjdou vždy).
 
 ## Pevná geometrie (platí pro všechny šablony)
 
-- výstup **1920 × 1080 px**, návrhová vrstva **1536 × 864** se `scale(1.25)`
+- výstup **1820 × 980 px** (na web vždy @2x 3640 × 1960), návrhová vrstva **1536 × 864** se `scale(1.25)`
+  — vnější okraj 40 px se ořízne; kaskáda a mobil (celá obrazovka) se zmenší `scale(1.18490)`
+  a dole oříznou. ⛔ Rozměry podle použití (web vs. KB) jsou v `../FORMATY.md` — zdroj pravdy.
 - padding scény 56 px → využitelná plocha **1424 × 752**
 - sloupce: **520 + 168 + 736** (e-mail → aplikace) nebo
   **736 + 168 + 520** (aplikace → e-mail) — součet vždy **1424**
@@ -245,3 +253,8 @@ z šablony celý `<div class="cv-prov">`.
 - **3. 11. 2026** — **bez šedé plochy, bez zaoblené karty a bez stínu karty.** Obrázek je celý bílý,
   karta má rovné rohy (`border-radius:0`, `box-shadow:none`). Sjednoceno s šablonami web-obrázků
   v `Claude-Aptien-Templates`. Stín pod screenshotem / panely aplikace zůstává.
+- **3. 11. 2026** — **rozměr 1820 × 980** (na web @2x 3640 × 1960) místo 1920 × 1080, jednotně pro
+  všechny marketingové/produktové obrázky v obou repozitářích. Zdroj pravdy: `../FORMATY.md`.
+- **3. 11. 2026** — **jeden zdroj pravdy.** Sem se přesunuly rodiny datová grafika, UI + data
+  a základ z `Claude-Aptien-Templates/visuals/web-obrazky/` (Templates je teď jen katalog
+  s náhledy). Hotové sady obrázků jsou ve složce `Claude outputs/<projekt>/` vedle repozitářů.

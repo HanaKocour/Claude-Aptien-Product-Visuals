@@ -47,7 +47,7 @@ to samotné UI a fotka.
 
 | Parametr | Hodnota |
 |---|---|
-| Výstup | **1920 × 1080 px** (stejně jako celá složka) |
+| Výstup | **1820 × 980 px**, na web @2x 3640 × 1960 (viz `../FORMATY.md`) |
 | Návrhová vrstva | **1536 × 864** se `transform: scale(1.25)` |
 | Pozadí rámu (mimo stage) | `#e9e8ee` |
 
@@ -229,7 +229,7 @@ Když děláš víc obrázků v téhle rodině (různé role, různé evidence):
 
 ## 10. Checklist před odevzdáním
 
-1. Soubor je přesně **1920 × 1080 px** (`render.js` spadne, když ne).
+1. Soubor je přesně **1820 × 980 px** (`render.js` spadne, když ne).
 2. Sidebar má aktivní „Moje domovská stránka", nic jiného.
 3. Drawer je 80 % šířky / min 920 px, akční sloupec kompletní a v pořadí.
 4. Aktivní item tab je „Konverzace".
@@ -273,3 +273,5 @@ Když děláš víc obrázků v téhle rodině (různé role, různé evidence):
   `PROMPT-mobil-vedle-desktop.md` (dřívější, smazaná sesterská šablona), aby
   obsah zůstal konzistentní s pointou, kterou uživatel pro tenhle typ
   vizuálu už jednou schválil, místo vymýšlení nového scénáře od nuly.
+- **3. 11. 2026** — **rozměr 1820 × 980** (na web @2x 3640 × 1960) místo 1920 × 1080, jednotně pro
+  všechny marketingové/produktové obrázky v obou repozitářích. Zdroj pravdy: `../FORMATY.md`.

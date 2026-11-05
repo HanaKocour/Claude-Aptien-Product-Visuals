@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<title>UI + plnění</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+<!--
+  ŠABLONA VIZUÁLU · RODINA „DATOVÁ GRAFIKA" · UI + plnění
+  ==========================================================================
+  Tvary a skladba: „Aptien pictures template - 2026.pptx"
+  (slidy 36, 47–50 (screen + persona/data vedle)). Barvy, fonty a logo = Claude-Aptien-Brand-Manual (aptien_brand_brief.md).
+
+  TOHLE NENÍ PROTOTYP UI. Šablona říká, jak vypadá OBRÁZEK. Vzhled je
+  hotový a zmrazený — měníš JEN objekt `DATA` v <script> dole.
+
+  JAK POUŽÍT
+  1. Zkopíruj soubor pod novým názvem (např. `nis2-ui-plneni.html`).
+  2. Přepiš jen hodnoty v `const DATA = {…}`  (✏️ MĚŇ).
+  3. node render.js nis2-ui-plneni.html   → PNG přesně 1820 × 980.
+
+  ✏️ CO SE MĚNÍ (vše v DATA)
+  ✏️ motiv        – pozadí: "svetly" (bílá) | "sky" (primární Sky #6200EA) | "midnight" (Midnight #1A0050)
+  ✏️ nadpis, podnadpis, zdroj
+  ✏️ app          – výřez UI: firma, uzivatel, notifikace, zalozky (top bar), modul
+                    {nazev, ikona, barva c800}; typ "tabulka" (pridat, sloupce,
+                    radky, zvyraznit) nebo "karta" (zaznam, stav, zalozky_zaznamu,
+                    pole, zvyraznit; volitelně aktivni = index otevřené záložky
+                    a seznam {titulek, vpravo, radky:[{nazev, popis, ikona,
+                    pocet, podil 0–100, stav, pozice:[…], lide:[iniciály], dalsi}]}
+                    místo polí).
+                    ukazatele [[popisek, hodnota, barva]] = dlaždice čísel na kartě
+                    (nahradí místo pro obrázek); řádek seznamu umí avatar a datum.
+                    zvyraznit_evidenci: false = v horní liště není zvýrazněná
+                    žádná evidence (pro pohledy, které nejsou přímo v evidenci).
+                    Buňka ["text","g|o|r|b|s"] = stavová pilulka.
+  ✏️ data         – datový panel: typ karty | lhuty | matice | vazby | plneni | odpovedi | pozice
+                    (pozice = seznámení podle pracovních pozic: polozky [{pozice, ano, celkem}])
+
+  ⛔ CO SE NEMĚNÍ
+  ⛔ Rám `.dg-frame` 1820×980 = rovnou bílá karta: rovné rohy, bez šedé plochy
+     a bez stínu (rozhodnuto 3. 11. 2026). `.dg-stage` 1456×784 se `scale(1.25)`.
+  ⛔ Karta je vždy bílá — nikdy se nebarví.
+  ⛔ Nadpis Nunito 900 / 60 px, Midnight `#1A0050`, za ním Amber tečka (brand detail), max 2 řádky. Nezmenšuj — zkrať text.
+  ⛔ Popisky grafiky Poppins (jako v pptx), čísla Nunito 900.
+  ⛔ Barvy jen z brand palety `--c1…--c6` v pevném pořadí; nové barvy nezaváděj.
+  ⛔ Žádné konfety, tahy štětcem, jiskry ani gradientové pozadí plochy
+     (zamítnuto 12. 8. 2026 v sablony-vizualu/README.md).
+  ⛔ Fakta (lhůty, čísla) vždy s řádkem `zdroj` — bez zdroje číslo nepublikuj.
+  ⛔ UI panel drží styl z Claude-Aptien-Product-Visuals (top bar #424242, taby,
+     toolbar, view switcher modrý, „PŘIDAT" v barvě modulu, pilulky stavů).
+     Zvýraznění na produktové stránce = modrá #3D5AFE (červená jen v KB).
+  ⛔ UI panel je VÝŘEZ — dole ho ořízne karta. Nezmenšuj ho, aby se vešel.
+  ⛔ Datový panel vpravo = pointa pro miniaturu: čísla 34–54 px.
+  ⛔ Data v UI musí odpovídat datům v panelu (stejné názvy, stejná čísla).
+  ⛔ Tmavé motivy (sky, midnight) mění jen plochu, text na ploše a logo (bílé).
+     UI panel, bílé karty a barvy dat zůstávají; na Sky se fialová v datech
+     mění na Midnight, aby nesplynula s pozadím. Sada obrázků = jeden motiv.
+-->
+<style>
+  :root{
+    /* Paleta 2025 (pptx, slide 2) — pořadí je pevné */
+    --c1:#6200EA;  /* Sky — hlavní */
+    --c2:#00B4B4;  /* Teal */
+    --c3:#1DB87A;  /* Emerald */
+    --c4:#FFA200;  /* Amber */
+    --c5:#E602FF;  /* Magenta */
+    --c6:#3660FF;  /* Blue */
+    --ink:#1A0050; /* Midnight — text */
+    --muted:#7D90A6;
+    --title:#1A0050;
+    --step:#3660FF;/* Blue — čísla kroků */
+    --bg:#f4f4f7;
+  }
+  body{margin:0;background:#dedde4}
+  .dg-frame{width:1820px;height:980px;overflow:hidden;position:relative;background:#fff}
+  .dg-stage{width:1456px;height:784px;transform:scale(1.25);transform-origin:top left;position:relative;
+            background:#fff;font-family:'Poppins',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+  .dg-card{position:absolute;left:0;top:0;width:1456px;height:784px;box-sizing:border-box;background:#fff;
+           border-radius:0;box-shadow:none;padding:52px 64px;overflow:hidden}
+  .dg-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:60px;line-height:1.08;letter-spacing:-.015em;
+            color:var(--title);margin:0;max-width:1100px}
+  .dg-title:after{content:"";display:inline-block;width:.2em;height:.2em;border-radius:50%;background:#FFA200;margin-left:.08em;vertical-align:baseline}
+  .dg-sub{font-size:20px;font-weight:500;color:#5b5675;margin-top:12px;max-width:1000px;line-height:1.5}
+  .dg-src{position:absolute;right:170px;bottom:30px;text-align:right;font-size:12px;font-weight:500;color:var(--muted)}
+  .dg-logo{position:absolute;right:56px;bottom:24px;height:24px}
+  /* ---- panel aplikace = výřez UI podle Claude-Aptien-Product-Visuals ---- */
+  .ap{position:absolute;left:64px;top:196px;width:840px;height:620px;background:#fff;border:1px solid #e4e2ed;border-radius:12px;
+      box-shadow:0 22px 60px var(--ap-shadow);overflow:hidden;font-family:'Nunito',sans-serif;color:#1e1b2e}
+  .ap-top{height:56px;background:#424242;display:flex;align-items:center;padding:0 20px;gap:14px}
+  .ap-top b{color:#fff;font-weight:800;font-size:19px;letter-spacing:-.015em;margin-left:-6px}
+  .ap-top em{color:#fff;font-style:normal;font-size:13px;font-weight:600;margin-left:18px;opacity:.9}
+  .ap-tabs{height:30px;background:#424242;display:flex;align-items:flex-end;gap:4px;padding:0 14px}
+  .ap-tab{background:#fff;border-radius:6px 6px 0 0;padding:5px 12px;font-size:11.5px;font-weight:700;white-space:nowrap}
+  .ap-tb{display:flex;align-items:center;gap:10px;padding:12px 20px}
+  .ap-tb span.n{font-size:16px;font-weight:800;white-space:nowrap}
+  .ap-add{display:flex;align-items:center;gap:7px;color:#fff;font-size:11px;font-weight:800;padding:6px 14px;border-radius:999px;letter-spacing:.04em;white-space:nowrap}
+  .ap-srch{display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #e0dded;border-radius:999px;padding:5px 14px;width:170px;font-size:12px;color:#c0bdd0}
+  .ap-vs{display:flex;gap:6px;margin-left:auto}
+  .ap-vs div{padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600;border:1.5px solid #c8c4d8;color:#3d3a52;white-space:nowrap}
+  .ap-vs div.on{border-color:#1572e8;background:#e8f0fd;color:#1572e8}
+  .ap-tbl{margin:0 12px;border:1px solid #e4e2ed;border-radius:10px;overflow:hidden}
+  .ap-tbl table{border-collapse:collapse;width:100%}
+  .ap-tbl th{background:#f5f4fa;text-align:left;font-size:10.5px;font-weight:700;color:#1a1a1a;letter-spacing:.05em;padding:10px 12px;border-bottom:1px solid #e4e2ed;white-space:nowrap}
+  .ap-tbl td{padding:9px 12px;font-size:12.5px;color:#3d3a52;border-bottom:1px solid #f0eef8;white-space:nowrap}
+  .ap-tbl td.l{font-weight:600;color:#1572e8;text-decoration:underline;text-underline-offset:2px}
+  .ap-tbl tr.hl td{background:#eef1ff}
+  .ap-tbl tr.hl td:first-child{box-shadow:inset 3px 0 0 #3D5AFE}
+  .ap-eye{width:24px;height:24px;border-radius:5px;background:#455A64;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:10px}
+  .ap-pill{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:999px}
+  .t-g{background:#E8F5E9;color:#2E7D32}.t-o{background:#FFF3E0;color:#E65100}.t-r{background:#FFEBEE;color:#C62828}.t-b{background:#E3F2FD;color:#1565C0}.t-s{background:#eceff1;color:#59676d}
+  .ap-hd{display:flex;gap:16px;padding:16px 20px 12px;border-bottom:1px solid #f0eef8}
+  .ap-hd .t{font-size:18px;font-weight:800;display:flex;align-items:center;gap:10px}
+  .ap-chips{display:flex;gap:8px;margin-top:12px;align-items:center}
+  .ap-chip{background:#eceff1;color:#59676d;padding:4px 12px;border-radius:4px;font-size:10.5px;font-weight:600}
+  .ap-st{display:flex;align-items:center;gap:7px;border:1px solid #e0dded;border-radius:999px;padding:4px 12px;font-size:11.5px;font-weight:700;color:#4a4660}
+  .ap-st i{width:9px;height:9px;border-radius:50%;display:inline-block}
+  .ap-img{width:96px;height:96px;border-radius:8px;border:2px dashed #d8d6e2;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#cdd0d8;font-size:26px;box-sizing:border-box;margin-left:auto}
+  .ap-ft{display:flex;align-items:flex-end;padding:12px 20px 0}
+  .ap-ft div{height:38px;padding:0 18px;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#263238;white-space:nowrap}
+  .ap-ft div.on{color:#1572e8;font-weight:700;background:#fff;border-radius:8px 8px 0 0;box-shadow:0 5px 20px rgba(0,0,0,.10);clip-path:inset(-30px -30px 0 -30px)}
+  .ap-ft u{text-decoration:none;width:19px;height:19px;background:#1572e8;color:#fff;border-radius:50%;font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+  .ap-f{display:flex;align-items:center;min-height:50px;border-bottom:1px solid #f0eef8;padding:8px 20px}
+  .ap-f .fk{width:200px;text-align:right;font-size:12px;color:#6b6585;font-weight:600;padding-right:18px;flex-shrink:0}
+  .ap-f .v{flex:1;border:1px solid #e0dded;border-radius:4px;padding:6px 10px;font-size:13px;color:#1a1a2e}
+  .ap-f .v.a{border:0;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+  .ap-f.hl{background:#eef1ff;box-shadow:inset 3px 0 0 #3D5AFE}
+  /* ---- datový panel vpravo ---- */
+  .dp{position:absolute;left:952px;top:196px;width:440px;bottom:70px;display:flex;flex-direction:column;justify-content:center;gap:18px}
+  .dp-h{font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .k{background:#fff;color:#1A0050;border-radius:18px;padding:20px 24px;border:1px solid #efedf6;box-shadow:0 10px 30px rgba(26,0,80,.08);display:flex;gap:18px;align-items:center}
+  .k i.bar{width:8px;align-self:stretch;border-radius:8px;flex-shrink:0}
+  .k b{display:block;font-family:'Nunito',sans-serif;font-weight:900;font-size:54px;line-height:1}
+  .k span{display:block;font-size:17px;font-weight:600;margin-top:6px;line-height:1.35}
+  .vt{display:flex;flex-direction:column}
+  .vt-s{display:flex;gap:20px;align-items:center;position:relative;padding-bottom:22px}
+  .vt-s:not(:last-child):before{content:"";position:absolute;left:52px;top:104px;bottom:0;width:4px;background:var(--vline)}
+  .vt-d{width:104px;height:104px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:30px;letter-spacing:-.02em;flex-shrink:0;box-shadow:0 8px 20px rgba(26,0,80,.15)}
+  .vt-s b{display:block;font-size:22px;font-weight:700;line-height:1.25}.vt-s span{display:block;font-size:15px;color:var(--fg2);font-weight:500;margin-top:3px}
+  .hm{display:grid;grid-template-columns:28px repeat(5,1fr);gap:6px}
+  .hm div{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Nunito',sans-serif;font-weight:900;font-size:26px}
+  .hm div.ax{aspect-ratio:auto;color:var(--muted);font-size:13px;font-weight:700;background:none}
+  .hm div.hl{outline:4px solid var(--sel);outline-offset:-2px}
+  .hm-l{display:flex;justify-content:space-between;font-size:14px;font-weight:600;color:var(--muted);margin-top:8px;padding-left:34px}
+  .tr{display:flex;flex-direction:column;align-items:center;gap:14px}
+  .tr-r{background:var(--root);color:#fff;border-radius:16px;padding:16px 26px;text-align:center;font-size:24px;font-weight:700;line-height:1.2}
+  .tr-r small{display:block;font-size:13px;font-weight:600;opacity:.8;text-transform:uppercase;letter-spacing:.08em}
+  .tr-g{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%}
+  .tr-n{background:#fff;color:#1A0050;border-radius:14px;padding:14px;border:1px solid #efedf6;box-shadow:0 8px 22px rgba(26,0,80,.08);display:flex;gap:12px;align-items:center}
+  .tr-n i{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+  .tr-n b{display:block;font-size:16px;font-weight:700;line-height:1.25}.tr-n span{display:block;font-size:12.5px;color:#7D90A6;font-weight:600}
+  .tr-n.hl{outline:3px solid #3D5AFE}
+  .dn{display:flex;align-items:center;gap:24px}
+  .dn-c{--tr:var(--track);width:190px;height:190px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .dn-c div{width:140px;height:140px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:46px;color:var(--ink)}
+  .dn b{font-size:22px;font-weight:700;line-height:1.3}
+  .pp-row{display:flex;align-items:center;gap:12px;font-size:17px;font-weight:600;padding:10px 0;border-bottom:1px solid var(--line)}
+  .av{width:36px;height:36px;border-radius:50%;background:#9e9e9e;color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif}
+  .pp-row em{margin-left:auto;font-style:normal;font-size:13px;font-weight:700;border-radius:999px;padding:3px 10px}
+  /* karta záznamu se seznamem (např. distribuční seznamy) */
+  .ap-sh{display:flex;align-items:center;padding:14px 20px 8px;font-size:11px;font-weight:700;color:#6b6585;letter-spacing:.05em;text-transform:uppercase}
+  .ap-sh span{margin-left:auto}
+  .ap-li{display:flex;align-items:center;gap:14px;min-height:56px;border-bottom:1px solid #f0eef8;padding:6px 20px}
+  .ap-li .ic{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+  .ap-li b{display:block;font-size:14px;font-weight:800;color:#1e1b2e}.ap-li small{display:block;font-size:11.5px;font-weight:600;color:#7b7590;margin-top:2px}
+  .ap-li .n{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;font-size:13px;font-weight:700;color:#3d3a52;white-space:nowrap}
+  .ap-li .bar{width:120px;height:7px;border-radius:7px;background:#ece9f4;margin-top:6px;overflow:hidden}.ap-li .bar i{display:block;height:100%;border-radius:7px}
+  .ap-li.hl{background:#eef1ff;box-shadow:inset 3px 0 0 #3D5AFE}
+  /* datový panel: statistiky odpovědí */
+  .od-top{display:flex;align-items:center;gap:18px}
+  .od-top b{font-family:'Nunito',sans-serif;font-weight:900;font-size:56px;line-height:1;color:var(--fg);white-space:nowrap}
+  .od-top span{font-size:20px;font-weight:700;line-height:1.3}
+  .od-bar{display:flex;height:22px;border-radius:22px;overflow:hidden;gap:3px}
+  .od-r{display:flex;align-items:center;gap:14px;padding:8px 0;border-bottom:1px solid var(--line)}
+  .od-r i{width:14px;height:14px;border-radius:50%;flex-shrink:0}
+  .od-r span{font-size:18px;font-weight:600}
+  .od-r b{margin-left:auto;font-family:'Nunito',sans-serif;font-weight:900;font-size:34px;line-height:1}
+  .od-ex{display:flex;align-items:center;gap:12px;background:#F5F3FF;color:#1A0050;border-radius:14px;padding:13px 18px;font-size:16px;font-weight:700}
+  .od-ex i{color:#6200EA;font-size:20px}
+  /* seznam: pracovní pozice (chipy) a lidé (avatary) */
+  .ap-li .ch{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+  .ap-li .ch em{font-style:normal;font-size:10.5px;font-weight:700;color:#455A64;background:#eceff1;border-radius:999px;padding:2px 9px;white-space:nowrap}
+  .ap-li .avs{display:flex;margin-left:auto;margin-right:18px}
+  .ap-li .avs span{width:28px;height:28px;border-radius:50%;border:2px solid #fff;margin-left:-5px;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .ap-li .avs span.more{background:#eceff1;color:#455A64}
+  .ap-li .avs + .n{margin-left:0}
+  /* datový panel: seznámení podle pracovních pozic */
+  .pz-top{display:flex;align-items:center;gap:16px;margin-bottom:4px}
+  .pz-top b{font-family:'Nunito',sans-serif;font-weight:900;font-size:50px;line-height:1;color:var(--fg);white-space:nowrap}
+  .pz-top span{font-size:18px;font-weight:700;line-height:1.3}
+  .pz{display:flex;flex-direction:column;gap:13px}
+  .pz-r{display:grid;grid-template-columns:1fr auto;align-items:end;row-gap:6px}
+  .pz-r span{font-size:17px;font-weight:600;line-height:1.1}.pz-r span small{font-size:13px;color:var(--muted);font-weight:600;margin-left:6px}
+  .pz-r b{font-family:'Nunito',sans-serif;font-weight:900;font-size:28px;line-height:1}
+  .pz-r i{grid-column:1/3;display:block;height:12px;border-radius:12px;background:var(--track);overflow:hidden}
+  .pz-r i u{display:block;height:100%;border-radius:12px}
+  .pz-r.hl span{font-weight:800}
+  /* ukazatele na kartě záznamu */
+  .ap-kpi{display:flex;gap:10px;margin-top:14px}
+  .ap-kpi div{border:1px solid #e4e2ed;border-radius:8px;padding:7px 14px;min-width:92px}
+  .ap-kpi b{display:block;font-size:20px;font-weight:900;line-height:1.1}
+  .ap-kpi span{display:block;font-size:10.5px;font-weight:700;color:#6b6585;margin-top:2px;white-space:nowrap}
+  .ap-li .avt{width:36px;height:36px;border-radius:50%;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .ap-li .dt{margin-left:auto;font-size:12px;font-weight:600;color:#7b7590;white-space:nowrap}
+  /* ---- motivy pozadí (DATA.motiv): svetly | sky | midnight ---- */
+  .dg-frame{--fg:#1A0050;--fg2:#5b5675;--line:#efedf6;--track:#ece9f4;--vline:#e8e4f5;--sel:#1A0050;--root:var(--c1);--arrow:var(--c1);--ap-shadow:rgba(30,27,46,.16)}
+  .dg-frame.m-sky{--plane:#6200EA;--title:#FFFFFF;--fg:#FFFFFF;--fg2:#EDE6FF;--muted:#D4C4FF;--line:rgba(255,255,255,.2);--track:rgba(255,255,255,.22);
+     --vline:rgba(255,255,255,.3);--sel:#FFFFFF;--root:#1A0050;--arrow:#FFFFFF;--dot:#FFA200;--ap-shadow:rgba(20,0,60,.45)}
+  .dg-frame.m-midnight{--plane:#1A0050;--title:#FFFFFF;--fg:#FFFFFF;--fg2:#C9BDF2;--muted:#B3A6E0;--line:rgba(255,255,255,.16);--track:rgba(255,255,255,.18);
+     --vline:rgba(255,255,255,.25);--sel:#FFFFFF;--root:#6200EA;--arrow:#FFFFFF;--dot:#E602FF;--ap-shadow:rgba(0,0,0,.5)}
+  .m-sky,.m-midnight,.m-sky .dg-stage,.m-midnight .dg-stage,.m-sky .dg-card,.m-midnight .dg-card{background:var(--plane)}
+  .m-sky .dg-stage,.m-midnight .dg-stage{color:var(--fg)}
+  .m-sky .dg-sub,.m-midnight .dg-sub{color:var(--fg2)}
+  .m-sky .dg-title:after,.m-midnight .dg-title:after{background:var(--dot)}
+  .m-sky .dg-logo,.m-midnight .dg-logo{display:none}
+  .m-sky .k,.m-midnight .k,.m-sky .tr-n,.m-midnight .tr-n{border-color:transparent;box-shadow:0 12px 32px rgba(0,0,0,.22)}
+  .m-sky .vt-d,.m-midnight .vt-d{box-shadow:0 0 0 3px rgba(255,255,255,.9),0 8px 20px rgba(0,0,0,.25)}
+  .m-sky .hm div.ax,.m-midnight .hm div.ax{color:var(--muted)}
+  /* bílé logo pro tmavé motivy (značka jako v rodině Základ) */
+  .dg-logo-w{position:absolute;right:56px;bottom:25px;display:flex;align-items:center;gap:5px;font-family:'Nunito',sans-serif;font-weight:900;font-size:18px;line-height:1;color:#fff;letter-spacing:-.01em}
+  .dg-logo-w svg{width:18px;height:20px}
+  .dg-logo-w path{fill:#fff}.dg-logo-w path:first-child{fill:rgba(255,255,255,.35)}.dg-logo-w path:nth-child(2){fill:rgba(255,255,255,.7)}.dg-logo-w path:nth-child(3){fill:#FFA200}
+</style>
+</head>
+<body>
+<section class="dg-frame" id="vizual"><div class="dg-stage"><div class="dg-card">
+  <h1 class="dg-title" id="t"></h1>
+  <div class="dg-sub" id="s"></div>
+  <div class="ap" id="ap"></div>
+  <div class="dp" id="dp"></div>
+  <div class="dg-src" id="src"></div>
+  <img class="dg-logo" src="../assets/aptien-logo.png" alt="aptien">
+</div></div></section>
+<script>
+/* ✏️ MĚŇ — jen tento objekt */
+const DATA = {
+  "motiv": "svetly",
+  "nadpis": "Směrnice, které lidé opravdu četli",
+  "podnadpis": "",
+  "app": {
+    "firma": "Naše skvělá firma",
+    "uzivatel": "PO",
+    "notifikace": 5,
+    "zalozky": [
+      [
+        "Zaměstnanci",
+        "#f1c40f"
+      ],
+      [
+        "Rizika",
+        "#E91E63"
+      ],
+      [
+        "Směrnice",
+        "#1565C0"
+      ],
+      [
+        "Audity a kontroly",
+        "#FF8F00"
+      ],
+      [
+        "Služby",
+        "#00897B"
+      ]
+    ],
+    "typ": "tabulka",
+    "modul": {
+      "nazev": "Směrnice",
+      "ikona": "book",
+      "barva": "#1565C0"
+    },
+    "pridat": "PŘIDAT SMĚRNICI",
+    "sloupce": [
+      "Směrnice",
+      "Verze",
+      "Platnost od",
+      "Seznámeno"
+    ],
+    "radky": [
+      [
+        "Bezpečnostní politika",
+        "2.1",
+        "1. 10. 2026",
+        [
+          "87 %",
+          "g"
+        ]
+      ],
+      [
+        "Řízení přístupů",
+        "1.4",
+        "1. 9. 2026",
+        [
+          "92 %",
+          "g"
+        ]
+      ],
+      [
+        "Hlášení incidentů",
+        "1.0",
+        "1. 11. 2026",
+        [
+          "64 %",
+          "o"
+        ]
+      ],
+      [
+        "Práce na dálku",
+        "1.2",
+        "1. 6. 2026",
+        [
+          "98 %",
+          "g"
+        ]
+      ],
+      [
+        "Zálohování a obnova",
+        "1.1",
+        "1. 9. 2026",
+        [
+          "90 %",
+          "g"
+        ]
+      ],
+      [
+        "Řízení dodavatelů",
+        "1.0",
+        "1. 11. 2026",
+        [
+          "41 %",
+          "o"
+        ]
+      ],
+      [
+        "Klasifikace informací",
+        "1.3",
+        "1. 5. 2026",
+        [
+          "100 %",
+          "g"
+        ]
+      ],
+      [
+        "Používání mobilních zařízení",
+        "1.0",
+        "1. 10. 2026",
+        [
+          "76 %",
+          "o"
+        ]
+      ]
+    ],
+    "zvyraznit": 0
+  },
+  "data": {
+    "typ": "plneni",
+    "titulek": "Bezpečnostní politika",
+    "procent": 87,
+    "text": "zaměstnanců potvrdilo seznámení",
+    "cekajici": [
+      [
+        "Tomáš Krejčí",
+        "za 2 dny",
+        "o"
+      ],
+      [
+        "Lucie Marková",
+        "dnes",
+        "r"
+      ],
+      [
+        "Ondřej Horák",
+        "za 5 dní",
+        "g"
+      ]
+    ]
+  },
+  "zdroj": "ukázková data"
+};
+/* ⛔ odsud dál neměnit */
+const $=id=>document.getElementById(id);
+const PAL=['var(--c1)','var(--c2)','var(--c3)','var(--c4)','var(--c5)','var(--c6)'];
+const HEX=['#6200EA','#00B4B4','#1DB87A','#FFA200','#E602FF','#3660FF'];
+const TINT=['#F5F3FF','#e0f6f6','#e4f7ef','#fff4e0','#fde6ff','#e8edff'];
+$('t').textContent=DATA.nadpis; $('s').textContent=DATA.podnadpis||''; if(!DATA.podnadpis) $('s').remove();
+$('src').textContent=DATA.zdroj?('Zdroj: '+DATA.zdroj):'';
+const L='M 990.7,648.5 c -7.2,-17.3 -16.8,-33.3 -25.3,-50.4 -5,-10 -10,-20 -14.9,-29.9 -12.6,-25.3 -25.2,-50.6 -37.8,-75.8 -14,-28 -27.9,-56 -41.9,-83.9 -12.7,-25.4 -25.4,-50.8 -38,-76.2 -8.8,-17.6 -17.5,-35.2 -26.3,-52.7 -2.4,-4.9 -5,-9.7 -7.3,-14.7 -0.2,-0.3 -0.3,-0.7 -0.5,-1 -18.2,-37.9 -57.1,-62.4 -99.2,-62.4 -42.4,0 -80.2,23.7 -98.8,61.6 L 415.2,635 l -1.6,3.2 c -8.3,15.7 -12.7,33.5 -12.7,51.4 0,5.6 0.4,11.1 1.2,16.6 1.4,9 3.9,17.9 7.4,26.3 5.4,12.7 13,24.1 22.7,34 l 0.3,0.3 c 49.1,53.1 151.5,86.1 267.1,86.1 31.5,0 63,-2.4 94.1,-7.6 28,-4.7 55.6,-11.7 82.1,-21.7 22.9,-8.7 45.1,-19.6 64.9,-34 12.3,-9 24.7,-18 34.3,-30 8.6,-10.7 15.2,-22.9 19.2,-36 3.3,-10.6 5,-21.6 5,-32.7 0,-14.5 -2.8,-29 -8.5,-42.4 z M 786,352 l -11.4,22.8 -172.1,345 -6.4,12.9 c -15.7,31.1 -47.9,52.4 -85.2,52.4 -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-16.2 4,-31.4 11.1,-44.8 l 1.7,-3.4 183.8,-368.6 1.6,-3.3 c 15.5,-31.8 48.1,-53.6 85.8,-53.6 52.7,0 95.5,42.8 95.5,95.5 0.1,14.5 -3.1,28.3 -8.9,40.6 z m 103.3,434.4 c -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-52.7 42.8,-95.5 95.5,-95.5 52.7,0 95.5,42.8 95.5,95.5 0,52.7 -42.7,95.5 -95.5,95.5 z';
+const LOGO_W=`<svg width="34" height="37" viewBox="82 875 898 981">
+      <path d="M965.707 1557.94C974.249 1576.76 979 1597.66 979 1619.66 979 1659.27 963.654 1695.26 938.553 1722.02L937.864 1722.78C867.129 1801.66 712.488 1853 533.09 1853 355.61 1853 202.348 1802.75 130.609 1725.28L130.339 1724.95C117.062 1711.56 106.302 1695.66 98.8239 1678.04 94.0283 1666.75 90.5816 1654.76 88.6934 1642.27 87.5694 1634.89 87 1627.34 87 1619.65 87 1594.27 93.324 1570.38 104.474 1549.44L107.111 1544.13 395.743 966.156 398.276 961.066C422.628 911.294 473.805 877 533 877 592.555 877 644.002 911.698 668.174 961.964L670.677 967.054 965.258 1556.94 965.707 1557.94Z" fill="#EDE8FF"/>
+      <path d="M293.317 789.697 563.066 248.957 580.859 213.285C589.927 193.968 595 172.391 595 149.632 595 66.9903 528.004 0 445.356 0 386.247 0 335.143 34.2657 310.826 84.0331L308.297 89.1358 20.0822 666.879 17.4485 672.191C6.31488 693.125 0 717.006 0 742.368 0 825.01 66.9957 892 149.644 892 208.11 892 258.6 858.632 283.246 809.927L293.317 789.697Z" fill="#9D46FF" transform="matrix(-1 0 0 1 978 878)"/>
+      <path d="M978 1619.5C978 1702.07 911.067 1769 828.5 1769 745.933 1769 679 1702.07 679 1619.5 679 1536.93 745.933 1470 828.5 1470 911.067 1470 978 1536.93 978 1619.5Z" fill="#FFA200"/>
+      <path d="M380.81 1666.7 651.012 1125.96 668.835 1090.29C677.919 1070.97 683 1049.39 683 1026.63 683 943.99 615.892 877 533.104 877 473.896 877 422.706 911.266 398.348 961.033L395.815 966.136 107.116 1543.88 104.478 1549.19C93.3255 1570.12 87 1594.01 87 1619.37 87 1702.01 154.108 1769 236.896 1769 295.46 1769 346.035 1735.63 370.723 1686.93L380.81 1666.7Z" fill="#6200EA"/>
+    </svg>`;
+const MOT=DATA.motiv||'svetly';
+if(MOT!=='svetly'){$('vizual').classList.add('m-'+MOT);document.querySelector('.dg-card').insertAdjacentHTML('beforeend',`<div class="dg-logo-w">${LOGO_W}aptien</div>`)}
+const A=DATA.app, M=A.modul;
+let h=`<div class="ap-top"><svg viewBox="0 0 598.3 651.4" style="width:25.7px;height:28px"><g transform="translate(-400.9,-201.5)"><path fill="#fff" d="${L}"/></g></svg><b>aptien</b><em>${A.firma}</em><div style="flex:1"></div>
+ <div style="position:relative;margin-right:12px"><i class="fa-solid fa-bell" style="color:#fff;font-size:17px"></i><span style="position:absolute;top:-6px;right:-8px;background:#FF3D00;color:#fff;font-size:9px;font-weight:800;border-radius:999px;padding:1px 4px;border:1.5px solid #424242">${A.notifikace}</span></div>
+ <div style="width:30px;height:30px;border-radius:50%;background:#8d8d8d;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center">${A.uzivatel}</div></div>`;
+h+='<div class="ap-tabs">'+A.zalozky.map(z=>`<div class="ap-tab" style="${A.zvyraznit_evidenci!==false&&z[0]===M.nazev?`background:${z[1]};color:#fff`:`color:${z[1]}`}">${z[0]}</div>`).join('')+'</div>';
+const pill=c=>`<span class="ap-pill t-${c[1]}">${c[0]}</span>`;
+if(A.typ==='tabulka'){
+ h+=`<div class="ap-tb"><i class="fa-solid fa-${M.ikona}" style="font-size:18px;color:${M.barva}"></i><span class="n">${M.nazev}</span>
+  <div class="ap-add" style="background:${M.barva}"><i class="fa-solid fa-plus" style="font-size:10px"></i>${A.pridat}</div>
+  <div class="ap-srch"><i class="fa-solid fa-magnifying-glass"></i>Hledej...</div>
+  <div class="ap-vs"><div>Dashboard</div><div>Seznam</div><div>Kanban</div><div class="on">Tabulka</div><div>Kalendář</div></div></div>`;
+ h+='<div class="ap-tbl"><table><tr><th></th>'+A.sloupce.map(s=>`<th>${s}</th>`).join('')+'</tr>'+
+  A.radky.map((r,i)=>`<tr class="${i===A.zvyraznit?'hl':''}"><td style="width:30px"><span class="ap-eye"><i class="fa-solid fa-eye"></i></span></td>`+
+   r.map((c,j)=>Array.isArray(c)?`<td>${pill(c)}</td>`:`<td class="${j===0?'l':''}">${c}</td>`).join('')+'</tr>').join('')+'</table></div>';
+}else{
+ h+=`<div class="ap-hd"><div><div class="t"><i class="fa-solid fa-${M.ikona}" style="color:${M.barva}"></i>${A.zaznam}</div>
+  <div class="ap-chips"><span class="ap-chip">${M.nazev}</span><span class="ap-st"><i style="background:${A.stav[1]}"></i>${A.stav[0]}</span></div>${A.ukazatele?`<div class="ap-kpi">${A.ukazatele.map(u=>`<div><b style="color:${u[2]||'#1e1b2e'}">${u[1]}</b><span>${u[0]}</span></div>`).join('')}</div>`:''}</div>
+  ${A.ukazatele?'':'<div class="ap-img"><i class="fa-regular fa-image"></i></div>'}</div>
+  <div class="ap-ft">${A.zalozky_zaznamu.map((z,i)=>`<div class="${i===(A.aktivni||0)?'on':''}">${z[0]}${z[1]?`<u>${z[1]}</u>`:''}</div>`).join('')}</div>`;
+ if(A.seznam){const S=A.seznam,bc=v=>v>=90?'#1DB87A':v>=60?'#FFA200':'#E53935'; h+=`<div class="ap-sh">${S.titulek||''}<span>${S.vpravo||''}</span></div>`+S.radky.map((r,i)=>`<div class="ap-li ${i===A.zvyraznit?'hl':''}">${r.avatar?`<span class="avt" style="background:${HEX[i%6]}">${r.avatar}</span>`:`<span class="ic" style="background:${TINT[(i%5)+1]};color:${HEX[(i%5)+1]}"><i class="fa-solid fa-${r.ikona||'users'}"></i></span>`}<div><b>${r.nazev}</b>${r.popis?`<small>${r.popis}</small>`:''}${r.pozice?`<div class="ch">${r.pozice.map(x=>`<em>${x}</em>`).join('')}</div>`:''}</div>${r.lide?`<div class="avs">${r.lide.slice(0,4).map((x,k)=>`<span style="background:${HEX[(i+k)%6]}">${x}</span>`).join('')}${r.dalsi?`<span class="more">+${r.dalsi}</span>`:''}</div>`:''}${r.datum?`<div class="dt">${r.datum}</div>`:''}${(r.pocet||r.podil!=null)?`<div class="n">`:''}${r.pocet||''}${r.podil!=null?`<div class="bar"><i style="width:${r.podil}%;background:${bc(r.podil)}"></i></div>`:''}${(r.pocet||r.podil!=null)?'</div>':''}${r.stav?`<span class="ap-pill t-${r.stav[1]}" style="margin-left:14px">${r.stav[0]}</span>`:''}</div>`).join('');}
+ else h+=A.pole.map((p,i)=>`<div class="ap-f ${i===A.zvyraznit?'hl':''}"><div class="fk">${p[0]}</div><div class="v ${p[2]==='odkaz'?'a':''}">${p[2]==='odkaz'?'→ ':''}${p[1]}</div></div>`).join('');
+}
+$('ap').innerHTML=h;
+const D=DATA.data, dp=$('dp'); if(D.titulek) dp.insertAdjacentHTML('beforeend',`<div class="dp-h">${D.titulek}</div>`);
+if(D.typ==='karty') D.polozky.forEach((k,i)=>dp.insertAdjacentHTML('beforeend',`<div class="k"><i class="bar" style="background:${HEX[i]}"></i><div><b style="color:${HEX[i]}">${k.cislo}</b><span>${k.text}</span></div></div>`));
+if(D.typ==='lhuty'){const C=['#E53935',MOT==='sky'?'#1A0050':'#6200EA','#3660FF','#00B4B4'];dp.insertAdjacentHTML('beforeend','<div class="vt">'+D.polozky.map((m,i)=>`<div class="vt-s"><div class="vt-d" style="background:${C[i]}">${m.hodnota}</div><div><b>${m.titul}</b><span>${m.text}</span></div></div>`).join('')+'</div>')}
+if(D.typ==='matice'){const col=v=>v>=15?'#E53935':v>=8?'#FF7043':v>=4?'#FFA200':'#1DB87A';let g='<div class="hm">';
+ for(let r=5;r>=1;r--){g+=`<div class="ax">${r}</div>`;for(let c=1;c<=5;c++){const n=D.pocty[5-r][c-1];g+=`<div class="${D.zvyraznit&&D.zvyraznit[0]===r&&D.zvyraznit[1]===c?'hl':''}" style="background:${n?col(r*c):`color-mix(in srgb,${col(r*c)} 35%,#fff)`}">${n||''}</div>`}}
+ dp.insertAdjacentHTML('beforeend',g+`</div><div class="hm-l"><span>↑ ${D.osa_y}</span><span>${D.osa_x} →</span></div>`)}
+if(D.typ==='vazby') dp.insertAdjacentHTML('beforeend',`<div class="tr"><div class="tr-r"><small>${D.koren[0]}</small>${D.koren[1]}</div><i class="fa-solid fa-arrow-down" style="color:var(--arrow);font-size:22px"></i><div class="tr-g">`+
+ D.deti.map((d,i)=>`<div class="tr-n ${i===D.zvyraznit?'hl':''}"><i class="fa-solid fa-${d.ikona}" style="background:${TINT[i+1]};color:${HEX[i+1]}"></i><div><b>${d.nazev}</b><span>${d.typ}</span></div></div>`).join('')+'</div></div>');
+if(D.typ==='plneni'){dp.insertAdjacentHTML('beforeend',`<div class="dn"><div class="dn-c" style="background:conic-gradient(#1DB87A 0 ${D.procent}%,var(--track) ${D.procent}% 100%)"><div>${D.procent} %</div></div><b>${D.text}</b></div><div>`+
+ D.cekajici.map(p=>`<div class="pp-row"><span class="av">${p[0].split(' ').map(x=>x[0]).join('')}</span>${p[0]}<em class="t-${p[2]}">${p[1]}</em></div>`).join('')+'</div>')}
+if(D.typ==='pozice'){const col=v=>v>=90?'#1DB87A':v>=60?'#FFA200':'#E53935';
+ dp.insertAdjacentHTML('beforeend',(D.hlavni?`<div class="pz-top"><b>${D.hlavni}</b><span>${D.text||''}</span></div>`:'')+'<div class="pz">'+
+ D.polozky.map((p,i)=>{const v=Math.round(p.ano/p.celkem*100);return `<div class="pz-r ${i===D.zvyraznit?'hl':''}"><span>${p.pozice}<small>${p.ano} / ${p.celkem}</small></span><b style="color:${col(v)}">${v} %</b><i><u style="width:${v}%;background:${col(v)}"></u></i></div>`}).join('')+'</div>'+(D.export?`<div class="od-ex"><i class="fa-solid fa-file-signature"></i>${D.export}</div>`:''))}
+if(D.typ==='odpovedi'){const C={g:'#1DB87A',o:'#FFA200',r:'#E53935',b:'#3660FF',s:'#B0AEC0'};const T=D.polozky.reduce((a,p)=>a+p.pocet,0);
+ dp.insertAdjacentHTML('beforeend',`<div class="od-top"><b>${D.hlavni}</b><span>${D.text}</span></div><div class="od-bar">`+D.polozky.map(p=>`<i style="width:${p.pocet/T*100}%;background:${C[p.barva]}"></i>`).join('')+'</div><div>'+
+ D.polozky.map(p=>`<div class="od-r"><i style="background:${C[p.barva]}"></i><span>${p.titul}</span><b style="color:${C[p.barva]}">${p.pocet}</b></div>`).join('')+'</div>'+(D.export?`<div class="od-ex"><i class="fa-solid fa-file-signature"></i>${D.export}</div>`:''))}
+</script>
+</body>
+</html>

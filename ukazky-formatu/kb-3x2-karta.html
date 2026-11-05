@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="cs"><head><meta charset="utf-8"><title>KB screen 3:2</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+<!--
+  ŠABLONA KB · TYP A „SCREEN“  (formát KB, viz ../FORMATY.md)
+  ==========================================================================
+  Obrázek = samotný screenshot aplikace přes celou plochu + červené zvýraznění.
+  ⛔ Žádné okno se zaoblenými rohy na pozadí, žádný stín, žádný okraj kolem –
+     je to screen, ne mockup. Aplikace začíná hned u hrany obrázku.
+  Rám #vizual: šířka 850 CSS px, výška 478 / 567 / 638 (16:9 / 3:2 / 4:3),
+  render v hustotě 2× → PNG 1700 px:  node render-kb.js priklad-kb-screen-3x2.html
+  Aplikace je v článku vidět 1 : 1 → písmo UI se čte bez rozkliknutí.
+  ✏️ MĚŇ: obsah .ap (UI aplikace), výšku rámu, pole KROKY.
+  ⛔ Zvýraznění jen červené #FF0000 (rámeček 4 pt se zaoblením a měkkým stínem,
+     číslo kroku, rovná šipka, zvětšený detail 1,3×). Šipka nekříží tlačítka ani text.
+  ⛔ Spodní okraj smí useknout jen pokračující seznam/obsah stránky, nikdy dialog
+     nebo prvek, o kterém se v kroku mluví.
+-->
+<style>
+body{margin:0;background:#dedde4}
+#vizual{width:850px;height:567px;position:relative;overflow:hidden}
+  /* ---- panel aplikace = výřez UI podle Claude-Aptien-Product-Visuals ---- */
+  .ap{position:absolute;left:64px;top:0px;width:840px;height:620px;background:#fff;border:1px solid #e4e2ed;border-radius:12px;
+      box-shadow:0 22px 60px rgba(30,27,46,.16);overflow:hidden;font-family:'Nunito',sans-serif;color:#1e1b2e}
+  .ap-top{height:56px;background:#424242;display:flex;align-items:center;padding:0 20px;gap:14px}
+  .ap-top b{color:#fff;font-weight:800;font-size:19px;letter-spacing:-.015em;margin-left:-6px}
+  .ap-top em{color:#fff;font-style:normal;font-size:13px;font-weight:600;margin-left:18px;opacity:.9}
+  .ap-tabs{height:30px;background:#424242;display:flex;align-items:flex-end;gap:4px;padding:0 14px}
+  .ap-tab{background:#fff;border-radius:6px 6px 0 0;padding:5px 12px;font-size:11.5px;font-weight:700;white-space:nowrap}
+  .ap-tb{display:flex;align-items:center;gap:10px;padding:12px 20px}
+  .ap-tb span.n{font-size:16px;font-weight:800;white-space:nowrap}
+  .ap-add{display:flex;align-items:center;gap:7px;color:#fff;font-size:11px;font-weight:800;padding:6px 14px;border-radius:999px;letter-spacing:.04em;white-space:nowrap}
+  .ap-srch{display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #e0dded;border-radius:999px;padding:5px 14px;width:170px;font-size:12px;color:#c0bdd0}
+  .ap-vs{display:flex;gap:6px;margin-left:auto}
+  .ap-vs div{padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600;border:1.5px solid #c8c4d8;color:#3d3a52;white-space:nowrap}
+  .ap-vs div.on{border-color:#1572e8;background:#e8f0fd;color:#1572e8}
+  .ap-tbl{margin:0 12px;border:1px solid #e4e2ed;border-radius:10px;overflow:hidden}
+  .ap-tbl table{border-collapse:collapse;width:100%}
+  .ap-tbl th{background:#f5f4fa;text-align:left;font-size:10.5px;font-weight:700;color:#1a1a1a;letter-spacing:.05em;padding:10px 12px;border-bottom:1px solid #e4e2ed;white-space:nowrap}
+  .ap-tbl td{padding:9px 12px;font-size:12.5px;color:#3d3a52;border-bottom:1px solid #f0eef8;white-space:nowrap}
+  .ap-tbl td.l{font-weight:600;color:#1572e8;text-decoration:underline;text-underline-offset:2px}
+  .ap-tbl tr.hl td{background:#eef1ff}
+  .ap-tbl tr.hl td:first-child{box-shadow:inset 3px 0 0 #3D5AFE}
+  .ap-eye{width:24px;height:24px;border-radius:5px;background:#455A64;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:10px}
+  .ap-pill{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:999px}
+  .t-g{background:#E8F5E9;color:#2E7D32}.t-o{background:#FFF3E0;color:#E65100}.t-r{background:#FFEBEE;color:#C62828}.t-b{background:#E3F2FD;color:#1565C0}.t-s{background:#eceff1;color:#59676d}
+  .ap-hd{display:flex;gap:16px;padding:16px 20px 12px;border-bottom:1px solid #f0eef8}
+  .ap-hd .t{font-size:18px;font-weight:800;display:flex;align-items:center;gap:10px}
+  .ap-chips{display:flex;gap:8px;margin-top:12px;align-items:center}
+  .ap-chip{background:#eceff1;color:#59676d;padding:4px 12px;border-radius:4px;font-size:10.5px;font-weight:600}
+  .ap-st{display:flex;align-items:center;gap:7px;border:1px solid #e0dded;border-radius:999px;padding:4px 12px;font-size:11.5px;font-weight:700;color:#4a4660}
+  .ap-st i{width:9px;height:9px;border-radius:50%;display:inline-block}
+  .ap-img{width:96px;height:96px;border-radius:8px;border:2px dashed #d8d6e2;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#cdd0d8;font-size:26px;box-sizing:border-box;margin-left:auto}
+  .ap-ft{display:flex;align-items:flex-end;padding:12px 20px 0}
+  .ap-ft div{height:38px;padding:0 18px;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#263238;white-space:nowrap}
+  .ap-ft div.on{color:#1572e8;font-weight:700;background:#fff;border-radius:8px 8px 0 0;box-shadow:0 5px 20px rgba(0,0,0,.10);clip-path:inset(-30px -30px 0 -30px)}
+  .ap-ft u{text-decoration:none;width:19px;height:19px;background:#1572e8;color:#fff;border-radius:50%;font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+  .ap-f{display:flex;align-items:center;min-height:50px;border-bottom:1px solid #f0eef8;padding:8px 20px}
+  .ap-f .fk{width:200px;text-align:right;font-size:12px;color:#6b6585;font-weight:600;padding-right:18px;flex-shrink:0}
+  .ap-f .v{flex:1;border:1px solid #e0dded;border-radius:4px;padding:6px 10px;font-size:13px;color:#1a1a2e}
+  .ap-f .v.a{border:0;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+  .ap-f.hl{background:#eef1ff;box-shadow:inset 3px 0 0 #3D5AFE}
+  
+.kb-hl{position:absolute;border:3px solid #FF0000;border-radius:7px;box-shadow:0 0 10px rgba(0,0,0,.55),inset 0 0 6px rgba(0,0,0,.15);pointer-events:none;z-index:20}
+.kb-n{position:absolute;z-index:24;width:26px;height:26px;border-radius:50%;background:#FF0000;color:#fff;font:800 14px/26px 'Nunito',sans-serif;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.kb-zoom{position:absolute;z-index:22;transform-origin:top left;border:3px solid #FF0000;border-radius:8px;box-shadow:0 6px 22px rgba(0,0,0,.45);overflow:hidden;background:#fff}
+.kb-cur{position:absolute;z-index:23;font-size:26px;color:#fff;-webkit-text-stroke:1.6px #000}
+svg.kb-ar{position:absolute;left:0;top:0;z-index:21;overflow:visible}
+#vizual{background:#fff}
+.ap{left:0;top:0;width:100%;height:100%;border:0;border-radius:0;box-shadow:none}
+</style></head><body><section id="vizual">
+<div class="ap"><div class="ap-top"><svg viewBox="0 0 598.3 651.4" style="width:25.7px;height:28px"><g transform="translate(-400.9,-201.5)"><path fill="#fff" d="M 990.7,648.5 c -7.2,-17.3 -16.8,-33.3 -25.3,-50.4 -5,-10 -10,-20 -14.9,-29.9 -12.6,-25.3 -25.2,-50.6 -37.8,-75.8 -14,-28 -27.9,-56 -41.9,-83.9 -12.7,-25.4 -25.4,-50.8 -38,-76.2 -8.8,-17.6 -17.5,-35.2 -26.3,-52.7 -2.4,-4.9 -5,-9.7 -7.3,-14.7 -0.2,-0.3 -0.3,-0.7 -0.5,-1 -18.2,-37.9 -57.1,-62.4 -99.2,-62.4 -42.4,0 -80.2,23.7 -98.8,61.6 L 415.2,635 l -1.6,3.2 c -8.3,15.7 -12.7,33.5 -12.7,51.4 0,5.6 0.4,11.1 1.2,16.6 1.4,9 3.9,17.9 7.4,26.3 5.4,12.7 13,24.1 22.7,34 l 0.3,0.3 c 49.1,53.1 151.5,86.1 267.1,86.1 31.5,0 63,-2.4 94.1,-7.6 28,-4.7 55.6,-11.7 82.1,-21.7 22.9,-8.7 45.1,-19.6 64.9,-34 12.3,-9 24.7,-18 34.3,-30 8.6,-10.7 15.2,-22.9 19.2,-36 3.3,-10.6 5,-21.6 5,-32.7 0,-14.5 -2.8,-29 -8.5,-42.4 z M 786,352 l -11.4,22.8 -172.1,345 -6.4,12.9 c -15.7,31.1 -47.9,52.4 -85.2,52.4 -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-16.2 4,-31.4 11.1,-44.8 l 1.7,-3.4 183.8,-368.6 1.6,-3.3 c 15.5,-31.8 48.1,-53.6 85.8,-53.6 52.7,0 95.5,42.8 95.5,95.5 0.1,14.5 -3.1,28.3 -8.9,40.6 z m 103.3,434.4 c -52.7,0 -95.5,-42.8 -95.5,-95.5 0,-52.7 42.8,-95.5 95.5,-95.5 52.7,0 95.5,42.8 95.5,95.5 0,52.7 -42.7,95.5 -95.5,95.5 z"/></g></svg><b>aptien</b><em>Naše skvělá firma</em><div style="flex:1"></div>
+ <div style="position:relative;margin-right:12px"><i class="fa-solid fa-bell" style="color:#fff;font-size:17px"></i><span style="position:absolute;top:-6px;right:-8px;background:#FF3D00;color:#fff;font-size:9px;font-weight:800;border-radius:999px;padding:1px 4px;border:1.5px solid #424242">2</span></div>
+ <div style="width:30px;height:30px;border-radius:50%;background:#8d8d8d;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center">JN</div></div><div class="ap-tabs"><div class="ap-tab" style="color:#f1c40f">Zaměstnanci</div><div class="ap-tab" style="color:#E91E63">Rizika</div><div class="ap-tab" style="background:#1565C0;color:#fff">Směrnice</div><div class="ap-tab" style="color:#6A1B9A">Aktiva</div><div class="ap-tab" style="color:#C62828">Incidenty</div></div>
+<div class="ap-hd"><div><div class="t"><i class="fa-solid fa-book" style="color:#1565C0"></i>Bezpečnostní politika · verze 3.0</div>
+<div class="ap-chips"><span class="ap-chip">Směrnice</span><span class="ap-st"><i style="background:#43A047"></i>Platný</span></div></div>
+<div class="ap-img" style="width:80px;height:80px"><i class="fa-regular fa-image"></i></div></div>
+<div class="ap-ft"><div>Detaily</div><div class="on" id="zal">Distribuční seznam</div><div id="odp">Odpovědi<u>84</u></div><div>Verze<u>3</u></div><div>Historie</div></div>
+<div class="ap-f"><div class="fk">Distribuční seznam</div><div class="v a">→ Všichni zaměstnanci (84)</div></div>
+<div class="ap-f"><div class="fk">Termín seznámení</div><div class="v">15. 11. 2026</div></div>
+<div class="ap-f"><div class="fk">Připomenout</div><div class="v">3 dny před termínem, v den termínu</div></div>
+<div style="display:flex;justify-content:flex-end;gap:10px;padding:16px 20px 18px">
+<div class="ap-add" style="background:#fff;color:#1572e8;border:1.5px solid #1572e8">ZMĚNIT SEZNAM</div>
+<div class="ap-add" id="odeslat" style="background:#1572e8"><i class="fa-solid fa-paper-plane" style="font-size:10px"></i>ODESLAT K SEZNÁMENÍ</div></div></div>
+</section>
+<script>
+/* ✏️ MĚŇ — kroky zvýraznění: cil = CSS selektor, cislo, volitelně sipka:[x,y], zoom + kurzor */
+const KROKY = [{"cil": "#zal", "cislo": 1}, {"cil": "#odeslat", "cislo": 2}];
+/* ⛔ odsud dál neměnit */
+document.fonts.ready.then(()=>{
+/* ⛔ odsud dál neměnit */
+const F=document.getElementById('vizual').getBoundingClientRect();
+const R=sel=>{const r=document.querySelector(sel).getBoundingClientRect();return {x:r.left-F.left,y:r.top-F.top,w:r.width,h:r.height}};
+const V=document.getElementById('vizual');
+let svg=null;
+KROKY.forEach(k=>{
+  const r=R(k.cil), p=4;
+  if(k.zoom){
+    const src=document.querySelector(k.cil), z=src.cloneNode(true), s=k.zoom;
+    z.className+=' kb-zoom'; Object.assign(z.style,{left:(r.x+(k.dx||0))+'px',top:(r.y+(k.dy||0))+'px',width:r.w+'px',transform:'scale('+s+')',border:(3/s)+'px solid #FF0000',borderRadius:(8/s)+'px'});
+    V.appendChild(z);
+    if(k.kurzor){const t=z.querySelector(k.kurzor).getBoundingClientRect();const c=document.createElement('i');c.className='fa-solid fa-hand-pointer kb-cur';c.style.left=(t.left-F.left+t.width*0.55)+'px';c.style.top=(t.top-F.top+t.height*0.35)+'px';V.appendChild(c)}
+    if(k.cislo){const n=document.createElement('div');n.className='kb-n';n.textContent=k.cislo;n.style.left=(r.x+(k.dx||0)+r.w*s-13)+'px';n.style.top=(r.y+(k.dy||0)-13)+'px';V.appendChild(n)}
+    return;
+  }
+  const h=document.createElement('div');h.className='kb-hl';Object.assign(h.style,{left:(r.x-p)+'px',top:(r.y-p)+'px',width:(r.w+2*p-6)+'px',height:(r.h+2*p-6)+'px'});V.appendChild(h);
+  if(k.cislo){const n=document.createElement('div');n.className='kb-n';n.textContent=k.cislo;n.style.left=(r.x+r.w+p-10)+'px';n.style.top=(r.y-p-16)+'px';V.appendChild(n)}
+  if(k.sipka){ if(!svg){svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('class','kb-ar');svg.setAttribute('width',F.width);svg.setAttribute('height',F.height);svg.innerHTML='<defs><marker id="hd" markerWidth="4" markerHeight="4" refX="2.2" refY="2" orient="auto"><path d="M0,0 L4,2 L0,4 z" fill="#FF0000"/></marker></defs>';V.appendChild(svg)}
+    const [x1,y1]=k.sipka, x2=r.x-p-6, y2=r.y+r.h/2;
+    const l=document.createElementNS('http://www.w3.org/2000/svg','line');Object.entries({x1,y1,x2,y2,stroke:'#FF0000','stroke-width':6,'stroke-linecap':'round','marker-end':'url(#hd)'}).forEach(([a,b])=>l.setAttribute(a,b));svg.appendChild(l)}
+});
+
+});</script></body></html>

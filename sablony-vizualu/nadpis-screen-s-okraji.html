@@ -24,7 +24,7 @@
   ────────────────────────────────────────────────────────────────────────
   1. Zkopíruj tento soubor pod novým názvem.
   2. Přepiš jen to, co je označené  ✏️ MĚŇ.
-  3. Vyrenderuj:  node render.js <soubor>.html   → PNG 1920 × 1080 px.
+  3. Vyrenderuj:  node render.js <soubor>.html   → PNG 1820 × 980.
 
   ✏️ NADPIS      – 2–4 slova, max ~28 znaků na řádek, max 2 řádky
   ✏️ SCREENSHOT  – cesta k PNG v `src`
@@ -45,7 +45,7 @@
   ────────────────────────────────────────────────────────────────────────
   ⛔ CO SE NEMĚNÍ
   ────────────────────────────────────────────────────────────────────────
-  ⛔ Rám `.hs-frame` 1920×1080 a `.hs-stage` 1536×864 se `scale(1.25)`.
+  ⛔ Rám `.hs-frame` 1820×980 a `.hs-stage` 1536×864 se `scale(1.25)`.
   ⛔ Celý obrázek je bílý: karta má rovné rohy, žádný stín a žádnou šedou
      plochu kolem (3. 11. 2026). Karta se nebarví.
   ⛔ Nadpis: Nunito **900**, `60px/1.1`, barva `#311B92`, na střed.
@@ -60,8 +60,11 @@
      šablony `email-do-aplikace.html` a `aplikace-do-emailu.html`.
 -->
 <style>
-  .hs-frame{width:1920px;height:1080px;overflow:hidden;position:relative;background:#fff}
-  .hs-stage{width:1536px;height:864px;transform:scale(1.25);transform-origin:top left;
+  .hs-frame{width:1820px;height:980px;overflow:hidden;position:relative;background:#fff}
+  /* FORMÁT 3. 11. 2026: výstup 1820 × 980 (web, produktové stránky). Návrhová vrstva
+     zůstává 1536 × 864, jen se posune o -40 návrhových px (= -50 px) a vnější
+     okraj 40 px se ořízne. Viz FORMATY.md v kořeni repozitáře. */
+  .hs-stage{width:1536px;height:864px;transform:translate(-50px,-50px) scale(1.25);transform-origin:top left;
             position:relative;overflow:hidden;background:#fff;
             font-family:'Nunito',sans-serif;-webkit-font-smoothing:antialiased}
 
@@ -94,7 +97,7 @@
     <!-- SCREEN — vodorovně na střed, s okraji; zdola ho orýzne karta.
          ⛔ Nezmenšuj ho, aby se vešel celý. -->
     <!-- ✏️ SCREENSHOT -->
-    <img class="hs-shot" src="ukazka-screen.png" alt=""
+    <img class="hs-shot" src="assets/ukazka-screen.png" alt=""
          style="position:relative;margin-top:44px;width:1120px;flex-shrink:0">
 
       <!-- B) VARIANTA „vyrenderováno z prototypu": odkomentuj, <img> výše smaž

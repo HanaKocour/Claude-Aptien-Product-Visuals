@@ -1,5 +1,5 @@
 /**
- * Render šablony vizuálu do PNG 1920 × 1080.
+ * Render šablony vizuálu do PNG 1820 × 980 (formát „web – produktová stránka“, viz ../FORMATY.md).
  *
  *   node render.js                              → email-do-aplikace.png
  *   node render.js muj-vizual.html              → muj-vizual.png
@@ -13,9 +13,11 @@
  * Šablona načítá Nunito a Font Awesome z CDN, takže render potřebuje
  * internet. Bez něj se nevykreslí ikony ani písmo.
  *
- * Rám v šabloně je 1920 × 1080 CSS px a uvnitř má vrstvu 1536 × 864
- * se `scale(1.25)`. Screenshot se dělá PŘES ELEMENT `#vizual`, takže
- * výstup je přesně 1920 × 1080 bez ohledu na velikost okna.
+ * Rám v šabloně je 1820 × 980 CSS px a uvnitř má vrstvu 1536 × 864
+ * (ořízne se okraj, nebo se celá obrazovka zmenší — viz komentář v šabloně).
+ * Screenshot se dělá PŘES ELEMENT `#vizual`, takže výstup je přesně
+ * 1820 × 980 bez ohledu na velikost okna.
+ * Verze na web (@2x, 3640 × 1960):  SCALE=2 node render.js vstup.html vystup@2x.png
  * ⛔ Nikdy nepoužívej `fullPage: true` a neupscaluj menší obrázek.
  */
 const { chromium } = require('playwright');
@@ -34,7 +36,7 @@ const fs = require('fs');
   const browser = await chromium.launch();
   const page = await browser.newPage({
     viewport: { width: 1920, height: 1080 },
-    deviceScaleFactor: 1,
+    deviceScaleFactor: Number(process.env.SCALE || 1),
   });
 
   await page.goto('file://' + path.resolve(input));
@@ -43,16 +45,16 @@ const fs = require('fs');
 
   const frame = page.locator('#vizual');
   if (await frame.count() === 0) {
-    console.error('V souboru chybí element s id="vizual" (rám 1920×1080).');
+    console.error('V souboru chybí element s id="vizual" (rám 1820×980).');
     await browser.close();
     process.exit(1);
   }
 
   // kontrola rámu — měř, neodhaduj
   const box = await frame.boundingBox();
-  if (Math.round(box.width) !== 1920 || Math.round(box.height) !== 1080) {
+  if (Math.round(box.width) !== 1820 || Math.round(box.height) !== 980) {
     console.error(`Rám má ${Math.round(box.width)} × ${Math.round(box.height)} px, `
-                + 'čekám 1920 × 1080. Zkontroluj .cv-frame a .cv-stage.');
+                + 'čekám 1820 × 980. Zkontroluj rám (.cv-/.hs-/.dg-/.an-frame) a vrstvu.');
     await browser.close();
     process.exit(1);
   }
@@ -82,6 +84,6 @@ const fs = require('fs');
   }
 
   await frame.screenshot({ path: output });
-  console.log(`OK → ${output} (1920 × 1080)`);
+  console.log(`OK → ${output} (1820 × 980${process.env.SCALE==='2'?' @2x':''})`);
   await browser.close();
 })();
